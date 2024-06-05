@@ -1,0 +1,15 @@
+{
+  "header": {
+    "signin": "ログイン"
+  },
+  "footer":{
+    "disclaimer":"UTAUは飴屋／菖蒲氏によって公開されている、Windows向けに作成された歌声合成ソフトウェアです。",
+    "disclaimer2":"本ソフトウェアはUTAU公式とは無関係です。",
+    "developerx":"開発者Xアカウント",
+    "github":"github",
+    "discord":"discord"
+  },
+  "xbutton":{
+    "share":"共有"
+  }
+}
