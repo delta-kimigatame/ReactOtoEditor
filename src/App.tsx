@@ -10,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import { getDesignTokens } from "./settings/theme";
 import { Header } from "./Header";
 import { Footer } from "./Fotter";
+import { WavCanvas } from "./WavCanvas";
 
 /**
  * Reactのエンドポイント
@@ -46,6 +47,7 @@ export const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header mode={mode} setMode={setMode} />
+      <WavCanvas />
       <Footer theme={theme} />
     </ThemeProvider>
   );
