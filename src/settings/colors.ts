@@ -71,6 +71,7 @@ export const specColor: { [key: string]: { [mode: string]: Array<Color> } } = {
       { r: 0, b: 0, g: 255 },
       { r: 255, b: 0, g: 255 },
       { r: 255, b: 0, g: 0 },
+      { r: 255, b: 0, g: 0 },
     ],
     dark: [
       { r: 0, b: 0, g: 0 },
@@ -79,6 +80,7 @@ export const specColor: { [key: string]: { [mode: string]: Array<Color> } } = {
       { r: 0, b: 255, g: 255 },
       { r: 0, b: 0, g: 255 },
       { r: 255, b: 0, g: 255 },
+      { r: 255, b: 0, g: 0 },
       { r: 255, b: 0, g: 0 },
     ],
   },
