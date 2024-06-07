@@ -59,7 +59,7 @@ export const App: React.FC = () => {
         language={language}
         setLanguage={setLanguage}
       />
-      <WavCanvas mode={mode} />
+      <WavCanvas mode={mode} color={color}/>
       <Footer theme={theme} />
     </ThemeProvider>
   );

@@ -25,7 +25,7 @@ export const WavCanvas: React.FC<Props> = (props) => {
   );
   const boxRef = React.useRef(null);
   const canvas = React.useRef(null);
-  const sColor = "rainbow";
+  const [colorTheme, setColorTheme] = React.useState<string>(props.color);
   const [backgroundColor, setBackgroundColor] = React.useState<string>(
     GetColor(backgroundColorPallet[props.mode])
   );
@@ -33,17 +33,23 @@ export const WavCanvas: React.FC<Props> = (props) => {
     GetColor(lineColorPallet[props.mode])
   );
   const [wavColor, setWavColor] = React.useState<string>(
-    GetColor(wavColorPallet[sColor][props.mode])
+    GetColor(wavColorPallet[colorTheme][props.mode])
   );
   const [fillColor, setFillColor] = React.useState<Array<Color>>(
-    specColor[sColor][props.mode]
+    specColor[colorTheme][props.mode]
   );
+
+  React.useEffect(() => {
+    setColorTheme(props.color);
+    setWavColor(GetColor(wavColorPallet[props.color][props.mode]));
+    setFillColor(specColor[props.color][props.mode]);
+  }, [props.color]);
 
   React.useEffect(() => {
     setBackgroundColor(GetColor(backgroundColorPallet[props.mode]));
     setLineColor(GetColor(lineColorPallet[props.mode]));
-    setWavColor(GetColor(wavColorPallet[sColor][props.mode]));
-    setFillColor(specColor[sColor][props.mode]);
+    setWavColor(GetColor(wavColorPallet[colorTheme][props.mode]));
+    setFillColor(specColor[colorTheme][props.mode]);
   }, [props.mode]);
 
   const OnFileChange = (event) => {
@@ -234,4 +240,5 @@ type Color = {
 
 type Props = {
   mode: PaletteMode;
+  color: string;
 };
