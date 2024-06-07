@@ -15,7 +15,6 @@ export const LanguageMenuButton: React.FC<Props> = (props) => {
   return (
     <>
       <IconButton
-        edge="start"
         color="inherit"
         onClick={(e) => {
           setMenuAnchor(e.currentTarget);

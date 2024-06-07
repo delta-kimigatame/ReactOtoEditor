@@ -3,6 +3,16 @@
     "ja":"JA",
     "en":"EN"
   },
+  "color":{
+    "gray":"gray",
+    "red":"red",
+    "blue":"blue",
+    "green":"green",
+    "aqua":"aqua",
+    "orange":"orange",
+    "magenta":"mazenta",
+    "rainbow":"rainbow"
+  },
   "footer":{
     "disclaimer":"UTAU is a singing voice synthesis software created for Windows and published by 飴屋／菖蒲",
     "disclaimer2":"This software is not affiliated with UTAU official.",

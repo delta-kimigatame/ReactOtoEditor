@@ -10,6 +10,7 @@ import Box from "@mui/material/Box";
 import { setting } from "../settings/setting";
 import { DarkModeButton } from "./DarkModeButton";
 import { LanguageMenuButton } from "./LanguageMenuButton";
+import { ColorMenuButton } from "./ColorMenuButton";
 
 /**
  * ヘッダ。
@@ -23,7 +24,15 @@ export const Header: React.FC<Props> = (props) => {
             <Typography variant="subtitle2">{setting.product_name}</Typography>
           </Button>
           <Box>
-            <LanguageMenuButton language={props.language} setLanguage={props.setLanguage}/>
+            <LanguageMenuButton
+              language={props.language}
+              setLanguage={props.setLanguage}
+            />
+            <ColorMenuButton
+              mode={props.mode}
+              color={props.color}
+              setColor={props.setColor}
+            />
             <DarkModeButton mode={props.mode} setMode={props.setMode} />
           </Box>
         </Toolbar>

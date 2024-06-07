@@ -3,6 +3,16 @@
     "ja":"日本語",
     "en":"英語"
   },
+  "color":{
+    "gray":"白黒",
+    "red":"赤",
+    "blue":"青",
+    "green":"緑",
+    "aqua":"水色",
+    "orange":"橙",
+    "magenta":"マゼンタ",
+    "rainbow":"カラフル"
+  },
   "footer":{
     "disclaimer":"UTAUは飴屋／菖蒲氏によって公開されている、Windows向けに作成された歌声合成ソフトウェアです。",
     "disclaimer2":"本ソフトウェアはUTAU公式とは無関係です。",
