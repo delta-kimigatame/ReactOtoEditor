@@ -47,7 +47,7 @@ export const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header mode={mode} setMode={setMode} />
-      <WavCanvas />
+      <WavCanvas mode={mode}/>
       <Footer theme={theme} />
     </ThemeProvider>
   );

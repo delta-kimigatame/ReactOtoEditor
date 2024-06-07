@@ -1,16 +1,23 @@
 import * as React from "react";
+import { PaletteMode } from "@mui/material";
 
 import Box from "@mui/material/Box";
 
 import { Wave, WaveAnalyse } from "utauwav";
 
 import { fftSetting } from "./settings/setting";
+import {
+  backgroundColorPallet,
+  lineColorPallet,
+  wavColorPallet,
+  specColor,
+} from "./settings/colors";
 
-export const WavCanvas: React.FC = () => {
+export const WavCanvas: React.FC<Props> = (props) => {
   const [wav, setWav] = React.useState<Wave | null>(null);
   const [spec, setSpec] = React.useState<Array<Array<number>> | null>(null);
   const [width, setWidth] = React.useState<number>(600);
-  const [height, setHeight] = React.useState<number>(400);
+  const [height, setHeight] = React.useState<number>(300);
   const [specMax, setSpecMax] = React.useState<number>(0);
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   const [frameWidth, setFrameWidth] = React.useState<number>(
@@ -18,18 +25,27 @@ export const WavCanvas: React.FC = () => {
   );
   const boxRef = React.useRef(null);
   const canvas = React.useRef(null);
-  const bgc = "RGB(0,0,0)";
-  const lineColor = "RGB(255,255,255)";
-  const waveColor = "RGB(255,255,255)";
-  const fillColor: Array<Color> = [
-    { r: 0, b: 0, g: 0 },
-    { r: 0, b: 0, g: 0 },
-    { r: 0, b: 255, g: 0 },
-    { r: 0, b: 255, g: 255 },
-    { r: 0, b: 0, g: 255 },
-    { r: 255, b: 0, g: 255 },
-    { r: 255, b: 0, g: 0 },
-  ];
+  const sColor = "rainbow";
+  const [backgroundColor, setBackgroundColor] = React.useState<string>(
+    GetColor(backgroundColorPallet[props.mode])
+  );
+  const [lineColor, setLineColor] = React.useState<string>(
+    GetColor(lineColorPallet[props.mode])
+  );
+  const [wavColor, setWavColor] = React.useState<string>(
+    GetColor(wavColorPallet[sColor][props.mode])
+  );
+  const [fillColor, setFillColor] = React.useState<Array<Color>>(
+    specColor[sColor][props.mode]
+  );
+
+  React.useEffect(() => {
+    setBackgroundColor(GetColor(backgroundColorPallet[props.mode]));
+    setLineColor(GetColor(lineColorPallet[props.mode]));
+    setWavColor(GetColor(wavColorPallet[sColor][props.mode]));
+    setFillColor(specColor[sColor][props.mode]);
+  }, [props.mode]);
+
   const OnFileChange = (event) => {
     setSpecMax(0);
     const fr = new FileReader();
@@ -53,8 +69,8 @@ export const WavCanvas: React.FC = () => {
         let sMax = 0;
         for (let i = 0; i < s.length; i++) {
           for (let j = 0; j < s[0].length; j++) {
-            if (sMax < s[i][j] ** 2) {
-              sMax = s[i][j] ** 2;
+            if (sMax < Math.max(s[i][j], 0) ** 2) {
+              sMax = Math.max(s[i][j], 0) ** 2;
             }
           }
         }
@@ -66,7 +82,7 @@ export const WavCanvas: React.FC = () => {
 
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = bgc;
+    ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
@@ -84,21 +100,21 @@ export const WavCanvas: React.FC = () => {
     if (ctx) {
       RenderBase(ctx);
     }
-  }, [width]);
+  }, [width, lineColor]);
 
   const RenderWave = async (
     ctx: CanvasRenderingContext2D,
     wav: Wave
   ): Promise<void> => {
     ctx.clearRect(0, 0, width, height / 2 - 1);
-    ctx.fillStyle = bgc;
+    ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, width, height / 2 - 1);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
     ctx.moveTo(0, height / 4);
     ctx.lineTo(width, height / 4);
     ctx.stroke();
-    ctx.strokeStyle = waveColor;
+    ctx.strokeStyle = wavColor;
     ctx.lineWidth = 1;
     const maxValue = 2 ** (wav.bitDepth - 1) - 1;
     ctx.beginPath();
@@ -114,13 +130,12 @@ export const WavCanvas: React.FC = () => {
 
   React.useEffect(() => {
     OnChangeWav();
-  }, [wav]);
+  }, [wav, wavColor]);
 
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && wav !== null) {
       RenderWave(ctx, wav);
-      console.log("a");
     }
   };
 
@@ -130,7 +145,7 @@ export const WavCanvas: React.FC = () => {
     spec: Array<Array<number>>
   ): Promise<void> => {
     ctx.clearRect(0, height / 2 + 1, width, height);
-    ctx.fillStyle = bgc;
+    ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, height / 2 + 1, width, height);
     const fw = frameWidth;
     const rh = Math.ceil(
@@ -150,13 +165,13 @@ export const WavCanvas: React.FC = () => {
       const steps = (i * fw) % fftSetting.windowSize;
       for (let j = 0; j < rh; j++) {
         const amp =
-          (Math.max(spec[timeIndex1][j] ** 2, 0) *
+          (Math.max(spec[timeIndex1][j], 0) ** 2 *
             (fftSetting.windowSize - steps)) /
             fftSetting.windowSize +
-          (Math.max(spec[timeIndex2][j] ** 2, 0) * steps) /
+          (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) /
             fftSetting.windowSize;
         const colorRatio = amp / specMax;
-        ctx.fillStyle = GetColor(colorRatio, fillColor);
+        ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
         ctx.fillRect(i * w, height - h * (j + 1), w, h);
       }
     }
@@ -164,32 +179,44 @@ export const WavCanvas: React.FC = () => {
 
   React.useEffect(() => {
     OnChangeSpec();
-  }, [spec]);
+  }, [spec, fillColor]);
 
   const OnChangeSpec = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && spec !== null && wav !== null) {
-      RenderSpec(ctx, wav, spec);
-      console.log("b");
+      await RenderSpec(ctx, wav, spec).then(() => {});
     }
   };
 
+  const OnCanvasClick = (e) => {
+    console.log(boxRef.current.scrollLeft + e.clientX);
+  };
   return (
     <>
       <input type="file" onChange={OnFileChange}></input>
       <br />
       <Box ref={boxRef} sx={{ overflowX: "scroll" }}>
-        <canvas id="wavCanvas" width={width} height={height} ref={canvas} />
+        <canvas
+          id="wavCanvas"
+          width={width}
+          height={height}
+          ref={canvas}
+          onClick={OnCanvasClick}
+        />
       </Box>
     </>
   );
 };
 
-const GetColor = (ratio: number, fillColor: Array<Color>): string => {
+const GetColor = (color: Color): string => {
+  return "rgb(" + color.r + "," + color.g + "," + color.b + ")";
+};
+const GetColorInterp = (ratio: number, fillColor: Array<Color>): string => {
+  const r = Number.isNaN(ratio) ? 0 : ratio;
   const range: number = 1 / (fillColor.length - 1);
-  const index1: number = Math.floor(ratio / range);
-  const index2: number = Math.ceil(ratio / range);
-  const rate: number = (ratio - index1 * range) / range;
+  const index1: number = Math.floor(r / range);
+  const index2: number = Math.ceil(r / range);
+  const rate: number = (r - index1 * range) / range;
   const color: Color = {
     r: fillColor[index1].r * (1 - rate) + fillColor[index2].r * rate,
     g: fillColor[index1].g * (1 - rate) + fillColor[index2].g * rate,
@@ -203,4 +230,8 @@ type Color = {
   r: number;
   g: number;
   b: number;
+};
+
+type Props = {
+  mode: PaletteMode;
 };
