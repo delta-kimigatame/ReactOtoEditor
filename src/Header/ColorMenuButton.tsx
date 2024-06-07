@@ -17,7 +17,6 @@ import { specColor } from "../settings/colors";
 export const ColorMenuButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
-  console.log(Object.keys(specColor));
   return (
     <>
       <IconButton
