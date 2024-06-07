@@ -1,0 +1,16 @@
+{
+  "language":{
+    "ja":"JA",
+    "en":"EN"
+  },
+  "footer":{
+    "disclaimer":"UTAU is a singing voice synthesis software created for Windows and published by 飴屋／菖蒲",
+    "disclaimer2":"This software is not affiliated with UTAU official.",
+    "developerx":"Developer X account",
+    "github":"github",
+    "discord":"discord"
+  },
+  "xbutton":{
+    "share":"share"
+  }
+}

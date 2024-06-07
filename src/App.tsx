@@ -8,9 +8,10 @@ import { useCookies } from "react-cookie";
 import Paper from "@mui/material/Paper";
 
 import { getDesignTokens } from "./settings/theme";
-import { Header } from "./Header";
+import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { WavCanvas } from "./WavCanvas";
+import i18n from "./i18n/configs";
 
 /**
  * Reactのエンドポイント
@@ -22,32 +23,43 @@ export const App: React.FC = () => {
     "(prefers-color-scheme: dark)"
   );
   // cookieの取得
-  const [cookies, setCookie, removeCookie] = useCookies(["mode"]);
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "mode",
+    "color",
+    "language",
+  ]);
   const mode_: PaletteMode =
     cookies.mode !== undefined
       ? cookies.mode
       : prefersDarkMode
       ? "dark"
       : "light";
+  const color_: string = cookies.color !== undefined ? cookies.color : "gray";
+  const language_: string =
+    cookies.language !== undefined ? cookies.language : "ja";
   const [mode, setMode] = React.useState<PaletteMode>(mode_);
-  const colorMode = React.useMemo(
-    () => ({
-      toggleColorMode: () => {
-        setMode((prevMode: PaletteMode) =>
-          prevMode === "light" ? "dark" : "light"
-        );
-      },
-    }),
-    []
-  );
+  const [color, setColor] = React.useState<string>(color_);
+  const [language, setLanguage] = React.useState<string>(language_);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
+  React.useMemo(() => setCookie("color", color), [color]);
+  React.useMemo(() => {
+    setCookie("language", language);
+    i18n.changeLanguage(language);
+  }, [language]);
 
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header mode={mode} setMode={setMode} />
-      <WavCanvas mode={mode}/>
+      <Header
+        mode={mode}
+        setMode={setMode}
+        color={color}
+        setColor={setColor}
+        language={language}
+        setLanguage={setLanguage}
+      />
+      <WavCanvas mode={mode} />
       <Footer theme={theme} />
     </ThemeProvider>
   );
