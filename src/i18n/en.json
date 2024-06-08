@@ -3,6 +3,9 @@
     "ja":"JA",
     "en":"EN"
   },
+  "top":{
+    "description":"KIZAMUはUTAU音源のための原音設定ツールです。"
+  },
   "color":{
     "gray":"gray",
     "red":"red",
