@@ -16,6 +16,7 @@ import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { WavCanvas } from "./WavCanvas";
 import { TopView } from "./Top/TopView";
+import { layout } from "./settings/setting";
 
 /**
  * Reactのエンドポイント
@@ -74,7 +75,7 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {(oto === null || windowSize[1] > 600) && (
+      {(oto === null || windowSize[1] > layout.requireHeader) && (
         <Header
           mode={mode}
           setMode={setMode}

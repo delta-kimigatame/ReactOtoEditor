@@ -15,3 +15,6 @@ export const fftSetting: { [key: string]: number } = {
   channels: 1,
   maxFrq: 8000,
 };
+export const layout: { [key: string]: number } = {
+  requireHeader: 600,
+};
