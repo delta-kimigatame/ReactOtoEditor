@@ -18,12 +18,10 @@ export const TopPaper: React.FC<Props> = (props) => {
   const [processing, setProcessing] = React.useState<boolean>(false);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   const [readFile, setReadFile] = React.useState<File | null>(null);
-  const [zipFiles, setZipFiles] = React.useState<{
-    [key: string]: JSZip.JSZipObject;
-  } | null>(null);
 
   const OnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
+    if (e.target.files.length === 0) return;
     setProcessing(true);
     setReadFile(e.target.files[0]);
     setDialogOpen(true);
@@ -36,10 +34,10 @@ export const TopPaper: React.FC<Props> = (props) => {
   };
 
   React.useEffect(() => {
-    if (zipFiles !== null) {
+    if (props.readZip !== null) {
       setProcessing(false);
     }
-  }, [zipFiles]);
+  }, [props.readZip]);
 
   return (
     <>
@@ -70,13 +68,17 @@ export const TopPaper: React.FC<Props> = (props) => {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         file={readFile}
-        setZipFiles={setZipFiles}
+        setZipFiles={props.setReadZip}
       />
     </>
   );
 };
 
 type Props = {
-  readZip: ArrayBuffer;
-  setReadZip: React.Dispatch<React.SetStateAction<ArrayBuffer>>;
+  readZip: { [key: string]: JSZip.JSZipObject } | null;
+  setReadZip: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: JSZip.JSZipObject;
+    } | null>
+  >;
 };

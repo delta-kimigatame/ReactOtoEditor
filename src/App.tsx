@@ -1,4 +1,6 @@
 import * as React from "react";
+import JSZip from "jszip";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -41,7 +43,9 @@ export const App: React.FC = () => {
   const [mode, setMode] = React.useState<PaletteMode>(mode_);
   const [color, setColor] = React.useState<string>(color_);
   const [language, setLanguage] = React.useState<string>(language_);
-  const [readZip, setReadZip] = React.useState<ArrayBuffer | null>(null);
+  const [readZip, setReadZip] = React.useState<{
+    [key: string]: JSZip.JSZipObject;
+  } | null>(null);;
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);

@@ -1,13 +1,11 @@
 import * as React from "react";
-
-import { useTranslation } from "react-i18next";
+import JSZip from "jszip";
 
 import { PrivacyPaper } from "./PrivacyPaper";
 import { RulePaper } from "./RulePaper";
 import { TopPaper } from "./TopPaper";
 
 export const TopView: React.FC<Props> = (props) => {
-  const { t } = useTranslation();
   return (
     <>
       <TopPaper readZip={props.readZip} setReadZip={props.setReadZip} />
@@ -18,6 +16,10 @@ export const TopView: React.FC<Props> = (props) => {
 };
 
 type Props = {
-  readZip: ArrayBuffer;
-  setReadZip: React.Dispatch<React.SetStateAction<ArrayBuffer>>;
+  readZip: { [key: string]: JSZip.JSZipObject } | null;
+  setReadZip: React.Dispatch<
+    React.SetStateAction<{
+      [key: string]: JSZip.JSZipObject;
+    } | null>
+  >;
 };
