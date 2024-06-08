@@ -60,29 +60,44 @@ export const App: React.FC = () => {
     i18n.changeLanguage(language);
   }, [language]);
 
+  const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
+  React.useLayoutEffect(() => {
+    const updateSize = (): void => {
+      setWindowSize([window.innerWidth, window.innerHeight]);
+    };
+    window.addEventListener("resize", updateSize);
+    updateSize();
+
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header
-        mode={mode}
-        setMode={setMode}
-        color={color}
-        setColor={setColor}
-        language={language}
-        setLanguage={setLanguage}
-      />
-      <TopView
-        readZip={readZip}
-        setReadZip={setReadZip}
-        targetDirs={targetDirs}
-        targetDir={targetDir}
-        setTargetDirs={setTargetDirs}
-        setTargetDir={setTargetDir}
-        oto={oto}
-        setOto={setOto}
-      />
-      <WavCanvas mode={mode} color={color} />
-      <Footer theme={theme} />
+      {(oto === null || windowSize[1] > 600) && (
+        <Header
+          mode={mode}
+          setMode={setMode}
+          color={color}
+          setColor={setColor}
+          language={language}
+          setLanguage={setLanguage}
+        />
+      )}
+      {oto === null && (
+        <TopView
+          readZip={readZip}
+          setReadZip={setReadZip}
+          targetDirs={targetDirs}
+          targetDir={targetDir}
+          setTargetDirs={setTargetDirs}
+          setTargetDir={setTargetDir}
+          oto={oto}
+          setOto={setOto}
+        />
+      )}
+      {oto !== null && <WavCanvas mode={mode} color={color} />}
+      {oto === null && <Footer theme={theme} />}
     </ThemeProvider>
   );
 };
