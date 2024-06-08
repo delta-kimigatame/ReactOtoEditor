@@ -6,9 +6,6 @@ import { useTranslation } from "react-i18next";
 
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Avatar from "@mui/material/Avatar";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -18,6 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
+import { EditorTable } from "./EditorTable";
 
 export const EditorView: React.FC<Props> = (props) => {
   const { t } = useTranslation();
@@ -30,18 +28,6 @@ export const EditorView: React.FC<Props> = (props) => {
   const [canvasHeight, setCanvasHeight] = React.useState<number>(
     375 - layout.headerHeight - tableHeight - buttonAreaHeight
   );
-  const tableRef = React.useRef(null);
-  React.useEffect(() => {
-    if (tableRef !== null) {
-      setTableHeight(
-        Math.max(
-          tableRef.current.getBoundingClientRect().height,
-          layout.tableMinSize
-        )
-      );
-    }
-  }, []);
-
   React.useEffect(() => {
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
@@ -55,172 +41,10 @@ export const EditorView: React.FC<Props> = (props) => {
         mode={props.mode}
         color={props.color}
       />
-      <TableContainer component={Paper} ref={tableRef}>
-        <Table size={"small"}>
-          <TableHead>
-            <TableRow>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.filename")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.alias")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.offset")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.overlap")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.preutter")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.velocity")}</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">{t("oto.blank")}</Typography>
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">_ああいあうあえあ.wav</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">- あ</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">1300.000</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">83.333</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">250.000</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">333.333</Typography>
-              </TableCell>
-              <TableCell
-                size={"small"}
-                sx={{
-                  textWrap: "nowrap",
-                  p: 1,
-                  width: "14.2%",
-                  overflowX: "hidden",
-                }}
-              >
-                <Typography variant="caption">-500.000</Typography>
-              </TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <EditorTable 
+        windowSize={props.windowSize}
+        setTableHeight={setTableHeight}
+      />
       <EditorButtonArea
         windowSize={props.windowSize}
         setButtonAreaHeight={setButtonAreaHeight}

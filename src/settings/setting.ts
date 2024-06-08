@@ -23,4 +23,5 @@ export const layout: { [key: string]: number } = {
   iconPadding: 16,
   tableMinSize: 75,
   headerHeight: 40,
+  tableBrakePoint:800,
 };
