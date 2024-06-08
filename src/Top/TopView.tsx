@@ -1,5 +1,6 @@
 import * as React from "react";
 import JSZip from "jszip";
+import { Oto } from "utauoto";
 
 import { PrivacyPaper } from "./PrivacyPaper";
 import { RulePaper } from "./RulePaper";
@@ -44,6 +45,9 @@ export const TopView: React.FC<Props> = (props) => {
         targetDirs={props.targetDirs}
         targetDir={props.targetDir}
         setTargetDir={props.setTargetDir}
+        oto={props.oto}
+        setOto={props.setOto}
+        readZip={props.readZip}
       />
     </>
   );
@@ -58,6 +62,8 @@ type Props = {
   >;
   targetDirs: Array<string> | null;
   targetDir: string | null;
+  oto: Oto;
   setTargetDirs: React.Dispatch<React.SetStateAction<Array<string> | null>>;
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
+  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 };

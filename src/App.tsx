@@ -51,6 +51,7 @@ export const App: React.FC = () => {
     null
   );
   const [targetDir, setTargetDir] = React.useState<string | null>(null);
+  const [oto, setOto] = React.useState<Oto | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
@@ -58,26 +59,6 @@ export const App: React.FC = () => {
     setCookie("language", language);
     i18n.changeLanguage(language);
   }, [language]);
-
-  React.useEffect(() => {
-    if (targetDir === null) return;
-    if (readZip === null) return;
-    if (Object.keys(readZip).includes(targetDir + "/oto.ini")) {
-      readZip[targetDir + "/oto.ini"].async("arraybuffer").then((result) => {
-        console.log(result);
-        const oto=new Oto();
-        try{
-          oto.InputOto(targetDir,new Blob([result],{type:"text/plain"}))
-        }catch{
-          try{
-            oto.InputOto(targetDir,new Blob([result],{type:"text/plain"}),"utf-8")
-          }catch{
-            console.log("oto.ini読込失敗")
-          }
-        }
-      });
-    }
-  }, [targetDir]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -97,6 +78,8 @@ export const App: React.FC = () => {
         targetDir={targetDir}
         setTargetDirs={setTargetDirs}
         setTargetDir={setTargetDir}
+        oto={oto}
+        setOto={setOto}
       />
       <WavCanvas mode={mode} color={color} />
       <Footer theme={theme} />
