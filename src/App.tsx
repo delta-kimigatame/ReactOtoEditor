@@ -12,6 +12,7 @@ import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { WavCanvas } from "./WavCanvas";
 import i18n from "./i18n/configs";
+import { TopView } from "./Top/TopView";
 
 /**
  * Reactのエンドポイント
@@ -40,6 +41,7 @@ export const App: React.FC = () => {
   const [mode, setMode] = React.useState<PaletteMode>(mode_);
   const [color, setColor] = React.useState<string>(color_);
   const [language, setLanguage] = React.useState<string>(language_);
+  const [readZip, setReadZip] = React.useState<ArrayBuffer | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
@@ -59,7 +61,8 @@ export const App: React.FC = () => {
         language={language}
         setLanguage={setLanguage}
       />
-      <WavCanvas mode={mode} color={color}/>
+      <TopView readZip={readZip} setReadZip={setReadZip} />
+      <WavCanvas mode={mode} color={color} />
       <Footer theme={theme} />
     </ThemeProvider>
   );

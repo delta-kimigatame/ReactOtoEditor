@@ -1,26 +1,44 @@
 {
-  "language":{
-    "ja":"日本語",
-    "en":"英語"
+  "language": {
+    "ja": "日本語",
+    "en": "英語"
   },
-  "color":{
-    "gray":"白黒",
-    "red":"赤",
-    "blue":"青",
-    "green":"緑",
-    "aqua":"水色",
-    "orange":"橙",
-    "magenta":"マゼンタ",
-    "rainbow":"カラフル"
+  "top": {
+    "description": "KIZAMUはUTAU音源のための原音設定ツールです。",
+    "selectZipButtonText": "利用規約に同意して、UTAU音源のzipファイルを選択",
+    "rule": "利用規約",
+    "ruleDescription": "声の権利者から許諾を得た音源のみご利用できます。",
+    "ruleDescription2": "人力音源はNGです。UTAUのために録音した音源なら利用規約で禁止されていなければOK",
+    "privacy": "プライバシーポリシー",
+    "privacyAnalytics": "当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。このGoogleアナリティクスはデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。",
+    "privacyCookie": "当サイトでは、表示方法をカスタマイズするためにcookieを使用します。"
   },
-  "footer":{
-    "disclaimer":"UTAUは飴屋／菖蒲氏によって公開されている、Windows向けに作成された歌声合成ソフトウェアです。",
-    "disclaimer2":"本ソフトウェアはUTAU公式とは無関係です。",
-    "developerx":"開発者Xアカウント",
-    "github":"github",
-    "discord":"discord"
+  "loadZipDialog": {
+    "title":"ZIP読込",
+    "encodeCheck":"文字化け確認",
+    "encoding":"文字コード",
+    "reload":"指定文字コードで再読込",
+    "submit":"OK",
+    "error":"読込失敗"
   },
-  "xbutton":{
-    "share":"共有"
+  "color": {
+    "gray": "白黒",
+    "red": "赤",
+    "blue": "青",
+    "green": "緑",
+    "aqua": "水色",
+    "orange": "橙",
+    "magenta": "マゼンタ",
+    "rainbow": "カラフル"
+  },
+  "footer": {
+    "disclaimer": "UTAUは飴屋／菖蒲氏によって公開されている、Windows向けに作成された歌声合成ソフトウェアです。",
+    "disclaimer2": "本ソフトウェアはUTAU公式とは無関係です。",
+    "developerx": "開発者Xアカウント",
+    "github": "github",
+    "discord": "discord"
+  },
+  "xbutton": {
+    "share": "共有"
   }
 }
