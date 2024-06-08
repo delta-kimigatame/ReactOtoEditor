@@ -41,7 +41,13 @@ export const TopPaper: React.FC<Props> = (props) => {
 
   return (
     <>
-      <input type="file" onChange={OnFileChange} hidden ref={inputRef}></input>
+      <input
+        type="file"
+        onChange={OnFileChange}
+        hidden
+        ref={inputRef}
+        accept="application/zip"
+      ></input>
       <Paper elevation={2} sx={{ m: 1, p: 2 }}>
         <Typography variant="h6">{setting.product_name}</Typography>
         <Divider />
