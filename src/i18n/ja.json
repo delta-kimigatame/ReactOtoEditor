@@ -39,6 +39,19 @@
     "velocity":"固定範囲",
     "blank":"右ブランク"
   },
+  "editor":{
+    "playBeforePreutter":"先行発声より前を再生",
+    "playAfterPreutter":"先行発声より後ろを再生",
+    "play":"メトロノームと合わせて再生",
+    "lockOverlap":"オーバーラップを常に先行発声の1/3にする",
+    "touchMode":"クリックした場所に先行発声が移動し、他のパラメータは追随します。個別のパラメータ操作はできません。",
+    "editAlias":"エイリアス編集",
+    "showTable":"一覧を表示",
+    "zoomin":"拡大",
+    "zoomout":"縮小",
+    "prev":"前のエイリアス",
+    "next":"次のエイリアス"
+  },
   "color": {
     "gray": "白黒",
     "red": "赤",
