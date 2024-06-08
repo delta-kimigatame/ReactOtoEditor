@@ -32,7 +32,6 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
   const CalcSize = () => {
     const maxHeight = props.windowSize[1] - 319;
     const maxWidth = props.windowSize[0] / 12;
-    console.log([maxHeight, maxWidth]);
     const s = Math.max(
       Math.min(maxHeight - layout.iconPadding, maxWidth - layout.iconPadding),
       layout.minButtonSize
