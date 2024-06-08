@@ -30,6 +30,15 @@
     "submit":"OK",
     "NothingOto":"oto.iniが見つかりませんでした。"
   },
+  "oto":{
+    "filename":"ファイル名",
+    "alias":"エイリアス",
+    "offset":"左ブランク",
+    "overlap":"オーバーラップ",
+    "preutter":"先行発声",
+    "velocity":"固定範囲",
+    "blank":"右ブランク"
+  },
   "color": {
     "gray": "白黒",
     "red": "赤",

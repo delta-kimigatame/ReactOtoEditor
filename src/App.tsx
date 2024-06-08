@@ -14,9 +14,10 @@ import Paper from "@mui/material/Paper";
 import { getDesignTokens } from "./settings/theme";
 import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
-import { WavCanvas } from "./WavCanvas";
+import { WavCanvas } from "./Editor/WavCanvas";
 import { TopView } from "./Top/TopView";
 import { layout } from "./settings/setting";
+import { EditorView } from "./Editor/EditorView";
 
 /**
  * Reactのエンドポイント
@@ -75,16 +76,15 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      {(oto === null || windowSize[1] > layout.requireHeader) && (
-        <Header
-          mode={mode}
-          setMode={setMode}
-          color={color}
-          setColor={setColor}
-          language={language}
-          setLanguage={setLanguage}
-        />
-      )}
+      <Header
+        mode={mode}
+        setMode={setMode}
+        color={color}
+        setColor={setColor}
+        language={language}
+        setLanguage={setLanguage}
+      />
+      <EditorView windowSize={windowSize} mode={mode} color={color} />
       {oto === null && (
         <TopView
           readZip={readZip}
@@ -97,7 +97,9 @@ export const App: React.FC = () => {
           setOto={setOto}
         />
       )}
-      {oto !== null && <WavCanvas mode={mode} color={color} />}
+      {oto !== null && (
+        <WavCanvas mode={mode} color={color} canvasSize={windowSize} />
+      )}
       {oto === null && <Footer theme={theme} />}
     </ThemeProvider>
   );

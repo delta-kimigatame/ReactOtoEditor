@@ -19,7 +19,7 @@ export const Header: React.FC<Props> = (props) => {
   return (
     <>
       <AppBar position="relative">
-        <Toolbar sx={{ justifyContent: "space-between" }}>
+        <Toolbar sx={{ justifyContent: "space-between",minHeight:"40!important" }}>
           <Button variant="text" color="inherit">
             <Typography variant="subtitle2">{setting.product_name}</Typography>
           </Button>

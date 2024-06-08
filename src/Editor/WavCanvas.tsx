@@ -5,19 +5,19 @@ import Box from "@mui/material/Box";
 
 import { Wave, WaveAnalyse } from "utauwav";
 
-import { fftSetting } from "./settings/setting";
+import { fftSetting, layout } from "../settings/setting";
 import {
   backgroundColorPallet,
   lineColorPallet,
   wavColorPallet,
   specColor,
-} from "./settings/colors";
+} from "../settings/colors";
 
 export const WavCanvas: React.FC<Props> = (props) => {
   const [wav, setWav] = React.useState<Wave | null>(null);
   const [spec, setSpec] = React.useState<Array<Array<number>> | null>(null);
-  const [width, setWidth] = React.useState<number>(600);
-  const [height, setHeight] = React.useState<number>(300);
+  const [width, setWidth] = React.useState<number>(props.canvasSize[0]);
+  const [height, setHeight] = React.useState<number>(props.canvasSize[1]);
   const [specMax, setSpecMax] = React.useState<number>(0);
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   const [frameWidth, setFrameWidth] = React.useState<number>(
@@ -51,6 +51,13 @@ export const WavCanvas: React.FC<Props> = (props) => {
     setWavColor(GetColor(wavColorPallet[colorTheme][props.mode]));
     setFillColor(specColor[colorTheme][props.mode]);
   }, [props.mode]);
+
+  React.useEffect(() => {
+    if (wav === null) {
+      setWidth(props.canvasSize[0]);
+      setHeight(props.canvasSize[1]);
+    }
+  }, [props.canvasSize]);
 
   const OnFileChange = (event) => {
     setSpecMax(0);
@@ -106,7 +113,7 @@ export const WavCanvas: React.FC<Props> = (props) => {
     if (ctx) {
       RenderBase(ctx);
     }
-  }, [width, lineColor]);
+  }, [width,height, lineColor]);
 
   const RenderWave = async (
     ctx: CanvasRenderingContext2D,
@@ -199,8 +206,6 @@ export const WavCanvas: React.FC<Props> = (props) => {
   };
   return (
     <>
-      <input type="file" onChange={OnFileChange}></input>
-      <br />
       <Box ref={boxRef} sx={{ overflowX: "scroll" }}>
         <canvas
           id="wavCanvas"
@@ -239,6 +244,7 @@ type Color = {
 };
 
 type Props = {
+  canvasSize: [number, number];
   mode: PaletteMode;
   color: string;
 };

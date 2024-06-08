@@ -17,4 +17,10 @@ export const fftSetting: { [key: string]: number } = {
 };
 export const layout: { [key: string]: number } = {
   requireHeader: 600,
+  canvasMinHeight: 250,
+  minButtonSize: 40,
+  minIconSize: 24,
+  iconPadding: 16,
+  tableMinSize: 75,
+  headerHeight: 40,
 };
