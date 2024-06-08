@@ -1,5 +1,7 @@
 import * as React from "react";
 import JSZip from "jszip";
+import i18n from "./i18n/configs";
+import { Oto } from "utauoto";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
@@ -13,7 +15,6 @@ import { getDesignTokens } from "./settings/theme";
 import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { WavCanvas } from "./WavCanvas";
-import i18n from "./i18n/configs";
 import { TopView } from "./Top/TopView";
 
 /**
@@ -45,7 +46,11 @@ export const App: React.FC = () => {
   const [language, setLanguage] = React.useState<string>(language_);
   const [readZip, setReadZip] = React.useState<{
     [key: string]: JSZip.JSZipObject;
-  } | null>(null);;
+  } | null>(null);
+  const [targetDirs, setTargetDirs] = React.useState<Array<string> | null>(
+    null
+  );
+  const [targetDir, setTargetDir] = React.useState<string | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
@@ -53,6 +58,26 @@ export const App: React.FC = () => {
     setCookie("language", language);
     i18n.changeLanguage(language);
   }, [language]);
+
+  React.useEffect(() => {
+    if (targetDir === null) return;
+    if (readZip === null) return;
+    if (Object.keys(readZip).includes(targetDir + "/oto.ini")) {
+      readZip[targetDir + "/oto.ini"].async("arraybuffer").then((result) => {
+        console.log(result);
+        const oto=new Oto();
+        try{
+          oto.InputOto(targetDir,new Blob([result],{type:"text/plain"}))
+        }catch{
+          try{
+            oto.InputOto(targetDir,new Blob([result],{type:"text/plain"}),"utf-8")
+          }catch{
+            console.log("oto.ini読込失敗")
+          }
+        }
+      });
+    }
+  }, [targetDir]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -65,7 +90,14 @@ export const App: React.FC = () => {
         language={language}
         setLanguage={setLanguage}
       />
-      <TopView readZip={readZip} setReadZip={setReadZip} />
+      <TopView
+        readZip={readZip}
+        setReadZip={setReadZip}
+        targetDirs={targetDirs}
+        targetDir={targetDir}
+        setTargetDirs={setTargetDirs}
+        setTargetDir={setTargetDir}
+      />
       <WavCanvas mode={mode} color={color} />
       <Footer theme={theme} />
     </ThemeProvider>

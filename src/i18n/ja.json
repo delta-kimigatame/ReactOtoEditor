@@ -21,6 +21,10 @@
     "submit":"OK",
     "error":"読込失敗"
   },
+  "targetDirDialog":{
+    "title":"原音設定するフォルダを選択",
+    "targetDir":"フォルダを選択"
+  },
   "color": {
     "gray": "白黒",
     "red": "赤",
