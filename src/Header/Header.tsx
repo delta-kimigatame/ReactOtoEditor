@@ -19,6 +19,12 @@ import { ColorMenuButton } from "./ColorMenuButton";
  * ヘッダ。
  *  */
 export const Header: React.FC<Props> = (props) => {
+  const [textWidth, setTextWidth] = React.useState<number>(
+    props.windowSize[0] - 120 - 24 - 32
+  );
+  React.useEffect(() => {
+    setTextWidth(props.windowSize[0] - 120 - 24 - 32);
+  }, [props.windowSize]);
   return (
     <>
       <AppBar position="relative">
@@ -42,7 +48,7 @@ export const Header: React.FC<Props> = (props) => {
                 sx={{
                   overflow: "hidden",
                   whiteSpace: "nowrap",
-                  maxWidth: props.windowSize[0] - 120 - 24 - 32,
+                  maxWidth: textWidth,
                 }}
               >
                 <Typography variant="caption">
