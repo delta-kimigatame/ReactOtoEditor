@@ -103,7 +103,14 @@ export const App: React.FC = () => {
         windowSize={windowSize}
       />
       {oto !== null && (
-        <EditorView windowSize={windowSize} mode={mode} color={color} />
+        <EditorView
+          windowSize={windowSize}
+          mode={mode}
+          color={color}
+          oto={oto}
+          record={record}
+          targetDir={targetDir}
+        />
       )}
       {oto === null && (
         <TopView

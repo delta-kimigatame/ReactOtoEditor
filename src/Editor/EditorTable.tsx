@@ -13,6 +13,8 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import { layout } from "../settings/setting";
+import { Oto } from "utauoto";
+import OtoRecord from "utauoto/dist/OtoRecord";
 
 export const EditorTable: React.FC<Props> = (props) => {
   const { t } = useTranslation();
@@ -26,7 +28,9 @@ export const EditorTable: React.FC<Props> = (props) => {
           layout.tableMinSize
         )
       );
-      if (tableRef.current.getBoundingClientRect().width >= layout.tableBrakePoint) {
+      if (
+        tableRef.current.getBoundingClientRect().width >= layout.tableBrakePoint
+      ) {
         setVariant("body2");
       } else {
         setVariant("caption");
@@ -79,29 +83,65 @@ export const EditorTable: React.FC<Props> = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            <TableRow>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>_ああいあうあえあ.wav</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>- あ</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>1300.000</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>83.333</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>250.000</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>333.333</Typography>
-              </StyledTableCell>
-              <StyledTableCell size={"small"}>
-                <Typography variant={variant}>-500.000</Typography>
-              </StyledTableCell>
-            </TableRow>
+            {props.oto === undefined ? props.record && (
+              <>
+                <TableRow>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {props.record.filename}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.alias}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.offset.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.overlap.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.pre.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.velocity.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.record.blank.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                </TableRow>
+              </>
+            ) : (
+              <>{props.oto.GetFileNames(props.targetDir).map(f=>(
+                props.oto.GetAliases(props.targetDir,f).map(a=>(
+                  <TableRow>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {f}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{a}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.oto.GetRecord(props.targetDir,f,a).offset.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.oto.GetRecord(props.targetDir,f,a).overlap.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.oto.GetRecord(props.targetDir,f,a).pre.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.oto.GetRecord(props.targetDir,f,a).velocity.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{props.oto.GetRecord(props.targetDir,f,a).blank.toFixed(3)}</Typography>
+                  </StyledTableCell>
+                </TableRow>
+                ))
+              ))}</>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -112,6 +152,9 @@ export const EditorTable: React.FC<Props> = (props) => {
 type Props = {
   windowSize: [number, number];
   setTableHeight: React.Dispatch<React.SetStateAction<number>>;
+  oto?: Oto;
+  record: OtoRecord | null;
+  targetDir:string
 };
 
 const StyledTableCell = styled(TableCell)({
