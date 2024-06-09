@@ -16,7 +16,7 @@ import Paper from "@mui/material/Paper";
 import { getDesignTokens } from "./settings/theme";
 import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
-import { WavCanvas } from "./Editor/WavCanvas";
+import { CanvasBase } from "./Editor/CanvasBase";
 import { TopView } from "./Top/TopView";
 import { fftSetting, layout } from "./settings/setting";
 import { EditorView } from "./Editor/EditorView";

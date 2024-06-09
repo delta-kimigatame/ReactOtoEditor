@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PaletteMode } from "@mui/material";
-import { WavCanvas } from "./WavCanvas";
+import { CanvasBase } from "./CanvasBase";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
@@ -30,11 +30,12 @@ export const EditorView: React.FC<Props> = (props) => {
 
   return (
     <>
-      <WavCanvas
+      <CanvasBase
         canvasSize={[props.windowSize[0], canvasHeight]}
         mode={props.mode}
         color={props.color}
         wav={props.wav}
+        record={props.record}
       />
       <EditorTable
         windowSize={props.windowSize}
