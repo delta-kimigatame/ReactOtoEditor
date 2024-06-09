@@ -2,6 +2,7 @@ import * as React from "react";
 import JSZip from "jszip";
 import i18n from "./i18n/configs";
 import { Oto } from "utauoto";
+import OtoRecord from "utauoto/dist/OtoRecord";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
@@ -54,6 +55,8 @@ export const App: React.FC = () => {
   );
   const [targetDir, setTargetDir] = React.useState<string | null>(null);
   const [oto, setOto] = React.useState<Oto | null>(null);
+  const [record, setRecord] = React.useState<OtoRecord | null>(null);
+  const [wavFileName, setWavFileName] = React.useState<string | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
@@ -73,6 +76,19 @@ export const App: React.FC = () => {
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
+  React.useEffect(() => {
+    if (oto === null) {
+      setRecord(null);
+      setWavFileName(null);
+    } else {
+      const filename: string = oto.GetFileNames(targetDir)[0];
+      const alias: string = oto.GetAliases(targetDir, filename)[0];
+      const r: OtoRecord = oto.GetRecord(targetDir, filename, alias);
+      setWavFileName(filename);
+      setRecord(r);
+    }
+  }, [oto]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -83,8 +99,12 @@ export const App: React.FC = () => {
         setColor={setColor}
         language={language}
         setLanguage={setLanguage}
+        record={record}
+        windowSize={windowSize}
       />
-      <EditorView windowSize={windowSize} mode={mode} color={color} />
+      {oto !== null && (
+        <EditorView windowSize={windowSize} mode={mode} color={color} />
+      )}
       {oto === null && (
         <TopView
           readZip={readZip}
@@ -96,9 +116,6 @@ export const App: React.FC = () => {
           oto={oto}
           setOto={setOto}
         />
-      )}
-      {oto !== null && (
-        <WavCanvas mode={mode} color={color} canvasSize={windowSize} />
       )}
       {oto === null && <Footer theme={theme} />}
     </ThemeProvider>
