@@ -14,7 +14,6 @@ import {
 } from "../settings/colors";
 
 export const WavCanvas: React.FC<Props> = (props) => {
-  const [wav, setWav] = React.useState<Wave | null>(null);
   const [spec, setSpec] = React.useState<Array<Array<number>> | null>(null);
   const [width, setWidth] = React.useState<number>(props.canvasSize[0]);
   const [height, setHeight] = React.useState<number>(props.canvasSize[1]);
@@ -53,45 +52,32 @@ export const WavCanvas: React.FC<Props> = (props) => {
   }, [props.mode]);
 
   React.useEffect(() => {
-    if (wav === null) {
+    if (props.wav === null) {
       setWidth(props.canvasSize[0]);
       setHeight(props.canvasSize[1]);
     }
   }, [props.canvasSize]);
 
-  const OnFileChange = (event) => {
-    setSpecMax(0);
-    const fr = new FileReader();
-    fr.addEventListener("load", () => {
-      const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-      if (ctx) {
-        RenderBase(ctx);
-      }
-      if (fr.result !== null && typeof fr.result !== "string") {
-        const w = new Wave(fr.result);
-        const wa = new WaveAnalyse();
-        w.channels = fftSetting.channels;
-        w.bitDepth = fftSetting.bitDepth;
-        w.sampleRate = fftSetting.sampleRate;
-        w.RemoveDCOffset();
-        w.VolumeNormalize();
-        setWav(w);
-        const s = wa.Spectrogram(w.data);
-        setSpec(s);
-        setWidth(Math.ceil(w.data.length / frameWidth));
-        let sMax = 0;
-        for (let i = 0; i < s.length; i++) {
-          for (let j = 0; j < s[0].length; j++) {
-            if (sMax < Math.max(s[i][j], 0) ** 2) {
-              sMax = Math.max(s[i][j], 0) ** 2;
-            }
+  React.useEffect(() => {
+    if (props.wav === null) {
+      setSpec(null);
+      setSpecMax(0);
+    } else {
+      const wa = new WaveAnalyse();
+      const s = wa.Spectrogram(props.wav.data);
+      setSpec(s);
+      setWidth(Math.ceil(props.wav.data.length / frameWidth));
+      let sMax = 0;
+      for (let i = 0; i < s.length; i++) {
+        for (let j = 0; j < s[0].length; j++) {
+          if (sMax < Math.max(s[i][j], 0) ** 2) {
+            sMax = Math.max(s[i][j], 0) ** 2;
           }
         }
-        setSpecMax(sMax);
       }
-    });
-    fr.readAsArrayBuffer(event.target.files[0]);
-  };
+      setSpecMax(sMax);
+    }
+  }, [props.wav]);
 
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, width, height);
@@ -113,7 +99,7 @@ export const WavCanvas: React.FC<Props> = (props) => {
     if (ctx) {
       RenderBase(ctx);
     }
-  }, [width,height, lineColor]);
+  }, [width, height, lineColor]);
 
   const RenderWave = async (
     ctx: CanvasRenderingContext2D,
@@ -143,12 +129,12 @@ export const WavCanvas: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     OnChangeWav();
-  }, [wav, wavColor]);
+  }, [props.wav, wavColor]);
 
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-    if (ctx && wav !== null) {
-      RenderWave(ctx, wav);
+    if (ctx && props.wav !== null) {
+      RenderWave(ctx, props.wav);
     }
   };
 
@@ -196,8 +182,8 @@ export const WavCanvas: React.FC<Props> = (props) => {
 
   const OnChangeSpec = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-    if (ctx && spec !== null && wav !== null) {
-      await RenderSpec(ctx, wav, spec).then(() => {});
+    if (ctx && spec !== null && props.wav !== null) {
+      await RenderSpec(ctx, props.wav, spec).then(() => {});
     }
   };
 
@@ -247,4 +233,5 @@ type Props = {
   canvasSize: [number, number];
   mode: PaletteMode;
   color: string;
+  wav: Wave;
 };

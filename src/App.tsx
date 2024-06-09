@@ -3,6 +3,7 @@ import JSZip from "jszip";
 import i18n from "./i18n/configs";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
+import { Wave } from "utauwav";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
@@ -17,7 +18,7 @@ import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { WavCanvas } from "./Editor/WavCanvas";
 import { TopView } from "./Top/TopView";
-import { layout } from "./settings/setting";
+import { fftSetting, layout } from "./settings/setting";
 import { EditorView } from "./Editor/EditorView";
 
 /**
@@ -57,6 +58,7 @@ export const App: React.FC = () => {
   const [oto, setOto] = React.useState<Oto | null>(null);
   const [record, setRecord] = React.useState<OtoRecord | null>(null);
   const [wavFileName, setWavFileName] = React.useState<string | null>(null);
+  const [wav, setWav] = React.useState<Wave | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
@@ -89,6 +91,34 @@ export const App: React.FC = () => {
     }
   }, [oto]);
 
+  React.useEffect(() => {
+    if (record === null) {
+      setWavFileName(null);
+    } else {
+      if (wavFileName !== record.filename) {
+        setWavFileName(record.filename);
+      }
+    }
+  }, [record]);
+
+  React.useEffect(() => {
+    if (wavFileName === null) {
+      setWav(null);
+    } else if (readZip !== null) {
+      readZip[targetDir + "/" + wavFileName]
+        .async("arraybuffer")
+        .then((result) => {
+          const w = new Wave(result);
+          w.channels = fftSetting.channels;
+          w.bitDepth = fftSetting.bitDepth;
+          w.sampleRate = fftSetting.sampleRate;
+          w.RemoveDCOffset();
+          w.VolumeNormalize();
+          setWav(w);
+        });
+    }
+  }, [wavFileName]);
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -110,6 +140,7 @@ export const App: React.FC = () => {
           oto={oto}
           record={record}
           targetDir={targetDir}
+          wav={wav}
         />
       )}
       {oto === null && (

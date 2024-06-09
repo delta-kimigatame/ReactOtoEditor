@@ -3,6 +3,7 @@ import { PaletteMode } from "@mui/material";
 import { WavCanvas } from "./WavCanvas";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
+import { Wave } from "utauwav";
 
 import { useTranslation } from "react-i18next";
 
@@ -33,6 +34,7 @@ export const EditorView: React.FC<Props> = (props) => {
         canvasSize={[props.windowSize[0], canvasHeight]}
         mode={props.mode}
         color={props.color}
+        wav={props.wav}
       />
       <EditorTable
         windowSize={props.windowSize}
@@ -54,5 +56,6 @@ type Props = {
   color: string;
   oto: Oto;
   record: OtoRecord | null;
-  targetDir:string
+  targetDir: string;
+  wav: Wave;
 };
