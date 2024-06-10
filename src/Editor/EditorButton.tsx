@@ -14,6 +14,7 @@ export const EditorButton: React.FC<Props> = (props) => {
               width: props.size,
               height: props.size,
               background: props.background,
+              backgroundColor:props.disabled?"#757575":"#bdbdbd"
             }}
           >
             {props.icon}
