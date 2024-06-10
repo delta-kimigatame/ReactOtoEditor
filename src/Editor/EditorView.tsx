@@ -46,6 +46,10 @@ export const EditorView: React.FC<Props> = (props) => {
       <EditorButtonArea
         windowSize={props.windowSize}
         setButtonAreaHeight={setButtonAreaHeight}
+        oto={props.oto}
+        record={props.record}
+        setRecord={props.setRecord}
+        targetDir={props.targetDir}
       />
     </>
   );
@@ -59,4 +63,5 @@ type Props = {
   record: OtoRecord | null;
   targetDir: string;
   wav: Wave;
+  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
 };

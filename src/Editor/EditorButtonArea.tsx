@@ -1,5 +1,7 @@
 import * as React from "react";
 import { styled } from "@mui/system";
+import { Oto } from "utauoto";
+import OtoRecord from "utauoto/dist/OtoRecord";
 
 import { useTranslation } from "react-i18next";
 
@@ -23,6 +25,10 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
   const [iconSize, setIconSize] = React.useState<number>(layout.minIconSize);
+  const [maxFileIndex, setMaxFileIndex] = React.useState<number>(0);
+  const [maxAliasIndex, setMaxAliasIndex] = React.useState<number>(0);
+  const [fileIndex, setFileIndex] = React.useState<number>(0);
+  const [aliasIndex, setAliasIndex] = React.useState<number>(0);
   React.useEffect(() => {
     CalcSize();
     props.setButtonAreaHeight(areaRef.current.getBoundingClientRect().height);
@@ -40,6 +46,79 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     setIconSize(Math.max(s - layout.iconPadding, layout.minIconSize));
   };
 
+  React.useEffect(() => {
+    if (props.oto === null) {
+      setMaxFileIndex(0);
+      setFileIndex(0);
+      setAliasIndex(0);
+      setMaxAliasIndex(0);
+    } else {
+      setMaxFileIndex(props.oto.GetFileNames(props.targetDir).length - 1);
+    }
+  }, [props.oto]);
+
+  React.useEffect(() => {
+    if (props.record === null) {
+      setAliasIndex(0);
+      setMaxAliasIndex(0);
+    } else {
+      setMaxAliasIndex(
+        props.oto.GetAliases(props.targetDir, props.record.filename).length - 1
+      );
+    }
+  }, [props.record]);
+
+  const OnNextAlias = () => {
+    if (maxAliasIndex === aliasIndex) {
+      if (maxFileIndex !== fileIndex) {
+        const filename = props.oto.GetFileNames(props.targetDir)[fileIndex + 1];
+        const alias = props.oto.GetAliases(props.targetDir, filename)[0];
+        console.log(props.oto.GetRecord(props.targetDir, filename, alias));
+        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
+        setFileIndex(fileIndex + 1);
+        setAliasIndex(0);
+        setMaxAliasIndex(
+          props.oto.GetAliases(props.targetDir, filename).length - 1
+        );
+      }
+    } else {
+      const alias = props.oto.GetAliases(
+        props.targetDir,
+        props.record.filename
+      )[aliasIndex + 1];
+      props.setRecord(
+        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+      );
+      setAliasIndex(aliasIndex + 1);
+    }
+  };
+
+  const OnPrevAlias = () => {
+    if (aliasIndex === 0) {
+      if (fileIndex !== 0) {
+        const filename = props.oto.GetFileNames(props.targetDir)[fileIndex - 1];
+        const maxAliases =
+          props.oto.GetAliases(props.targetDir, filename).length - 1;
+        const alias = props.oto.GetAliases(props.targetDir, filename)[
+          maxAliases
+        ];
+        console.log(props.oto.GetRecord(props.targetDir, filename, alias));
+        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
+        setFileIndex(fileIndex + 1);
+        setAliasIndex(0);
+        setMaxAliasIndex(maxAliases);
+      }
+    } else {
+      const alias = props.oto.GetAliases(
+        props.targetDir,
+        props.record.filename
+      )[aliasIndex - 1];
+      props.setRecord(
+        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+      );
+      setAliasIndex(aliasIndex - 1);
+    }
+  };
   return (
     <>
       <Paper
@@ -123,13 +202,17 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             size={size}
             icon={<ArrowDropUpIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.prev")}
-            onClick={() => {}}
+            onClick={OnPrevAlias}
+            disabled={aliasIndex === 0 && fileIndex === 0}
           />
           <EditorButton
             size={size}
             icon={<ArrowDropDownIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.next")}
-            onClick={() => {}}
+            onClick={OnNextAlias}
+            disabled={
+              maxAliasIndex === aliasIndex && maxFileIndex === fileIndex
+            }
           />
         </StyledBox>
       </Paper>
@@ -140,6 +223,10 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
 type Props = {
   windowSize: [number, number];
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
+  targetDir: string;
+  oto: Oto;
+  record: OtoRecord | null;
+  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
 };
 
 const StyledBox = styled(Box)({

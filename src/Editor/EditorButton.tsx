@@ -8,7 +8,7 @@ export const EditorButton: React.FC<Props> = (props) => {
   return (
     <>
       <Tooltip title={props.title}>
-        <IconButton>
+        <IconButton onClick={props.onClick} disabled={props.disabled}>
           <Avatar
             sx={{
               width: props.size,
@@ -29,5 +29,6 @@ type Props = {
   icon: React.ReactElement;
   title: string;
   background?: string;
+  disabled?: boolean;
   onClick: () => void;
 };

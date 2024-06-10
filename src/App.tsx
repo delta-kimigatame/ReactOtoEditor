@@ -141,6 +141,7 @@ export const App: React.FC = () => {
           record={record}
           targetDir={targetDir}
           wav={wav}
+          setRecord={setRecord}
         />
       )}
       {oto === null && (
