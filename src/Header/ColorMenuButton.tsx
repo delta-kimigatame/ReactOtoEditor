@@ -7,6 +7,7 @@ import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
+import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { specColor } from "../settings/colors";
@@ -35,14 +36,14 @@ export const ColorMenuButton: React.FC<Props> = (props) => {
         }}
       >
         {Object.keys(specColor).map((c) => (
-          <>
+          <React.Fragment key={"color_menu_" + c}>
             <ColorMenuItem
               mode={props.mode}
               color={c}
               setColor={props.setColor}
               setMenuAnchor={setMenuAnchor}
             />
-          </>
+          </React.Fragment>
         ))}
       </Menu>
     </>
@@ -72,7 +73,7 @@ const ColorMenuItem: React.FC<{
 }> = ({ mode, color, setColor, setMenuAnchor }) => {
   const { t } = useTranslation();
   return (
-    <MenuItem
+    <ListItem
       onClick={() => {
         setColor(color);
         setMenuAnchor(null);
@@ -82,7 +83,7 @@ const ColorMenuItem: React.FC<{
         <ColorAvatar mode={mode} color={color} />
       </ListItemIcon>
       <ListItemText>{t("color." + color)}</ListItemText>
-    </MenuItem>
+    </ListItem>
   );
 };
 
