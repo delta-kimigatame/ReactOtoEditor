@@ -54,6 +54,7 @@ export const EditorView: React.FC<Props> = (props) => {
         targetDir={props.targetDir}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
+        mode={props.mode}
       />
     </>
   );

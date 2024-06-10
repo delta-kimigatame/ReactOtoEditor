@@ -1,4 +1,5 @@
 import * as React from "react";
+import { PaletteMode } from "@mui/material";
 
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
@@ -14,7 +15,18 @@ export const EditorButton: React.FC<Props> = (props) => {
               width: props.size,
               height: props.size,
               background: props.background,
-              backgroundColor:props.disabled?"#757575":"#bdbdbd"
+              backgroundColor:
+                props.mode === "dark"
+                  ? props.disabled
+                    ? "#757575"
+                    : "#bdbdbd"
+                  : "#bdbdbd",
+              color:
+                props.mode === "light"
+                  ? props.disabled
+                    ? "#d0d0d0"
+                    : "#eeeeee"
+                  : "",
             }}
           >
             {props.icon}
@@ -32,4 +44,5 @@ type Props = {
   background?: string;
   disabled?: boolean;
   onClick: () => void;
+  mode: PaletteMode;
 };

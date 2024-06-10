@@ -1,5 +1,6 @@
 import * as React from "react";
 import { styled } from "@mui/system";
+import { PaletteMode } from "@mui/material";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 
@@ -154,6 +155,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
       >
         <StyledBox>
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<VolumeUpIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.playBeforePreutter")}
@@ -163,6 +165,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             }
           />
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<VolumeUpIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.playAfterPreutter")}
@@ -172,6 +175,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             }
           />
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<MusicNoteIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.play")}
@@ -180,12 +184,14 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<LockIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.lockOverlap")}
             onClick={() => {}}
           />
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<TouchAppIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.touchMode")}
@@ -194,12 +200,14 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<EditAttributesIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.editAlias")}
             onClick={() => {}}
           />
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<TableViewIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.showTable")}
@@ -208,6 +216,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<ZoomInIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomin")}
@@ -215,6 +224,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             onClick={OnZoomIn}
           />
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<ZoomOutIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomout")}
@@ -224,6 +234,7 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
+            mode={props.mode}
             size={size}
             icon={<ArrowDropUpIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.prev")}
@@ -231,8 +242,9 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             disabled={aliasIndex === 0 && fileIndex === 0}
           />
           <EditorButton
+            mode={props.mode}
             size={size}
-            icon={<ArrowDropDownIcon sx={{ fontSize: iconSize }} />}
+            icon={<ArrowDropDownIcon sx={{ fontSize: iconSize }}/>}
             title={t("editor.next")}
             onClick={OnNextAlias}
             disabled={
@@ -254,6 +266,7 @@ type Props = {
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
   pixelPerMsec: number;
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
+  mode: PaletteMode;
 };
 
 const StyledBox = styled(Box)({
