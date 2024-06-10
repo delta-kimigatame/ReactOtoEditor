@@ -16,9 +16,8 @@ export const CanvasBase: React.FC<Props> = (props) => {
   const [width, setWidth] = React.useState<number>(props.canvasSize[0]);
   const [height, setHeight] = React.useState<number>(props.canvasSize[1]);
   const [specMax, setSpecMax] = React.useState<number>(0);
-  const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   const [frameWidth, setFrameWidth] = React.useState<number>(
-    (fftSetting.sampleRate * pixelPerMsec) / 1000
+    (fftSetting.sampleRate * props.pixelPerMsec) / 1000
   );
   const boxRef = React.useRef(null);
 
@@ -50,6 +49,16 @@ export const CanvasBase: React.FC<Props> = (props) => {
     }
   }, [props.wav]);
 
+  React.useEffect(() => {
+    setFrameWidth((fftSetting.sampleRate * props.pixelPerMsec) / 1000);
+  }, [props.pixelPerMsec]);
+
+  React.useEffect(()=>{
+    if(props.wav!==null){
+      setWidth(Math.ceil(props.wav.data.length / frameWidth))
+    }
+  },[frameWidth])
+
   const SetScrolled = (point: number) => {
     boxRef.current.scrollTo(Math.max(point), 0);
   };
@@ -65,7 +74,7 @@ export const CanvasBase: React.FC<Props> = (props) => {
           mode={props.mode}
           color={props.color}
           wav={props.wav}
-        />
+        /><br />
         <SpecCanvas
           canvasSize={[width, height / 2]}
           mode={props.mode}
@@ -73,13 +82,14 @@ export const CanvasBase: React.FC<Props> = (props) => {
           wav={props.wav}
           spec={spec}
           specMax={specMax}
-        />
+          frameWidth={frameWidth}
+        /><br />
         <OtoCanvas
           canvasSize={[width, height]}
           mode={props.mode}
           record={props.record}
           boxRef={boxRef}
-          pixelPerMsec={pixelPerMsec}
+          pixelPerMsec={props.pixelPerMsec}
           SetSclolled={SetScrolled}
         />
       </Box>
@@ -93,4 +103,5 @@ type Props = {
   color: string;
   wav: Wave;
   record: OtoRecord;
+  pixelPerMsec: number;
 };

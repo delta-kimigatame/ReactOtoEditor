@@ -129,7 +129,7 @@ export const OtoCanvas: React.FC<Props> = (props) => {
       RenderVelocity(ctx);
       RenderBlank(ctx);
       if (props.record !== null) {
-        props.SetSclolled(props.record.offset - 100);
+        props.SetSclolled(props.record.offset/ props.pixelPerMsec - 100);
       }
     }
   }, [props.record, props.canvasSize, lineColor]);

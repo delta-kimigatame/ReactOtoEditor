@@ -9,10 +9,6 @@ import { backgroundColorPallet, specColor } from "../settings/colors";
 import { Color, GetColor, GetColorInterp } from "../Lib/Color";
 
 export const SpecCanvas: React.FC<Props> = (props) => {
-  const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
-  const [frameWidth, setFrameWidth] = React.useState<number>(
-    (fftSetting.sampleRate * pixelPerMsec) / 1000
-  );
   const canvas = React.useRef(null);
   const [colorTheme, setColorTheme] = React.useState<string>(props.color);
   const [backgroundColor, setBackgroundColor] = React.useState<string>(
@@ -46,17 +42,17 @@ export const SpecCanvas: React.FC<Props> = (props) => {
       fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
     );
     const h = height / rh;
-    const w = (width / wav.data.length) * frameWidth;
-    for (let i = 0; i < wav.data.length / frameWidth; i++) {
+    const w = (width / wav.data.length) * props.frameWidth;
+    for (let i = 0; i < wav.data.length / props.frameWidth; i++) {
       const timeIndex1 = Math.min(
-        Math.floor((i * frameWidth) / fftSetting.windowSize),
+        Math.floor((i * props.frameWidth) / fftSetting.windowSize),
         spec.length - 1
       );
       const timeIndex2 = Math.min(
-        Math.ceil((i * frameWidth) / fftSetting.windowSize),
+        Math.ceil((i * props.frameWidth) / fftSetting.windowSize),
         spec.length - 1
       );
-      const steps = (i * frameWidth) % fftSetting.windowSize;
+      const steps = (i * props.frameWidth) % fftSetting.windowSize;
       for (let j = 0; j < rh; j++) {
         const amp =
           (Math.max(spec[timeIndex1][j], 0) ** 2 *
@@ -67,7 +63,7 @@ export const SpecCanvas: React.FC<Props> = (props) => {
         const colorRatio = amp / props.specMax;
         ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
         ctx.fillRect(
-          i * w + fftSetting.fftsize / frameWidth,
+          i * w + fftSetting.fftsize / props.frameWidth,
           height - h * (j + 1),
           w,
           h
@@ -106,4 +102,5 @@ type Props = {
   wav: Wave;
   spec: Array<Array<number>> | null;
   specMax: number;
+  frameWidth:number
 };

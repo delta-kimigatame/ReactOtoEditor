@@ -68,6 +68,29 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     }
   }, [props.record]);
 
+  const OnZoomIn = () => {
+    if (props.pixelPerMsec === 20) {
+      props.setPixelPerMsec(10);
+    } else if (props.pixelPerMsec === 10) {
+      props.setPixelPerMsec(5);
+    } else if (props.pixelPerMsec === 5) {
+      props.setPixelPerMsec(2);
+    } else if (props.pixelPerMsec === 2) {
+      props.setPixelPerMsec(1);
+    }
+  };
+  const OnZoomOut = () => {
+    if (props.pixelPerMsec === 1) {
+      props.setPixelPerMsec(2);
+    } else if (props.pixelPerMsec === 2) {
+      props.setPixelPerMsec(5);
+    } else if (props.pixelPerMsec === 5) {
+      props.setPixelPerMsec(10);
+    } else if (props.pixelPerMsec === 10) {
+      props.setPixelPerMsec(20);
+    }
+  };
+
   const OnNextAlias = () => {
     if (maxAliasIndex === aliasIndex) {
       if (maxFileIndex !== fileIndex) {
@@ -188,13 +211,15 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
             size={size}
             icon={<ZoomInIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomin")}
-            onClick={() => {}}
+            disabled={props.pixelPerMsec === 1}
+            onClick={OnZoomIn}
           />
           <EditorButton
             size={size}
             icon={<ZoomOutIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomout")}
-            onClick={() => {}}
+            onClick={OnZoomOut}
+            disabled={props.pixelPerMsec === 20}
           />
         </StyledBox>
         <StyledBox>
@@ -227,6 +252,8 @@ type Props = {
   oto: Oto;
   record: OtoRecord | null;
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
+  pixelPerMsec: number;
+  setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const StyledBox = styled(Box)({

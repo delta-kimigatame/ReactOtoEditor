@@ -22,6 +22,7 @@ export const EditorView: React.FC<Props> = (props) => {
   const [canvasHeight, setCanvasHeight] = React.useState<number>(
     375 - layout.headerHeight - tableHeight - buttonAreaHeight
   );
+  const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   React.useEffect(() => {
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
@@ -36,6 +37,7 @@ export const EditorView: React.FC<Props> = (props) => {
         color={props.color}
         wav={props.wav}
         record={props.record}
+        pixelPerMsec={pixelPerMsec}
       />
       <EditorTable
         windowSize={props.windowSize}
@@ -50,6 +52,8 @@ export const EditorView: React.FC<Props> = (props) => {
         record={props.record}
         setRecord={props.setRecord}
         targetDir={props.targetDir}
+        pixelPerMsec={pixelPerMsec}
+        setPixelPerMsec={setPixelPerMsec}
       />
     </>
   );
