@@ -42,22 +42,21 @@ export const SpecCanvas: React.FC<Props> = (props) => {
     ctx.clearRect(0, height + 1, width, height);
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, height + 1, width, height);
-    const fw = frameWidth;
     const rh = Math.ceil(
       fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
     );
     const h = height / rh;
-    const w = (width / wav.data.length) * fw;
-    for (let i = 0; i < wav.data.length / fw; i++) {
+    const w = (width / wav.data.length) * frameWidth;
+    for (let i = 0; i < wav.data.length / frameWidth; i++) {
       const timeIndex1 = Math.min(
-        Math.floor((i * fw) / fftSetting.windowSize),
+        Math.floor((i * frameWidth) / fftSetting.windowSize),
         spec.length - 1
       );
       const timeIndex2 = Math.min(
-        Math.ceil((i * fw) / fftSetting.windowSize),
+        Math.ceil((i * frameWidth) / fftSetting.windowSize),
         spec.length - 1
       );
-      const steps = (i * fw) % fftSetting.windowSize;
+      const steps = (i * frameWidth) % fftSetting.windowSize;
       for (let j = 0; j < rh; j++) {
         const amp =
           (Math.max(spec[timeIndex1][j], 0) ** 2 *
@@ -67,7 +66,12 @@ export const SpecCanvas: React.FC<Props> = (props) => {
             fftSetting.windowSize;
         const colorRatio = amp / props.specMax;
         ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
-        ctx.fillRect(i * w, height - h * (j + 1), w, h);
+        ctx.fillRect(
+          i * w + fftSetting.fftsize / frameWidth,
+          height - h * (j + 1),
+          w,
+          h
+        );
       }
     }
   };

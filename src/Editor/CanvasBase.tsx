@@ -50,12 +50,16 @@ export const CanvasBase: React.FC<Props> = (props) => {
     }
   }, [props.wav]);
 
-  const OnCanvasClick = (e) => {
-    console.log(boxRef.current.scrollLeft + e.clientX);
+  const SetScrolled = (point: number) => {
+    boxRef.current.scrollTo(Math.max(point), 0);
   };
+
   return (
     <>
-      <Box ref={boxRef} sx={{ overflowX: "scroll", height: height }}>
+      <Box
+        ref={boxRef}
+        sx={{ overflowX: "scroll", height: height, overflowY: "hidden" }}
+      >
         <WavCanvas
           canvasSize={[width, height / 2]}
           mode={props.mode}
@@ -72,8 +76,11 @@ export const CanvasBase: React.FC<Props> = (props) => {
         />
         <OtoCanvas
           canvasSize={[width, height]}
+          mode={props.mode}
           record={props.record}
           boxRef={boxRef}
+          pixelPerMsec={pixelPerMsec}
+          SetSclolled={SetScrolled}
         />
       </Box>
     </>
