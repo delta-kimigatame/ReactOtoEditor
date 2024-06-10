@@ -19,6 +19,7 @@ export const layout: { [key: string]: number } = {
   requireHeader: 600,
   canvasMinHeight: 250,
   minButtonSize: 40,
+  maxButtonSize: 100,
   minIconSize: 24,
   iconPadding: 16,
   tableMinSize: 75,
