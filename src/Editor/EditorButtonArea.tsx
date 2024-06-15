@@ -21,7 +21,9 @@ import EditAttributesIcon from "@mui/icons-material/EditAttributes";
 import LockIcon from "@mui/icons-material/Lock";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 import { layout } from "../settings/setting";
-import { EditorButton } from "./EditorButton";
+import { EditorButton } from "./EditButtn/EditorButton";
+import { NextAliasButton } from "./EditButtn/NextAliasButton";
+import { PrevAliasButton } from "./EditButtn/PrevAliasButtn";
 
 export const EditorButtonArea: React.FC<Props> = (props) => {
   const { t } = useTranslation();
@@ -202,57 +204,6 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     }
   };
 
-  const OnNextAlias = () => {
-    if (maxAliasIndex === aliasIndex) {
-      if (maxFileIndex !== fileIndex) {
-        const filename = props.oto.GetFileNames(props.targetDir)[fileIndex + 1];
-        const alias = props.oto.GetAliases(props.targetDir, filename)[0];
-        console.log(props.oto.GetRecord(props.targetDir, filename, alias));
-        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
-        setFileIndex(fileIndex + 1);
-        setAliasIndex(0);
-        setMaxAliasIndex(
-          props.oto.GetAliases(props.targetDir, filename).length - 1
-        );
-      }
-    } else {
-      const alias = props.oto.GetAliases(
-        props.targetDir,
-        props.record.filename
-      )[aliasIndex + 1];
-      props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
-      );
-      setAliasIndex(aliasIndex + 1);
-    }
-  };
-
-  const OnPrevAlias = () => {
-    if (aliasIndex === 0) {
-      if (fileIndex !== 0) {
-        const filename = props.oto.GetFileNames(props.targetDir)[fileIndex - 1];
-        const maxAliases =
-          props.oto.GetAliases(props.targetDir, filename).length - 1;
-        const alias = props.oto.GetAliases(props.targetDir, filename)[
-          maxAliases
-        ];
-        console.log(props.oto.GetRecord(props.targetDir, filename, alias));
-        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
-        setFileIndex(fileIndex + 1);
-        setAliasIndex(0);
-        setMaxAliasIndex(maxAliases);
-      }
-    } else {
-      const alias = props.oto.GetAliases(
-        props.targetDir,
-        props.record.filename
-      )[aliasIndex - 1];
-      props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
-      );
-      setAliasIndex(aliasIndex - 1);
-    }
-  };
   return (
     <>
       <Paper
@@ -344,23 +295,37 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
           />
         </StyledBox>
         <StyledBox>
-          <EditorButton
+          <PrevAliasButton
+            targetDir={props.targetDir}
+            oto={props.oto}
+            record={props.record}
+            setRecord={props.setRecord}
             mode={props.mode}
             size={size}
-            icon={<ArrowDropUpIcon sx={{ fontSize: iconSize }} />}
-            title={t("editor.prev")}
-            onClick={OnPrevAlias}
-            disabled={aliasIndex === 0 && fileIndex === 0}
+            iconSize={iconSize}
+            fileIndex={fileIndex}
+            aliasIndex={aliasIndex}
+            maxFileIndex={maxFileIndex}
+            maxAliasIndex={maxAliasIndex}
+            setFileIndex={setFileIndex}
+            setAliasIndex={setAliasIndex}
+            setMaxAliasIndex={setMaxAliasIndex}
           />
-          <EditorButton
+          <NextAliasButton
+            targetDir={props.targetDir}
+            oto={props.oto}
+            record={props.record}
+            setRecord={props.setRecord}
             mode={props.mode}
             size={size}
-            icon={<ArrowDropDownIcon sx={{ fontSize: iconSize }} />}
-            title={t("editor.next")}
-            onClick={OnNextAlias}
-            disabled={
-              maxAliasIndex === aliasIndex && maxFileIndex === fileIndex
-            }
+            iconSize={iconSize}
+            fileIndex={fileIndex}
+            aliasIndex={aliasIndex}
+            maxFileIndex={maxFileIndex}
+            maxAliasIndex={maxAliasIndex}
+            setFileIndex={setFileIndex}
+            setAliasIndex={setAliasIndex}
+            setMaxAliasIndex={setMaxAliasIndex}
           />
         </StyledBox>
       </Paper>
