@@ -74,6 +74,8 @@ export const App: React.FC = () => {
     setCookie("language", language);
     i18n.changeLanguage(language);
   }, [language]);
+  React.useMemo(() => setCookie("touchMode", touchMode), [touchMode]);
+  React.useMemo(() => setCookie("overlapLock", overlapLock), [overlapLock]);
 
   const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
@@ -113,17 +115,21 @@ export const App: React.FC = () => {
     if (wavFileName === null) {
       setWav(null);
     } else if (readZip !== null) {
-      readZip[targetDir + "/" + wavFileName]
-        .async("arraybuffer")
-        .then((result) => {
-          const w = new Wave(result);
-          w.channels = fftSetting.channels;
-          w.bitDepth = fftSetting.bitDepth;
-          w.sampleRate = fftSetting.sampleRate;
-          w.RemoveDCOffset();
-          w.VolumeNormalize();
-          setWav(w);
-        });
+      if (Object.keys(readZip).includes(targetDir + "/" + wavFileName)) {
+        readZip[targetDir + "/" + wavFileName]
+          .async("arraybuffer")
+          .then((result) => {
+            const w = new Wave(result);
+            w.channels = fftSetting.channels;
+            w.bitDepth = fftSetting.bitDepth;
+            w.sampleRate = fftSetting.sampleRate;
+            w.RemoveDCOffset();
+            w.VolumeNormalize();
+            setWav(w);
+          });
+      } else {
+        setWav(null);
+      }
     }
   }, [wavFileName]);
 
