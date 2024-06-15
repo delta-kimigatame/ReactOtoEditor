@@ -16,8 +16,10 @@ import { LanguageMenuButton } from "./LanguageMenuButton";
 import { ColorMenuButton } from "./ColorMenuButton";
 
 /**
- * ヘッダ。
- *  */
+ * ヘッダ
+ * @param props {@link Props}
+ * @returns ヘッダ全体
+ */
 export const Header: React.FC<Props> = (props) => {
   const [textWidth, setTextWidth] = React.useState<number>(
     props.windowSize[0] - 120 - 24 - 32
@@ -79,12 +81,20 @@ export const Header: React.FC<Props> = (props) => {
 };
 
 type Props = {
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /**ダークモードかライトモードかを変更する */
   setMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
+  /**キャンバスの色設定 */
   color: string;
+  /**キャンバスの色設定を変更する */
   setColor: React.Dispatch<React.SetStateAction<string>>;
+  /**言語設定 */
   language: string;
+  /**言語設定を変更する処理 */
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
+  /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
+  /**画面サイズ */
   windowSize: [number, number];
 };
