@@ -13,15 +13,29 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { NormalizeJP } from "../../Lib/FilenameNormalize";
 
-export const LoadZipButtonArea: React.FC<Props> = (props) => {
+/**
+ * zip読込待ちダイアログの操作ボタン部分
+ * @param props {@Link LoadZipButtonAreaProps}
+ * @returns zip読込待ちダイアログの操作ボタン部分
+ */
+export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
   const { t } = useTranslation();
 
+  /**
+   * ボタンを押した際の処理 \
+   * zipファイルの再生成を発火する。
+   */
   const OnSubmitClick = () => {
     if (props.zipFiles === null) return;
     const newZip = new JSZip();
     ZipExtract(props.zipFiles, 0, newZip);
   };
 
+  /**
+   * 文字コードの選択を変更した際の処理。 \
+   * 指定した文字コードでzipを再読み込みする。
+   * @param e 
+   */
   const OnSelectChange = (e: SelectChangeEvent) => {
     props.setEncoding(e.target.value);
     props.setProcessing(true);
@@ -29,6 +43,12 @@ export const LoadZipButtonArea: React.FC<Props> = (props) => {
     props.LoadZip(props.file, e.target.value);
   };
 
+  /**
+   * utf-8-macをutf-8に変換したzipファイルを再帰呼出しで生成する。
+   * @param files zip内のファイル一覧
+   * @param index 読み込むファイルのインデックス
+   * @param newZip 新しく生成するzip
+   */
   const ZipExtract = (
     files: { [key: string]: JSZip.JSZipObject },
     index: number,
@@ -77,16 +97,24 @@ export const LoadZipButtonArea: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface LoadZipButtonAreaProps {
+  /** 読み込んだファイル */
   file: File | null;
+  /** zipのファイル名を解釈するための文字コード */
   encoding: string;
+  /** 仮に読み込んだzipファイル。 */
   zipFiles: {
     [key: string]: JSZip.JSZipObject;
   } | null;
+  /** zipを読み込む処理 */
   LoadZip: (file: File, encoding?: string) => void;
+  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  /** 読込待ち判定用を変更する。 */
   setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
+  /** zipのファイル名を解釈するための文字コードを変更する。 */
   setEncoding: React.Dispatch<React.SetStateAction<string>>;
+  /** 仮に読み込んだzipファイルを変更する。 */
   setZipFiles: React.Dispatch<
     React.SetStateAction<{
       [key: string]: JSZip.JSZipObject;

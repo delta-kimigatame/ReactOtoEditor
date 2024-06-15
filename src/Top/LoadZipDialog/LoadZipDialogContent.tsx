@@ -11,7 +11,12 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { LoadZipButtonArea } from "./LoadZipButtonArea";
 
-export const LoadZipDialogContent: React.FC<Props> = (props) => {
+/**
+ * zip読込待ちダイアログのボディ部分
+ * @param props {@Link LoadZipDialogContentProps}
+ * @returns zip読込待ちダイアログのボディ部分
+ */
+export const LoadZipDialogContent: React.FC<LoadZipDialogContentProps> = (props) => {
   const { t } = useTranslation();
 
   return (
@@ -56,17 +61,26 @@ export const LoadZipDialogContent: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface LoadZipDialogContentProps {
+  /** 読み込んだファイル */
   file: File | null;
+  /** 読込待ち判定用 */
   processing: boolean;
+  /** zipのファイル名を解釈するための文字コード */
   encoding: string;
+  /** 仮に読み込んだzipファイル。 */
   zipFiles: {
     [key: string]: JSZip.JSZipObject;
   } | null;
+  /** zipを読み込む処理 */
   LoadZip: (file: File, encoding?: string) => void;
+  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  /** 読込待ち判定用を変更する。 */
   setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
+  /** zipのファイル名を解釈するための文字コードを変更する。 */
   setEncoding: React.Dispatch<React.SetStateAction<string>>;
+  /** 仮に読み込んだzipファイルを変更する。 */
   setZipFiles: React.Dispatch<
     React.SetStateAction<{
       [key: string]: JSZip.JSZipObject;
