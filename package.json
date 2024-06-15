@@ -5,7 +5,7 @@
   "scripts": {
     "build": "webpack --mode=production",
     "prepare": "npm run build",
-    "makedoc": "npx typedoc --entryPointStrategy expand ./src --htmlLang jp",
+    "makedoc": "npx typedoc --entryPointStrategy expand ./src --htmlLang jp --cleanOutputDir false",
     "start": "webpack serve --mode=development"
   },
   "keywords": [],

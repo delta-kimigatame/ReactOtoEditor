@@ -6,8 +6,10 @@ import ModeNightIcon from "@mui/icons-material/ModeNight";
 import LightModeIcon from "@mui/icons-material/LightMode";
 
 /**
- * ライトモード・ダークモードを切り替えるボタンを有する。
- *  */
+ * ライトモード・ダークモードを切り替えるbutton
+ * @param props 
+ * @returns ライトモード・ダークモードを切り替えるbutton
+ */
 export const DarkModeButton: React.FC<Props> = (props) => {
   return (
     <>
@@ -23,6 +25,8 @@ export const DarkModeButton: React.FC<Props> = (props) => {
 };
 
 type Props = {
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /**ダークモードかライトモードかを変更する */
   setMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
 };
