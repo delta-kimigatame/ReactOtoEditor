@@ -13,8 +13,6 @@ export const PlayButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const [metronome, setMetronome] = React.useState<Wave>(null);
   React.useMemo(() => {
-    console.log(location.protocol);
-    console.log(location.host);
     fetch("/static/metronome.wav").then((res) => {
       res.arrayBuffer().then((buf) => {
         const m = new Wave(buf);
