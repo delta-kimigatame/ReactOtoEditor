@@ -55,6 +55,7 @@ export const EditorView: React.FC<Props> = (props) => {
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
         mode={props.mode}
+        wav={props.wav}
       />
     </>
   );
