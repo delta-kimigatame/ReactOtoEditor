@@ -14,6 +14,7 @@ import Avatar from "@mui/material/Avatar";
  */
 export const LanguageMenuButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
+  /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
     <>
@@ -24,7 +25,7 @@ export const LanguageMenuButton: React.FC<Props> = (props) => {
         }}
         sx={{ textTransform: "uppercase" }}
       >
-        <Avatar sx={{ width: 24, height: 24, fontSize:16 }}>
+        <Avatar sx={{ width: 24, height: 24, fontSize: 16 }}>
           {props.language}
         </Avatar>
       </IconButton>
@@ -61,4 +62,4 @@ interface Props {
   language: string;
   /**設定言語を変更する */
   setLanguage: React.Dispatch<React.SetStateAction<string>>;
-};
+}

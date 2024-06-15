@@ -21,9 +21,11 @@ import { ColorMenuButton } from "./ColorMenuButton";
  * @returns ヘッダ全体
  */
 export const Header: React.FC<Props> = (props) => {
+  /** テキスト表示領域 */
   const [textWidth, setTextWidth] = React.useState<number>(
     props.windowSize[0] - 120 - 24 - 32
   );
+  /** 画面サイズが変更されたとき、テキスト表示領域も変更する。 */
   React.useEffect(() => {
     setTextWidth(props.windowSize[0] - 120 - 24 - 32);
   }, [props.windowSize]);
