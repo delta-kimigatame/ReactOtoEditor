@@ -13,12 +13,21 @@ import { TargetDirDialogSelectDir } from "./TargetDirDialogSelectDir";
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 
-export const TargetDirDialogContent: React.FC<Props> = (props) => {
+/**
+ * 原音設定対象ディレクトリを選択するためのダイアログのボディ
+ * @param props {@link TargetDirDialogContentProps}
+ * @returns 原音設定対象ディレクトリを選択するためのダイアログのボディ
+ */
+export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (props) => {
   const { t } = useTranslation();
+  /** oto.iniがディレクトリ内に存在するか否か */
   const [nothingOto, setNothingOto] = React.useState<boolean>(false);
+  /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
   const [oto, setOto] = React.useState<Oto | null>(null);
+  /** oto.ini読込の文字コード */
   const [encoding, setEncoding] = React.useState<string>("SJIS");
 
+  /** `props.targetDir`が変更されたとき、oto.iniの読込を行う。 */
   React.useEffect(() => {
     if (props.targetDir === null) return;
     if (props.readZip === null) return;
@@ -26,6 +35,10 @@ export const TargetDirDialogContent: React.FC<Props> = (props) => {
     LoadOto();
   }, [props.targetDir]);
 
+  /**
+   * oto.iniを読み込む。
+   * @param encoding_ 文字コード
+   */
   const LoadOto = (encoding_: string = "SJIS") => {
     if (Object.keys(props.readZip).includes(props.targetDir + "/oto.ini")) {
       props.readZip[props.targetDir + "/oto.ini"]
@@ -88,12 +101,19 @@ export const TargetDirDialogContent: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface TargetDirDialogContentProps {
+  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
+  /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
+  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
+  /** 読み込んだoto.iniのデータ */
   oto: Oto;
+  /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
+  /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
 };

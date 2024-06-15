@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 /**
  * zip読込待ちダイアログのタイトル部分
- * @param props {@Link LoadZipDialogTitle}
+ * @param props {@link LoadZipDialogTitle}
  * @returns zip読込待ちダイアログのタイトル部分
  */
 export const LoadZipDialogTitle: React.FC<LoadZipDialogTitleProps> = (props) => {

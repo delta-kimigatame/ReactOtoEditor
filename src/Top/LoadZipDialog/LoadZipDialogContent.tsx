@@ -13,7 +13,7 @@ import { LoadZipButtonArea } from "./LoadZipButtonArea";
 
 /**
  * zip読込待ちダイアログのボディ部分
- * @param props {@Link LoadZipDialogContentProps}
+ * @param props {@link LoadZipDialogContentProps}
  * @returns zip読込待ちダイアログのボディ部分
  */
 export const LoadZipDialogContent: React.FC<LoadZipDialogContentProps> = (props) => {

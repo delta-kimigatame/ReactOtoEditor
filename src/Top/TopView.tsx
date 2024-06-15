@@ -9,7 +9,7 @@ import { TargetDirDialog } from "./TargetDirDialog/TargetDirDialog";
 
 /**
  * zipデータを読み込む前の画面
- * @param props {@Link TopViewProps}
+ * @param props {@link TopViewProps}
  * @returns zipデータを読み込む前の画面
  */
 export const TopView: React.FC<TopViewProps> = (props) => {

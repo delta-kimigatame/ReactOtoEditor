@@ -15,7 +15,7 @@ import { NormalizeJP } from "../../Lib/FilenameNormalize";
 
 /**
  * zip読込待ちダイアログの操作ボタン部分
- * @param props {@Link LoadZipButtonAreaProps}
+ * @param props {@link LoadZipButtonAreaProps}
  * @returns zip読込待ちダイアログの操作ボタン部分
  */
 export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {

@@ -6,7 +6,14 @@ import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
 
-export const TargetDirDialogTitle: React.FC<Props> = (props) => {
+/**
+ * 原音設定対象ディレクトリを選択するためのダイアログのタイトル部分
+ * @param props {@link TargetDirDialogTitleProps}
+ * @returns 原音設定対象ディレクトリを選択するためのダイアログのタイトル部分
+ */
+export const TargetDirDialogTitle: React.FC<TargetDirDialogTitleProps> = (
+  props
+) => {
   const { t } = useTranslation();
 
   return (
@@ -28,6 +35,7 @@ export const TargetDirDialogTitle: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface TargetDirDialogTitleProps {
+  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+}

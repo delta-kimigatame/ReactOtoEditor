@@ -5,10 +5,14 @@ import { Oto } from "utauoto";
 import Dialog from "@mui/material/Dialog";
 import Divider from "@mui/material/Divider";
 import { TargetDirDialogTitle } from "./TargetDirDialogTitle";
-import DialogContent from "@mui/material/DialogContent";
 import { TargetDirDialogContent } from "./TargetDirDialogContent";
 
-export const TargetDirDialog: React.FC<Props> = (props) => {
+/**
+ * 原音設定対象ディレクトリを選択するためのダイアログ
+ * @param props {@link TargetDirDialogProps}
+ * @returns 原音設定対象ディレクトリを選択するためのダイアログ
+ */
+export const TargetDirDialog: React.FC<TargetDirDialogProps> = (props) => {
   return (
     <>
       <Dialog
@@ -34,13 +38,21 @@ export const TargetDirDialog: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface TargetDirDialogProps {
+  /** ダイアログを表示するか否か */
   dialogOpen: boolean;
+  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
+  /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
+  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
+  /** 読み込んだoto.iniのデータ */
   oto: Oto;
+  /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
+  /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
 };

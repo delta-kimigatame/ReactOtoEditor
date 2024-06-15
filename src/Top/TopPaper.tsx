@@ -14,7 +14,7 @@ import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper
- * @param props {@Link TopPaperProps}
+ * @param props {@link TopPaperProps}
  * @returns トップビューに表示する、zipを読み込むボタンなどを含むPaper
  */
 export const TopPaper: React.FC<TopPaperProps> = (props) => {

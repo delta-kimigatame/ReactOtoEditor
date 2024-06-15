@@ -8,7 +8,12 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
-export const TargetDirDialogSelectDir: React.FC<Props> = (props) => {
+/**
+ * 原音設定対象ディレクトリを選択するためのダイアログのボディ内の対象ディレクトリを選ぶ部分
+ * @param props {@link TargetDirDialogSelectDirProps}
+ * @returns 原音設定対象ディレクトリを選択するためのダイアログのボディ内の対象ディレクトリを選ぶ部分
+ */
+export const TargetDirDialogSelectDir: React.FC<TargetDirDialogSelectDirProps> = (props) => {
   const { t } = useTranslation();
 
   const OnSelectChange = (e: SelectChangeEvent) => {
@@ -35,8 +40,11 @@ export const TargetDirDialogSelectDir: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface TargetDirDialogSelectDirProps {
+  /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
+  /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
+  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
 };

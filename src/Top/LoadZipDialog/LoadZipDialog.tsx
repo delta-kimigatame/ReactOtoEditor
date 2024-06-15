@@ -9,7 +9,7 @@ import { LoadZipDialogTitle } from "./LoadZipDialogTitle";
 /**
  * zip読込待ちダイアログ \
  * ファイル名の一覧を表示し、必要に応じて読込文字コードを変更する機能を有する。
- * @param props {@Links LoadZipDialogProps}
+ * @param props {@link LoadZipDialogProps}
  * @returns zip読込待ちダイアログ
  */
 export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
