@@ -7,6 +7,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
+/**
+ * トップビューに表示する、利用規約
+ * @returns トップビューに表示する、利用規約
+ */
 export const RulePaper: React.FC = () => {
   const { t } = useTranslation();
   return (

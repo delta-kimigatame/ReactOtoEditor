@@ -6,6 +6,10 @@ import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 
+/**
+ * トップビューに表示する、プライバシーポリシー
+ * @returns トップビューに表示する、プライバシーポリシー
+ */
 export const PrivacyPaper: React.FC = () => {
   const { t } = useTranslation();
   return (

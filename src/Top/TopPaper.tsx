@@ -12,13 +12,28 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
 
-export const TopPaper: React.FC<Props> = (props) => {
+/**
+ * トップビューに表示する、zipを読み込むボタンなどを含むPaper
+ * @param props @see TopPaperProps
+ * @returns トップビューに表示する、zipを読み込むボタンなどを含むPaper
+ */
+export const TopPaper: React.FC<TopPaperProps> = (props) => {
+  /** 隠し表示する<input>へのref */
   const inputRef = React.useRef(null);
   const { t } = useTranslation();
+  /** 読込中判定 */
   const [processing, setProcessing] = React.useState<boolean>(false);
+  /** ダイアログを開く判定 */
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
+  /** 読み込んだファイル */
   const [readFile, setReadFile] = React.useState<File | null>(null);
 
+  /**
+   * inputのファイルが変更した際のイベント \
+   * nullやファイル数が0の時は何もせず終了する。 \
+   * ファイルが含まれている場合、1つ目のファイルを`readFile`に代入する。
+   * @param e 
+   */
   const OnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     if (e.target.files.length === 0) return;
@@ -27,12 +42,19 @@ export const TopPaper: React.FC<Props> = (props) => {
     setDialogOpen(true);
   };
 
+  /**
+   * ボタンをクリックした際の処理 \
+   * 隠し要素であるinputのクリックイベントを発火する。
+   */
   const OnButtonClick = () => {
     setProcessing(false);
     props.setReadZip(null);
     inputRef.current.click();
   };
 
+  /**
+   * `props.readZip`が`null`になった時`processing`を`false`にする。
+   */
   React.useEffect(() => {
     if (props.readZip !== null) {
       setProcessing(false);
@@ -80,8 +102,10 @@ export const TopPaper: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface TopPaperProps {
+  /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
+  /** 読み込んだzipのデータを登録する処理 */
   setReadZip: React.Dispatch<
     React.SetStateAction<{
       [key: string]: JSZip.JSZipObject;
