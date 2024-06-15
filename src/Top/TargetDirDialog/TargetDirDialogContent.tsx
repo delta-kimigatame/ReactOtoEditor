@@ -75,7 +75,7 @@ export const TargetDirDialogContent: React.FC<Props> = (props) => {
               <Divider />
               <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />
             </>
-          ) : (
+          ) :props.targetDir!==null && (
             <>
               <Box sx={{ textAlign: "center", minHeight: 150 }}>
                 <CircularProgress size={100} sx={{ maxWidth: "100%" }} />
