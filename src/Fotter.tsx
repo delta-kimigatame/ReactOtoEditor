@@ -14,8 +14,10 @@ import { XButton } from "./XButton";
 
 /**
  * フッタ
- *  */
-export const Footer: React.FC<Props> = (props) => {
+ * @param props {@link FooterProps}
+ * @returns フッタ
+ */
+export const Footer: React.FC<FooterProps> = (props) => {
   const theme = props.theme;
   const { t } = useTranslation();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
@@ -98,6 +100,6 @@ export const Footer: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface FooterProps {
   theme;
 };
