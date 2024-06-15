@@ -15,6 +15,9 @@ export const fftSetting: { [key: string]: number } = {
   channels: 1,
   maxFrq: 8000,
 };
+export const oto: { [key: string]: number } = {
+  metronomeFlame:66150
+}
 export const layout: { [key: string]: number } = {
   requireHeader: 600,
   canvasMinHeight: 250,

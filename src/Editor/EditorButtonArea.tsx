@@ -10,10 +10,7 @@ import { useTranslation } from "react-i18next";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
-import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
-import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import TableViewIcon from "@mui/icons-material/TableView";
@@ -24,6 +21,9 @@ import { layout } from "../settings/setting";
 import { EditorButton } from "./EditButtn/EditorButton";
 import { NextAliasButton } from "./EditButtn/NextAliasButton";
 import { PrevAliasButton } from "./EditButtn/PrevAliasButtn";
+import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
+import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
+import { PlayButton } from "./EditButtn/PlayButton";
 
 export const EditorButtonArea: React.FC<Props> = (props) => {
   const { t } = useTranslation();
@@ -33,17 +33,6 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
   const [maxAliasIndex, setMaxAliasIndex] = React.useState<number>(0);
   const [fileIndex, setFileIndex] = React.useState<number>(0);
   const [aliasIndex, setAliasIndex] = React.useState<number>(0);
-  const [metronome, setMetronome] = React.useState<Wave>(null);
-  React.useMemo(() => {
-    console.log(location.protocol);
-    console.log(location.host);
-    fetch("/static/metronome.wav").then((res) => {
-      res.arrayBuffer().then((buf) => {
-        const m = new Wave(buf);
-        setMetronome(m);
-      });
-    });
-  }, []);
 
   React.useEffect(() => {
     CalcSize();
@@ -87,100 +76,6 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     }
   }, [props.record]);
 
-  const OnPlayBeforePreutter = () => {
-    const audioContext = new AudioContext();
-    const startFlame = (props.record.offset * props.wav.sampleRate) / 1000;
-    const endFlame =
-      ((props.record.offset + props.record.pre) * props.wav.sampleRate) / 1000;
-    if (endFlame <= startFlame) {
-      return;
-    }
-    const wavData = props.wav.LogicalNormalize(1).slice(startFlame, endFlame);
-    const audioBuffer = audioContext.createBuffer(
-      props.wav.channels,
-      wavData.length,
-      props.wav.sampleRate
-    );
-    const buffering = audioBuffer.getChannelData(0);
-    for (let i = 0; i < wavData.length; i++) {
-      buffering[i] = wavData[i];
-    }
-    const audioSource = audioContext.createBufferSource();
-    audioSource.buffer = audioBuffer;
-    audioSource.connect(audioContext.destination);
-    audioSource.start();
-  };
-  const OnPlayAfterPreutter = () => {
-    const audioContext = new AudioContext();
-    const startFlame =
-      ((props.record.offset + props.record.pre) * props.wav.sampleRate) / 1000;
-    let endFlame = 0;
-    if (props.record.blank < 0) {
-      endFlame =
-        ((props.record.offset - props.record.blank) * props.wav.sampleRate) /
-        1000;
-    } else {
-      endFlame =
-        props.wav.data.length -
-        (props.record.blank * props.wav.sampleRate) / 1000;
-    }
-    if (endFlame <= startFlame) {
-      return;
-    }
-    const wavData = props.wav.LogicalNormalize(1).slice(startFlame, endFlame);
-    const audioBuffer = audioContext.createBuffer(
-      props.wav.channels,
-      wavData.length,
-      props.wav.sampleRate
-    );
-    const buffering = audioBuffer.getChannelData(0);
-    for (let i = 0; i < wavData.length; i++) {
-      buffering[i] = wavData[i];
-    }
-    const audioSource = audioContext.createBufferSource();
-    audioSource.buffer = audioBuffer;
-    audioSource.connect(audioContext.destination);
-    audioSource.start();
-  };
-
-  const OnPlay = () => {
-    const audioContext = new AudioContext();
-    const startFlame = (props.record.offset * props.wav.sampleRate) / 1000;
-    let endFlame = 0;
-    if (props.record.blank < 0) {
-      endFlame =
-        ((props.record.offset - props.record.blank) * props.wav.sampleRate) /
-        1000;
-    } else {
-      endFlame =
-        props.wav.data.length -
-        (props.record.blank * props.wav.sampleRate) / 1000;
-    }
-    const margeStartFlame =
-      Math.floor(66150 - (props.record.pre * props.wav.sampleRate) / 1000);
-    const wavData = props.wav.LogicalNormalize(1).slice(startFlame, endFlame);
-    const metronomeData = metronome.LogicalNormalize(1);
-    const audioBuffer = audioContext.createBuffer(
-      props.wav.channels,
-      metronomeData.length,
-      props.wav.sampleRate
-    );
-    const buffering = audioBuffer.getChannelData(0);
-    for (let i = 0; i < metronomeData.length; i++) {
-      if (i >= margeStartFlame && i < margeStartFlame + endFlame - startFlame) {
-        buffering[i] =
-          metronomeData[i] * 0.5 +
-          wavData[i - margeStartFlame] * 0.5;
-      } else {
-        buffering[i] = metronomeData[i] * 0.5;
-      }
-    }
-    const audioSource = audioContext.createBufferSource();
-    audioSource.buffer = audioBuffer;
-    audioSource.connect(audioContext.destination);
-    audioSource.start();
-  };
-
   const OnZoomIn = () => {
     if (props.pixelPerMsec === 20) {
       props.setPixelPerMsec(10);
@@ -215,33 +110,29 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
         ref={areaRef}
       >
         <StyledBox>
-          <EditorButton
+          <PlayBeforePreutterButton
+            targetDir={props.targetDir}
+            wav={props.wav}
+            record={props.record}
             mode={props.mode}
             size={size}
-            icon={<VolumeUpIcon sx={{ fontSize: iconSize }} />}
-            title={t("editor.playBeforePreutter")}
-            onClick={OnPlayBeforePreutter}
-            background={
-              "linear-gradient(to right,#bdbdbd,#bdbdbd 10%,#bdbdbd 25%,#00ff00 30%,#bdbdbd 35%,#bdbdbd 90%,#ff0000)"
-            }
+            iconSize={iconSize}
           />
-          <EditorButton
+          <PlayAfterPreutterButton
+            targetDir={props.targetDir}
+            wav={props.wav}
+            record={props.record}
             mode={props.mode}
             size={size}
-            icon={<VolumeUpIcon sx={{ fontSize: iconSize }} />}
-            title={t("editor.playAfterPreutter")}
-            onClick={OnPlayAfterPreutter}
-            background={
-              "linear-gradient(to right,#ff0000,#bdbdbd 10%,#bdbdbd 35%,#0000ff 40%,#bdbdbd 45%)"
-            }
+            iconSize={iconSize}
           />
-          <EditorButton
+          <PlayButton
+            targetDir={props.targetDir}
+            wav={props.wav}
+            record={props.record}
             mode={props.mode}
             size={size}
-            icon={<MusicNoteIcon sx={{ fontSize: iconSize }} />}
-            title={t("editor.play")}
-            onClick={OnPlay}
-            disabled={metronome === null}
+            iconSize={iconSize}
           />
         </StyledBox>
         <StyledBox>
