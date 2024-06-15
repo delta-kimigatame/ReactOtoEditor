@@ -11,13 +11,15 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
+import { NormalizeJP } from "../../Lib/FilenameNormalize";
+
 export const LoadZipButtonArea: React.FC<Props> = (props) => {
   const { t } = useTranslation();
 
   const OnSubmitClick = () => {
     if (props.zipFiles === null) return;
-    props.setZipFiles(props.zipFiles);
-    props.setDialogOpen(false);
+    const newZip = new JSZip();
+    ZipExtract(props.zipFiles, 0, newZip);
   };
 
   const OnSelectChange = (e: SelectChangeEvent) => {
@@ -25,6 +27,23 @@ export const LoadZipButtonArea: React.FC<Props> = (props) => {
     props.setProcessing(true);
     props.setZipFiles(null);
     props.LoadZip(props.file, e.target.value);
+  };
+
+  const ZipExtract = (
+    files: { [key: string]: JSZip.JSZipObject },
+    index: number,
+    newZip: JSZip
+  ) => {
+    const k = Object.keys(files)[index];
+    files[k].async("arraybuffer").then((result) => {
+      newZip.file(NormalizeJP(k), result);
+      if (index < Object.keys(files).length - 1) {
+        ZipExtract(files, index + 1, newZip);
+      } else {
+        props.setZipFiles(newZip.files);
+        props.setDialogOpen(false);
+      }
+    });
   };
 
   return (
@@ -64,7 +83,7 @@ type Props = {
   zipFiles: {
     [key: string]: JSZip.JSZipObject;
   } | null;
-  LoadZip:(file: File, encoding?: string) => void;
+  LoadZip: (file: File, encoding?: string) => void;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setProcessing: React.Dispatch<React.SetStateAction<boolean>>;
   setEncoding: React.Dispatch<React.SetStateAction<string>>;
