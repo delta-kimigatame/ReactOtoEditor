@@ -1,13 +1,35 @@
+/**
+ * RGB値を一括して扱う。
+ */
 export type Color = {
+  /** 赤 0～255*/
   r: number;
+  /** 緑 0～255*/
   g: number;
+  /** 青 0～255*/
   b: number;
 };
 
+/**
+ * canvasで使うRGB文字列を返す。
+ * @param color 
+ * @returns `rgb(r,g,b)`の形の文字列
+ */
 export const GetColor = (color: Color): string => {
   return "rgb(" + color.r + "," + color.g + "," + color.b + ")";
 };
 
+/**
+ * 複数の色設定列を補完し、canvasで使うRGB文字列を返す。\
+ * \
+ * `fillColor.length===3`の場合\
+ * `0 < ratio <0.5`は`fillColor[0]`と`fillColor[1]`の線形補間 \
+ * `0.5 < ratio <1`は`fillColor[1]`と`fillColor[2]`の線形補間となる。
+ * 
+ * @param ratio 全体の割合。0～1
+ * @param fillColor 色のArray。
+ * @returns ratioに基づいて、fillColorの内容を按分して生成した`rgb(r,g,b)`の形の文字列。
+ */
 export const GetColorInterp = (
   ratio: number,
   fillColor: Array<Color>
