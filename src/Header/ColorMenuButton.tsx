@@ -14,7 +14,7 @@ import { specColor } from "../settings/colors";
 
 /**
  * 表示色を切り替えるボタン
- * @param props
+ * @param props {@link Props}
  * @returns 表示色を切り替えるボタン
  */
 export const ColorMenuButton: React.FC<Props> = (props) => {
@@ -52,7 +52,7 @@ export const ColorMenuButton: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+interface Props{
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**キャンバスの色設定 */

@@ -80,7 +80,7 @@ export const Header: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+interface Props {
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**ダークモードかライトモードかを変更する */
