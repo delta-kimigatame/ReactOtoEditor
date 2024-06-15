@@ -38,6 +38,7 @@ export const App: React.FC = () => {
     "overlapLock",
     "touchMode",
   ]);
+  
   const mode_: PaletteMode =
     cookies.mode !== undefined
       ? cookies.mode
@@ -68,7 +69,10 @@ export const App: React.FC = () => {
   const [wavFileName, setWavFileName] = React.useState<string | null>(null);
   const [wav, setWav] = React.useState<Wave | null>(null);
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  React.useMemo(() => setCookie("mode", mode), [mode]);
+  /**
+   * ダークモード設定が切り替わった際、クッキーに保存する。
+   */
+  const SetCookieMode= React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
   React.useMemo(() => {
     setCookie("language", language);
