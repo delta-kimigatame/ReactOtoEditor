@@ -17,6 +17,7 @@ export const TargetDirDialogContent: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const [nothingOto, setNothingOto] = React.useState<boolean>(false);
   const [oto, setOto] = React.useState<Oto | null>(null);
+  const [encoding, setEncoding] = React.useState<string>("SJIS");
 
   React.useEffect(() => {
     if (props.targetDir === null) return;
@@ -68,6 +69,8 @@ export const TargetDirDialogContent: React.FC<Props> = (props) => {
                 setOtoTemp={setOto}
                 setDialogOpen={props.setDialogOpen}
                 LoadOto={LoadOto}
+                encoding={encoding}
+                setEncoding={setEncoding}
               />
               <Divider />
               <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />

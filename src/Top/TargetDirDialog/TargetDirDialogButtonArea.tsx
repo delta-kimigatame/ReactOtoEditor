@@ -11,10 +11,9 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 export const TargetDirDialogButtonArea: React.FC<Props> = (props) => {
   const { t } = useTranslation();
-  const [encoding, setEncoding] = React.useState<string>("SJIS");
 
   const OnSelectChange = (e: SelectChangeEvent) => {
-    setEncoding(e.target.value);
+    props.setEncoding(e.target.value);
     props.setOtoTemp(null);
     props.LoadOto(e.target.value);
   };
@@ -43,7 +42,7 @@ export const TargetDirDialogButtonArea: React.FC<Props> = (props) => {
           label={"encoding"}
           variant="filled"
           color="primary"
-          value={encoding}
+          value={props.encoding}
           onChange={OnSelectChange}
         >
           <MenuItem value={"UTF8"}>UTF-8</MenuItem>
@@ -60,4 +59,6 @@ type Props = {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   setOtoTemp: React.Dispatch<React.SetStateAction<Oto | null>>;
   LoadOto: (encoding_?: string) => void;
+  encoding:string;
+  setEncoding:React.Dispatch<React.SetStateAction<string>>
 };
