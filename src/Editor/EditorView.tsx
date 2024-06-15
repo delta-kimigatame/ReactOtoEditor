@@ -56,6 +56,10 @@ export const EditorView: React.FC<Props> = (props) => {
         setPixelPerMsec={setPixelPerMsec}
         mode={props.mode}
         wav={props.wav}
+        overlapLock={props.overlapLock}
+        touchMode={props.touchMode}
+        setOverlapLock={props.setOverlapLock}
+        setTouchMode={props.setTouchMode}
       />
     </>
   );
@@ -70,4 +74,8 @@ type Props = {
   targetDir: string;
   wav: Wave;
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
+  overlapLock: boolean;
+  touchMode: boolean;
+  setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
+  setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
 };

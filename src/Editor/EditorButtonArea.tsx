@@ -139,16 +139,25 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
           <EditorButton
             mode={props.mode}
             size={size}
-            icon={<LockIcon sx={{ fontSize: iconSize }} />}
+            icon={<LockIcon sx={{ fontSize: iconSize }} color={props.overlapLock ? "info" : "inherit"}/>}
             title={t("editor.lockOverlap")}
-            onClick={() => {}}
+            onClick={() => {
+              props.setOverlapLock(!props.overlapLock);
+            }}
           />
           <EditorButton
             mode={props.mode}
             size={size}
-            icon={<TouchAppIcon sx={{ fontSize: iconSize }} />}
+            icon={
+              <TouchAppIcon
+                sx={{ fontSize: iconSize }}
+                color={props.touchMode ? "info" : "inherit"}
+              />
+            }
             title={t("editor.touchMode")}
-            onClick={() => {}}
+            onClick={() => {
+              props.setTouchMode(!props.touchMode);
+            }}
           />
         </StyledBox>
         <StyledBox>
@@ -235,6 +244,10 @@ type Props = {
   pixelPerMsec: number;
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
   mode: PaletteMode;
+  overlapLock: boolean;
+  touchMode: boolean;
+  setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
+  setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const StyledBox = styled(Box)({
