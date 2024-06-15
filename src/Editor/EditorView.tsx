@@ -23,11 +23,16 @@ export const EditorView: React.FC<Props> = (props) => {
     375 - layout.headerHeight - tableHeight - buttonAreaHeight
   );
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
+  const [updateSignal, setUpdateSignal] = React.useState<number>(0);
   React.useEffect(() => {
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
     );
   }, [props.windowSize, tableHeight, buttonAreaHeight]);
+
+  React.useMemo(() => {
+    setUpdateSignal(0);
+  }, [props.record]);
 
   return (
     <>
@@ -38,12 +43,14 @@ export const EditorView: React.FC<Props> = (props) => {
         wav={props.wav}
         record={props.record}
         pixelPerMsec={pixelPerMsec}
+        setUpdateSignal={setUpdateSignal}
       />
       <EditorTable
         windowSize={props.windowSize}
         setTableHeight={setTableHeight}
         record={props.record}
         targetDir={props.targetDir}
+        updateSignal={updateSignal}
       />
       <EditorButtonArea
         windowSize={props.windowSize}

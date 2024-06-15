@@ -16,6 +16,7 @@ export const CanvasBase: React.FC<Props> = (props) => {
   const [width, setWidth] = React.useState<number>(props.canvasSize[0]);
   const [height, setHeight] = React.useState<number>(props.canvasSize[1]);
   const [specMax, setSpecMax] = React.useState<number>(0);
+  const [scrollable, setScrollable] = React.useState<boolean>(false);
   const [frameWidth, setFrameWidth] = React.useState<number>(
     (fftSetting.sampleRate * props.pixelPerMsec) / 1000
   );
@@ -53,11 +54,11 @@ export const CanvasBase: React.FC<Props> = (props) => {
     setFrameWidth((fftSetting.sampleRate * props.pixelPerMsec) / 1000);
   }, [props.pixelPerMsec]);
 
-  React.useEffect(()=>{
-    if(props.wav!==null){
-      setWidth(Math.ceil(props.wav.data.length / frameWidth))
+  React.useEffect(() => {
+    if (props.wav !== null) {
+      setWidth(Math.ceil(props.wav.data.length / frameWidth));
     }
-  },[frameWidth])
+  }, [frameWidth]);
 
   const SetScrolled = (point: number) => {
     boxRef.current.scrollTo(Math.max(point), 0);
@@ -67,14 +68,19 @@ export const CanvasBase: React.FC<Props> = (props) => {
     <>
       <Box
         ref={boxRef}
-        sx={{ overflowX: "scroll", height: height, overflowY: "hidden" }}
+        sx={{
+          overflowX: scrollable ? "scroll" : "hidden",
+          height: height,
+          overflowY: "hidden",
+        }}
       >
         <WavCanvas
           canvasSize={[width, height / 2]}
           mode={props.mode}
           color={props.color}
           wav={props.wav}
-        /><br />
+        />
+        <br />
         <SpecCanvas
           canvasSize={[width, height / 2]}
           mode={props.mode}
@@ -83,14 +89,18 @@ export const CanvasBase: React.FC<Props> = (props) => {
           spec={spec}
           specMax={specMax}
           frameWidth={frameWidth}
-        /><br />
+        />
+        <br />
         <OtoCanvas
-          canvasSize={[width, height]}
+          canvasWidth={width}
+          canvasHeight={height}
           mode={props.mode}
           record={props.record}
           boxRef={boxRef}
           pixelPerMsec={props.pixelPerMsec}
           SetSclolled={SetScrolled}
+          setUpdateSignal={props.setUpdateSignal}
+          setScrollable={setScrollable}
         />
       </Box>
     </>
@@ -104,4 +114,5 @@ type Props = {
   wav: Wave;
   record: OtoRecord;
   pixelPerMsec: number;
+  setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
 };
