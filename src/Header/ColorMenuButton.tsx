@@ -14,10 +14,10 @@ import { specColor } from "../settings/colors";
 
 /**
  * 表示色を切り替えるボタン
- * @param props {@link Props}
+ * @param props {@link ColorMenuProps}
  * @returns 表示色を切り替えるボタン
  */
-export const ColorMenuButton: React.FC<Props> = (props) => {
+export const ColorMenuButton: React.FC<ColorMenuProps> = (props) => {
   const { t } = useTranslation();
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
@@ -52,7 +52,7 @@ export const ColorMenuButton: React.FC<Props> = (props) => {
   );
 };
 
-interface Props{
+export interface ColorMenuProps{
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**キャンバスの色設定 */
@@ -67,7 +67,7 @@ interface Props{
  * @param color キャンバスの色設定
  * @returns グラデーション設定用の文字列
  */
-const GetLinearGradient = (mode: PaletteMode, color: string): string => {
+export const GetLinearGradient = (mode: PaletteMode, color: string): string => {
   let value = "linear-gradient(to top";
   specColor[color][mode].forEach((c) => {
     value += ",rgb(" + c.r + "," + c.g + "," + c.b + ")";
@@ -81,7 +81,7 @@ const GetLinearGradient = (mode: PaletteMode, color: string): string => {
  * @param param0
  * @returns 色設定メニューのアイテム
  */
-const ColorMenuItem: React.FC<{
+export const ColorMenuItem: React.FC<{
   /** ダークモードかライトモードか*/
   mode: PaletteMode;
   /** キャンバスの色設定*/
@@ -112,7 +112,7 @@ const ColorMenuItem: React.FC<{
  * @param param0
  * @returns 色設定メニューにサンプルで表示するアイコン
  */
-const ColorAvatar: React.FC<{
+export const ColorAvatar: React.FC<{
   /** ダークモードかライトモードか*/
   mode: PaletteMode;
   /** キャンバスの色設定*/

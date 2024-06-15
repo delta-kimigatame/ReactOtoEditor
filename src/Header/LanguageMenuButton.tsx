@@ -9,10 +9,10 @@ import Avatar from "@mui/material/Avatar";
 
 /**
  * 言語を切り替えるボタン
- * @param props {@link Props}
+ * @param props {@link LanguageButtonProps}
  * @returns 言語を切り替えるボタン
  */
-export const LanguageMenuButton: React.FC<Props> = (props) => {
+export const LanguageMenuButton: React.FC<LanguageButtonProps> = (props) => {
   const { t } = useTranslation();
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
@@ -57,7 +57,7 @@ export const LanguageMenuButton: React.FC<Props> = (props) => {
   );
 };
 
-interface Props {
+export interface LanguageButtonProps {
   /**現在の設定言語 */
   language: string;
   /**設定言語を変更する */

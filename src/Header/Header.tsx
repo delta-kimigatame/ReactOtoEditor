@@ -17,10 +17,10 @@ import { ColorMenuButton } from "./ColorMenuButton";
 
 /**
  * ヘッダ
- * @param props {@link Props}
+ * @param props {@link HeaderProps}
  * @returns ヘッダ全体
  */
-export const Header: React.FC<Props> = (props) => {
+export const Header: React.FC<HeaderProps> = (props) => {
   /** テキスト表示領域 */
   const [textWidth, setTextWidth] = React.useState<number>(
     props.windowSize[0] - 120 - 24 - 32
@@ -82,7 +82,7 @@ export const Header: React.FC<Props> = (props) => {
   );
 };
 
-interface Props {
+export interface HeaderProps {
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**ダークモードかライトモードかを変更する */

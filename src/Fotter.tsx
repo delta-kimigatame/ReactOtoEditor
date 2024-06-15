@@ -1,5 +1,6 @@
 import * as React from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { ThemeOptions } from "@mui/material/styles";
 
 import { useTranslation } from "react-i18next";
 import { setting } from "./settings/setting";
@@ -101,5 +102,6 @@ export const Footer: React.FC<FooterProps> = (props) => {
 };
 
 export interface FooterProps {
-  theme;
+  /** テーマ設定 */
+  theme:ThemeOptions;
 };
