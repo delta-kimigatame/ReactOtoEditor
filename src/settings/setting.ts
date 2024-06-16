@@ -16,8 +16,10 @@ export const fftSetting: { [key: string]: number } = {
   maxFrq: 8000,
 };
 export const oto: { [key: string]: number } = {
-  metronomeFlame:66150
-}
+  metronomeFlame: 66150,
+  minParams: 0.001,
+  defaultRange: 10,
+};
 export const layout: { [key: string]: number } = {
   requireHeader: 600,
   canvasMinHeight: 250,
@@ -27,5 +29,5 @@ export const layout: { [key: string]: number } = {
   iconPadding: 16,
   tableMinSize: 75,
   headerHeight: 40,
-  tableBrakePoint:800,
+  tableBrakePoint: 800,
 };

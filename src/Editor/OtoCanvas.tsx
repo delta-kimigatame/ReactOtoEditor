@@ -1,12 +1,11 @@
 import * as React from "react";
 import { PaletteMode } from "@mui/material";
 
-import {
-  lineColorPallet,
-} from "../settings/colors";
+import { lineColorPallet } from "../settings/colors";
 
 import { GetColor } from "../Lib/Color";
 import OtoRecord from "utauoto/dist/OtoRecord";
+import { oto } from "../settings/setting";
 
 export const OtoCanvas: React.FC<Props> = (props) => {
   const canvas = React.useRef(null);
@@ -97,7 +96,12 @@ export const OtoCanvas: React.FC<Props> = (props) => {
       const point =
         (props.record.offset + props.record.velocity) / props.pixelPerMsec;
       ctx.fillStyle = "rgba(0,0,255," + alpha + ")";
-      ctx.fillRect(spoint, props.canvasHeight / 4, point - spoint, props.canvasHeight);
+      ctx.fillRect(
+        spoint,
+        props.canvasHeight / 4,
+        point - spoint,
+        props.canvasHeight
+      );
       ctx.strokeStyle = "rgb(0,0,255)";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -146,7 +150,7 @@ export const OtoCanvas: React.FC<Props> = (props) => {
         setAlias(props.record.alias);
       }
     }
-  }, [props.canvasWidth,props.canvasHeight]);
+  }, [props.canvasWidth, props.canvasHeight]);
 
   React.useEffect(() => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
@@ -154,20 +158,118 @@ export const OtoCanvas: React.FC<Props> = (props) => {
       RenderAll(ctx);
     }
   }, [lineColor]);
-
+  const UpdateOto = (target: string, clickX: number) => {
+    if (target === "offset") {
+      const moveValue = props.record.offset - clickX * props.pixelPerMsec;
+      props.record.offset -= moveValue;
+      props.record.pre = Math.max(props.record.pre + moveValue, 0);
+      if (props.overlapLock) {
+        props.record.overlap = props.record.pre / 3;
+      } else {
+        props.record.overlap += moveValue;
+      }
+      props.record.velocity = Math.max(
+        props.record.velocity + moveValue,
+        oto.minParams
+      );
+      if (props.record.blank < 0) {
+        props.record.blank = Math.min(
+          props.record.blank - moveValue,
+          -2 * oto.minParams
+        );
+      }
+    } else if (target === "overlap") {
+      const moveValue =
+        props.record.offset +
+        props.record.overlap -
+        clickX * props.pixelPerMsec;
+      props.record.overlap -= moveValue;
+    } else if (target === "pre") {
+      const moveValue =
+        props.record.offset + props.record.pre - clickX * props.pixelPerMsec;
+      props.record.offset = props.record.offset - moveValue;
+    } else if (target === "velocity") {
+      const moveValue =
+        props.record.offset +
+        props.record.velocity -
+        clickX * props.pixelPerMsec;
+      props.record.velocity = Math.max(
+        props.record.velocity - moveValue,
+        oto.minParams
+      );
+      props.record.blank = Math.min(
+        props.record.blank,
+        -oto.minParams - props.record.velocity
+      );
+    } else if (target === "blank") {
+      const newBlankPos = props.record.offset - clickX * props.pixelPerMsec;
+      props.record.blank = Math.min(
+        newBlankPos,
+        -oto.minParams - props.record.velocity
+      );
+    }
+  };
   const OnMouseDown = (e) => {
-    const t: string | null = "pre";
+    let t: string | null = null;
+    const clickX =
+      props.boxRef.current.scrollLeft +
+      (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
+    const clickY = e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
+
+    if (props.touchMode) {
+      t = "pre";
+    } else {
+      const offsetPos = props.record.offset / props.pixelPerMsec;
+      const overlapPos =
+        (props.record.offset + props.record.overlap) / props.pixelPerMsec;
+      const preutterPos =
+        (props.record.offset + props.record.pre) / props.pixelPerMsec;
+      const velocityPos =
+        (props.record.offset + props.record.velocity) / props.pixelPerMsec;
+      let blankPos =
+        (props.record.offset - props.record.blank) / props.pixelPerMsec;
+      if (props.record.blank >= 0) {
+        blankPos = props.canvasWidth - props.record.blank / props.pixelPerMsec;
+      }
+
+      let minRange = oto.defaultRange;
+      if (Math.abs(offsetPos - clickX) < minRange) {
+        minRange = Math.abs(offsetPos - clickX);
+        t = "offset";
+      } 
+      if (
+        Math.abs(overlapPos - clickX) < minRange &&
+        !props.overlapLock
+      ) {
+        minRange = Math.abs(overlapPos - clickX);
+        t = "overlap";
+      } 
+      if (
+        Math.abs(preutterPos - clickX) < minRange ||
+        (Math.abs(preutterPos - clickX) < oto.defaultRange &&
+          clickY >= props.canvasHeight / 8 &&
+          clickY > props.canvasHeight / 4)
+      ) {
+        minRange = Math.abs(preutterPos - clickX);
+        t = "pre";
+      } 
+      if (Math.abs(velocityPos - clickX) < minRange ||
+      (Math.abs(velocityPos - clickX) < oto.defaultRange &&
+        clickY >= props.canvasHeight / 4 &&
+        clickY > props.canvasHeight / 2)) {
+        minRange = Math.abs(velocityPos - clickX);
+        t = "velocity";
+      } 
+      if (Math.abs(blankPos - clickX) < minRange) {
+        minRange = Math.abs(blankPos - clickX);
+        t = "blank";
+      }
+    }
+
     setTargetParam(t);
     if (t !== null) {
-      const clickX =
-        props.boxRef.current.scrollLeft +
-        (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
       const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-      if (t === "pre") {
-        const moveValue =
-          props.record.offset + props.record.pre - clickX * props.pixelPerMsec;
-        props.record.offset = props.record.offset - moveValue;
-      }
+      UpdateOto(t, clickX);
       RenderAll(ctx);
     }
   };
@@ -178,11 +280,7 @@ export const OtoCanvas: React.FC<Props> = (props) => {
         props.boxRef.current.scrollLeft +
         (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
       const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-      if (targetParam === "pre") {
-        const moveValue =
-          props.record.offset + props.record.pre - clickX * props.pixelPerMsec;
-        props.record.offset = props.record.offset - moveValue;
-      }
+      UpdateOto(targetParam, clickX);
       RenderAll(ctx);
     }
   };
@@ -219,8 +317,8 @@ export const OtoCanvas: React.FC<Props> = (props) => {
 };
 
 type Props = {
-  canvasWidth:number;
-  canvasHeight:number;
+  canvasWidth: number;
+  canvasHeight: number;
   mode: PaletteMode;
   record: OtoRecord;
   boxRef: React.MutableRefObject<any>;
@@ -228,4 +326,6 @@ type Props = {
   SetSclolled: (number) => void;
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   setScrollable: React.Dispatch<React.SetStateAction<boolean>>;
+  touchMode: boolean;
+  overlapLock: boolean;
 };

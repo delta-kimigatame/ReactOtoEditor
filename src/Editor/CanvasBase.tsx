@@ -101,6 +101,8 @@ export const CanvasBase: React.FC<Props> = (props) => {
           SetSclolled={SetScrolled}
           setUpdateSignal={props.setUpdateSignal}
           setScrollable={setScrollable}
+          touchMode={props.touchMode}
+          overlapLock={props.overlapLock}
         />
       </Box>
     </>
@@ -115,4 +117,6 @@ type Props = {
   record: OtoRecord;
   pixelPerMsec: number;
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
+  touchMode: boolean;
+  overlapLock:boolean;
 };

@@ -44,6 +44,8 @@ export const EditorView: React.FC<Props> = (props) => {
         record={props.record}
         pixelPerMsec={pixelPerMsec}
         setUpdateSignal={setUpdateSignal}
+        touchMode={props.touchMode}
+        overlapLock={props.overlapLock}
       />
       <EditorTable
         windowSize={props.windowSize}
