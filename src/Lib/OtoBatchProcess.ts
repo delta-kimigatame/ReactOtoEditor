@@ -129,7 +129,7 @@ export const NegativeBlank = (
     oto.GetAliases(targetDir, f).forEach((a) => {
       const record = oto.GetRecord(targetDir, f, a);
       if (record.blank >= 0) {
-        const msLength = (wav.sampleRate * wav.data.length) / 1000;
+        const msLength = (wav.data.length / wav.sampleRate) * 1000;
         const blankPos = msLength - record.blank;
         record.blank = record.offset - blankPos;
       }
@@ -178,9 +178,7 @@ export const RemoveSurfix = (oto: Oto, targetDir: string, surfix: string) => {
 export const AddSurfix = (oto: Oto, targetDir: string, surfix: string) => {
   oto.GetFileNames(targetDir).forEach((f) => {
     oto.GetAliases(targetDir, f).forEach((a) => {
-      if (a.endsWith(surfix)) {
-        oto.SetAlias(targetDir, f, a, a + surfix);
-      }
+      oto.SetAlias(targetDir, f, a, a + surfix);
     });
   });
 };

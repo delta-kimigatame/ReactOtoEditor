@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { EditorTable } from "../EditorTable";
+import { TableDialogButtonArea } from "./TableDialogButtonArea";
 
 export const TableDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
@@ -33,7 +34,15 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogTitle>{t("tableDialog.title")}</DialogTitle>
+        <DialogTitle>
+          {t("tableDialog.title")}
+          <TableDialogButtonArea
+            setDialogOpen={props.setDialogOpen}
+            oto={props.oto}
+            zip={props.zip}
+            targetDir={props.targetDir}
+          />
+        </DialogTitle>
         <DialogContent>
           <EditorTable
             windowWidth={props.windowWidth}

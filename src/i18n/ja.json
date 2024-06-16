@@ -53,7 +53,11 @@
       "addParams":"指定パラメータの増減",
       "changeParams":"指定パラメータの変更",
       "aliasComplement":"を/ぢ/づの補完"
-    }
+    },
+    "targetTitle": "対象パラメータ",
+    "numberTitle":"数",
+    "stringTitle":"エイリアス",
+    "submit":"実行"
   },
   "editor": {
     "playBeforePreutter": "先行発声より前を再生",
