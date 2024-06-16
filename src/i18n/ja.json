@@ -14,44 +14,59 @@
     "privacyCookie": "当サイトでは、表示方法をカスタマイズするためにcookieを使用します。"
   },
   "loadZipDialog": {
-    "title":"ZIP読込",
-    "encodeCheck":"文字化け確認",
-    "encoding":"文字コード",
-    "reload":"指定文字コードで再読込",
-    "submit":"OK",
-    "error":"読込失敗"
+    "title": "ZIP読込",
+    "encodeCheck": "文字化け確認",
+    "encoding": "文字コード",
+    "reload": "指定文字コードで再読込",
+    "submit": "OK",
+    "error": "読込失敗"
   },
-  "targetDirDialog":{
-    "title":"原音設定するフォルダを選択",
-    "targetDir":"フォルダを選択",
-    "encodeCheck":"文字化け確認",
-    "encoding":"文字コード",
-    "reload":"指定文字コードで再読込",
-    "submit":"OK",
-    "NothingOto":"oto.iniが見つかりませんでした。"
+  "targetDirDialog": {
+    "title": "原音設定するフォルダを選択",
+    "targetDir": "フォルダを選択",
+    "encodeCheck": "文字化け確認",
+    "encoding": "文字コード",
+    "reload": "指定文字コードで再読込",
+    "submit": "OK",
+    "NothingOto": "oto.iniが見つかりませんでした。"
   },
-  "oto":{
-    "filename":"ファイル名",
-    "alias":"エイリアス",
-    "offset":"左ブランク",
-    "overlap":"オーバーラップ",
-    "preutter":"先行発声",
-    "velocity":"固定範囲",
-    "blank":"右ブランク",
-    "tableDialogTitle":"パラメータ一覧"
+  "oto": {
+    "filename": "ファイル名",
+    "alias": "エイリアス",
+    "offset": "左ブランク",
+    "overlap": "オーバーラップ",
+    "preutter": "先行発声",
+    "velocity": "固定範囲",
+    "blank": "右ブランク"
   },
-  "editor":{
-    "playBeforePreutter":"先行発声より前を再生",
-    "playAfterPreutter":"先行発声より後ろを再生",
-    "play":"メトロノームと合わせて再生",
-    "lockOverlap":"オーバーラップを常に先行発声の1/3にする",
-    "touchMode":"クリックした場所に先行発声が移動し、他のパラメータは追随します。個別のパラメータ操作はできません。",
-    "editAlias":"エイリアス編集",
-    "showTable":"一覧を表示",
-    "zoomin":"拡大",
-    "zoomout":"縮小",
-    "prev":"前のエイリアス",
-    "next":"次のエイリアス"
+  "tableDialog": {
+    "title": "一括処理",
+    "batchProcess": {
+      "wavNotFound": "wavが存在しない行を削除",
+      "recordNotFound": "データがないwavに対応する行を追加",
+      "numberingDuplicationAlias": "重複エイリアスに連番を振る",
+      "limitedNumber": "連番の数を制限する",
+      "negativeBlank": "右ブランクを負の数にする",
+      "forceOverlapRate": "オーバーラップを先行発声の1/3にする",
+      "removeSurfix":"エイリアスの末尾を削除",
+      "addSurfix":"エイリアスの末尾に文字を追加",
+      "addParams":"指定パラメータの増減",
+      "changeParams":"指定パラメータの変更",
+      "aliasComplement":"を/ぢ/づの補完"
+    }
+  },
+  "editor": {
+    "playBeforePreutter": "先行発声より前を再生",
+    "playAfterPreutter": "先行発声より後ろを再生",
+    "play": "メトロノームと合わせて再生",
+    "lockOverlap": "オーバーラップを常に先行発声の1/3にする",
+    "touchMode": "クリックした場所に先行発声が移動し、他のパラメータは追随します。個別のパラメータ操作はできません。",
+    "editAlias": "エイリアス編集",
+    "showTable": "一覧を表示",
+    "zoomin": "拡大",
+    "zoomout": "縮小",
+    "prev": "前のエイリアス",
+    "next": "次のエイリアス"
   },
   "color": {
     "gray": "白黒",

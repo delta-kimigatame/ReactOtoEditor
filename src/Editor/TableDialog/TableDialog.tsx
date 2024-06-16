@@ -33,7 +33,7 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
         >
           <CloseIcon />
         </IconButton>
-        <DialogTitle>{t("oto.tableDialogTitle")}</DialogTitle>
+        <DialogTitle>{t("tableDialog.title")}</DialogTitle>
         <DialogContent>
           <EditorTable
             windowWidth={props.windowWidth}
