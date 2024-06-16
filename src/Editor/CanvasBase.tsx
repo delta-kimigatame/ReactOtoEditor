@@ -13,8 +13,8 @@ import OtoRecord from "utauoto/dist/OtoRecord";
 
 export const CanvasBase: React.FC<Props> = (props) => {
   const [spec, setSpec] = React.useState<Array<Array<number>> | null>(null);
-  const [width, setWidth] = React.useState<number>(props.canvasSize[0]);
-  const [height, setHeight] = React.useState<number>(props.canvasSize[1]);
+  const [width, setWidth] = React.useState<number>(props.canvasWidth);
+  const [height, setHeight] = React.useState<number>(props.canvasHeight);
   const [specMax, setSpecMax] = React.useState<number>(0);
   const [scrollable, setScrollable] = React.useState<boolean>(false);
   const [frameWidth, setFrameWidth] = React.useState<number>(
@@ -23,11 +23,11 @@ export const CanvasBase: React.FC<Props> = (props) => {
   const boxRef = React.useRef(null);
 
   React.useEffect(() => {
-    setHeight(props.canvasSize[1]);
+    setHeight(props.canvasHeight);
     if (props.wav === null) {
-      setWidth(props.canvasSize[0]);
+      setWidth(props.canvasWidth);
     }
-  }, [props.canvasSize]);
+  }, [props.canvasHeight,props.canvasWidth]);
 
   React.useEffect(() => {
     if (props.wav === null) {
@@ -75,14 +75,16 @@ export const CanvasBase: React.FC<Props> = (props) => {
         }}
       >
         <WavCanvas
-          canvasSize={[width, height / 2]}
+          canvasWidth={width}
+          canvasHeight={height / 2}
           mode={props.mode}
           color={props.color}
           wav={props.wav}
         />
         <br />
         <SpecCanvas
-          canvasSize={[width, height / 2]}
+          canvasWidth={width}
+          canvasHeight={height / 2}
           mode={props.mode}
           color={props.color}
           wav={props.wav}
@@ -110,7 +112,8 @@ export const CanvasBase: React.FC<Props> = (props) => {
 };
 
 type Props = {
-  canvasSize: [number, number];
+  canvasWidth:number;
+  canvasHeight:number;
   mode: PaletteMode;
   color: string;
   wav: Wave;
@@ -118,5 +121,5 @@ type Props = {
   pixelPerMsec: number;
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   touchMode: boolean;
-  overlapLock:boolean;
+  overlapLock: boolean;
 };

@@ -6,12 +6,18 @@ import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
 import { useTranslation } from "react-i18next";
+import { useCookies } from "react-cookie";
 
 import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
 import { EditorTable } from "./EditorTable";
 
 export const EditorView: React.FC<Props> = (props) => {
+  // cookieの取得
+  const [cookies, setCookie, removeCookie] = useCookies([
+    "overlapLock",
+    "touchMode",
+  ]);
   const { t } = useTranslation();
   const [tableHeight, setTableHeight] = React.useState<number>(
     layout.tableMinSize
@@ -24,6 +30,16 @@ export const EditorView: React.FC<Props> = (props) => {
   );
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   const [updateSignal, setUpdateSignal] = React.useState<number>(0);
+
+  const overlapLock_: boolean =
+    cookies.overlapLock !== undefined ? cookies.overlapLock : true;
+  const touchMode_: boolean =
+    cookies.touchMode !== undefined ? cookies.touchMode : true;
+  const [overlapLock, setOverlapLock] = React.useState<boolean>(overlapLock_);
+  const [touchMode, setTouchMode] = React.useState<boolean>(touchMode_);
+  React.useMemo(() => setCookie("touchMode", touchMode), [touchMode]);
+  React.useMemo(() => setCookie("overlapLock", overlapLock), [overlapLock]);
+
   React.useEffect(() => {
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
@@ -37,15 +53,16 @@ export const EditorView: React.FC<Props> = (props) => {
   return (
     <>
       <CanvasBase
-        canvasSize={[props.windowSize[0], canvasHeight]}
+        canvasWidth={props.windowSize[0]}
+        canvasHeight={canvasHeight}
         mode={props.mode}
         color={props.color}
         wav={props.wav}
         record={props.record}
         pixelPerMsec={pixelPerMsec}
         setUpdateSignal={setUpdateSignal}
-        touchMode={props.touchMode}
-        overlapLock={props.overlapLock}
+        touchMode={touchMode}
+        overlapLock={overlapLock}
       />
       <EditorTable
         windowSize={props.windowSize}
@@ -65,10 +82,10 @@ export const EditorView: React.FC<Props> = (props) => {
         setPixelPerMsec={setPixelPerMsec}
         mode={props.mode}
         wav={props.wav}
-        overlapLock={props.overlapLock}
-        touchMode={props.touchMode}
-        setOverlapLock={props.setOverlapLock}
-        setTouchMode={props.setTouchMode}
+        overlapLock={overlapLock}
+        touchMode={touchMode}
+        setOverlapLock={setOverlapLock}
+        setTouchMode={setTouchMode}
       />
     </>
   );
@@ -83,8 +100,4 @@ type Props = {
   targetDir: string;
   wav: Wave;
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
-  overlapLock: boolean;
-  touchMode: boolean;
-  setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
-  setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
 };

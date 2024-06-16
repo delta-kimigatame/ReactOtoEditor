@@ -34,15 +34,14 @@ export const SpecCanvas: React.FC<Props> = (props) => {
     wav: Wave,
     spec: Array<Array<number>>
   ): Promise<void> => {
-    const [width, height] = props.canvasSize;
-    ctx.clearRect(0, height + 1, width, height);
+    ctx.clearRect(0, props.canvasHeight + 1, props.canvasWidth, props.canvasHeight);
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, height + 1, width, height);
+    ctx.fillRect(0, props.canvasHeight + 1, props.canvasWidth, props.canvasHeight);
     const rh = Math.ceil(
       fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
     );
-    const h = height / rh;
-    const w = (width / wav.data.length) * props.frameWidth;
+    const h = props.canvasHeight / rh;
+    const w = (props.canvasWidth / wav.data.length) * props.frameWidth;
     for (let i = 0; i < wav.data.length / props.frameWidth; i++) {
       const timeIndex1 = Math.min(
         Math.floor((i * props.frameWidth) / fftSetting.windowSize),
@@ -64,7 +63,7 @@ export const SpecCanvas: React.FC<Props> = (props) => {
         ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
         ctx.fillRect(
           i * w + fftSetting.fftsize / props.frameWidth,
-          height - h * (j + 1),
+          props.canvasHeight - h * (j + 1),
           w,
           h
         );
@@ -74,7 +73,7 @@ export const SpecCanvas: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     OnChangeSpec();
-  }, [props.spec, fillColor, props.canvasSize]);
+  }, [props.spec, fillColor, props.canvasWidth,props.canvasHeight]);
 
   const OnChangeSpec = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
@@ -87,8 +86,8 @@ export const SpecCanvas: React.FC<Props> = (props) => {
     <>
       <canvas
         id="specCanvas"
-        width={props.canvasSize[0]}
-        height={props.canvasSize[1]}
+        width={props.canvasWidth}
+        height={props.canvasHeight}
         ref={canvas}
       />
     </>
@@ -96,7 +95,8 @@ export const SpecCanvas: React.FC<Props> = (props) => {
 };
 
 type Props = {
-  canvasSize: [number, number];
+  canvasWidth:number;
+  canvasHeight:number;
   mode: PaletteMode;
   color: string;
   wav: Wave;

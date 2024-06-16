@@ -35,8 +35,6 @@ export const App: React.FC = () => {
     "mode",
     "color",
     "language",
-    "overlapLock",
-    "touchMode",
   ]);
   
   const mode_: PaletteMode =
@@ -48,15 +46,9 @@ export const App: React.FC = () => {
   const color_: string = cookies.color !== undefined ? cookies.color : "gray";
   const language_: string =
     cookies.language !== undefined ? cookies.language : "ja";
-  const overlapLock_: boolean =
-    cookies.overlapLock !== undefined ? cookies.overlapLock : true;
-  const touchMode_: boolean =
-    cookies.touchMode !== undefined ? cookies.touchMode : true;
   const [mode, setMode] = React.useState<PaletteMode>(mode_);
   const [color, setColor] = React.useState<string>(color_);
   const [language, setLanguage] = React.useState<string>(language_);
-  const [overlapLock, setOverlapLock] = React.useState<boolean>(overlapLock_);
-  const [touchMode, setTouchMode] = React.useState<boolean>(touchMode_);
   const [readZip, setReadZip] = React.useState<{
     [key: string]: JSZip.JSZipObject;
   } | null>(null);
@@ -78,8 +70,6 @@ export const App: React.FC = () => {
     setCookie("language", language);
     i18n.changeLanguage(language);
   }, [language]);
-  React.useMemo(() => setCookie("touchMode", touchMode), [touchMode]);
-  React.useMemo(() => setCookie("overlapLock", overlapLock), [overlapLock]);
 
   const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
@@ -160,10 +150,6 @@ export const App: React.FC = () => {
           targetDir={targetDir}
           wav={wav}
           setRecord={setRecord}
-          overlapLock={overlapLock}
-          touchMode={touchMode}
-          setOverlapLock={setOverlapLock}
-          setTouchMode={setTouchMode}
         />
       )}
       {oto === null && (

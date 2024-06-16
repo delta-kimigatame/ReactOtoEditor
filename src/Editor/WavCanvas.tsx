@@ -36,15 +36,14 @@ export const WavCanvas: React.FC<Props> = (props) => {
   }, [props.mode]);
 
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
-    const [width, height] = props.canvasSize;
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, width, height);
+    ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, height / 2);
-    ctx.lineTo(width, height / 2);
+    ctx.moveTo(0, props.canvasHeight / 2);
+    ctx.lineTo(props.canvasWidth, props.canvasHeight / 2);
     ctx.stroke();
   };
 
@@ -59,22 +58,21 @@ export const WavCanvas: React.FC<Props> = (props) => {
     ctx: CanvasRenderingContext2D,
     wav: Wave
   ): Promise<void> => {
-    const [width, height] = props.canvasSize;
     RenderBase(ctx);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
-    ctx.moveTo(0, height / 2);
-    ctx.lineTo(width, height / 2);
+    ctx.moveTo(0, props.canvasHeight / 2);
+    ctx.lineTo(props.canvasWidth, props.canvasHeight / 2);
     ctx.stroke();
     ctx.strokeStyle = wavColor;
     ctx.lineWidth = 1;
     const maxValue = 2 ** (wav.bitDepth - 1) - 1;
     ctx.beginPath();
-    ctx.moveTo(0, height / 2);
+    ctx.moveTo(0, props.canvasHeight / 2);
     for (let i = 0; i < wav.data.length; i++) {
       ctx.lineTo(
-        (i / wav.data.length) * width,
-        ((-wav.data[i] / maxValue) * height) / 2 + height / 2
+        (i / wav.data.length) * props.canvasWidth,
+        ((-wav.data[i] / maxValue) * props.canvasHeight) / 2 + props.canvasHeight / 2
       );
     }
     ctx.stroke();
@@ -82,7 +80,7 @@ export const WavCanvas: React.FC<Props> = (props) => {
 
   React.useEffect(() => {
     OnChangeWav();
-  }, [props.wav, wavColor,props.canvasSize]);
+  }, [props.wav, wavColor,props.canvasWidth,props.canvasHeight]);
 
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
@@ -95,8 +93,8 @@ export const WavCanvas: React.FC<Props> = (props) => {
     <>
       <canvas
         id="wavCanvas"
-        width={props.canvasSize[0]}
-        height={props.canvasSize[1]}
+        width={props.canvasWidth}
+        height={props.canvasHeight}
         ref={canvas}
       />
     </>
@@ -104,7 +102,8 @@ export const WavCanvas: React.FC<Props> = (props) => {
 };
 
 type Props = {
-  canvasSize: [number, number];
+  canvasWidth:number;
+  canvasHeight:number;
   mode: PaletteMode;
   color: string;
   wav: Wave;
