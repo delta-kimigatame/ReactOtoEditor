@@ -1,4 +1,5 @@
 import * as React from "react";
+import JSZip from "jszip";
 import { PaletteMode } from "@mui/material";
 import { CanvasBase } from "./CanvasBase";
 import { Oto } from "utauoto";
@@ -107,6 +108,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         touchMode={touchMode}
         setOverlapLock={setOverlapLock}
         setTouchMode={setTouchMode}
+        zip={props.zip}
       />
     </>
   );
@@ -129,4 +131,8 @@ export interface EditorViewProps {
   wav: Wave;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
+  /** zipデータ */
+  zip: {
+    [key: string]: JSZip.JSZipObject;
+  } | null;
 }

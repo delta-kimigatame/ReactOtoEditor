@@ -1,4 +1,5 @@
 import * as React from "react";
+import JSZip from "jszip";
 import { styled } from "@mui/system";
 import { PaletteMode } from "@mui/material";
 import { Oto } from "utauoto";
@@ -23,6 +24,7 @@ import { PrevAliasButton } from "./EditButtn/PrevAliasButtn";
 import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
 import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
 import { PlayButton } from "./EditButtn/PlayButton";
+import { TableDialog } from "./TableDialog/TableDialog";
 
 /**
  * 編集画面の操作ボタン
@@ -43,12 +45,14 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const [fileIndex, setFileIndex] = React.useState<number>(0);
   /** 現在のエイリアスのインデックス */
   const [aliasIndex, setAliasIndex] = React.useState<number>(0);
+  /** TableDialogの表示 */
+  const [tableDialogOpen, setTableDialogOpen] = React.useState<boolean>(false);
 
   /** 画面サイズが変わった際、ボタンの大きさを再度算定する。 */
   React.useEffect(() => {
     CalcSize();
     props.setButtonAreaHeight(areaRef.current.getBoundingClientRect().height);
-  }, [props.windowWidth,props.windowHeight]);
+  }, [props.windowWidth, props.windowHeight]);
   const areaRef = React.useRef(null);
 
   /**
@@ -166,7 +170,12 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
           <EditorButton
             mode={props.mode}
             size={size}
-            icon={<LockIcon sx={{ fontSize: iconSize }} color={props.overlapLock ? "info" : "inherit"}/>}
+            icon={
+              <LockIcon
+                sx={{ fontSize: iconSize }}
+                color={props.overlapLock ? "info" : "inherit"}
+              />
+            }
             title={t("editor.lockOverlap")}
             onClick={() => {
               props.setOverlapLock(!props.overlapLock);
@@ -200,7 +209,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             size={size}
             icon={<TableViewIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.showTable")}
-            onClick={() => {}}
+            onClick={() => {setTableDialogOpen(true)}}
           />
         </StyledBox>
         <StyledBox>
@@ -256,15 +265,32 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
           />
         </StyledBox>
       </Paper>
+      <TableDialog
+        dialogOpen={tableDialogOpen}
+        setDialogOpen={setTableDialogOpen}
+        windowWidth={props.windowWidth}
+        windowHeight={props.windowHeight}
+        oto={props.oto}
+        record={props.record}
+        targetDir={props.targetDir}
+        updateSignal={0}
+        setRecord={props.setRecord}
+        fileIndex={fileIndex}
+        aliasIndex={aliasIndex}
+        setFileIndex={setFileIndex}
+        setAliasIndex={setAliasIndex}
+        setMaxAliasIndex={setMaxAliasIndex}
+        zip={props.zip}
+      />
     </>
   );
 };
 
 export interface EditorButtonAreaProps {
   /** 画面の横幅 */
-  windowWidth:number;
+  windowWidth: number;
   /** 画面の縦幅 */
-  windowHeight:number;
+  windowHeight: number;
   /** buttonAreaの高さを通知 */
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
   /** 現在編集対象になっているディレクトリ */
@@ -291,7 +317,11 @@ export interface EditorButtonAreaProps {
   setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
   /** touchmodeを使用するかを変更する */
   setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  /** zipデータ */
+  zip: {
+    [key: string]: JSZip.JSZipObject;
+  } | null;
+}
 
 /**
  * ボタンを格納するためのstyle付Box

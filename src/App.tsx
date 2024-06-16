@@ -150,6 +150,7 @@ export const App: React.FC = () => {
           targetDir={targetDir}
           wav={wav}
           setRecord={setRecord}
+          zip={readZip}
         />
       )}
       {oto === null && (

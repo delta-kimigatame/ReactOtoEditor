@@ -37,7 +37,8 @@
     "overlap":"オーバーラップ",
     "preutter":"先行発声",
     "velocity":"固定範囲",
-    "blank":"右ブランク"
+    "blank":"右ブランク",
+    "tableDialogTitle":"パラメータ一覧"
   },
   "editor":{
     "playBeforePreutter":"先行発声より前を再生",
