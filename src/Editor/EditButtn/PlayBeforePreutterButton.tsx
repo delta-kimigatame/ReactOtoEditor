@@ -8,9 +8,18 @@ import { useTranslation } from "react-i18next";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import { EditorButton } from "./EditorButton";
 
+/**
+ * 左ブランクから先行発声までを再生するボタン
+ * @param props 
+ * @returns 左ブランクから先行発声までを再生するボタン
+ */
 export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
 
+  /**
+   * 左ブランクから先行発声までを再生する処理
+   * @returns 
+   */
   const OnPlayBeforePreutter = () => {
     const audioContext = new AudioContext();
     const startFlame = (props.record.offset * props.wav.sampleRate) / 1000;
@@ -51,11 +60,17 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+interface Props {
+  /** 現在編集対象になっているディレクトリ */
   targetDir: string;
+  /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
+  /** 現在のrecordに関連するwavデータ */
   wav: Wave;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /** ボタンのサイズ */
   size: number;
+  /** アイコンのサイズ */
   iconSize: number;
 };

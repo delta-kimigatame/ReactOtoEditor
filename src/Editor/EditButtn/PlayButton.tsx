@@ -9,9 +9,16 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { EditorButton } from "./EditorButton";
 import { oto } from "../../settings/setting";
 
+/**
+ * メトロノームの4拍目に先行発声が合うように再生するボタン
+ * @param props 
+ * @returns メトロノームの4拍目に先行発声が合うように再生するボタン
+ */
 export const PlayButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
+  /** メトロノームのwavデータ */
   const [metronome, setMetronome] = React.useState<Wave>(null);
+  /** メトロノームのwavデータを読み込む処理 */
   React.useMemo(() => {
     fetch("/static/metronome.wav").then((res) => {
       res.arrayBuffer().then((buf) => {
@@ -21,6 +28,9 @@ export const PlayButton: React.FC<Props> = (props) => {
     });
   }, []);
 
+  /**
+   * メトロノームの4拍目に先行発声が合うように再生する処理
+   */
   const OnPlay = () => {
     const audioContext = new AudioContext();
     const startFlame = (props.record.offset * props.wav.sampleRate) / 1000;
@@ -73,11 +83,17 @@ export const PlayButton: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+interface Props {
+  /** 現在編集対象になっているディレクトリ */
   targetDir: string;
+  /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
+  /** 現在のrecordに関連するwavデータ */
   wav: Wave;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /** ボタンのサイズ */
   size: number;
+  /** アイコンのサイズ */
   iconSize: number;
 };

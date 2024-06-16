@@ -8,9 +8,17 @@ import { useTranslation } from "react-i18next";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { EditorButton } from "./EditorButton";
 
+/**
+ * 次のエイリアスに送るボタン
+ * @param props 
+ * @returns 次のエイリアスに送るボタン
+ */
 export const NextAliasButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
 
+  /**
+   * 次のエイリアスに送る処理
+   */
   const OnNextAlias = () => {
     if (props.maxAliasIndex === props.aliasIndex) {
       if (props.maxFileIndex !== props.fileIndex) {
@@ -49,19 +57,33 @@ export const NextAliasButton: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+interface Props {
+  /** 現在編集対象になっているディレクトリ */
   targetDir: string;
+  /** 原音設定データ */
   oto: Oto;
+  /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
+  /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /** ボタンのサイズ */
   size: number;
+  /** アイコンのサイズ */
   iconSize: number;
+  /** 現在のファイルのインデックス */
   fileIndex: number;
+  /** 現在のエイリアスのインデックス */
   aliasIndex: number;
+  /** ファイル数 */
   maxFileIndex: number;
+  /** 現在のファイルに登録されているエイリアス数 */
   maxAliasIndex: number;
+  /** 現在のファイルのインデックスを変更する処理 */
   setFileIndex: React.Dispatch<React.SetStateAction<number>>;
+  /** 現在のエイリアスのインデックスを変更する処理 */
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
 };

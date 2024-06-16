@@ -1,13 +1,18 @@
+import { Color } from "../Lib/Color";
+
+/** canvasの背景色 */
 export const backgroundColorPallet: { [mode: string]: Color } = {
   light: { r: 255, g: 255, b: 255 },
   dark: { r: 0, g: 0, b: 0 },
 };
 
+/** canvasの区切り線の色 */
 export const lineColorPallet: { [mode: string]: Color } = {
   dark: { r: 255, g: 255, b: 255 },
   light: { r: 0, g: 0, b: 0 },
 };
 
+/** 波形表示の色 */
 export const wavColorPallet: { [key: string]: { [mode: string]: Color } } = {
   gray: { dark: { r: 255, g: 255, b: 255 }, light: { r: 0, g: 0, b: 0 } },
   red: { dark: { r: 255, g: 0, b: 0 }, light: { r: 255, g: 0, b: 0 } },
@@ -18,6 +23,12 @@ export const wavColorPallet: { [key: string]: { [mode: string]: Color } } = {
   magenta: { dark: { r: 255, g: 0, b: 255 }, light: { r: 255, g: 0, b: 255 } },
   rainbow: { dark: { r: 255, g: 255, b: 255 }, light: { r: 0, g: 0, b: 0 } },
 };
+
+/**
+ * 1つの色設定からスペクトル表示用の色データ列を設定する
+ * @param color 最もスペクトルが強いときの色
+ * @returns 1つの色設定からスペクトル表示用の色データ列を設定する
+ */
 const SpecColorProvider = (color: Color): { [mode: string]: Array<Color> } => {
   const pallet = { dark: new Array<Color>(), light: new Array<Color>() };
   pallet["dark"].push(backgroundColorPallet["dark"]);
@@ -37,6 +48,7 @@ const SpecColorProvider = (color: Color): { [mode: string]: Array<Color> } => {
   return pallet;
 };
 
+/** スペクトル表示の色 */
 export const specColor: { [key: string]: { [mode: string]: Array<Color> } } = {
   gray: {
     light: [
@@ -84,9 +96,4 @@ export const specColor: { [key: string]: { [mode: string]: Array<Color> } } = {
       { r: 255, b: 0, g: 0 },
     ],
   },
-};
-type Color = {
-  r: number;
-  g: number;
-  b: number;
 };

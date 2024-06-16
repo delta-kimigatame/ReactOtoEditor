@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
-import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import TableViewIcon from "@mui/icons-material/TableView";
@@ -25,24 +24,39 @@ import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
 import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
 import { PlayButton } from "./EditButtn/PlayButton";
 
-export const EditorButtonArea: React.FC<Props> = (props) => {
+/**
+ * 編集画面の操作ボタン
+ * @param props {@link EditorButtonAreaProps}
+ * @returns 編集画面の操作ボタン
+ */
+export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const { t } = useTranslation();
+  /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
+  /** ボタンのアイコンサイズ */
   const [iconSize, setIconSize] = React.useState<number>(layout.minIconSize);
+  /** ファイル数 */
   const [maxFileIndex, setMaxFileIndex] = React.useState<number>(0);
+  /** 現在のファイルに登録されているエイリアス数 */
   const [maxAliasIndex, setMaxAliasIndex] = React.useState<number>(0);
+  /** 現在のファイルのインデックス */
   const [fileIndex, setFileIndex] = React.useState<number>(0);
+  /** 現在のエイリアスのインデックス */
   const [aliasIndex, setAliasIndex] = React.useState<number>(0);
 
+  /** 画面サイズが変わった際、ボタンの大きさを再度算定する。 */
   React.useEffect(() => {
     CalcSize();
     props.setButtonAreaHeight(areaRef.current.getBoundingClientRect().height);
-  }, [props.windowSize]);
+  }, [props.windowWidth,props.windowHeight]);
   const areaRef = React.useRef(null);
 
+  /**
+   * ボタンの大きさを算定する
+   */
   const CalcSize = () => {
-    const maxHeight = props.windowSize[1] - 319;
-    const maxWidth = props.windowSize[0] / 12;
+    const maxHeight = props.windowHeight - 319;
+    const maxWidth = props.windowWidth / 12;
     const s = Math.min(
       Math.max(
         Math.min(maxHeight - layout.iconPadding, maxWidth - layout.iconPadding),
@@ -54,6 +68,9 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     setIconSize(Math.min(Math.max(s - layout.iconPadding, layout.minIconSize)));
   };
 
+  /**
+   * 原音設定が初期化された際の処理
+   */
   React.useEffect(() => {
     if (props.oto === null) {
       setMaxFileIndex(0);
@@ -65,6 +82,9 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     }
   }, [props.oto]);
 
+  /**
+   * 選択中の原音設定レコードが変更された際の処理
+   */
   React.useEffect(() => {
     if (props.record === null) {
       setAliasIndex(0);
@@ -76,6 +96,9 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
     }
   }, [props.record]);
 
+  /**
+   * キャンバスの拡大
+   */
   const OnZoomIn = () => {
     if (props.pixelPerMsec === 20) {
       props.setPixelPerMsec(10);
@@ -87,6 +110,10 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
       props.setPixelPerMsec(1);
     }
   };
+
+  /**
+   * キャンバスの縮小
+   */
   const OnZoomOut = () => {
     if (props.pixelPerMsec === 1) {
       props.setPixelPerMsec(2);
@@ -233,23 +260,43 @@ export const EditorButtonArea: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
-  windowSize: [number, number];
+export interface EditorButtonAreaProps {
+  /** 画面の横幅 */
+  windowWidth:number;
+  /** 画面の縦幅 */
+  windowHeight:number;
+  /** buttonAreaの高さを通知 */
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
+  /** 現在編集対象になっているディレクトリ */
   targetDir: string;
+  /** 原音設定データ */
   oto: Oto;
+  /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
+  /** 現在のrecordに関連するwavデータ */
   wav: Wave;
+  /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
+  /** 横方向1pixelあたりが何msを表すか */
   pixelPerMsec: number;
+  /** 横方向1pixelあたりが何msを表すかを変更する処理 */
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /** overlaplackを使用するか */
   overlapLock: boolean;
+  /** touchmodeを使用するか */
   touchMode: boolean;
+  /** overlaplackを使用するかを変更する */
   setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
+  /** touchmodeを使用するかを変更する */
   setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
+/**
+ * ボタンを格納するためのstyle付Box
+ * 縦画面・横画面の自動切り替えを担う
+ */
 const StyledBox = styled(Box)({
   justifyContent: "space-around",
   display: "flex",

@@ -11,30 +11,46 @@ import {
 
 import { GetColor } from "../Lib/Color";
 
-export const WavCanvas: React.FC<Props> = (props) => {
+/**
+ * 波形を表示するキャンバス
+ * @param props {@link WavCanvasProps}
+ * @returns 波形を表示するキャンバス
+ */
+export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
+  /** canvasへのref */
   const canvas = React.useRef(null);
+  /** 色設定 */
   const [colorTheme, setColorTheme] = React.useState<string>(props.color);
+  /** 背景色 */
   const [backgroundColor, setBackgroundColor] = React.useState<string>(
     GetColor(backgroundColorPallet[props.mode])
   );
+  /** 区分線の色 */
   const [lineColor, setLineColor] = React.useState<string>(
     GetColor(lineColorPallet[props.mode])
   );
+  /** 波形の色 */
   const [wavColor, setWavColor] = React.useState<string>(
     GetColor(wavColorPallet[colorTheme][props.mode])
   );
 
+  /** 色設定が変更された際の処理 */
   React.useEffect(() => {
     setColorTheme(props.color);
     setWavColor(GetColor(wavColorPallet[props.color][props.mode]));
   }, [props.color]);
 
+  /** ライトモード・ダークモードが変更された際の処理 */
   React.useEffect(() => {
     setBackgroundColor(GetColor(backgroundColorPallet[props.mode]));
     setLineColor(GetColor(lineColorPallet[props.mode]));
     setWavColor(GetColor(wavColorPallet[colorTheme][props.mode]));
   }, [props.mode]);
 
+  /**
+   * canvasの初期化。0線の描画
+   * @param ctx canvasのコンテクスト
+   */
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
     ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
     ctx.fillStyle = backgroundColor;
@@ -47,6 +63,7 @@ export const WavCanvas: React.FC<Props> = (props) => {
     ctx.stroke();
   };
 
+  /** 線の色が変わった際にキャンバスを初期化する。 */
   React.useEffect(() => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx) {
@@ -54,6 +71,11 @@ export const WavCanvas: React.FC<Props> = (props) => {
     }
   }, [lineColor]);
 
+  /**
+   * wavの描画処理
+   * @param ctx canvasのコンテクスト
+   * @param wav 描画するwav
+   */
   const RenderWave = async (
     ctx: CanvasRenderingContext2D,
     wav: Wave
@@ -78,10 +100,14 @@ export const WavCanvas: React.FC<Props> = (props) => {
     ctx.stroke();
   };
 
+  /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */
   React.useEffect(() => {
     OnChangeWav();
   }, [props.wav, wavColor,props.canvasWidth,props.canvasHeight]);
 
+  /**
+   * 波形描画を非同期で実施する
+   */
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && props.wav !== null) {
@@ -101,10 +127,15 @@ export const WavCanvas: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface WavCanvasProps {
+  /** canvasの横幅 */
   canvasWidth:number;
+  /** canvasの縦幅 */
   canvasHeight:number;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /**キャンバスの色設定 */
   color: string;
+  /** 現在のrecordに関連するwavデータ */
   wav: Wave;
 };

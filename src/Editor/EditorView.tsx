@@ -12,40 +12,59 @@ import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
 import { EditorTable } from "./EditorTable";
 
-export const EditorView: React.FC<Props> = (props) => {
+/**
+ * エディタ画面。oto.ini読込後に表示される。
+ * @param props {@link EditorViewProps}
+ * @returns エディタ画面
+ */
+export const EditorView: React.FC<EditorViewProps> = (props) => {
   // cookieの取得
   const [cookies, setCookie, removeCookie] = useCookies([
     "overlapLock",
     "touchMode",
   ]);
   const { t } = useTranslation();
+  /** EditorTableの高さ */
   const [tableHeight, setTableHeight] = React.useState<number>(
     layout.tableMinSize
   );
+  /** buttonAreaの高さ */
   const [buttonAreaHeight, setButtonAreaHeight] = React.useState<number>(
     layout.minButtonSize + layout.iconPadding
   );
+  /** canvasの高さ */
   const [canvasHeight, setCanvasHeight] = React.useState<number>(
     375 - layout.headerHeight - tableHeight - buttonAreaHeight
   );
+  /** 横方向1pixelあたりが何msを表すか */
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
+  /** recordの更新をtableに通知するための変数 */
   const [updateSignal, setUpdateSignal] = React.useState<number>(0);
 
+  /** overlapLockの初期化 */
   const overlapLock_: boolean =
     cookies.overlapLock !== undefined ? cookies.overlapLock : true;
+  /** touchmodeの初期化 */
   const touchMode_: boolean =
     cookies.touchMode !== undefined ? cookies.touchMode : true;
+
+  /** overlaplackを使用するか */
   const [overlapLock, setOverlapLock] = React.useState<boolean>(overlapLock_);
+  /** touchmodeを使用するか */
   const [touchMode, setTouchMode] = React.useState<boolean>(touchMode_);
+  /** toutchModeが更新された際、cookieに保存する。 */
   React.useMemo(() => setCookie("touchMode", touchMode), [touchMode]);
+  /** overlapLockが更新された際、cookieに保存する。 */
   React.useMemo(() => setCookie("overlapLock", overlapLock), [overlapLock]);
 
+  /** 画面サイズが変更されたとき、canvasの大きさを設定する。 */
   React.useEffect(() => {
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
     );
   }, [props.windowSize, tableHeight, buttonAreaHeight]);
 
+  /** props.recordが変更されたとき、updateSignalを初期化する。 */
   React.useMemo(() => {
     setUpdateSignal(0);
   }, [props.record]);
@@ -65,14 +84,16 @@ export const EditorView: React.FC<Props> = (props) => {
         overlapLock={overlapLock}
       />
       <EditorTable
-        windowSize={props.windowSize}
+        windowWidth={props.windowSize[0]}
+        windowHeight={props.windowSize[1]}
         setTableHeight={setTableHeight}
         record={props.record}
         targetDir={props.targetDir}
         updateSignal={updateSignal}
       />
       <EditorButtonArea
-        windowSize={props.windowSize}
+        windowWidth={props.windowSize[0]}
+        windowHeight={props.windowSize[1]}
         setButtonAreaHeight={setButtonAreaHeight}
         oto={props.oto}
         record={props.record}
@@ -91,13 +112,21 @@ export const EditorView: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface EditorViewProps {
+  /** 画面サイズ */
   windowSize: [number, number];
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
+  /**キャンバスの色設定 */
   color: string;
+  /** 原音設定データ */
   oto: Oto;
+  /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
+  /** 現在編集対象になっているディレクトリ */
   targetDir: string;
+  /** 現在のrecordに関連するwavデータ */
   wav: Wave;
+  /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
-};
+}

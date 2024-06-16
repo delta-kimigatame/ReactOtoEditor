@@ -5,7 +5,12 @@ import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 
-export const EditorButton: React.FC<Props> = (props) => {
+/**
+ * 操作画面のボタンの共通部分
+ * @param props {@link EditorButtonProps}
+ * @returns 操作画面のボタンの共通部分
+ */
+export const EditorButton: React.FC<EditorButtonProps> = (props) => {
   return (
     <>
       <Tooltip title={props.title}>
@@ -37,12 +42,19 @@ export const EditorButton: React.FC<Props> = (props) => {
   );
 };
 
-type Props = {
+export interface EditorButtonProps {
+  /** ボタンのサイズ */
   size: number;
+  /** アイコンコンポーネント */
   icon: React.ReactElement;
+  /** ツールチップに表示するタイトル */
   title: string;
+  /** 背景色 */
   background?: string;
+  /** 無効化 */
   disabled?: boolean;
+  /** クリック時の処理 */
   onClick: () => void;
+  /**ダークモードかライトモードか */
   mode: PaletteMode;
 };
