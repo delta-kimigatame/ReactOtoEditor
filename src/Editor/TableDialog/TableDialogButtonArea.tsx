@@ -11,6 +11,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -20,6 +25,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   const [targetParam, setTargetParam] = React.useState<string>("offset");
   const [surfix, setSurfix] = React.useState<string>("");
   const [value, setValue] = React.useState<number>(0);
+  const [barOpen, setBarOpen] = React.useState<boolean>(false);
   const batchList: Array<BatchProcess> = React.useMemo(() => {
     const batches: Array<BatchProcess> = new Array();
     batches.push({
@@ -111,84 +117,100 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       batchList[batchIndex].endPoint(props.oto, props.targetDir, param);
     }
     props.setUpdateSignal(Math.random());
+    setBarOpen(true);
   };
 
   return (
     <>
-      <FormControl fullWidth sx={{ m: 1 }}>
-        <InputLabel>{t("tableDialog.title")}</InputLabel>
-        <Select
-          label="batch_process"
-          variant="filled"
-          color="primary"
-          value={batchIndex.toString()}
-          onChange={OnBatchProcessChange}
-        >
-          {batchList.map((bl, i) => (
-            <MenuItem value={i} key={"BP_" + i}>
-              {bl.description}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <TextField
-        fullWidth
-        variant="outlined"
-        sx={{
-          m: 1,
-          display: batchList[batchIndex].requireString !== true && "none",
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <InputLabel>{t("tableDialog.title")}</InputLabel>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FormControl fullWidth sx={{ m: 1 }}>
+            <Select
+              label="batch_process"
+              variant="filled"
+              color="primary"
+              value={batchIndex.toString()}
+              onChange={OnBatchProcessChange}
+            >
+              {batchList.map((bl, i) => (
+                <MenuItem value={i} key={"BP_" + i}>
+                  {bl.description}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <TextField
+            fullWidth
+            variant="outlined"
+            sx={{
+              m: 1,
+              display: batchList[batchIndex].requireString !== true && "none",
+            }}
+            label={t("tableDialog.stringTitle")}
+            value={surfix}
+            onChange={(e) => {
+              setSurfix(e.target.value);
+            }}
+          />
+          <TextField
+            fullWidth
+            variant="outlined"
+            sx={{
+              m: 1,
+              display: batchList[batchIndex].requireNumber !== true && "none",
+            }}
+            type="number"
+            label={t("tableDialog.numberTitle")}
+            value={value}
+            onChange={(e) => {
+              setValue(parseFloat(e.target.value));
+            }}
+          />
+          <FormControl
+            fullWidth
+            sx={{
+              m: 1,
+              display: batchList[batchIndex].requireTarget !== true && "none",
+            }}
+          >
+            <InputLabel>{t("tableDialog.targetTitle")}</InputLabel>
+            <Select
+              label="target"
+              variant="filled"
+              color="primary"
+              value={targetParam}
+              onChange={OnTargetParamChange}
+            >
+              <MenuItem value={"offset"}>{t("oto.offset")}</MenuItem>
+              <MenuItem value={"overlap"}>{t("oto.overlap")}</MenuItem>
+              <MenuItem value={"preutter"}>{t("oto.preutter")}</MenuItem>
+              <MenuItem value={"velocity"}>{t("oto.velocity")}</MenuItem>
+              <MenuItem value={"blank"}>{t("oto.blank")}</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            fullWidth
+            sx={{ m: 1 }}
+            variant="contained"
+            color="primary"
+            onClick={OnSubmitClick}
+          >
+            {t("tableDialog.submit")}
+          </Button>
+        </AccordionDetails>
+      </Accordion>
+      <Snackbar
+        open={barOpen}
+        autoHideDuration={1000}
+        onClose={() => {
+          setBarOpen(false);
         }}
-        label={t("tableDialog.stringTitle")}
-        value={surfix}
-        onChange={(e) => {
-          setSurfix(e.target.value);
-        }}
+        message={t("tableDialog.processed")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       />
-      <TextField
-        fullWidth
-        variant="outlined"
-        sx={{
-          m: 1,
-          display: batchList[batchIndex].requireNumber !== true && "none",
-        }}
-        type="number"
-        label={t("tableDialog.numberTitle")}
-        value={value}
-        onChange={(e) => {
-          setValue(parseFloat(e.target.value));
-        }}
-      />
-      <FormControl
-        fullWidth
-        sx={{
-          m: 1,
-          display: batchList[batchIndex].requireTarget !== true && "none",
-        }}
-      >
-        <InputLabel>{t("tableDialog.targetTitle")}</InputLabel>
-        <Select
-          label="target"
-          variant="filled"
-          color="primary"
-          value={targetParam}
-          onChange={OnTargetParamChange}
-        >
-          <MenuItem value={"offset"}>{t("oto.offset")}</MenuItem>
-          <MenuItem value={"overlap"}>{t("oto.overlap")}</MenuItem>
-          <MenuItem value={"preutter"}>{t("oto.preutter")}</MenuItem>
-          <MenuItem value={"velocity"}>{t("oto.velocity")}</MenuItem>
-          <MenuItem value={"blank"}>{t("oto.blank")}</MenuItem>
-        </Select>
-      </FormControl>
-      <Button
-        fullWidth
-        sx={{ m: 1 }}
-        variant="contained"
-        color="primary"
-        onClick={OnSubmitClick}
-      >
-        {t("tableDialog.submit")}
-      </Button>
     </>
   );
 };

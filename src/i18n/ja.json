@@ -57,7 +57,8 @@
     "targetTitle": "対象パラメータ",
     "numberTitle":"数",
     "stringTitle":"エイリアス",
-    "submit":"実行"
+    "submit":"実行",
+    "processed":"実行しました"
   },
   "editor": {
     "playBeforePreutter": "先行発声より前を再生",
