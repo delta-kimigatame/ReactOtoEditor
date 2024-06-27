@@ -110,6 +110,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
     } else {
       batchList[batchIndex].endPoint(props.oto, props.targetDir, param);
     }
+    props.setUpdateSignal(Math.random());
   };
 
   return (
@@ -203,6 +204,8 @@ export interface TableDialogButtonAreaProps {
   zip: {
     [key: string]: JSZip.JSZipObject;
   } | null;
+  /** 一括変更結果により一覧を更新する。 */
+  setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface BatchProcess {

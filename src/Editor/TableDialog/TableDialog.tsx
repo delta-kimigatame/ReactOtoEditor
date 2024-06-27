@@ -13,6 +13,7 @@ import { TableDialogButtonArea } from "./TableDialogButtonArea";
 
 export const TableDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
+  const [updateSignal, setUpdateSignal ] = React.useState<number>(0);
   return (
     <>
       <Dialog
@@ -41,6 +42,7 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             oto={props.oto}
             zip={props.zip}
             targetDir={props.targetDir}
+            setUpdateSignal={setUpdateSignal}
           />
         </DialogTitle>
         <DialogContent>
@@ -50,7 +52,7 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             oto={props.oto}
             record={props.record}
             targetDir={props.targetDir}
-            updateSignal={props.updateSignal}
+            updateSignal={updateSignal}
             fileIndex={props.fileIndex}
             aliasIndex={props.aliasIndex}
             setRecord={props.setRecord}
