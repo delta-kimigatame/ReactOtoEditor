@@ -289,6 +289,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         setAliasIndex={setAliasIndex}
         setMaxAliasIndex={setMaxAliasIndex}
         zip={props.zip}
+        zipFileName={props.zipFileName}
       />
       <AliasDialog
         dialogOpen={aliasDialogOpen}
@@ -347,6 +348,8 @@ export interface EditorButtonAreaProps {
   zip: {
     [key: string]: JSZip.JSZipObject;
   } | null;
+  /** zipのファイル名 */
+  zipFileName:string
 }
 
 /**

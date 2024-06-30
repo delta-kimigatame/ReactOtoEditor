@@ -110,6 +110,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         setTouchMode={setTouchMode}
         setUpdateSignal={setUpdateSignal}
         zip={props.zip}
+        zipFileName={props.zipFileName}
       />
     </>
   );
@@ -136,4 +137,6 @@ export interface EditorViewProps {
   zip: {
     [key: string]: JSZip.JSZipObject;
   } | null;
+  /** zipのファイル名 */
+  zipFileName:string
 }

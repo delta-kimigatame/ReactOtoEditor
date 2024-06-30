@@ -163,6 +163,7 @@ export const App: React.FC = () => {
           wav={wav}
           setRecord={setRecord}
           zip={readZip}
+          zipFileName={zipFileName}
         />
       )}
       {oto === null && (

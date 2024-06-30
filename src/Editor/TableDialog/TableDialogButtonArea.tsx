@@ -118,6 +118,17 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
     }
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
+    const storagedOto_: string | null = localStorage.getItem("oto");
+    const storagedOto: {} =
+      storagedOto_ === null ? {} : JSON.parse(storagedOto_);
+    if (!(props.zipFileName in storagedOto)) {
+      storagedOto[props.zipFileName] = {};
+    }
+    storagedOto[props.zipFileName][props.targetDir] = {
+      oto: props.oto.GetLines()[props.targetDir].join("\r\n"),
+      update_date: Date.now(),
+    };
+    localStorage.setItem("oto", JSON.stringify(storagedOto));
   };
 
   return (
@@ -228,6 +239,8 @@ export interface TableDialogButtonAreaProps {
   } | null;
   /** 一括変更結果により一覧を更新する。 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
+  /** zipのファイル名 */
+  zipFileName: string;
 }
 
 interface BatchProcess {
