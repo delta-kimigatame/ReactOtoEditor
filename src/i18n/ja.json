@@ -60,6 +60,19 @@
     "submit":"実行",
     "processed":"実行しました"
   },
+  "aliasDialog":{
+    "title":"エイリアス編集",
+    "textField":"エイリアス",
+    "change":"変更",
+    "duplication":"複製",
+    "delete":"削除",
+    "barText":{
+      "change":"変更しました",
+      "duplication":"複製しました",
+      "delete":"削除しました",
+      "error":"このエイリアスは既に存在します。"
+    }
+  },
   "editor": {
     "playBeforePreutter": "先行発声より前を再生",
     "playAfterPreutter": "先行発声より後ろを再生",

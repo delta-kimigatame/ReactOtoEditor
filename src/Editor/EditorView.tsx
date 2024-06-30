@@ -108,6 +108,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         touchMode={touchMode}
         setOverlapLock={setOverlapLock}
         setTouchMode={setTouchMode}
+        setUpdateSignal={setUpdateSignal}
         zip={props.zip}
       />
     </>

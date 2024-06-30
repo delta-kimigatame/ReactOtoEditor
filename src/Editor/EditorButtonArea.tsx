@@ -25,6 +25,7 @@ import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
 import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
 import { PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "./TableDialog/TableDialog";
+import { AliasDialog } from "./AliasDialog/AliasDialog";
 
 /**
  * 編集画面の操作ボタン
@@ -47,6 +48,8 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const [aliasIndex, setAliasIndex] = React.useState<number>(0);
   /** TableDialogの表示 */
   const [tableDialogOpen, setTableDialogOpen] = React.useState<boolean>(false);
+  /** AliasDialogの表示 */
+  const [aliasDialogOpen, setAliasDialogOpen] = React.useState<boolean>(false);
 
   /** 画面サイズが変わった際、ボタンの大きさを再度算定する。 */
   React.useEffect(() => {
@@ -202,14 +205,19 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             size={size}
             icon={<EditAttributesIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.editAlias")}
-            onClick={() => {}}
+            disabled={props.record === null}
+            onClick={() => {
+              setAliasDialogOpen(true);
+            }}
           />
           <EditorButton
             mode={props.mode}
             size={size}
             icon={<TableViewIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.showTable")}
-            onClick={() => {setTableDialogOpen(true)}}
+            onClick={() => {
+              setTableDialogOpen(true);
+            }}
           />
         </StyledBox>
         <StyledBox>
@@ -282,6 +290,22 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         setMaxAliasIndex={setMaxAliasIndex}
         zip={props.zip}
       />
+      <AliasDialog
+        dialogOpen={aliasDialogOpen}
+        setDialogOpen={setAliasDialogOpen}
+        oto={props.oto}
+        record={props.record}
+        targetDir={props.targetDir}
+        setRecord={props.setRecord}
+        fileIndex={fileIndex}
+        aliasIndex={aliasIndex}
+        maxFileIndex={maxFileIndex}
+        maxAliasIndex={maxAliasIndex}
+        setFileIndex={setFileIndex}
+        setAliasIndex={setAliasIndex}
+        setMaxAliasIndex={setMaxAliasIndex}
+        setUpdateSignal={props.setUpdateSignal}
+      />
     </>
   );
 };
@@ -317,6 +341,8 @@ export interface EditorButtonAreaProps {
   setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
   /** touchmodeを使用するかを変更する */
   setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
+  /** recordの更新をtableに通知するための処理 */
+  setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   /** zipデータ */
   zip: {
     [key: string]: JSZip.JSZipObject;
