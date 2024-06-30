@@ -36,7 +36,7 @@ export const App: React.FC = () => {
     "color",
     "language",
   ]);
-  
+
   const mode_: PaletteMode =
     cookies.mode !== undefined
       ? cookies.mode
@@ -49,6 +49,7 @@ export const App: React.FC = () => {
   const [mode, setMode] = React.useState<PaletteMode>(mode_);
   const [color, setColor] = React.useState<string>(color_);
   const [language, setLanguage] = React.useState<string>(language_);
+  const [zipFileName, setZipFileName] = React.useState<string>("");
   const [readZip, setReadZip] = React.useState<{
     [key: string]: JSZip.JSZipObject;
   } | null>(null);
@@ -64,7 +65,7 @@ export const App: React.FC = () => {
   /**
    * ダークモード設定が切り替わった際、クッキーに保存する。
    */
-  const SetCookieMode= React.useMemo(() => setCookie("mode", mode), [mode]);
+  const SetCookieMode = React.useMemo(() => setCookie("mode", mode), [mode]);
   React.useMemo(() => setCookie("color", color), [color]);
   React.useMemo(() => {
     setCookie("language", language);
@@ -99,6 +100,17 @@ export const App: React.FC = () => {
     if (record === null) {
       setWavFileName(null);
     } else {
+      const storagedOto_: string | null = localStorage.getItem("oto");
+      const storagedOto: {} =
+        storagedOto_ === null ? {} : JSON.parse(storagedOto_);
+      if (!(zipFileName in storagedOto)) {
+        storagedOto[zipFileName] = {};
+      }
+      storagedOto[zipFileName][targetDir] = {
+        oto: oto.GetLines()[targetDir].join("\r\n"),
+        update_date: Date.now(),
+      };
+      localStorage.setItem("oto", JSON.stringify(storagedOto));
       if (wavFileName !== record.filename) {
         setWavFileName(record.filename);
       }
@@ -163,6 +175,7 @@ export const App: React.FC = () => {
           setTargetDir={setTargetDir}
           oto={oto}
           setOto={setOto}
+          setZipFileName={setZipFileName}
         />
       )}
       {oto === null && <Footer theme={theme} />}

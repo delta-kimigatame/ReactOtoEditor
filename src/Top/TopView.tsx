@@ -52,7 +52,11 @@ export const TopView: React.FC<TopViewProps> = (props) => {
 
   return (
     <>
-      <TopPaper readZip={props.readZip} setReadZip={props.setReadZip} />
+      <TopPaper
+        readZip={props.readZip}
+        setReadZip={props.setReadZip}
+        setZipFileName={props.setZipFileName}
+      />
       <RulePaper />
       <PrivacyPaper />
       <TargetDirDialog
@@ -90,4 +94,6 @@ export interface TopViewProps {
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
+  /** 読み込んだファイル名を変更する処理 */
+  setZipFileName: React.Dispatch<React.SetStateAction<string>>;
 }

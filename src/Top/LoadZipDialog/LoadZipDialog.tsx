@@ -30,6 +30,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
   const LoadZip = (file: File, encoding: string = "utf-8") => {
     const zip = new JSZip();
     const td = new TextDecoder(encoding);
+    props.setZipFileName(file.name);
     zip
       .loadAsync(file, {
         decodeFileName: (fileNameBinary: Uint8Array) =>
@@ -91,4 +92,6 @@ export interface LoadZipDialogProps {
       [key: string]: JSZip.JSZipObject;
     } | null>
   >;
+  /** 読み込んだファイル名を変更する処理 */
+  setZipFileName: React.Dispatch<React.SetStateAction<string>>;
 }
