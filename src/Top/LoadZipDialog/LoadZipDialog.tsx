@@ -59,7 +59,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
           props.setDialogOpen(false);
         }}
         open={props.dialogOpen}
-        fullWidth
+        fullScreen
       >
         <LoadZipDialogTitle setDialogOpen={props.setDialogOpen} />
         <Divider />

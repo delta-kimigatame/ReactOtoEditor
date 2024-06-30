@@ -20,7 +20,7 @@ export const TargetDirDialog: React.FC<TargetDirDialogProps> = (props) => {
           props.setDialogOpen(false);
         }}
         open={props.dialogOpen}
-        fullWidth
+        fullScreen
       >
         <TargetDirDialogTitle setDialogOpen={props.setDialogOpen} />
         <Divider />
