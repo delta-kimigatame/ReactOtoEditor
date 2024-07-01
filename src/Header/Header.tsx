@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
           >
             <IconButton>
               <Avatar sx={{ width: 24, height: 24 }}>
-                {setting.product_name.substring(0, 1)}
+                <img src="./static/logo192.png" alt="logo" style={{width:32}}/>
               </Avatar>
             </IconButton>
             {props.record === null ? (
