@@ -1,10 +1,10 @@
 /** アプリ名 */
-export const product_name: string = "UTAU wav最適化";
+export const product_name: string = "LABERU UTAU原音設定ツール";
 
 /** アプリに関する設定 */
 export const setting: { [key: string]: string } = {
   /** アプリの名前 */
-  product_name: "KIZAMU",
+  product_name: "LABERU",
   /** アプリのURL */
   product_url: "https://k-uta.jp/kizamu/",
   /** webサイトの名前 */
@@ -14,7 +14,7 @@ export const setting: { [key: string]: string } = {
   /** githubリポジトリのurl */
   github_url: "https://github.com/delta-kimigatame/ReactOtoEditor",
   /** サポートdiscordのurl */
-  discord_url: "",
+  discord_url: "https://discord.gg/aqZRj3CRcm",
 };
 
 /** fftに関する定数 */
