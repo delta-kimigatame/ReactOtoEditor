@@ -108,10 +108,15 @@ export const Header: React.FC<HeaderProps> = (props) => {
           oto={props.oto}
           setOto={props.setOto}
           readZip={props.readZip}
+          setMenuAnchor={setMenuAnchor}
         />
         {props.oto !== null && (
           <>
-            <DownloadOtoMenu oto={props.oto} targetDir={props.targetDir} setMenuAnchor={setMenuAnchor}/>
+            <DownloadOtoMenu
+              oto={props.oto}
+              targetDir={props.targetDir}
+              setMenuAnchor={setMenuAnchor}
+            />
             <MenuItem>
               <ListItemIcon>
                 <FolderZipIcon />

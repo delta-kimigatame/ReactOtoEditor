@@ -19,7 +19,13 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
   const { t } = useTranslation();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] =
-    React.useState<boolean>(false);
+    React.useState<boolean|null>(null);
+
+  React.useEffect(() => {
+    if (targetDirDialogOpen === false) {
+      props.setMenuAnchor(null);
+    }
+  }, [targetDirDialogOpen]);
   return (
     <>
       {props.targetDirs !== null && props.targetDirs.length !== 1 && (
@@ -64,4 +70,6 @@ export interface TargetDirMenuProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
+  /**親メニューを閉じるために使用 */
+  setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }
