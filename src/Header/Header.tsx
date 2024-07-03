@@ -8,11 +8,9 @@ import { useTranslation } from "react-i18next";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
-import RuleFolderIcon from "@mui/icons-material/RuleFolder";
 import DownloadIcon from "@mui/icons-material/Download";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
@@ -26,6 +24,7 @@ import { setting } from "../settings/setting";
 import { DarkModeMenu } from "./DarkModeMenu";
 import { LanguageMenu } from "./LanguageMenu";
 import { ColorMenu } from "./ColorMenu";
+import { TargetDirMenu } from "./TargetDirMenu";
 
 /**
  * ヘッダ
@@ -36,11 +35,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
   const { t } = useTranslation();
   /** テキスト表示領域 */
   const [textWidth, setTextWidth] = React.useState<number>(
-    props.windowSize[0] - 120 - 24 - 32
+    props.windowSize[0] - 40 - 24 - 32
   );
   /** 画面サイズが変更されたとき、テキスト表示領域も変更する。 */
   React.useEffect(() => {
-    setTextWidth(props.windowSize[0] - 200 - 24 - 32);
+    setTextWidth(props.windowSize[0] - 40 - 24 - 32);
   }, [props.windowSize]);
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
@@ -101,17 +100,14 @@ export const Header: React.FC<HeaderProps> = (props) => {
           setMenuAnchor(null);
         }}
       >
-        {props.targetDirs !== null && props.targetDirs.length !== 1 && (
-          <>
-            <MenuItem>
-              <ListItemIcon>
-                <RuleFolderIcon />
-              </ListItemIcon>
-              <ListItemText>{t("menu.changeTargetDir")}</ListItemText>
-            </MenuItem>
-            <Divider />
-          </>
-        )}
+        <TargetDirMenu
+            targetDirs={props.targetDirs}
+            targetDir={props.targetDir}
+            setTargetDir={props.setTargetDir}
+            oto={props.oto}
+            setOto={props.setOto}
+            readZip={props.readZip}
+        />
         {props.oto !== null && (
           <>
             <MenuItem>
