@@ -37,6 +37,9 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
     null
   );
 
+  /**
+   * メニューをクリックした際の処理。ダイアログを開く
+   */
   const OnMenuClick = () => {
     const storagedOto_: string | null = localStorage.getItem("oto");
     const storagedOtoTemp =
@@ -62,12 +65,20 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
     setDialogOpen(true);
   };
 
+  /**
+   * セレクトボックスを変更した際の処理
+   * @param e イベント
+   * @param i インデックス
+   */
   const OnSelectChange = (e: SelectChangeEvent<number>, i: number) => {
     const targetList_ = targetList.slice();
     targetList_[i] = e.target.value as number;
     setTargetList(targetList_);
   };
 
+  /**
+   * ダウンロードボタンをクリックした際の処理
+   */
   const OnDownloadClick = () => {
     setProgress(true);
     const newZip = new JSZip();
@@ -75,7 +86,7 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
   };
 
   /**
-   * zipファイルを再帰呼出しで生成する。ただしoto.iniを除く。
+   * zipファイルを再帰呼出しで生成する。
    * @param files zip内のファイル一覧
    * @param index 読み込むファイルのインデックス
    * @param newZip 新しく生成するzip
@@ -98,11 +109,12 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
 
   /**
    * targetListに基づき、oto.ini入りのzipを作成する。
-   * @param newZip 新しく生成するzip
+   * @param newZip 新しく生成するzip。読み込み時のoto.iniが入っている。
    */
   const ZipedOto = async (newZip: JSZip) => {
     const res = await props.targetDirs.forEach(async (td, i) => {
       if (targetList[i] === 0) {
+        /** 原音設定中のデータ */
         const f = new File(
           [iconv.encode(props.oto.GetLines()[td].join("\r\n"), "Windows-31j")],
           "oto.ini",
@@ -110,23 +122,20 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
         );
         newZip.file(td + "/oto.ini", f);
       } else if (targetList[i] === 1) {
+        /** 保存されたデータ */
         const f = new File(
           [iconv.encode(storagedOto[td]["oto"], "Windows-31j")],
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
         newZip.file(td + "/oto.ini", f);
-      } else if (targetList[i] === 2) {
-        // const f: ArrayBuffer = await props.readZip[td + "/oto.ini"].async(
-        //   "arraybuffer"
-        // );
-        // newZip.file(td + "/oto.ini", f);
-        // console.log(td);
-      }else{
-        newZip.file(td + "/oto.ini", "").remove(td + "/oto.ini");
+      } else {
+        /** 書き出ししない場合 */
+        if (Object.keys(newZip).includes(td + "/oto.ini")) {
+          newZip.file(td + "/oto.ini", "").remove(td + "/oto.ini");
+        }
       }
     });
-    console.log(newZip);
     const zipData = await newZip.generateAsync({ type: "uint8array" });
     const zipFile = new Blob([zipData], {
       type: "application/zip",
