@@ -108,7 +108,7 @@ export const App: React.FC = () => {
       }
       storagedOto[zipFileName][targetDir] = {
         oto: oto.GetLines()[targetDir].join("\r\n"),
-        update_date: Date.now(),
+        update_date: new Date().toJSON(),
       };
       localStorage.setItem("oto", JSON.stringify(storagedOto));
       if (wavFileName !== record.filename) {
@@ -157,6 +157,7 @@ export const App: React.FC = () => {
         setTargetDir={setTargetDir}
         oto={oto}
         setOto={setOto}
+        zipFileName={zipFileName}
       />
       {oto !== null && (
         <EditorView

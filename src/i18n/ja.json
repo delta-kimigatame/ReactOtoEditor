@@ -12,6 +12,12 @@
     "changeColor":"色設定",
     "changeLanguage":"言語設定"
   },
+  "downloadZipDialog":{
+    "current":"作業中のoto.ini",
+    "storaged":"保存されたoto.ini",
+    "readed":"元のoto.ini",
+    "none":"(なし)"
+  },
   "top": {
     "description": "LABERUはUTAU音源のための原音設定ツールです。",
     "selectZipButtonText": "利用規約に同意して、UTAU音源のzipファイルを選択",

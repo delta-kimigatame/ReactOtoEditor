@@ -99,6 +99,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
         setOto={props.setOto}
         menuAnchor={menuAnchor}
         setMenuAnchor={setMenuAnchor}
+        zipFileName={props.zipFileName}
       />
     </>
   );
@@ -133,4 +134,6 @@ export interface HeaderProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
+  /** zipのファイル名 */
+  zipFileName:string
 }

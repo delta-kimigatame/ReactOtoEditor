@@ -17,6 +17,7 @@ import { LanguageMenu } from "./LanguageMenu";
 import { ColorMenu } from "./ColorMenu";
 import { TargetDirMenu } from "./TargetDirMenu";
 import { DownloadOtoMenu } from "./DownloadOtoMenu";
+import { DownloadZipMenu } from "./DownloadZipMenu";
 
 /**
  * ヘッダメニュー
@@ -51,12 +52,14 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
               targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
             />
-            <MenuItem>
-              <ListItemIcon>
-                <FolderZipIcon />
-              </ListItemIcon>
-              <ListItemText>{t("menu.zipDownload")}</ListItemText>
-            </MenuItem>
+            <DownloadZipMenu
+              targetDirs={props.targetDirs}
+              readZip={props.readZip}
+              oto={props.oto}
+              targetDir={props.targetDir}
+              setMenuAnchor={props.setMenuAnchor}
+              zipFileName={props.zipFileName}
+            />
             <Divider />
           </>
         )}
@@ -112,4 +115,6 @@ export interface HeaderMenuProps {
   menuAnchor: null | HTMLElement;
   /**メニューの表示制御 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
+  /** zipのファイル名 */
+  zipFileName:string
 }
