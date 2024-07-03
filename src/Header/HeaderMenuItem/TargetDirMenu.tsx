@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
-import { TargetDirDialog } from "../Top/TargetDirDialog/TargetDirDialog";
+import { TargetDirDialog } from "../../Top/TargetDirDialog/TargetDirDialog";
 
 /**
  * フォルダ変更ダイアログを表示するボタン

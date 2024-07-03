@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { specColor } from "../settings/colors";
+import { specColor } from "../../settings/colors";
 
 /**
  * 表示色を切り替えるボタン
