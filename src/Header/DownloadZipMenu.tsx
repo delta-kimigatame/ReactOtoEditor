@@ -1,5 +1,6 @@
 import * as React from "react";
 import JSZip from "jszip";
+import * as iconv from "iconv-lite";
 import { Oto } from "utauoto";
 import { useTranslation } from "react-i18next";
 
@@ -29,6 +30,8 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   /** 保存されたoto.ini */
   const [storagedOto, setStoragedOto] = React.useState<{}>(false);
+  /** zipの書き出し中 */
+  const [progress, setProgress] = React.useState<{}>(false);
   /** 書き出すotoの対象リスト */
   const [targetList, setTargetList] = React.useState<Array<number> | null>(
     null
@@ -64,7 +67,80 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
     targetList_[i] = e.target.value as number;
     setTargetList(targetList_);
   };
-  
+
+  const OnDownloadClick = () => {
+    setProgress(true);
+    const newZip = new JSZip();
+    ZipExtract(props.readZip, 0, newZip);
+  };
+
+  /**
+   * zipファイルを再帰呼出しで生成する。ただしoto.iniを除く。
+   * @param files zip内のファイル一覧
+   * @param index 読み込むファイルのインデックス
+   * @param newZip 新しく生成するzip
+   */
+  const ZipExtract = (
+    files: { [key: string]: JSZip.JSZipObject },
+    index: number,
+    newZip: JSZip
+  ) => {
+    const k = Object.keys(files)[index];
+    files[k].async("arraybuffer").then((result) => {
+      newZip.file(k, result);
+      if (index < Object.keys(files).length - 1) {
+        ZipExtract(files, index + 1, newZip);
+      } else {
+        ZipedOto(newZip);
+      }
+    });
+  };
+
+  /**
+   * targetListに基づき、oto.ini入りのzipを作成する。
+   * @param newZip 新しく生成するzip
+   */
+  const ZipedOto = async (newZip: JSZip) => {
+    const res = await props.targetDirs.forEach(async (td, i) => {
+      if (targetList[i] === 0) {
+        const f = new File(
+          [iconv.encode(props.oto.GetLines()[td].join("\r\n"), "Windows-31j")],
+          "oto.ini",
+          { type: "text/plane;charset=shift-jis" }
+        );
+        newZip.file(td + "/oto.ini", f);
+      } else if (targetList[i] === 1) {
+        const f = new File(
+          [iconv.encode(storagedOto[td]["oto"], "Windows-31j")],
+          "oto.ini",
+          { type: "text/plane;charset=shift-jis" }
+        );
+        newZip.file(td + "/oto.ini", f);
+      } else if (targetList[i] === 2) {
+        // const f: ArrayBuffer = await props.readZip[td + "/oto.ini"].async(
+        //   "arraybuffer"
+        // );
+        // newZip.file(td + "/oto.ini", f);
+        // console.log(td);
+      }else{
+        newZip.file(td + "/oto.ini", "").remove(td + "/oto.ini");
+      }
+    });
+    console.log(newZip);
+    const zipData = await newZip.generateAsync({ type: "uint8array" });
+    const zipFile = new Blob([zipData], {
+      type: "application/zip",
+    });
+    const url = URL.createObjectURL(zipFile);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = props.zipFileName;
+    a.click();
+    setProgress(false);
+    setDialogOpen(false);
+    props.setMenuAnchor(null);
+  };
+
   const { t } = useTranslation();
   return (
     <>
@@ -88,6 +164,7 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
             sx={{ m: 1 }}
             size="large"
             color="inherit"
+            onClick={OnDownloadClick}
           >
             {t("menu.zipDownload")}
           </Button>
