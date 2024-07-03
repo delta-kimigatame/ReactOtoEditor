@@ -1,6 +1,9 @@
 import * as React from "react";
+import JSZip from "jszip";
+import { Oto } from "utauoto";
 import { PaletteMode } from "@mui/material";
 import OtoRecord from "utauoto/dist/OtoRecord";
+import { useTranslation } from "react-i18next";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -9,11 +12,20 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
+import RuleFolderIcon from "@mui/icons-material/RuleFolder";
+import DownloadIcon from "@mui/icons-material/Download";
+import MenuIcon from "@mui/icons-material/Menu";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import FolderZipIcon from "@mui/icons-material/FolderZip";
+import Divider from "@mui/material/Divider";
 
 import { setting } from "../settings/setting";
-import { DarkModeButton } from "./DarkModeButton";
-import { LanguageMenuButton } from "./LanguageMenuButton";
-import { ColorMenuButton } from "./ColorMenuButton";
+import { DarkModeMenu } from "./DarkModeMenu";
+import { LanguageMenu } from "./LanguageMenu";
+import { ColorMenu } from "./ColorMenu";
 
 /**
  * ヘッダ
@@ -21,14 +33,17 @@ import { ColorMenuButton } from "./ColorMenuButton";
  * @returns ヘッダ全体
  */
 export const Header: React.FC<HeaderProps> = (props) => {
+  const { t } = useTranslation();
   /** テキスト表示領域 */
   const [textWidth, setTextWidth] = React.useState<number>(
     props.windowSize[0] - 120 - 24 - 32
   );
   /** 画面サイズが変更されたとき、テキスト表示領域も変更する。 */
   React.useEffect(() => {
-    setTextWidth(props.windowSize[0] - 120 - 24 - 32);
+    setTextWidth(props.windowSize[0] - 200 - 24 - 32);
   }, [props.windowSize]);
+  /** メニューの表示位置。nullの時は非表示 */
+  const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
     <>
       <AppBar position="relative">
@@ -40,7 +55,11 @@ export const Header: React.FC<HeaderProps> = (props) => {
           >
             <IconButton>
               <Avatar sx={{ width: 24, height: 24 }}>
-                <img src="./static/logo192.png" alt="logo" style={{width:32}}/>
+                <img
+                  src="./static/logo192.png"
+                  alt="logo"
+                  style={{ width: 32 }}
+                />
               </Avatar>
             </IconButton>
             {props.record === null ? (
@@ -64,20 +83,69 @@ export const Header: React.FC<HeaderProps> = (props) => {
               </Box>
             )}
           </Box>
-          <Box sx={{ minWidth: 120 }}>
-            <LanguageMenuButton
-              language={props.language}
-              setLanguage={props.setLanguage}
-            />
-            <ColorMenuButton
-              mode={props.mode}
-              color={props.color}
-              setColor={props.setColor}
-            />
-            <DarkModeButton mode={props.mode} setMode={props.setMode} />
+          <Box sx={{ minWidth: 40 }}>
+            <IconButton
+              onClick={(e) => {
+                setMenuAnchor(e.currentTarget);
+              }}
+            >
+              <MenuIcon />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>
+      <Menu
+        anchorEl={menuAnchor}
+        open={Boolean(menuAnchor)}
+        onClose={() => {
+          setMenuAnchor(null);
+        }}
+      >
+        {props.targetDirs !== null && props.targetDirs.length !== 1 && (
+          <>
+            <MenuItem>
+              <ListItemIcon>
+                <RuleFolderIcon />
+              </ListItemIcon>
+              <ListItemText>{t("menu.changeTargetDir")}</ListItemText>
+            </MenuItem>
+            <Divider />
+          </>
+        )}
+        {props.oto !== null && (
+          <>
+            <MenuItem>
+              <ListItemIcon>
+                <DownloadIcon />
+              </ListItemIcon>
+              <ListItemText>{t("menu.otoDownload")}</ListItemText>
+            </MenuItem>
+            <MenuItem>
+              <ListItemIcon>
+                <FolderZipIcon />
+              </ListItemIcon>
+              <ListItemText>{t("menu.zipDownload")}</ListItemText>
+            </MenuItem>
+            <Divider />
+          </>
+        )}
+        <LanguageMenu
+          language={props.language}
+          setLanguage={props.setLanguage}
+          setMenuAnchor={setMenuAnchor}
+        />
+        <ColorMenu
+          mode={props.mode}
+          color={props.color}
+          setColor={props.setColor}
+          setMenuAnchor={setMenuAnchor}
+        />
+        <DarkModeMenu
+          mode={props.mode}
+          setMode={props.setMode}
+          setMenuAnchor={setMenuAnchor}
+        />
+      </Menu>
     </>
   );
 };
@@ -99,4 +167,16 @@ export interface HeaderProps {
   record: OtoRecord | null;
   /**画面サイズ */
   windowSize: [number, number];
-};
+  /** zip内のwavファイルがあるディレクトリの一覧 */
+  targetDirs: Array<string> | null;
+  /** 現在原音設定の対象になっているディレクトリ */
+  targetDir: string | null;
+  /** 読み込んだoto.iniのデータ */
+  oto: Oto;
+  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
+  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
+  /** 読み込んだoto.iniのデータを変更する処理 */
+  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
+  /** 読み込んだzipのデータ */
+  readZip: { [key: string]: JSZip.JSZipObject } | null;
+}

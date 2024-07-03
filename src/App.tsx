@@ -151,6 +151,12 @@ export const App: React.FC = () => {
         setLanguage={setLanguage}
         record={record}
         windowSize={windowSize}
+        readZip={readZip}
+        targetDirs={targetDirs}
+        targetDir={targetDir}
+        setTargetDir={setTargetDir}
+        oto={oto}
+        setOto={setOto}
       />
       {oto !== null && (
         <EditorView

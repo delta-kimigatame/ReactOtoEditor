@@ -3,6 +3,15 @@
     "ja": "日本語",
     "en": "英語"
   },
+  "menu":{
+    "changeTargetDir":"フォルダ選択",
+    "otoDownload":"oto.iniをダウンロード",
+    "zipDownload":"zipをダウンロード",
+    "toDarkMode":"ダークモードにする",
+    "toLightMode":"ライトモードにする",
+    "changeColor":"色設定",
+    "changeLanguage":"言語設定"
+  },
   "top": {
     "description": "LABERUはUTAU音源のための原音設定ツールです。",
     "selectZipButtonText": "利用規約に同意して、UTAU音源のzipファイルを選択",

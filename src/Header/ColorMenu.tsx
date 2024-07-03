@@ -17,19 +17,21 @@ import { specColor } from "../settings/colors";
  * @param props {@link ColorMenuProps}
  * @returns 表示色を切り替えるボタン
  */
-export const ColorMenuButton: React.FC<ColorMenuProps> = (props) => {
+export const ColorMenu: React.FC<ColorMenuProps> = (props) => {
   const { t } = useTranslation();
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
     <>
-      <IconButton
-        size="small"
+      <MenuItem
         onClick={(e) => {
           setMenuAnchor(e.currentTarget);
         }}
       >
-        <ColorAvatar mode={props.mode} color={props.color} />
-      </IconButton>
+        <ListItemIcon>
+          <ColorAvatar mode={props.mode} color={props.color} />
+        </ListItemIcon>
+        <ListItemText>{t("menu.changeColor")}</ListItemText>
+      </MenuItem>
       <Menu
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
@@ -44,6 +46,7 @@ export const ColorMenuButton: React.FC<ColorMenuProps> = (props) => {
               color={c}
               setColor={props.setColor}
               setMenuAnchor={setMenuAnchor}
+              parentSetMenuAnchor={props.setMenuAnchor}
             />
           </React.Fragment>
         ))}
@@ -52,14 +55,16 @@ export const ColorMenuButton: React.FC<ColorMenuProps> = (props) => {
   );
 };
 
-export interface ColorMenuProps{
+export interface ColorMenuProps {
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**キャンバスの色設定 */
   color: string;
   /**キャンバスの色設定を変更する */
   setColor: React.Dispatch<React.SetStateAction<string>>;
-};
+  /**親メニューを閉じるために使用 */
+  setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
+}
 
 /**
  * 色設定を受け取り、グラデーション設定用の文字列を返す。
@@ -90,13 +95,16 @@ export const ColorMenuItem: React.FC<{
   setColor: React.Dispatch<React.SetStateAction<string>>;
   /**メニューの表示位置。nullの時表示しない */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-}> = ({ mode, color, setColor, setMenuAnchor }) => {
+  /**親メニューを閉じるために使用 */
+  parentSetMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
+}> = ({ mode, color, setColor, setMenuAnchor, parentSetMenuAnchor }) => {
   const { t } = useTranslation();
   return (
     <ListItem
       onClick={() => {
         setColor(color);
         setMenuAnchor(null);
+        parentSetMenuAnchor(null);
       }}
     >
       <ListItemIcon>
