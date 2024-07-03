@@ -25,6 +25,7 @@ import { DarkModeMenu } from "./DarkModeMenu";
 import { LanguageMenu } from "./LanguageMenu";
 import { ColorMenu } from "./ColorMenu";
 import { TargetDirMenu } from "./TargetDirMenu";
+import { DownloadOtoMenu } from "./DownloadOtoMenu";
 
 /**
  * ヘッダ
@@ -101,21 +102,16 @@ export const Header: React.FC<HeaderProps> = (props) => {
         }}
       >
         <TargetDirMenu
-            targetDirs={props.targetDirs}
-            targetDir={props.targetDir}
-            setTargetDir={props.setTargetDir}
-            oto={props.oto}
-            setOto={props.setOto}
-            readZip={props.readZip}
+          targetDirs={props.targetDirs}
+          targetDir={props.targetDir}
+          setTargetDir={props.setTargetDir}
+          oto={props.oto}
+          setOto={props.setOto}
+          readZip={props.readZip}
         />
         {props.oto !== null && (
           <>
-            <MenuItem>
-              <ListItemIcon>
-                <DownloadIcon />
-              </ListItemIcon>
-              <ListItemText>{t("menu.otoDownload")}</ListItemText>
-            </MenuItem>
+            <DownloadOtoMenu oto={props.oto} targetDir={props.targetDir} setMenuAnchor={setMenuAnchor}/>
             <MenuItem>
               <ListItemIcon>
                 <FolderZipIcon />
