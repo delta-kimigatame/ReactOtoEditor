@@ -11,21 +11,10 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
-import DownloadIcon from "@mui/icons-material/Download";
 import MenuIcon from "@mui/icons-material/Menu";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
-import ListItemText from "@mui/material/ListItemText";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import FolderZipIcon from "@mui/icons-material/FolderZip";
-import Divider from "@mui/material/Divider";
 
 import { setting } from "../settings/setting";
-import { DarkModeMenu } from "./DarkModeMenu";
-import { LanguageMenu } from "./LanguageMenu";
-import { ColorMenu } from "./ColorMenu";
-import { TargetDirMenu } from "./TargetDirMenu";
-import { DownloadOtoMenu } from "./DownloadOtoMenu";
+import { HeaderMenu } from "./HeaderMenu";
 
 /**
  * ヘッダ
@@ -94,55 +83,23 @@ export const Header: React.FC<HeaderProps> = (props) => {
           </Box>
         </Toolbar>
       </AppBar>
-      <Menu
-        anchorEl={menuAnchor}
-        open={Boolean(menuAnchor)}
-        onClose={() => {
-          setMenuAnchor(null);
-        }}
-      >
-        <TargetDirMenu
-          targetDirs={props.targetDirs}
-          targetDir={props.targetDir}
-          setTargetDir={props.setTargetDir}
-          oto={props.oto}
-          setOto={props.setOto}
-          readZip={props.readZip}
-          setMenuAnchor={setMenuAnchor}
-        />
-        {props.oto !== null && (
-          <>
-            <DownloadOtoMenu
-              oto={props.oto}
-              targetDir={props.targetDir}
-              setMenuAnchor={setMenuAnchor}
-            />
-            <MenuItem>
-              <ListItemIcon>
-                <FolderZipIcon />
-              </ListItemIcon>
-              <ListItemText>{t("menu.zipDownload")}</ListItemText>
-            </MenuItem>
-            <Divider />
-          </>
-        )}
-        <LanguageMenu
-          language={props.language}
-          setLanguage={props.setLanguage}
-          setMenuAnchor={setMenuAnchor}
-        />
-        <ColorMenu
-          mode={props.mode}
-          color={props.color}
-          setColor={props.setColor}
-          setMenuAnchor={setMenuAnchor}
-        />
-        <DarkModeMenu
-          mode={props.mode}
-          setMode={props.setMode}
-          setMenuAnchor={setMenuAnchor}
-        />
-      </Menu>
+      <HeaderMenu
+        mode={props.mode}
+        setMode={props.setMode}
+        color={props.color}
+        setColor={props.setColor}
+        language={props.language}
+        setLanguage={props.setLanguage}
+        record={props.record}
+        readZip={props.readZip}
+        targetDirs={props.targetDirs}
+        targetDir={props.targetDir}
+        setTargetDir={props.setTargetDir}
+        oto={props.oto}
+        setOto={props.setOto}
+        menuAnchor={menuAnchor}
+        setMenuAnchor={setMenuAnchor}
+      />
     </>
   );
 };
