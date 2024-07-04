@@ -126,7 +126,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
     }
     storagedOto[props.zipFileName][props.targetDir] = {
       oto: props.oto.GetLines()[props.targetDir].join("\r\n"),
-      update_date: Date.now(),
+      update_date: new Date().toJSON(),
     };
     localStorage.setItem("oto", JSON.stringify(storagedOto));
   };
