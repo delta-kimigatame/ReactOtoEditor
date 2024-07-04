@@ -25,15 +25,30 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   const { t } = useTranslation();
   const storagedOto_: string | null = localStorage.getItem("oto");
   const [storagedOto, setStoragedOto] = React.useState<{}>({});
+  const [selectHistory, setSelectHistory] = React.useState<string>(null);
+  /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
+  const [oto, setOto] = React.useState<Oto | null>(null);
 
   React.useEffect(() => {
     const storagedOto__ = storagedOto_ === null ? {} : JSON.parse(storagedOto_);
     setStoragedOto(storagedOto__);
   }, []);
-  const [selectHistory, setSelectHistory] = React.useState<string>(null);
-  const OnSelectChange = (e: SelectChangeEvent) => {
-    setSelectHistory(e.target.value);
-    const [tmp, i, j, _] = e.target.value.split("_");
+
+  React.useEffect(() => {
+    const i = Object.keys(storagedOto).indexOf(props.zipFileName);
+    if (i >= 0) {
+      const f = Object.keys(storagedOto)[i];
+      const j = Object.keys(storagedOto[f]).indexOf(props.targetDir);
+      if (j >= 0) {
+        setSelectHistory("t_" + i + "_" + j);
+      }
+    }
+  }, [storagedOto, props.targetDir]);
+
+  React.useEffect(() => {
+    if (selectHistory === undefined || selectHistory === null) return;
+    console.log(selectHistory);
+    const [tmp, i, j, _] = selectHistory.split("_");
     const f = Object.keys(storagedOto)[parseInt(i)];
     const d = Object.keys(storagedOto[f])[parseInt(j)];
     const oto_ = new Oto();
@@ -44,15 +59,18 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         "UTF-8"
       )
       .then(() => {
-        props.setOtoTemp(oto_);
+        setOto(oto_);
       });
+  }, [selectHistory]);
+  const OnSelectChange = (e: SelectChangeEvent) => {
+    setSelectHistory(e.target.value);
   };
 
   /**
    * 現在読み込んでいるoto.iniを親コンポーネントに返し、ダイアログを閉じる。
    */
   const OnSubmitClick = () => {
-    props.setOto(props.oto);
+    props.setOto(oto);
     props.setDialogOpen(false);
   };
   return (
@@ -71,7 +89,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
             onClick={OnSubmitClick}
             size="large"
             color="inherit"
-            disabled={props.oto===null}
+            disabled={oto === null}
           >
             {t("targetDirDialog.submit")}
           </Button>
@@ -96,11 +114,11 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
               )}
             </Select>
           </FormControl>
-          {props.oto !== null && (
+          {oto !== null && (
             <>
               <Divider />
               <TargetDirDialogCheckList
-                oto={props.oto}
+                oto={oto}
                 targetDir={props.targetDir}
               />
             </>
@@ -116,12 +134,8 @@ export interface TargetDirDialogTabPanelStoragedProps {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */
-  setOtoTemp: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** zipのファイル名 */
   zipFileName: string;
 }

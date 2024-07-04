@@ -110,9 +110,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                 <TargetDirDialogTabPanelStoraged 
                   setDialogOpen={props.setDialogOpen}
                   targetDir={props.targetDir}
-                  oto={oto}
                   setOto={props.setOto}
-                  setOtoTemp={setOto}
                   zipFileName={props.zipFileName}
                 />
               </TabContext>
