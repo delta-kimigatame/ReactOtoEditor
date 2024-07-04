@@ -45,6 +45,7 @@
     "submit": "OK",
     "NothingOto": "oto.iniが見つかりませんでした。",
     "NothingHistory": "履歴はありませんでした",
+    "readHistory": "読み込む履歴",
     "tab":{
       "zip":"zip内",
       "storaged":"履歴",
