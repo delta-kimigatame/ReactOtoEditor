@@ -18,23 +18,37 @@ import { TargetDirDialog } from "../../Top/TargetDirDialog/TargetDirDialog";
 export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
   const { t } = useTranslation();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
-  const [targetDirDialogOpen, setTargetDirDialogOpen] =
-    React.useState<boolean|null>(null);
+  const [targetDirDialogOpen, setTargetDirDialogOpen] = React.useState<
+    boolean | null
+  >(null);
 
   React.useEffect(() => {
     if (targetDirDialogOpen === false) {
       props.setMenuAnchor(null);
     }
   }, [targetDirDialogOpen]);
+
+  /** 編集中のoto.iniをlocalstorageに書き込んでTargetDirDialogを開く */
+  const OnMenuClick = () => {
+    const storagedOto_: string | null = localStorage.getItem("oto");
+    const storagedOto: {} =
+      storagedOto_ === null ? {} : JSON.parse(storagedOto_);
+    if (!(props.zipFileName in storagedOto)) {
+      storagedOto[props.zipFileName] = {};
+    }
+    storagedOto[props.zipFileName][props.targetDir] = {
+      oto: props.oto.GetLines()[props.targetDir].join("\r\n"),
+      update_date: new Date().toJSON(),
+    };
+    localStorage.setItem("oto", JSON.stringify(storagedOto));
+    setTargetDirDialogOpen(true);
+  };
+
   return (
     <>
       {props.targetDirs !== null && props.targetDirs.length !== 1 && (
         <>
-          <MenuItem
-            onClick={() => {
-              setTargetDirDialogOpen(true);
-            }}
-          >
+          <MenuItem onClick={OnMenuClick}>
             <ListItemIcon>
               <RuleFolderIcon />
             </ListItemIcon>
@@ -74,5 +88,5 @@ export interface TargetDirMenuProps {
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** zipのファイル名 */
-  zipFileName:string
+  zipFileName: string;
 }
