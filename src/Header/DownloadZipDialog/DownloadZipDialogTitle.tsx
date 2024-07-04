@@ -57,7 +57,6 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
    * @param newZip 新しく生成するzip。読み込み時のoto.iniが入っている。
    */
   const ZipedOto = async (newZip: JSZip) => {
-    console.log(props.targetList);
     const res = await props.targetDirs.forEach(async (td, i) => {
       if (props.targetList[i] === 0) {
         /** 原音設定中のデータ */
