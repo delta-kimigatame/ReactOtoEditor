@@ -40,6 +40,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           setOto={props.setOto}
           readZip={props.readZip}
           setMenuAnchor={props.setMenuAnchor}
+          zipFileName={props.zipFileName}
         />
         {props.oto !== null && (
           <>

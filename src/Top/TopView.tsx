@@ -68,6 +68,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
         oto={props.oto}
         setOto={props.setOto}
         readZip={props.readZip}
+        zipFileName={props.zipFileName}
       />
     </>
   );
@@ -96,4 +97,6 @@ export interface TopViewProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだファイル名を変更する処理 */
   setZipFileName: React.Dispatch<React.SetStateAction<string>>;
+  /** zipのファイル名 */
+  zipFileName:string
 }

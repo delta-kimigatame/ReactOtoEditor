@@ -50,6 +50,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
             oto={props.oto}
             setOto={props.setOto}
             readZip={props.readZip}
+            zipFileName={props.zipFileName}
           />
         </>
       )}
@@ -72,4 +73,6 @@ export interface TargetDirMenuProps {
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
+  /** zipのファイル名 */
+  zipFileName:string
 }

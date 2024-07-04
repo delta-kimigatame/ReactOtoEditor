@@ -9,16 +9,23 @@ import Divider from "@mui/material/Divider";
 import DialogContent from "@mui/material/DialogContent";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import { TargetDirDialogSelectDir } from "./TargetDirDialogSelectDir";
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
+import { TargetDirDialogTabPanelZip } from "./TargetDirDialogTabPanelZip";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ
  * @param props {@link TargetDirDialogContentProps}
  * @returns 原音設定対象ディレクトリを選択するためのダイアログのボディ
  */
-export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (props) => {
+export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
+  props
+) => {
   const { t } = useTranslation();
   /** oto.iniがディレクトリ内に存在するか否か */
   const [nothingOto, setNothingOto] = React.useState<boolean>(false);
@@ -26,6 +33,8 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (pr
   const [oto, setOto] = React.useState<Oto | null>(null);
   /** oto.ini読込の文字コード */
   const [encoding, setEncoding] = React.useState<string>("SJIS");
+  /** tabの表示を切り替える */
+  const [tabIndex, setTabIndex] = React.useState<string>("1");
 
   /** `props.targetDir`が変更されたとき、oto.iniの読込を行う。 */
   React.useEffect(() => {
@@ -53,13 +62,18 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (pr
             )
             .then(() => {
               setOto(oto);
+              setTabIndex("1");
             });
         });
     } else {
       setNothingOto(true);
+      setTabIndex("2");
     }
   };
 
+  const OnTabChange = (e: React.SyntheticEvent, newValue: string) => {
+    setTabIndex(newValue);
+  };
   return (
     <>
       <DialogContent>
@@ -70,29 +84,29 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (pr
         />
         <Divider />
         <Box sx={{ p: 1 }}>
-          {nothingOto ? (
+          {props.targetDir !== null && (
             <>
-              <Typography>{t("targetDirDialog.NothingOto")}</Typography>
-            </>
-          ) : oto !== null ? (
-            <>
-              <TargetDirDialogButtonArea
-                oto={oto}
-                setOto={props.setOto}
-                setOtoTemp={setOto}
-                setDialogOpen={props.setDialogOpen}
-                LoadOto={LoadOto}
-                encoding={encoding}
-                setEncoding={setEncoding}
-              />
-              <Divider />
-              <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />
-            </>
-          ) :props.targetDir!==null && (
-            <>
-              <Box sx={{ textAlign: "center", minHeight: 150 }}>
-                <CircularProgress size={100} sx={{ maxWidth: "100%" }} />
-              </Box>
+              <TabContext value={tabIndex}>
+                <TabList
+                  onChange={OnTabChange}
+                  variant="scrollable"
+                  scrollButtons="auto"
+                >
+                  <Tab value="1" label={t("targetDirDialog.tab.zip")} />
+                  <Tab value="2" label={t("targetDirDialog.tab.storaged")} />
+                  <Tab value="3" label={t("targetDirDialog.tab.template")} />
+                  <Tab value="4" label={t("targetDirDialog.tab.make")} disabled/>
+                </TabList>
+                <TargetDirDialogTabPanelZip
+                  oto={oto}
+                  setOto={props.setOto}
+                  setOtoTemp={setOto}
+                  setDialogOpen={props.setDialogOpen}
+                  LoadOto={LoadOto}
+                  targetDir={props.targetDir}
+                  nothingOto={nothingOto}
+                />
+              </TabContext>
             </>
           )}
         </Box>
@@ -116,4 +130,6 @@ export interface TargetDirDialogContentProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
-};
+  /** zipのファイル名 */
+  zipFileName:string
+}

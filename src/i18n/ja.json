@@ -43,7 +43,14 @@
     "encoding": "文字コード",
     "reload": "指定文字コードで再読込",
     "submit": "OK",
-    "NothingOto": "oto.iniが見つかりませんでした。"
+    "NothingOto": "oto.iniが見つかりませんでした。",
+    "NothingHistory": "履歴はありませんでした",
+    "tab":{
+      "zip":"zip内",
+      "storaged":"履歴",
+      "template":"テンプレート読込",
+      "make":"生成(開発中)"
+    }
   },
   "oto": {
     "filename": "ファイル名",

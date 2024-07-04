@@ -183,6 +183,7 @@ export const App: React.FC = () => {
           setTargetDir={setTargetDir}
           oto={oto}
           setOto={setOto}
+          zipFileName={zipFileName}
           setZipFileName={setZipFileName}
         />
       )}
