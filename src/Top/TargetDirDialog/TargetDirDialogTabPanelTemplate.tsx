@@ -3,26 +3,12 @@ import { Oto } from "utauoto";
 
 import { useTranslation } from "react-i18next";
 
-import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
 import TabPanel from "@mui/lab/TabPanel";
-import Button from "@mui/material/Button";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import TextField from "@mui/material/TextField";
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
-import { FormControlLabel } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import { AddParams } from "../../Lib/OtoBatchProcess";
 import { TargetDirDialogCorrectPanel } from "./TargetDirDialogCorrectPanel";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル
@@ -90,17 +76,9 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
         ref={inputRef}
         accept=".ini"
       ></input>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ m: 1 }}
-        onClick={OnReadClick}
-        size="large"
-        color="inherit"
-        disabled={processing}
-      >
+      <FullWidthButton onClick={OnReadClick} disabled={processing}>
         {t("targetDirDialog.readTemplate")}
-      </Button>
+      </FullWidthButton>
       {oto !== null &&
         (encodeOk ? (
           <>

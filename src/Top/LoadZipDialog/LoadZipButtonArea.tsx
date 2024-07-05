@@ -4,7 +4,6 @@ import JSZip from "jszip";
 import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
-import Button from "@mui/material/Button";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -12,6 +11,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { NormalizeJP } from "../../Lib/FilenameNormalize";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * zip読込待ちダイアログの操作ボタン部分
@@ -34,7 +34,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
   /**
    * 文字コードの選択を変更した際の処理。 \
    * 指定した文字コードでzipを再読み込みする。
-   * @param e 
+   * @param e
    */
   const OnSelectChange = (e: SelectChangeEvent) => {
     props.setEncoding(e.target.value);
@@ -68,16 +68,9 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
 
   return (
     <>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ m: 1 }}
-        onClick={OnSubmitClick}
-        size="large"
-        color="inherit"
-      >
+      <FullWidthButton onClick={OnSubmitClick}>
         {t("loadZipDialog.submit")}
-      </Button>
+      </FullWidthButton>
       <br />
       <FormControl fullWidth sx={{ m: 1 }}>
         <InputLabel>{t("loadZipDialog.encoding")}</InputLabel>
@@ -120,4 +113,4 @@ export interface LoadZipButtonAreaProps {
       [key: string]: JSZip.JSZipObject;
     } | null>
   >;
-};
+}

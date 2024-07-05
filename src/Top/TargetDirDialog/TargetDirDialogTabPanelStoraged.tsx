@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -13,6 +12,7 @@ import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * 履歴からoto.iniを読み込む場合のパネル
@@ -81,18 +81,11 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         </>
       ) : (
         <>
-          {" "}
-          <Button
-            fullWidth
-            variant="contained"
-            sx={{ m: 1 }}
+          <FullWidthButton
             onClick={OnSubmitClick}
-            size="large"
-            color="inherit"
-            disabled={oto === null}
-          >
+            disabled={oto === null}>
             {t("targetDirDialog.submit")}
-          </Button>
+          </FullWidthButton>
           <br />
           <FormControl fullWidth sx={{ m: 1 }}>
             <InputLabel>{t("targetDirDialog.readHistory")}</InputLabel>

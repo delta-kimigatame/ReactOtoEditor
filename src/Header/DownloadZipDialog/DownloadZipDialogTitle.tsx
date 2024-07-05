@@ -7,9 +7,9 @@ import { useTranslation } from "react-i18next";
 import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * zipをダウンロードするダイアログ
@@ -99,17 +99,9 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   return (
     <>
       <DialogTitle>
-        <Button
-          fullWidth
-          variant="contained"
-          sx={{ m: 1 }}
-          size="large"
-          color="inherit"
-          onClick={OnDownloadClick}
-          disabled={progress}
-        >
+        <FullWidthButton onClick={OnDownloadClick} disabled={progress}>
           {progress ? <CircularProgress /> : t("menu.zipDownload")}
-        </Button>
+        </FullWidthButton>
         <Divider />
       </DialogTitle>
       <IconButton

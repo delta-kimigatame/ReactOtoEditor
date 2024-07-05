@@ -5,7 +5,6 @@ import * as BP from "../../Lib/OtoBatchProcess";
 
 import { useTranslation } from "react-i18next";
 
-import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -16,6 +15,7 @@ import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -202,15 +202,9 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               <MenuItem value={"blank"}>{t("oto.blank")}</MenuItem>
             </Select>
           </FormControl>
-          <Button
-            fullWidth
-            sx={{ m: 1 }}
-            variant="contained"
-            color="primary"
-            onClick={OnSubmitClick}
-          >
+          <FullWidthButton onClick={OnSubmitClick}>
             {t("tableDialog.submit")}
-          </Button>
+          </FullWidthButton>
         </AccordionDetails>
       </Accordion>
       <Snackbar

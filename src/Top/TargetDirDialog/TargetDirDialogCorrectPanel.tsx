@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { AddParams } from "../../Lib/OtoBatchProcess";
 import { TargetDirDialogAliasVariant } from "./TargetDirDialogAliasVariant";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面
@@ -151,16 +151,11 @@ export const TargetDirDialogCorrectPanel: React.FC<
   };
   return (
     <>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ m: 1 }}
-        onClick={OnCorrectClick}
-        size="large"
-        color="inherit"
-      >
+    <FullWidthButton
+        onClick={OnCorrectClick}>
         {t("targetDirDialog.submit")}
-      </Button>
+
+    </FullWidthButton>
       <FormControlLabel
         control={
           <Checkbox

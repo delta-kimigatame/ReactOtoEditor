@@ -6,10 +6,10 @@ import { setting } from "../settings/setting";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
 import { BasePaper } from "../Common/BasePaper";
+import { FullWidthButton } from "../Common/FullWidthButton";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper
@@ -75,20 +75,17 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
           <Box sx={{ m: 1, p: 1 }}>
             <Typography variant="body1">{t("top.description")}</Typography>
             <br />
-            <Button
-              fullWidth
-              variant="contained"
-              size="large"
-              sx={{ textTransform: "none" }}
+            <FullWidthButton
               disabled={processing}
               onClick={OnButtonClick}
+              color="primary"
             >
               {!processing ? (
                 <>{t("top.selectZipButtonText")}</>
               ) : (
                 <CircularProgress color="inherit" size={20} />
               )}
-            </Button>
+            </FullWidthButton>
           </Box>
         }
       />

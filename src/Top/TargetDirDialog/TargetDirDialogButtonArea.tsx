@@ -3,24 +3,26 @@ import { Oto } from "utauoto";
 
 import { useTranslation } from "react-i18next";
 
-import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログの文字コードを設定するエリア
  * @param props {@link TargetDirDialogButtonAreaProps}
  * @returns 原音設定対象ディレクトリを選択するためのダイアログの文字コードを設定するエリア
  */
-export const TargetDirDialogButtonArea: React.FC<TargetDirDialogButtonAreaProps> = (props) => {
+export const TargetDirDialogButtonArea: React.FC<
+  TargetDirDialogButtonAreaProps
+> = (props) => {
   const { t } = useTranslation();
 
   /**
    * 文字コードが変更されたときの処理。 \
    * 登録済みのoto.iniをnullにして指定した文字コードで再読み込みする。
-   * @param e 
+   * @param e
    */
   const OnSelectChange = (e: SelectChangeEvent) => {
     props.setEncoding(e.target.value);
@@ -38,16 +40,9 @@ export const TargetDirDialogButtonArea: React.FC<TargetDirDialogButtonAreaProps>
 
   return (
     <>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ m: 1 }}
-        onClick={OnSubmitClick}
-        size="large"
-        color="inherit"
-      >
+      <FullWidthButton onClick={OnSubmitClick}>
         {t("targetDirDialog.submit")}
-      </Button>
+      </FullWidthButton>
       <br />
       <FormControl fullWidth sx={{ m: 1 }}>
         <InputLabel>{t("loadZipDialog.encoding")}</InputLabel>
@@ -66,7 +61,7 @@ export const TargetDirDialogButtonArea: React.FC<TargetDirDialogButtonAreaProps>
   );
 };
 
-export interface TargetDirDialogButtonAreaProps{
+export interface TargetDirDialogButtonAreaProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   /** 読み込んだoto.iniのデータ */
@@ -78,7 +73,7 @@ export interface TargetDirDialogButtonAreaProps{
   /** oto.iniを読み込む処理 */
   LoadOto: (encoding_?: string) => void;
   /** oto.iniを読み込む際の文字コード */
-  encoding:string;
+  encoding: string;
   /** oto.iniを読み込む際の文字コードを変更する処理 */
-  setEncoding:React.Dispatch<React.SetStateAction<string>>
-};
+  setEncoding: React.Dispatch<React.SetStateAction<string>>;
+}
