@@ -37,16 +37,16 @@ export const Footer: React.FC<FooterProps> = (props) => {
             <Link
               variant="body2"
               color="inherit"
-              href={setting.developer_x_url}
+              href={setting.developerXUrl}
             >
               {t("footer.developerx")}
             </Link>{" "}
             <br />
-            <Link variant="body2" color="inherit" href={setting.github_url}>
+            <Link variant="body2" color="inherit" href={setting.githubUrl}>
               {t("footer.github")}
             </Link>{" "}
             <br />
-            <Link variant="body2" color="inherit" href={setting.discord_url}>
+            <Link variant="body2" color="inherit" href={setting.discordUrl}>
               {t("footer.discord")}
             </Link>{" "}
             <br />
@@ -85,11 +85,11 @@ export const Footer: React.FC<FooterProps> = (props) => {
             startIcon={<XIcon />}
             href={
               "https://twitter.com/intent/tweet?text=" +
-              setting.site_name +
+              setting.siteName +
               " - " +
-              setting.product_name +
+              setting.productName +
               "- " +
-              setting.product_url
+              setting.productUrl
             }
             target="blank_"
           >

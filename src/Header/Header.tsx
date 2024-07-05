@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
             </IconButton>
             {props.record === null ? (
               <Typography variant="subtitle2">
-                {setting.product_name}
+                {setting.productName}
               </Typography>
             ) : (
               <Box

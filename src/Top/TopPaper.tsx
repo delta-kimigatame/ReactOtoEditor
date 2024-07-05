@@ -71,7 +71,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         accept="application/zip"
       ></input>
       <Paper elevation={2} sx={{ m: 1, p: 2 }}>
-        <Typography variant="h6">{setting.product_name}</Typography>
+        <Typography variant="h6">{setting.productName}</Typography>
         <Divider />
         <Box sx={{ m: 1, p: 1 }}>
           <Typography variant="body1">{t("top.description")}</Typography>

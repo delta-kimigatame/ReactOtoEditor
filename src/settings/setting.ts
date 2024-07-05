@@ -1,20 +1,20 @@
 /** アプリ名 */
-export const product_name: string = "LABERU UTAU原音設定ツール";
+export const productName: string = "LABERU UTAU原音設定ツール";
 
 /** アプリに関する設定 */
 export const setting: { [key: string]: string } = {
   /** アプリの名前 */
-  product_name: "LABERU",
+  productName: "LABERU",
   /** アプリのURL */
-  product_url: "https://k-uta.jp/kizamu/",
+  productUrl: "https://k-uta.jp/kizamu/",
   /** webサイトの名前 */
-  site_name: "きみがためtools",
+  siteName: "きみがためtools",
   /** 開発者のXアカウントのURL */
-  developer_x_url: "https://twitter.com/delta_kuro",
+  developerXUrl: "https://twitter.com/delta_kuro",
   /** githubリポジトリのurl */
-  github_url: "https://github.com/delta-kimigatame/ReactOtoEditor",
+  githubUrl: "https://github.com/delta-kimigatame/ReactOtoEditor",
   /** サポートdiscordのurl */
-  discord_url: "https://discord.gg/aqZRj3CRcm",
+  discordUrl: "https://discord.gg/aqZRj3CRcm",
 };
 
 /** fftに関する定数 */
