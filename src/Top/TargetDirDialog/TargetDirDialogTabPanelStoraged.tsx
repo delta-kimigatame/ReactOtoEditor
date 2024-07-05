@@ -77,7 +77,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
     <TabPanel value="2" sx={{ p: 0 }}>
       {storagedOto_ === null ? (
         <>
-          <Typography>{t("targetDirDialog.NothingHistory")}</Typography>
+          <Typography>{t("targetDirDialog.nothingHistory")}</Typography>
         </>
       ) : (
         <>

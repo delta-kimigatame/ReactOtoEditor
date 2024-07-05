@@ -170,7 +170,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
             }}
           />
         }
-        label={t("targetDirDialog.CorrectOffset")}
+        label={t("targetDirDialog.correctOffset")}
       />
       <br />
       {isCorrectOffset && (
@@ -217,7 +217,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     }}
                   />
                 }
-                label={t("targetDirDialog.CorrectTempo")}
+                label={t("targetDirDialog.correctTempo")}
               />
               <br />
               {isCorrectTempo && (

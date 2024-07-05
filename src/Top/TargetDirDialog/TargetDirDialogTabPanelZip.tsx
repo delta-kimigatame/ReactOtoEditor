@@ -27,7 +27,7 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
     <TabPanel value="1" sx={{ p: 0 }}>
       {props.nothingOto ? (
         <>
-          <Typography>{t("targetDirDialog.NothingOto")}</Typography>
+          <Typography>{t("targetDirDialog.nothingOto")}</Typography>
         </>
       ) : props.oto !== null ? (
         <>

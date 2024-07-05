@@ -31,7 +31,7 @@ export const TargetDirDialogAliasVariant: React.FC<
     <>
       <Accordion>
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <InputLabel>{t("targetDirDialog.CorrectType")}</InputLabel>
+          <InputLabel>{t("targetDirDialog.correctType")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
           {props.oto.GetLines()[props.targetDir].map((l, i) => (
