@@ -18,6 +18,7 @@ import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 import { TargetDirDialogTabPanelZip } from "./TargetDirDialogTabPanelZip";
 import { TargetDirDialogTabPanelStoraged } from "./TargetDirDialogTabPanelStoraged";
+import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTemplate";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ
@@ -112,6 +113,11 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                   targetDir={props.targetDir}
                   setOto={props.setOto}
                   zipFileName={props.zipFileName}
+                />
+                <TargetDirDialogTabPanelTemplate
+                  setDialogOpen={props.setDialogOpen}
+                  setOto={props.setOto}
+                  targetDir={props.targetDir}
                 />
               </TabContext>
             </>
