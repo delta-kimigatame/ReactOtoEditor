@@ -4,13 +4,12 @@ import JSZip from "jszip";
 import { useTranslation } from "react-i18next";
 import { setting } from "../settings/setting";
 
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
+import { BasePaper } from "../Common/BasePaper";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper
@@ -32,7 +31,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
    * inputのファイルが変更した際のイベント \
    * nullやファイル数が0の時は何もせず終了する。 \
    * ファイルが含まれている場合、1つ目のファイルを`readFile`に代入する。
-   * @param e 
+   * @param e
    */
   const OnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -70,28 +69,29 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         ref={inputRef}
         accept="application/zip"
       ></input>
-      <Paper elevation={2} sx={{ m: 1, p: 2 }}>
-        <Typography variant="h6">{setting.productName}</Typography>
-        <Divider />
-        <Box sx={{ m: 1, p: 1 }}>
-          <Typography variant="body1">{t("top.description")}</Typography>
-          <br />
-          <Button
-            fullWidth
-            variant="contained"
-            size="large"
-            sx={{ textTransform: "none" }}
-            disabled={processing}
-            onClick={OnButtonClick}
-          >
-            {!processing ? (
-              <>{t("top.selectZipButtonText")}</>
-            ) : (
-              <CircularProgress color="inherit" size={20} />
-            )}
-          </Button>
-        </Box>
-      </Paper>
+      <BasePaper
+        title={setting.productName}
+        body={
+          <Box sx={{ m: 1, p: 1 }}>
+            <Typography variant="body1">{t("top.description")}</Typography>
+            <br />
+            <Button
+              fullWidth
+              variant="contained"
+              size="large"
+              sx={{ textTransform: "none" }}
+              disabled={processing}
+              onClick={OnButtonClick}
+            >
+              {!processing ? (
+                <>{t("top.selectZipButtonText")}</>
+              ) : (
+                <CircularProgress color="inherit" size={20} />
+              )}
+            </Button>
+          </Box>
+        }
+      />
       <LoadZipDialog
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
@@ -114,4 +114,4 @@ export interface TopPaperProps {
   >;
   /** 読み込んだファイル名を変更する処理 */
   setZipFileName: React.Dispatch<React.SetStateAction<string>>;
-};
+}
