@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { FullWidthButton } from "../Common/FullWidthButton";
+import { Log } from "../Lib/Logging";
 
 /**
  * zipをダウンロードするダイアログ
@@ -28,6 +29,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   const OnDownloadClick = () => {
     setProgress(true);
     const newZip = new JSZip();
+    Log.log("zipの生成", "DownloadZipDialogTitle");
     ZipExtract(props.readZip, 0, newZip);
   };
 
@@ -48,6 +50,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
       if (index < Object.keys(files).length - 1) {
         ZipExtract(files, index + 1, newZip);
       } else {
+        Log.log("元zipの複製完了", "DownloadZipDialogTitle");
         ZipedOto(newZip);
       }
     });
@@ -66,6 +69,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
+        Log.log(`編集中データの保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
         newZip.file(td + "/oto.ini", f);
       } else if (props.targetList[i] === 1) {
         /** 保存されたデータ */
@@ -74,10 +78,12 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
+        Log.log(`履歴から保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
         newZip.file(td + "/oto.ini", f);
       } else {
         /** 書き出ししない場合 */
         if (Object.keys(newZip.files).includes(td + "/oto.ini")) {
+          Log.log(`削除:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
           newZip.remove(td + "/oto.ini");
         }
       }
@@ -90,6 +96,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     const a = document.createElement("a");
     a.href = url;
     a.download = props.zipFileName;
+    Log.log(`zipダウンロード`, "DownloadZipDialogTitle");
     a.click();
     setProgress(false);
     props.setDialogOpen(false);

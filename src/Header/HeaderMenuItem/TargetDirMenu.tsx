@@ -10,6 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 
 import { TargetDirDialog } from "../../TargetDirDialog/TargetDirDialog";
+import { Log } from "../../Lib/Logging";
 
 /**
  * フォルダ変更ダイアログを表示するボタン
@@ -42,6 +43,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
       update_date: new Date().toJSON(),
     };
     localStorage.setItem("oto", JSON.stringify(storagedOto));
+    Log.log(`localstorageに保存`, "TargetDirMenu");
     setTargetDirDialogOpen(true);
   };
 
