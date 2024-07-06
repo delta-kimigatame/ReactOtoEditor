@@ -44,7 +44,7 @@
     "reload": "指定文字コードで再読込",
     "submit": "OK",
     "nothingOto": "oto.iniが見つかりませんでした。",
-    "NothingHistory": "履歴はありませんでした",
+    "nothingHistory": "履歴はありませんでした",
     "readHistory": "読み込む履歴",
     "readTemplate":"テンプレートを読み込む",
     "correctOffset":"オフセットを補正する",

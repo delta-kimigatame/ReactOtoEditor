@@ -44,7 +44,7 @@
     "reload": "Reload with the specified character code",
     "submit": "OK",
     "nothingOto": "oto.ini is not found.",
-    "NothingHistory": "There was no history",
+    "nothingHistory": "There was no history",
     "readHistory": "Load History",
     "readTemplate":"Read Template",
     "correctOffset":"Correct Offset",
