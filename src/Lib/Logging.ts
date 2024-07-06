@@ -5,7 +5,6 @@ class Logging {
   }
   log(value: string, source: string) {
     this.datas.push(new Date().toJSON() + "\t" + source + "\t" + value);
-    console.log(this.datas);
   }
 }
 

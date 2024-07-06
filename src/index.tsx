@@ -2,11 +2,15 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 import { CookiesProvider } from "react-cookie";
-import "./i18n/configs"
+import { ErrorBoundary } from "react-error-boundary";
+import "./i18n/configs";
+import { ErrorPaper } from "./ErrorPaper";
 
 const root = createRoot(document.getElementById("root")!);
 root.render(
-  <CookiesProvider>
-    <App />
-  </CookiesProvider>
+  <ErrorBoundary FallbackComponent={ErrorPaper}>
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
+  </ErrorBoundary>
 );
