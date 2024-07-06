@@ -1,13 +1,15 @@
 import * as React from "react";
 import JSZip from "jszip";
 import { useTranslation } from "react-i18next";
+import { Oto } from "utauoto";
+import OtoRecord from "utauoto/dist/OtoRecord";
+
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import CloseIcon from "@mui/icons-material/Close";
-import { Oto } from "utauoto";
-import OtoRecord from "utauoto/dist/OtoRecord";
+
 import { EditorTable } from "../EditorTable";
 import { TableDialogButtonArea } from "./TableDialogButtonArea";
 

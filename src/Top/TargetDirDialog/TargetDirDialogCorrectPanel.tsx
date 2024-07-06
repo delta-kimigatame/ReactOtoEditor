@@ -1,12 +1,12 @@
 import * as React from "react";
 import { Oto } from "utauoto";
-
 import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import { FormControlLabel } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+
 import { AddParams } from "../../Lib/OtoBatchProcess";
 import { TargetDirDialogAliasVariant } from "./TargetDirDialogAliasVariant";
 import { FullWidthButton } from "../../Common/FullWidthButton";

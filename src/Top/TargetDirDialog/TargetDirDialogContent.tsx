@@ -1,21 +1,16 @@
 import * as React from "react";
 import JSZip from "jszip";
 import { Oto } from "utauoto";
-
 import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import DialogContent from "@mui/material/DialogContent";
-import Typography from "@mui/material/Typography";
-import CircularProgress from "@mui/material/CircularProgress";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+
 import { TargetDirDialogSelectDir } from "./TargetDirDialogSelectDir";
-import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
-import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 import { TargetDirDialogTabPanelZip } from "./TargetDirDialogTabPanelZip";
 import { TargetDirDialogTabPanelStoraged } from "./TargetDirDialogTabPanelStoraged";
 import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTemplate";

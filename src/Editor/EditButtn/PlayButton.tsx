@@ -1,11 +1,12 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
 import OtoRecord from "utauoto/dist/OtoRecord";
+import { useTranslation } from "react-i18next";
 import { Wave } from "utauwav";
 
-import { useTranslation } from "react-i18next";
+import { PaletteMode } from "@mui/material";
 
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
+
 import { EditorButton } from "./EditorButton";
 import { oto } from "../../settings/setting";
 

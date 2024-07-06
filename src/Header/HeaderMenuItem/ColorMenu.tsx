@@ -3,13 +3,13 @@ import { PaletteMode } from "@mui/material";
 
 import { useTranslation } from "react-i18next";
 
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+
 import { specColor } from "../../settings/colors";
 
 /**

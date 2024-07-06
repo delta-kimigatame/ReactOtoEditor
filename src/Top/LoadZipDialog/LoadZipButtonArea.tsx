@@ -1,10 +1,8 @@
 import * as React from "react";
 import JSZip from "jszip";
-
 import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
-
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 

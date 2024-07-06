@@ -1,11 +1,11 @@
 import * as React from "react";
+import OtoRecord from "utauoto/dist/OtoRecord";
+import { oto } from "../settings/setting";
+
 import { PaletteMode } from "@mui/material";
 
 import { lineColorPallet } from "../settings/colors";
-
 import { GetColor } from "../Lib/Color";
-import OtoRecord from "utauoto/dist/OtoRecord";
-import { oto } from "../settings/setting";
 
 /**
  * 原音設定パラメータを表示するキャンバス

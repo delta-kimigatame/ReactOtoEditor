@@ -2,7 +2,6 @@ import * as React from "react";
 
 import { useTranslation } from "react-i18next";
 
-import IconButton from "@mui/material/IconButton";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";

@@ -1,11 +1,10 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
-
 import { Wave } from "utauwav";
+
+import { PaletteMode } from "@mui/material";
 
 import { fftSetting } from "../settings/setting";
 import { backgroundColorPallet, specColor } from "../settings/colors";
-
 import { Color, GetColor, GetColorInterp } from "../Lib/Color";
 
 /**

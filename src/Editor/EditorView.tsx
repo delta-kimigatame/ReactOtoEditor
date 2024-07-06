@@ -1,14 +1,14 @@
 import * as React from "react";
 import JSZip from "jszip";
-import { PaletteMode } from "@mui/material";
-import { CanvasBase } from "./CanvasBase";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
+import { PaletteMode } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
 
+import { CanvasBase } from "./CanvasBase";
 import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
 import { EditorTable } from "./EditorTable";

@@ -1,22 +1,22 @@
 import * as React from "react";
 import JSZip from "jszip";
-import { styled } from "@mui/system";
-import { PaletteMode } from "@mui/material";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
+import { styled } from "@mui/system";
+import { PaletteMode } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
-
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import TableViewIcon from "@mui/icons-material/TableView";
 import EditAttributesIcon from "@mui/icons-material/EditAttributes";
 import LockIcon from "@mui/icons-material/Lock";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
+
 import { layout } from "../settings/setting";
 import { EditorButton } from "./EditButtn/EditorButton";
 import { NextAliasButton } from "./EditButtn/NextAliasButton";

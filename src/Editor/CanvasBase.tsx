@@ -1,15 +1,15 @@
 import * as React from "react";
+import { Wave, WaveAnalyse } from "utauwav";
+import OtoRecord from "utauoto/dist/OtoRecord";
+
 import { PaletteMode } from "@mui/material";
 
 import Box from "@mui/material/Box";
-
-import { Wave, WaveAnalyse } from "utauwav";
 
 import { fftSetting } from "../settings/setting";
 import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
-import OtoRecord from "utauoto/dist/OtoRecord";
 
 /**
  * エディタのキャンバス

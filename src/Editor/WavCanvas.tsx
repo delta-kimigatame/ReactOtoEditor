@@ -1,14 +1,13 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
-
 import { Wave } from "utauwav";
+
+import { PaletteMode } from "@mui/material";
 
 import {
   backgroundColorPallet,
   lineColorPallet,
   wavColorPallet,
 } from "../settings/colors";
-
 import { GetColor } from "../Lib/Color";
 
 /**

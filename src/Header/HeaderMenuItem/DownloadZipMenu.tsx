@@ -1,6 +1,5 @@
 import * as React from "react";
 import JSZip from "jszip";
-import * as iconv from "iconv-lite";
 import { Oto } from "utauoto";
 import { useTranslation } from "react-i18next";
 

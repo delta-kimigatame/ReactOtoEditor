@@ -1,9 +1,9 @@
 import * as React from "react";
-
 import { useTranslation } from "react-i18next";
 
-import { BasePaper } from "../Common/BasePaper";
 import Typography from "@mui/material/Typography";
+
+import { BasePaper } from "../Common/BasePaper";
 
 /**
  * トップビューに表示する、プライバシーポリシー

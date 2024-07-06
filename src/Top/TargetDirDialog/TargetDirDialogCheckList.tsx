@@ -1,11 +1,10 @@
 import * as React from "react";
 import { Oto } from "utauoto";
-
 import { useTranslation } from "react-i18next";
 
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import { Typography } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ内のoto.ini文字化けを確認するエリア

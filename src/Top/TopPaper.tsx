@@ -1,15 +1,15 @@
 import * as React from "react";
 import JSZip from "jszip";
-
 import { useTranslation } from "react-i18next";
-import { setting } from "../settings/setting";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+
 import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
 import { BasePaper } from "../Common/BasePaper";
 import { FullWidthButton } from "../Common/FullWidthButton";
+import { setting } from "../settings/setting";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper

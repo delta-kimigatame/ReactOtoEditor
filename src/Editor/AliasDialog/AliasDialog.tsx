@@ -1,17 +1,17 @@
 import * as React from "react";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
-
 import { useTranslation } from "react-i18next";
+
 import Dialog from "@mui/material/Dialog";
 import IconButton from "@mui/material/IconButton";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
+
 import { FullWidthTextField } from "../../Common/FullWidthTextField";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {

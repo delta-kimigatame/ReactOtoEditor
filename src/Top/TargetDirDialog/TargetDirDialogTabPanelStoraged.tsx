@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Oto } from "utauoto";
-
 import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";

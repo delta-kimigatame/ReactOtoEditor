@@ -1,10 +1,10 @@
 import * as React from "react";
-
 import { useTranslation } from "react-i18next";
 
-import { BasePaper } from "../Common/BasePaper";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+
+import { BasePaper } from "../Common/BasePaper";
 
 /**
  * トップビューに表示する、利用規約

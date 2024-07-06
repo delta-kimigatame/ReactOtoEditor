@@ -1,11 +1,12 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
-
 import { useTranslation } from "react-i18next";
 
+import { PaletteMode } from "@mui/material";
+
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+
 import { EditorButton } from "./EditorButton";
 
 /**

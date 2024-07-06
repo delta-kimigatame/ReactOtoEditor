@@ -1,11 +1,12 @@
 import * as React from "react";
-import { PaletteMode } from "@mui/material";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
-
 import { useTranslation } from "react-i18next";
 
+import { PaletteMode } from "@mui/material";
+
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
+
 import { EditorButton } from "./EditorButton";
 
 /**

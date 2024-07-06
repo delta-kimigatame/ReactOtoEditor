@@ -1,9 +1,8 @@
 import * as React from "react";
+
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { ThemeOptions } from "@mui/material/styles";
-
 import { useTranslation } from "react-i18next";
-import { setting } from "./settings/setting";
 
 import Divider from "@mui/material/Divider";
 import Box from "@mui/material/Box";
@@ -12,6 +11,7 @@ import Link from "@mui/material/Link";
 import XIcon from "@mui/icons-material/X";
 
 import { XButton } from "./XButton";
+import { setting } from "./settings/setting";
 
 /**
  * フッタ
