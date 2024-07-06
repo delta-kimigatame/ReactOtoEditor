@@ -102,6 +102,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
       );
     }
     ctx.stroke();
+    props.setWavProgress(false);
     Log.log(`wav描画完了`, "WavCanvas");
   };
 
@@ -116,6 +117,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && props.wav !== null) {
+      props.setWavProgress(true);
       RenderWave(ctx, props.wav);
     } else if (ctx) {
       RenderBase(ctx);
@@ -145,4 +147,8 @@ export interface WavCanvasProps {
   color: string;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
+  /** 波形の読込状態 */
+  wavProgress: boolean;
+  /** 波形の読込状態の更新 */
+  setWavProgress: React.Dispatch<React.SetStateAction<boolean>>;
 }

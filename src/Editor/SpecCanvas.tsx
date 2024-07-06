@@ -50,20 +50,10 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
   ): Promise<void> => {
     Log.log(`canvas初期化`, "SpecCanvas");
     /**キャンバスの初期化 */
-    ctx.clearRect(
-      0,
-      0,
-      props.canvasWidth,
-      props.canvasHeight
-    );
+    ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
     /** 背景色の描画 */
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(
-      0,
-      0,
-      props.canvasWidth,
-      props.canvasHeight
-    );
+    ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
     Log.log(`スペクトログラム描画`, "SpecCanvas");
     /** キャンバスの周波数方向の分解能 */
     const rh = Math.ceil(
@@ -109,6 +99,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         );
       }
     }
+    props.setSpecProgress(false);
     Log.log(`スペクトログラム描画完了`, "SpecCanvas");
   };
 
@@ -121,24 +112,15 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
   const OnChangeSpec = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && props.spec !== null && props.wav !== null) {
+      props.setSpecProgress(true);
       await RenderSpec(ctx, props.wav, props.spec).then(() => {});
-    }else if(ctx){
+    } else if (ctx) {
       Log.log(`canvas初期化`, "SpecCanvas");
       /**キャンバスの初期化 */
-      ctx.clearRect(
-        0,
-        0,
-        props.canvasWidth,
-        props.canvasHeight
-      );
+      ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
       /** 背景色の描画 */
       ctx.fillStyle = backgroundColor;
-      ctx.fillRect(
-        0,
-        0,
-        props.canvasWidth,
-        props.canvasHeight
-      );
+      ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
     }
   };
 
@@ -171,4 +153,8 @@ export interface SpecCanvasProps {
   specMax: number;
   /** wav1フレームあたりを何pixelに描画するか */
   frameWidth: number;
+  /** スペクトログラムの読込状態 */
+  specProgress: boolean;
+  /** スペクトログラムの読込状態の更新 */
+  setSpecProgress: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -43,6 +43,10 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
   /** recordの更新をtableに通知するための変数 */
   const [updateSignal, setUpdateSignal] = React.useState<number>(0);
+  /** 波形の読込状態 */
+  const [wavProgress, setWavProgress] = React.useState<boolean>(false);
+  /** スペクトログラムの読込状態 */
+  const [specProgress, setSpecProgress] = React.useState<boolean>(false);
 
   /** overlapLockの初期化 */
   const overlapLock_: boolean =
@@ -94,6 +98,10 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         setUpdateSignal={setUpdateSignal}
         touchMode={touchMode}
         overlapLock={overlapLock}
+        wavProgress={wavProgress}
+        specProgress={specProgress}
+        setWavProgress={setWavProgress}
+        setSpecProgress={setSpecProgress}
       />
       <EditorTable
         windowWidth={props.windowSize[0]}
@@ -122,6 +130,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         setUpdateSignal={setUpdateSignal}
         zip={props.zip}
         zipFileName={props.zipFileName}
+        progress={wavProgress || specProgress}
       />
     </>
   );

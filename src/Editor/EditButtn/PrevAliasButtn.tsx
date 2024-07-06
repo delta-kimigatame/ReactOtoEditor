@@ -12,7 +12,7 @@ import { Log } from "../../Lib/Logging";
 
 /**
  * 前のエイリアスに送るボタン
- * @param props 
+ * @param props
  * @returns 前のエイリアスに送るボタン
  */
 export const PrevAliasButton: React.FC<Props> = (props) => {
@@ -28,7 +28,9 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
     );
     if (props.aliasIndex === 0) {
       if (props.fileIndex !== 0) {
-        const filename = props.oto.GetFileNames(props.targetDir)[props.fileIndex - 1];
+        const filename = props.oto.GetFileNames(props.targetDir)[
+          props.fileIndex - 1
+        ];
         const maxAliases =
           props.oto.GetAliases(props.targetDir, filename).length - 1;
         const alias = props.oto.GetAliases(props.targetDir, filename)[
@@ -39,7 +41,9 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
         props.setAliasIndex(maxAliases);
         props.setMaxAliasIndex(maxAliases);
         Log.log(
-          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex - 1}、maxAliasIndex:${maxAliases}、aliasIndex:${maxAliases}`,
+          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${
+            props.fileIndex - 1
+          }、maxAliasIndex:${maxAliases}、aliasIndex:${maxAliases}`,
           "PrevAliasButton"
         );
       }
@@ -53,7 +57,11 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
       );
       props.setAliasIndex(props.aliasIndex - 1);
       Log.log(
-        `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex - 1}`,
+        `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${
+          props.fileIndex
+        }、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${
+          props.aliasIndex - 1
+        }`,
         "PrevAliasButton"
       );
     }
@@ -62,13 +70,15 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
-            mode={props.mode}
-            size={props.size}
-            icon={<ArrowDropUpIcon sx={{ fontSize: props.iconSize }} />}
-            title={t("editor.prev")}
-            onClick={OnPrevAlias}
-            disabled={props.aliasIndex === 0 && props.fileIndex === 0}
-          />
+        mode={props.mode}
+        size={props.size}
+        icon={<ArrowDropUpIcon sx={{ fontSize: props.iconSize }} />}
+        title={t("editor.prev")}
+        onClick={OnPrevAlias}
+        disabled={
+          (props.aliasIndex === 0 && props.fileIndex === 0) || props.progress
+        }
+      />
     </>
   );
 };
@@ -102,4 +112,6 @@ interface Props {
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
-};
+  /** キャンバスの読込状態 */
+  progress: boolean;
+}

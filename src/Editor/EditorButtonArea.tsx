@@ -226,7 +226,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             size={size}
             icon={<ZoomInIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomin")}
-            disabled={props.pixelPerMsec === 1}
+            disabled={props.pixelPerMsec === 1 || props.progress}
             onClick={OnZoomIn}
           />
           <EditorButton
@@ -235,7 +235,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             icon={<ZoomOutIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomout")}
             onClick={OnZoomOut}
-            disabled={props.pixelPerMsec === 20}
+            disabled={props.pixelPerMsec === 20 || props.progress}
           />
         </StyledBox>
         <StyledBox>
@@ -254,6 +254,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             setFileIndex={setFileIndex}
             setAliasIndex={setAliasIndex}
             setMaxAliasIndex={setMaxAliasIndex}
+            progress={props.progress}
           />
           <NextAliasButton
             targetDir={props.targetDir}
@@ -270,6 +271,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             setFileIndex={setFileIndex}
             setAliasIndex={setAliasIndex}
             setMaxAliasIndex={setMaxAliasIndex}
+            progress={props.progress}
           />
         </StyledBox>
       </Paper>
@@ -349,7 +351,9 @@ export interface EditorButtonAreaProps {
     [key: string]: JSZip.JSZipObject;
   } | null;
   /** zipのファイル名 */
-  zipFileName:string
+  zipFileName: string;
+  /** キャンバスの読込状態 */
+  progress: boolean;
 }
 
 /**

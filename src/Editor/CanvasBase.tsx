@@ -117,6 +117,8 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           mode={props.mode}
           color={props.color}
           wav={props.wav}
+          wavProgress={props.wavProgress}
+          setWavProgress={props.setWavProgress}
         />
         <br />
         <SpecCanvas
@@ -128,6 +130,8 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           spec={spec}
           specMax={specMax}
           frameWidth={frameWidth}
+          specProgress={props.specProgress}
+          setSpecProgress={props.setSpecProgress}
         />
         <br />
         <OtoCanvas
@@ -169,4 +173,12 @@ export interface CanvasBaseProps {
   touchMode: boolean;
   /** overlaplackを使用するか */
   overlapLock: boolean;
+  /** 波形の読込状態 */
+  wavProgress: boolean;
+  /** スペクトログラムの読込状態 */
+  specProgress: boolean;
+  /** 波形の読込状態の更新 */
+  setWavProgress: React.Dispatch<React.SetStateAction<boolean>>;
+  /** スペクトログラムの読込状態の更新 */
+  setSpecProgress: React.Dispatch<React.SetStateAction<boolean>>;
 }

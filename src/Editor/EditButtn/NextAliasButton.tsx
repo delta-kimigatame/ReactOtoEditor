@@ -17,7 +17,6 @@ import { Log } from "../../Lib/Logging";
  */
 export const NextAliasButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
-
   /**
    * 次のエイリアスに送る処理
    */
@@ -39,7 +38,11 @@ export const NextAliasButton: React.FC<Props> = (props) => {
           props.oto.GetAliases(props.targetDir, filename).length - 1
         );
         Log.log(
-          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex + 1}、maxAliasIndex:${props.oto.GetAliases(props.targetDir, filename).length - 1}、aliasIndex:${0}`,
+          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${
+            props.fileIndex + 1
+          }、maxAliasIndex:${
+            props.oto.GetAliases(props.targetDir, filename).length - 1
+          }、aliasIndex:${0}`,
           "NextAliasButton"
         );
       }
@@ -53,7 +56,11 @@ export const NextAliasButton: React.FC<Props> = (props) => {
       );
       props.setAliasIndex(props.aliasIndex + 1);
       Log.log(
-        `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex + 1}`,
+        `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${
+          props.fileIndex
+        }、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${
+          props.aliasIndex + 1
+        }`,
         "NextAliasButton"
       );
     }
@@ -68,8 +75,9 @@ export const NextAliasButton: React.FC<Props> = (props) => {
         title={t("editor.next")}
         onClick={OnNextAlias}
         disabled={
-          props.maxAliasIndex === props.aliasIndex &&
-          props.maxFileIndex === props.fileIndex
+          (props.maxAliasIndex === props.aliasIndex &&
+            props.maxFileIndex === props.fileIndex) ||
+          props.progress
         }
       />
     </>
@@ -105,4 +113,6 @@ interface Props {
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  /** キャンバスの読込状態 */
+  progress: boolean;
 }
