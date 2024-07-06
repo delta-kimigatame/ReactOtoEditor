@@ -11,6 +11,7 @@ import { AddParams } from "../Lib/OtoBatchProcess";
 import { TargetDirDialogAliasVariant } from "./TargetDirDialogAliasVariant";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthTextField } from "../Common/FullWidthTextField";
+import { CorrectTempo } from "../Lib/CorrectOto";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面
@@ -79,72 +80,15 @@ export const TargetDirDialogCorrectPanel: React.FC<
       const offsetDif = afterOffset - beforeOffset;
       AddParams(props.oto, props.targetDir, "offset", offsetDif);
     } else if (!hasPositiveBlank) {
-      /** aliasVariantのindex */
-      let index = 0;
-      /** テンプレートのテンポにおける1拍分の長さ(ms) */
-      const beforeTempoMs = (60 / beforeTempo) * 1000;
-      /** 変更後のテンポにおける1拍分の長さ(ms) */
-      const afterTempoMs = (60 / afterTempo) * 1000;
-      /** テンポの変換に伴う各パラメータの変換係数 */
-      const tempoRate = afterTempoMs / beforeTempoMs;
-      props.oto.GetFileNames(props.targetDir).forEach((f) => {
-        props.oto.GetAliases(props.targetDir, f).forEach((a) => {
-          const record = props.oto.GetRecord(props.targetDir, f, a);
-          /** 先行発声の位置(ms) */
-          const position = record.offset + record.pre;
-          if (aliasVariant[index] === "VCV") {
-            /** このレコードが何拍目か */
-            const beats = Math.max(
-              Math.floor((position - beforeOffset) / beforeTempoMs),
-              0
-            );
-            /** 拍子の頭とレコードの先行発声の位置の差 */
-            const positionDif = position - beforeOffset - beats * beforeTempoMs;
-            /** 補正後の先行発声の位置(ms) */
-            const targetPosition =
-              beats * afterTempoMs + positionDif * tempoRate + afterOffset;
-            record.overlap *= tempoRate;
-            record.pre *= tempoRate;
-            record.velocity *= tempoRate;
-            record.blank *= tempoRate;
-            record.offset = targetPosition - record.pre;
-          } else if (aliasVariant[index] === "VC") {
-            /** このレコードが何拍目か + 1 */
-            const beats = Math.max(
-              Math.ceil((position - beforeOffset) / beforeTempoMs),
-              1
-            );
-            /** 拍子の頭とレコードの先行発声の位置の差 */
-            const positionDif = position - beforeOffset - beats * beforeTempoMs;
-            /** 補正後の先行発声の位置(ms) */
-            const targetPosition =
-              beats * afterTempoMs + positionDif + afterOffset;
-            /** 先行発声から子音速度までの長さ(ms) */
-            const velocityOffset = record.velocity - record.pre;
-            /** 先行発声から右ブランクまでの長さ * -1 (ms) */
-            const blankOffset = record.pre + record.blank;
-            record.overlap *= tempoRate;
-            record.pre *= tempoRate;
-            record.velocity = record.pre + velocityOffset;
-            record.blank = blankOffset - record.pre;
-            record.offset = targetPosition - record.pre;
-          } else {
-            /** このレコードが何拍目か */
-            const beats = Math.max(
-              Math.floor((position - beforeOffset) / beforeTempoMs),
-              0
-            );
-            /** 拍子の頭とレコードの先行発声の位置の差 */
-            const positionDif = position - beforeOffset - beats * beforeTempoMs;
-            /** 補正後の先行発声の位置(ms) */
-            const targetPosition =
-              beats * afterTempoMs + positionDif * tempoRate + afterOffset;
-            record.blank *= tempoRate;
-            record.offset = targetPosition - record.pre;
-          }
-          index++;
-        });
-      });
+      CorrectTempo(
+        props.oto,
+        props.targetDir,
+        aliasVariant,
+        beforeOffset,
+        afterOffset,
+        beforeTempo,
+        afterTempo
+      );
     }
     props.setOto(props.oto);
     props.setDialogOpen(false);
