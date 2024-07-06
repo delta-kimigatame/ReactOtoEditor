@@ -3,8 +3,123 @@
     "ja":"JA",
     "en":"EN"
   },
-  "top":{
-    "description":"LABERUはUTAU音源のための原音設定ツールです。"
+  "menu":{
+    "changeTargetDir":"Select the folder to oto",
+    "otoDownload":"Download oto.ini",
+    "zipDownload":"Download Zip",
+    "toDarkMode":"to Dark Mode",
+    "toLightMode":"to Light Mode",
+    "changeColor":"Color setting",
+    "changeLanguage":"Language setting"
+  },
+  "downloadZipDialog":{
+    "current":"Current",
+    "storaged":"History",
+    "readed":"uploaded zip",
+    "none":"(None)"
+  },
+  "top": {
+    "description": "Laberu is otoing tool for UTAU VoiceBanks",
+    "selectZipButtonText": "Agree to the terms of use and Select the UTAU VoiceBanks zip file",
+    "rule": "Terms of service",
+    "ruleDescription": "Only voice sources with permission from the voice rights holder may be used.",
+    "ruleDescription2": "If you wish to use someone else's voice, you must obtain their explicit permission.",
+    "privacy": "Privacy Policy",
+    "privacyAnalytics": "This website uses Google's access analysis tool \"Google Analytics.\" Google Analytics uses cookies to collect data. This data is collected anonymously and does not identify individuals.",
+    "privacyCookie": "We use cookies on our site to customize how you experience our site."
+  },
+  "loadZipDialog": {
+    "title": "Read Zip",
+    "encodeCheck": "Check the encoding",
+    "encoding": "character code",
+    "reload": "Reload with the specified character code",
+    "submit": "OK",
+    "error": "ERROR"
+  },
+  "targetDirDialog": {
+    "title": "Select the folder to oto",
+    "targetDir": "Select the folder to oto",
+    "encodeCheck": "Check the encoding",
+    "encoding": "character code",
+    "reload": "Reload with the specified character code",
+    "submit": "OK",
+    "nothingOto": "oto.ini is not found.",
+    "NothingHistory": "There was no history",
+    "readHistory": "Load History",
+    "readTemplate":"Read Template",
+    "correctOffset":"Correct Offset",
+    "correctTempo":"Correct Recording BPM",
+    "beforeOffset":"Offset before correction",
+    "afterOffset":"Offset after correction",
+    "beforeTempo":"Recording BPM before correction",
+    "afterTempo":"Recording BPM after correction",
+    "correctType":"Classify alias",
+    "hasPositiveBlankError":"The cutoff is a positive number, so recording bpm correction is not possible.",
+    "CV":"CV",
+    "VCV":"VCV",
+    "VC":"VC",
+    "tab":{
+      "zip":"Read Zip",
+      "storaged":"Load History",
+      "template":"Read Template",
+      "make":"generate(developping)"
+    }
+  },
+  "oto": {
+    "filename": "filename",
+    "alias": "alias",
+    "offset": "offset",
+    "overlap": "overlap",
+    "preutter": "preutter",
+    "velocity": "velocity",
+    "blank": "cutoff"
+  },
+  "tableDialog": {
+    "title": "Batch Processing",
+    "batchProcess": {
+      "wavNotFound": "Delete records that do not contain wav",
+      "recordNotFound": "Add records for wav with no data",
+      "numberingDuplicationAlias": "Number duplicate aliases sequentially",
+      "limitedNumber": "Limit the number of sequential numbers",
+      "negativeBlank": "Make the cutoff a negative number",
+      "forceOverlapRate": "Make overlap 1/3 of preutter",
+      "removeSurfix":"Remove alias trailing",
+      "addSurfix":"Add characters to the end of the alias",
+      "addParams":"Increase or decrease a specified parameter",
+      "changeParams":"Change the specified parameters",
+      "aliasComplement":"Complement を/ぢ/づ"
+    },
+    "targetTitle": "Target parameters",
+    "numberTitle":"number",
+    "stringTitle":"alias",
+    "submit":"Execute",
+    "processed":"processed"
+  },
+  "aliasDialog":{
+    "title":"Edit Alias",
+    "textField":"Alias",
+    "change":"change",
+    "duplication":"duplication",
+    "delete":"delete",
+    "barText":{
+      "change":"Changed",
+      "duplication":"Duplicated",
+      "delete":"Deleted",
+      "error":"This alias already exists."
+    }
+  },
+  "editor": {
+    "playBeforePreutter": "Play before preutter.",
+    "playAfterPreutter": "Play after preutter.",
+    "play": "Playing along with a metronome.",
+    "lockOverlap": "Forces overlap to 1/3 of preutter.",
+    "touchMode": "Preutter will move to the place you clicked and other parameters will follow. Individual parameters cannot be operated.",
+    "editAlias": "Edit Alias",
+    "showTable": "Show Table",
+    "zoomin": "Zoom In",
+    "zoomout": "Zoom Out",
+    "prev": "Previous Alias",
+    "next": "Next Alias"
   },
   "color":{
     "gray":"gray",
@@ -25,5 +140,11 @@
   },
   "xbutton":{
     "share":"share"
+  },
+  "error":{
+    "title":"Error",
+    "message":"An unexpected error has occurred. Please download the log from the button below and send it to the developer.",
+    "download":"Download Log",
+    "log":"Log"
   }
 }
