@@ -154,6 +154,11 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               </MenuItem>
             ))}
           </FullWidthSelect>
+          <Box
+            sx={{
+              display: batchList[batchIndex].requireString !== true && "none",
+            }}
+          >
           <FullWidthTextField
             type="text"
             label={t("tableDialog.stringTitle")}
@@ -162,6 +167,12 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               setSurfix(e.target.value);
             }}
           />
+          </Box>
+          <Box
+            sx={{
+              display: batchList[batchIndex].requireNumber !== true && "none",
+            }}
+          >
           <FullWidthTextField
             type="number"
             label={t("tableDialog.numberTitle")}
@@ -170,6 +181,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               setValue(parseFloat(e.target.value));
             }}
           />
+          </Box>
           <Box
             sx={{
               display: batchList[batchIndex].requireTarget !== true && "none",
