@@ -19,6 +19,7 @@ import { FullWidthSelect } from "../Common/FullWidthSelect";
 import { FullWidthTextField } from "../Common/FullWidthTextField";
 import * as BP from "../Lib/OtoBatchProcess";
 import { Log } from "../Lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "../Lib/StorageOto";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -129,16 +130,8 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
     Log.log(`一括処理完了`, "TableDialogButtonArea");
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
-    const storagedOto_: string | null = localStorage.getItem("oto");
-    const storagedOto: {} =
-      storagedOto_ === null ? {} : JSON.parse(storagedOto_);
-    if (!(props.zipFileName in storagedOto)) {
-      storagedOto[props.zipFileName] = {};
-    }
-    storagedOto[props.zipFileName][props.targetDir] = {
-      oto: props.oto.GetLines()[props.targetDir].join("\r\n"),
-      update_date: new Date().toJSON(),
-    };
+    const storagedOto: {} = GetStorageOto();
+    SaveStorageOto(storagedOto, props.oto, props.zipFileName, props.targetDir);
     localStorage.setItem("oto", JSON.stringify(storagedOto));
     Log.log(`localstorageに保存`, "TableDialogButtonArea");
   };

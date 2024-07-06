@@ -19,6 +19,7 @@ import { fftSetting, layout } from "./settings/setting";
 import { EditorView } from "./Editor/EditorView";
 
 import { Log } from "./Lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "./Lib/StorageOto";
 
 /**
  * Reactのエンドポイント
@@ -82,7 +83,7 @@ export const App: React.FC = () => {
     Log.log(window.navigator.userAgent, "App");
     const updateSize = (): void => {
       setWindowSize([window.innerWidth, window.innerHeight]);
-      Log.log("画面サイズ:"+[window.innerWidth, window.innerHeight], "App");
+      Log.log("画面サイズ:" + [window.innerWidth, window.innerHeight], "App");
     };
     window.addEventListener("resize", updateSize);
     updateSize();
@@ -101,7 +102,10 @@ export const App: React.FC = () => {
       const r: OtoRecord = oto.GetRecord(targetDir, filename, alias);
       setWavFileName(filename);
       setRecord(r);
-      Log.log(`otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`, "App");
+      Log.log(
+        `otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`,
+        "App"
+      );
     }
   }, [oto]);
 
@@ -110,17 +114,8 @@ export const App: React.FC = () => {
       setWavFileName(null);
       Log.log("recordを初期化", "App");
     } else {
-      const storagedOto_: string | null = localStorage.getItem("oto");
-      const storagedOto: {} =
-        storagedOto_ === null ? {} : JSON.parse(storagedOto_);
-      if (!(zipFileName in storagedOto)) {
-        storagedOto[zipFileName] = {};
-      }
-      storagedOto[zipFileName][targetDir] = {
-        oto: oto.GetLines()[targetDir].join("\r\n"),
-        update_date: new Date().toJSON(),
-      };
-      localStorage.setItem("oto", JSON.stringify(storagedOto));
+      const storagedOto: {} = GetStorageOto();
+      SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
       if (wavFileName !== record.filename) {
         setWavFileName(record.filename);
       }
@@ -147,7 +142,10 @@ export const App: React.FC = () => {
             Log.log(`wav読込完了。${targetDir + "/" + wavFileName}`, "App");
           });
       } else {
-        Log.log(`zip内にwavが見つかりませんでした。${targetDir + "/" + wavFileName}`, "App");
+        Log.log(
+          `zip内にwavが見つかりませんでした。${targetDir + "/" + wavFileName}`,
+          "App"
+        );
         setWav(null);
       }
     }

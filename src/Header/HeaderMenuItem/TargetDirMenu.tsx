@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 
 import { TargetDirDialog } from "../../TargetDirDialog/TargetDirDialog";
 import { Log } from "../../Lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "../../Lib/StorageOto";
 
 /**
  * フォルダ変更ダイアログを表示するボタン
@@ -32,17 +33,8 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
 
   /** 編集中のoto.iniをlocalstorageに書き込んでTargetDirDialogを開く */
   const OnMenuClick = () => {
-    const storagedOto_: string | null = localStorage.getItem("oto");
-    const storagedOto: {} =
-      storagedOto_ === null ? {} : JSON.parse(storagedOto_);
-    if (!(props.zipFileName in storagedOto)) {
-      storagedOto[props.zipFileName] = {};
-    }
-    storagedOto[props.zipFileName][props.targetDir] = {
-      oto: props.oto.GetLines()[props.targetDir].join("\r\n"),
-      update_date: new Date().toJSON(),
-    };
-    localStorage.setItem("oto", JSON.stringify(storagedOto));
+    const storagedOto: {} = GetStorageOto();
+    SaveStorageOto(storagedOto, props.oto, props.zipFileName, props.targetDir);
     Log.log(`localstorageに保存`, "TargetDirMenu");
     setTargetDirDialogOpen(true);
   };

@@ -10,6 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 
 import { DownloadZipDialog } from "../../DownloadZipDialog/DownloadZipDialog";
 import { Log } from "../../Lib/Logging";
+import { GetStorageOto } from "../../Lib/StorageOto";
 
 /**
  * zipをダウンロードするメニュー
@@ -31,9 +32,7 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
    */
   const OnMenuClick = () => {
     Log.log(`zipダウンロード準備`, "DownloadZipMenu");
-    const storagedOto_: string | null = localStorage.getItem("oto");
-    const storagedOtoTemp =
-      storagedOto_ === null ? {} : JSON.parse(storagedOto_);
+    const storagedOtoTemp: {} = GetStorageOto();
     if (!(props.zipFileName in storagedOtoTemp)) {
       setStoragedOto({});
     } else {
