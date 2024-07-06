@@ -14,10 +14,10 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { FullWidthButton } from "../../Common/FullWidthButton";
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
-import { FullWidthTextField } from "../../Common/FullWidthTextField";
-import * as BP from "../../Lib/OtoBatchProcess";
+import { FullWidthButton } from "../Common/FullWidthButton";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
+import { FullWidthTextField } from "../Common/FullWidthTextField";
+import * as BP from "../Lib/OtoBatchProcess";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props

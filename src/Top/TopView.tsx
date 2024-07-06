@@ -5,7 +5,7 @@ import { Oto } from "utauoto";
 import { PrivacyPaper } from "./PrivacyPaper";
 import { RulePaper } from "./RulePaper";
 import { TopPaper } from "./TopPaper";
-import { TargetDirDialog } from "./TargetDirDialog/TargetDirDialog";
+import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
 /**
  * zipデータを読み込む前の画面

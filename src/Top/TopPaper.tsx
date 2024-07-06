@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
 
-import { LoadZipDialog } from "./LoadZipDialog/LoadZipDialog";
+import { LoadZipDialog } from "../LoadZipDialog/LoadZipDialog";
 import { BasePaper } from "../Common/BasePaper";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { setting } from "../settings/setting";

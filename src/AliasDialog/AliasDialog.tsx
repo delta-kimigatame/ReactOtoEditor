@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 
-import { FullWidthTextField } from "../../Common/FullWidthTextField";
+import { FullWidthTextField } from "../Common/FullWidthTextField";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();

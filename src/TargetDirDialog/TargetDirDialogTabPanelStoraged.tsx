@@ -9,8 +9,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
-import { FullWidthButton } from "../../Common/FullWidthButton";
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { FullWidthButton } from "../Common/FullWidthButton";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
 
 /**
  * 履歴からoto.iniを読み込む場合のパネル

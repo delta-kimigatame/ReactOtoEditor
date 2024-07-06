@@ -8,7 +8,7 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
-import { DownloadZipDialog } from "../DownloadZipDialog/DownloadZipDialog";
+import { DownloadZipDialog } from "../../DownloadZipDialog/DownloadZipDialog";
 
 /**
  * zipをダウンロードするメニュー

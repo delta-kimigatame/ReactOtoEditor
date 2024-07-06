@@ -10,7 +10,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import CloseIcon from "@mui/icons-material/Close";
 
-import { EditorTable } from "../EditorTable";
+import { EditorTable } from "../Editor/EditorTable";
 import { TableDialogButtonArea } from "./TableDialogButtonArea";
 
 export const TableDialog: React.FC<TableDialogProps> = (props) => {

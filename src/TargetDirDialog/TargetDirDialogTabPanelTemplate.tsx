@@ -8,7 +8,7 @@ import TabPanel from "@mui/lab/TabPanel";
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 import { TargetDirDialogCorrectPanel } from "./TargetDirDialogCorrectPanel";
-import { FullWidthButton } from "../../Common/FullWidthButton";
+import { FullWidthButton } from "../Common/FullWidthButton";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル

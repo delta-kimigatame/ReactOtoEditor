@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import DialogContent from "@mui/material/DialogContent";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
 
 /**
  * zipをダウンロードするダイアログのコンテンツ部分

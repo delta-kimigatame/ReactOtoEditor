@@ -5,8 +5,8 @@ import { useTranslation } from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { FullWidthButton } from "../../Common/FullWidthButton";
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { FullWidthButton } from "../Common/FullWidthButton";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログの文字コードを設定するエリア

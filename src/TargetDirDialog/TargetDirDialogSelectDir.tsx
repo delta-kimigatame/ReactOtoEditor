@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ内の対象ディレクトリを選ぶ部分

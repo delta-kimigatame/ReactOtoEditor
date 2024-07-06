@@ -10,7 +10,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
-import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { FullWidthSelect } from "../Common/FullWidthSelect";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面のエイリアスの種類選択部分

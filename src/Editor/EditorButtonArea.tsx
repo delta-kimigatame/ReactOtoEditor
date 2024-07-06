@@ -24,8 +24,8 @@ import { PrevAliasButton } from "./EditButtn/PrevAliasButtn";
 import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
 import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
 import { PlayButton } from "./EditButtn/PlayButton";
-import { TableDialog } from "./TableDialog/TableDialog";
-import { AliasDialog } from "./AliasDialog/AliasDialog";
+import { TableDialog } from "../TableDialog/TableDialog";
+import { AliasDialog } from "../AliasDialog/AliasDialog";
 
 /**
  * 編集画面の操作ボタン
