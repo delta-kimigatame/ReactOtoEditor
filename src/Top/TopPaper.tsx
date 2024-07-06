@@ -11,6 +11,8 @@ import { BasePaper } from "../Common/BasePaper";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { setting } from "../settings/setting";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper
  * @param props {@link TopPaperProps}
@@ -39,6 +41,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
     setProcessing(true);
     setReadFile(e.target.files[0]);
     setDialogOpen(true);
+    Log.log(`ファイル読み込み。${e.target.files[0].name}`,"TOPPaper")
   };
 
   /**
@@ -57,6 +60,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
   React.useEffect(() => {
     if (props.readZip !== null) {
       setProcessing(false);
+      Log.log(`zip読込完了`,"TOPPaper")
     }
   }, [props.readZip]);
 

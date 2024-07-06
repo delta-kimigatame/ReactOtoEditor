@@ -12,6 +12,8 @@ import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthSelect } from "../Common/FullWidthSelect";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * 履歴からoto.iniを読み込む場合のパネル
  * @param props {@link TargetDirDialogTabPanelStoragedProps}
@@ -29,6 +31,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
 
   React.useEffect(() => {
     const storagedOto__ = storagedOto_ === null ? {} : JSON.parse(storagedOto_);
+    Log.log(`localstorageから編集履歴読込`, "TargetDirDialogTabPanelStoraged");
     setStoragedOto(storagedOto__);
   }, []);
 
@@ -38,6 +41,10 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
       const f = Object.keys(storagedOto)[i];
       const j = Object.keys(storagedOto[f]).indexOf(props.targetDir);
       if (j >= 0) {
+        Log.log(
+          `当該フォルダの編集履歴が見つかりました`,
+          "TargetDirDialogTabPanelStoraged"
+        );
         setSelectHistory("t_" + i + "_" + j);
       }
     }
@@ -45,7 +52,6 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
 
   React.useEffect(() => {
     if (selectHistory === undefined || selectHistory === null) return;
-    console.log(selectHistory);
     const [tmp, i, j, _] = selectHistory.split("_");
     const f = Object.keys(storagedOto)[parseInt(i)];
     const d = Object.keys(storagedOto[f])[parseInt(j)];
@@ -57,10 +63,18 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         "UTF-8"
       )
       .then(() => {
+        Log.log(
+          `oto.ini読込完了。ファイル名${f}、フォルダ名:${d}`,
+          "TargetDirDialogTabPanelStoraged"
+        );
         setOto(oto_);
       });
   }, [selectHistory]);
   const OnSelectChange = (e: SelectChangeEvent) => {
+    Log.log(
+      `読込履歴変更:${e.target.value}`,
+      "TargetDirDialogTabPanelStoraged"
+    );
     setSelectHistory(e.target.value);
   };
 
@@ -68,6 +82,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
    * 現在読み込んでいるoto.iniを親コンポーネントに返し、ダイアログを閉じる。
    */
   const OnSubmitClick = () => {
+    Log.log(`oto.ini確定`, "TargetDirDialogTabPanelStoraged");
     props.setOto(oto);
     props.setDialogOpen(false);
   };

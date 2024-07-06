@@ -7,6 +7,8 @@ import Divider from "@mui/material/Divider";
 import { LoadZipDialogContent } from "./LoadZipDialogContent";
 import { LoadZipDialogTitle } from "./LoadZipDialogTitle";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * zip読込待ちダイアログ \
  * ファイル名の一覧を表示し、必要に応じて読込文字コードを変更する機能を有する。
@@ -31,6 +33,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
   const LoadZip = (file: File, encoding: string = "utf-8") => {
     const zip = new JSZip();
     const td = new TextDecoder(encoding);
+    Log.log(`zip読込。文字コード:${encoding}`,"LoadZipDialog")
     props.setZipFileName(file.name);
     zip
       .loadAsync(file, {
@@ -40,6 +43,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
       .then((z) => {
         setProcessing(false);
         setZipFiles(z.files);
+        Log.log(`zip読込完了`,"LoadZipDialog")
       });
   };
 

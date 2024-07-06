@@ -15,6 +15,8 @@ import { TargetDirDialogTabPanelZip } from "./TargetDirDialogTabPanelZip";
 import { TargetDirDialogTabPanelStoraged } from "./TargetDirDialogTabPanelStoraged";
 import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTemplate";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ
  * @param props {@link TargetDirDialogContentProps}
@@ -38,6 +40,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
     if (props.targetDir === null) return;
     if (props.readZip === null) return;
     setNothingOto(false);
+    Log.log(`targetDirの変更。${props.targetDir}`, "TargetDirDialogContent");
     LoadOto();
   }, [props.targetDir]);
 
@@ -47,6 +50,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
    */
   const LoadOto = (encoding_: string = "SJIS") => {
     if (Object.keys(props.readZip).includes(props.targetDir + "/oto.ini")) {
+      Log.log(`${props.targetDir + "/oto.ini"}読込。文字コード:${encoding_}`, "TargetDirDialogContent");
       props.readZip[props.targetDir + "/oto.ini"]
         .async("arraybuffer")
         .then((result) => {
@@ -58,17 +62,20 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
               encoding_
             )
             .then(() => {
+              Log.log(`${props.targetDir + "/oto.ini"}読込完了`, "TargetDirDialogContent");
               setOto(oto);
               setTabIndex("1");
             });
         });
     } else {
+      Log.log(`${props.targetDir}内にoto.iniが見つかりませんでした。`, "TargetDirDialogContent");
       setNothingOto(true);
       setTabIndex("2");
     }
   };
 
   const OnTabChange = (e: React.SyntheticEvent, newValue: string) => {
+    Log.log(`tabpanel変更。${newValue}`, "TargetDirDialogContent");
     setTabIndex(newValue);
   };
   return (
@@ -92,7 +99,11 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                   <Tab value="1" label={t("targetDirDialog.tab.zip")} />
                   <Tab value="2" label={t("targetDirDialog.tab.storaged")} />
                   <Tab value="3" label={t("targetDirDialog.tab.template")} />
-                  <Tab value="4" label={t("targetDirDialog.tab.make")} disabled/>
+                  <Tab
+                    value="4"
+                    label={t("targetDirDialog.tab.make")}
+                    disabled
+                  />
                 </TabList>
                 <TargetDirDialogTabPanelZip
                   oto={oto}
@@ -103,7 +114,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                   targetDir={props.targetDir}
                   nothingOto={nothingOto}
                 />
-                <TargetDirDialogTabPanelStoraged 
+                <TargetDirDialogTabPanelStoraged
                   setDialogOpen={props.setDialogOpen}
                   targetDir={props.targetDir}
                   setOto={props.setOto}
@@ -139,5 +150,5 @@ export interface TargetDirDialogContentProps {
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /** zipのファイル名 */
-  zipFileName:string
+  zipFileName: string;
 }

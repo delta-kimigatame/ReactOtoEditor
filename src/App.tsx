@@ -18,6 +18,8 @@ import { TopView } from "./Top/TopView";
 import { fftSetting, layout } from "./settings/setting";
 import { EditorView } from "./Editor/EditorView";
 
+import { Log } from "./Lib/Logging";
+
 /**
  * Reactのエンドポイント
  * @returns 全体のjsx
@@ -33,7 +35,6 @@ export const App: React.FC = () => {
     "color",
     "language",
   ]);
-
   const mode_: PaletteMode =
     cookies.mode !== undefined
       ? cookies.mode
@@ -62,17 +63,26 @@ export const App: React.FC = () => {
   /**
    * ダークモード設定が切り替わった際、クッキーに保存する。
    */
-  const SetCookieMode = React.useMemo(() => setCookie("mode", mode), [mode]);
-  React.useMemo(() => setCookie("color", color), [color]);
+  const SetCookieMode = React.useMemo(() => {
+    setCookie("mode", mode);
+    Log.log(mode + ":モードを変更", "App");
+  }, [mode]);
+  React.useMemo(() => {
+    setCookie("color", color);
+    Log.log(color + ":表示色を変更", "App");
+  }, [color]);
   React.useMemo(() => {
     setCookie("language", language);
     i18n.changeLanguage(language);
+    Log.log(language + ":表示言語を変更", "App");
   }, [language]);
 
   const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
+    Log.log(window.navigator.userAgent, "App");
     const updateSize = (): void => {
       setWindowSize([window.innerWidth, window.innerHeight]);
+      Log.log("画面サイズ:"+[window.innerWidth, window.innerHeight], "App");
     };
     window.addEventListener("resize", updateSize);
     updateSize();
@@ -84,18 +94,21 @@ export const App: React.FC = () => {
     if (oto === null) {
       setRecord(null);
       setWavFileName(null);
+      Log.log("otoを初期化", "App");
     } else {
       const filename: string = oto.GetFileNames(targetDir)[0];
       const alias: string = oto.GetAliases(targetDir, filename)[0];
       const r: OtoRecord = oto.GetRecord(targetDir, filename, alias);
       setWavFileName(filename);
       setRecord(r);
+      Log.log(`otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`, "App");
     }
   }, [oto]);
 
   React.useEffect(() => {
     if (record === null) {
       setWavFileName(null);
+      Log.log("recordを初期化", "App");
     } else {
       const storagedOto_: string | null = localStorage.getItem("oto");
       const storagedOto: {} =
@@ -112,11 +125,13 @@ export const App: React.FC = () => {
         setWavFileName(record.filename);
       }
     }
+    Log.log("localstorageに保存", "App");
   }, [record]);
 
   React.useEffect(() => {
     if (wavFileName === null) {
       setWav(null);
+      Log.log("wavを初期化", "App");
     } else if (readZip !== null) {
       if (Object.keys(readZip).includes(targetDir + "/" + wavFileName)) {
         readZip[targetDir + "/" + wavFileName]
@@ -129,8 +144,10 @@ export const App: React.FC = () => {
             w.RemoveDCOffset();
             w.VolumeNormalize();
             setWav(w);
+            Log.log(`wav読込完了。${targetDir + "/" + wavFileName}`, "App");
           });
       } else {
+        Log.log(`zip内にwavが見つかりませんでした。${targetDir + "/" + wavFileName}`, "App");
         setWav(null);
       }
     }

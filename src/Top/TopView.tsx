@@ -7,6 +7,8 @@ import { RulePaper } from "./RulePaper";
 import { TopPaper } from "./TopPaper";
 import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * zipデータを読み込む前の画面
  * @param props {@link TopViewProps}
@@ -25,6 +27,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
     if (props.readZip === null) {
       props.setTargetDirs(null);
       props.setTargetDir(null);
+      Log.log("targetDir初期化","TOPView")
     } else {
       const targetDirs: Array<string> = new Array();
       Object.keys(props.readZip).forEach((f) => {
@@ -47,6 +50,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
   React.useEffect(() => {
     if (props.targetDirs !== null) {
       setTargetDirDialogOpen(true);
+      Log.log(`targetDirs取得。${props.targetDirs}`,"TOPView")
     }
   }, [props.targetDirs]);
 
