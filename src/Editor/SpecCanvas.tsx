@@ -52,7 +52,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     /**キャンバスの初期化 */
     ctx.clearRect(
       0,
-      props.canvasHeight + 1,
+      0,
       props.canvasWidth,
       props.canvasHeight
     );
@@ -60,7 +60,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(
       0,
-      props.canvasHeight + 1,
+      0,
       props.canvasWidth,
       props.canvasHeight
     );
@@ -122,6 +122,23 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && props.spec !== null && props.wav !== null) {
       await RenderSpec(ctx, props.wav, props.spec).then(() => {});
+    }else if(ctx){
+      Log.log(`canvas初期化`, "SpecCanvas");
+      /**キャンバスの初期化 */
+      ctx.clearRect(
+        0,
+        0,
+        props.canvasWidth,
+        props.canvasHeight
+      );
+      /** 背景色の描画 */
+      ctx.fillStyle = backgroundColor;
+      ctx.fillRect(
+        0,
+        0,
+        props.canvasWidth,
+        props.canvasHeight
+      );
     }
   };
 

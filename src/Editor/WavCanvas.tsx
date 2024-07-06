@@ -97,7 +97,8 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
     for (let i = 0; i < wav.data.length; i++) {
       ctx.lineTo(
         (i / wav.data.length) * props.canvasWidth,
-        ((-wav.data[i] / maxValue) * props.canvasHeight) / 2 + props.canvasHeight / 2
+        ((-wav.data[i] / maxValue) * props.canvasHeight) / 2 +
+          props.canvasHeight / 2
       );
     }
     ctx.stroke();
@@ -107,7 +108,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
   /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */
   React.useEffect(() => {
     OnChangeWav();
-  }, [props.wav, wavColor,props.canvasWidth,props.canvasHeight]);
+  }, [props.wav, wavColor, props.canvasWidth, props.canvasHeight]);
 
   /**
    * 波形描画を非同期で実施する
@@ -116,6 +117,8 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx && props.wav !== null) {
       RenderWave(ctx, props.wav);
+    } else if (ctx) {
+      RenderBase(ctx);
     }
   };
 
@@ -133,13 +136,13 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
 
 export interface WavCanvasProps {
   /** canvasの横幅 */
-  canvasWidth:number;
+  canvasWidth: number;
   /** canvasの縦幅 */
-  canvasHeight:number;
+  canvasHeight: number;
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**キャンバスの色設定 */
   color: string;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
-};
+}
