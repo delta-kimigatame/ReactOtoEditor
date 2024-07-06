@@ -36,8 +36,8 @@ export const RecordNotFound = (
   const files = oto.GetFileNames(targetDir);
   Object.keys(zip).forEach((f) => {
     if (f.startsWith(targetDir + "/")) {
-      if (!files.includes(f.replace(targetDir + "/", ""))) {
-        oto.SetParams(targetDir, f, "", 0, 0, 0, 0, 0);
+      if (!files.includes(f.replace(targetDir + "/", "")) && f.replace(targetDir + "/", "").endsWith(".wav")) {
+        oto.SetParams(targetDir, f.replace(targetDir + "/", ""), "", 0, 0, 0, 0, 0);
       }
     }
   });
