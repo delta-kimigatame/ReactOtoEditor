@@ -6,13 +6,12 @@ import { useTranslation } from "react-i18next";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import TabPanel from "@mui/lab/TabPanel";
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { FullWidthButton } from "../../Common/FullWidthButton";
+import { FullWidthSelect } from "../../Common/FullWidthSelect";
 
 /**
  * 履歴からoto.iniを読み込む場合のパネル
@@ -81,39 +80,29 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         </>
       ) : (
         <>
-          <FullWidthButton
-            onClick={OnSubmitClick}
-            disabled={oto === null}>
+          <FullWidthButton onClick={OnSubmitClick} disabled={oto === null}>
             {t("targetDirDialog.submit")}
           </FullWidthButton>
           <br />
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <InputLabel>{t("targetDirDialog.readHistory")}</InputLabel>
-            <Select
-              label="selectHistory"
-              variant="filled"
-              defaultValue=""
-              value={selectHistory}
-              onChange={OnSelectChange}
-            >
-              {Object.keys(storagedOto).map((f, i) =>
-                Object.keys(storagedOto[f]).map((d, j) => (
-                  <MenuItem value={"t_" + i + "_" + j}>
-                    {f}
-                    <br />
-                    {d} ({storagedOto[f][d]["update_date"]})
-                  </MenuItem>
-                ))
-              )}
-            </Select>
-          </FormControl>
+          <FullWidthSelect
+            label={t("targetDirDialog.readHistory")}
+            value={selectHistory}
+            onChange={OnSelectChange}
+          >
+            {Object.keys(storagedOto).map((f, i) =>
+              Object.keys(storagedOto[f]).map((d, j) => (
+                <MenuItem value={"t_" + i + "_" + j}>
+                  {f}
+                  <br />
+                  {d} ({storagedOto[f][d]["update_date"]})
+                </MenuItem>
+              ))
+            )}
+          </FullWidthSelect>
           {oto !== null && (
             <>
               <Divider />
-              <TargetDirDialogCheckList
-                oto={oto}
-                targetDir={props.targetDir}
-              />
+              <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />
             </>
           )}
         </>

@@ -1,14 +1,12 @@
 import * as React from "react";
 import JSZip from "jszip";
-import { Oto } from "utauoto";
 import { useTranslation } from "react-i18next";
 
 import MenuItem from "@mui/material/MenuItem";
 
 import DialogContent from "@mui/material/DialogContent";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
+import { FullWidthSelect } from "../../Common/FullWidthSelect";
 
 /**
  * zipをダウンロードするダイアログのコンテンツ部分
@@ -36,36 +34,29 @@ export const DownloadZipDialogContent: React.FC<
         {props.targetList !== null &&
           props.targetDirs.map((td, i) => (
             <>
-              <FormControl fullWidth sx={{ m: 1 }}>
-                <InputLabel>{td}</InputLabel>
-                <Select
-                  label={"td_" + i}
-                  variant="filled"
-                  color="primary"
-                  value={props.targetList[i]}
-                  onChange={(e) => {
-                    OnSelectChange(e, i);
-                  }}
-                >
-                  {td === props.targetDir && (
-                    <MenuItem value={0}>
-                      {t("downloadZipDialog.current")}
-                    </MenuItem>
-                  )}
-                  {td in props.storagedOto && (
-                    <MenuItem value={1}>
-                      {t("downloadZipDialog.storaged")}{" "}
-                      {props.storagedOto[td]["update_date"]}
-                    </MenuItem>
-                  )}
-                  {Object.keys(props.readZip).includes(td + "/oto.ini") && (
-                    <MenuItem value={2}>
-                      {t("downloadZipDialog.readed")}
-                    </MenuItem>
-                  )}
-                  <MenuItem value={3}>{t("downloadZipDialog.none")}</MenuItem>
-                </Select>
-              </FormControl>
+              <FullWidthSelect
+                label={td}
+                value={props.targetList[i]}
+                onChange={(e) => {
+                  OnSelectChange(e, i);
+                }}
+              >
+                {td === props.targetDir && (
+                  <MenuItem value={0}>
+                    {t("downloadZipDialog.current")}
+                  </MenuItem>
+                )}
+                {td in props.storagedOto && (
+                  <MenuItem value={1}>
+                    {t("downloadZipDialog.storaged")}{" "}
+                    {props.storagedOto[td]["update_date"]}
+                  </MenuItem>
+                )}
+                {Object.keys(props.readZip).includes(td + "/oto.ini") && (
+                  <MenuItem value={2}>{t("downloadZipDialog.readed")}</MenuItem>
+                )}
+                <MenuItem value={3}>{t("downloadZipDialog.none")}</MenuItem>
+              </FullWidthSelect>
             </>
           ))}
       </DialogContent>

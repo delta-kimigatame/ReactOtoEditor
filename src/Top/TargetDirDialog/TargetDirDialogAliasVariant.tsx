@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { FullWidthSelect } from "../../Common/FullWidthSelect";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面のエイリアスの種類選択部分
@@ -36,22 +36,17 @@ export const TargetDirDialogAliasVariant: React.FC<
         <AccordionDetails>
           {props.oto.GetLines()[props.targetDir].map((l, i) => (
             <>
-              <FormControl fullWidth sx={{ m: 1 }}>
-                <InputLabel>{l.split("=")[1].split(",")[0]}</InputLabel>
-                <Select
-                  label={l.split("=")[1].split(",")[0]}
-                  variant="filled"
-                  color="primary"
-                  value={props.aliasVariant[i]}
-                  onChange={(e) => {
-                    OnAliasVariantChange(e, i);
-                  }}
-                >
-                  <MenuItem value="CV">{t("targetDirDialog.CV")}</MenuItem>
-                  <MenuItem value="VCV">{t("targetDirDialog.VCV")}</MenuItem>
-                  <MenuItem value="VC">{t("targetDirDialog.VC")}</MenuItem>
-                </Select>
-              </FormControl>
+              <FullWidthSelect
+                label={l.split("=")[1].split(",")[0]}
+                value={props.aliasVariant[i]}
+                onChange={(e) => {
+                  OnAliasVariantChange(e, i);
+                }}
+              >
+                <MenuItem value="CV">{t("targetDirDialog.CV")}</MenuItem>
+                <MenuItem value="VCV">{t("targetDirDialog.VCV")}</MenuItem>
+                <MenuItem value="VC">{t("targetDirDialog.VC")}</MenuItem>
+              </FullWidthSelect>
             </>
           ))}
         </AccordionDetails>
@@ -68,5 +63,7 @@ export interface TargetDirDialogAliasVariantProps {
   /** エイリアスの種類 */
   aliasVariant: Array<"CV" | "VCV" | "VC"> | null;
   /** エイリアスの種類を設定する。 */
-  setAliasVariant: React.Dispatch<React.SetStateAction<Array<"CV" | "VCV" | "VC"> | null>>;
+  setAliasVariant: React.Dispatch<
+    React.SetStateAction<Array<"CV" | "VCV" | "VC"> | null>
+  >;
 }

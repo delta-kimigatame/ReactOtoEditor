@@ -7,8 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Accordion from "@mui/material/Accordion";
@@ -16,6 +15,8 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FullWidthButton } from "../../Common/FullWidthButton";
+import { FullWidthSelect } from "../../Common/FullWidthSelect";
+import { Box } from "@mui/material";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -138,21 +139,17 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
           <InputLabel>{t("tableDialog.title")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
-          <FormControl fullWidth sx={{ m: 1 }}>
-            <Select
-              label="batch_process"
-              variant="filled"
-              color="primary"
-              value={batchIndex.toString()}
-              onChange={OnBatchProcessChange}
-            >
-              {batchList.map((bl, i) => (
-                <MenuItem value={i} key={"BP_" + i}>
-                  {bl.description}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+          <FullWidthSelect
+            label={t("tableDialog.title")}
+            value={batchIndex.toString()}
+            onChange={OnBatchProcessChange}
+          >
+            {batchList.map((bl, i) => (
+              <MenuItem value={i} key={"BP_" + i}>
+                {bl.description}
+              </MenuItem>
+            ))}
+          </FullWidthSelect>
           <TextField
             fullWidth
             variant="outlined"
@@ -180,18 +177,13 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               setValue(parseFloat(e.target.value));
             }}
           />
-          <FormControl
-            fullWidth
+          <Box
             sx={{
-              m: 1,
               display: batchList[batchIndex].requireTarget !== true && "none",
             }}
           >
-            <InputLabel>{t("tableDialog.targetTitle")}</InputLabel>
-            <Select
-              label="target"
-              variant="filled"
-              color="primary"
+            <FullWidthSelect
+              label={t("tableDialog.targetTitle")}
               value={targetParam}
               onChange={OnTargetParamChange}
             >
@@ -200,8 +192,9 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               <MenuItem value={"preutter"}>{t("oto.preutter")}</MenuItem>
               <MenuItem value={"velocity"}>{t("oto.velocity")}</MenuItem>
               <MenuItem value={"blank"}>{t("oto.blank")}</MenuItem>
-            </Select>
-          </FormControl>
+            </FullWidthSelect>
+          </Box>
+
           <FullWidthButton onClick={OnSubmitClick}>
             {t("tableDialog.submit")}
           </FullWidthButton>

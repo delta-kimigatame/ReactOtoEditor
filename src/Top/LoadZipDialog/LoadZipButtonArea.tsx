@@ -5,13 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
 
-import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 import { NormalizeJP } from "../../Lib/FilenameNormalize";
 import { FullWidthButton } from "../../Common/FullWidthButton";
+import { FullWidthSelect } from "../../Common/FullWidthSelect";
 
 /**
  * zip読込待ちダイアログの操作ボタン部分
@@ -72,19 +71,14 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
         {t("loadZipDialog.submit")}
       </FullWidthButton>
       <br />
-      <FormControl fullWidth sx={{ m: 1 }}>
-        <InputLabel>{t("loadZipDialog.encoding")}</InputLabel>
-        <Select
-          label={"encoding"}
-          variant="filled"
-          color="primary"
-          value={props.encoding}
-          onChange={OnSelectChange}
-        >
-          <MenuItem value={"utf-8"}>UTF-8</MenuItem>
-          <MenuItem value={"Shift-Jis"}>Shift-JIS</MenuItem>
-        </Select>
-      </FormControl>
+      <FullWidthSelect
+        label={t("loadZipDialog.encoding")}
+        value={props.encoding}
+        onChange={OnSelectChange}
+      >
+        <MenuItem value={"utf-8"}>UTF-8</MenuItem>
+        <MenuItem value={"Shift-Jis"}>Shift-JIS</MenuItem>
+      </FullWidthSelect>
       <Divider />
     </>
   );
