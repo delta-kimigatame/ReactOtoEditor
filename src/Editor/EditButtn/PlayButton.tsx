@@ -10,9 +10,11 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { EditorButton } from "./EditorButton";
 import { oto } from "../../settings/setting";
 
+import { Log } from "../../Lib/Logging";
+
 /**
  * メトロノームの4拍目に先行発声が合うように再生するボタン
- * @param props 
+ * @param props
  * @returns メトロノームの4拍目に先行発声が合うように再生するボタン
  */
 export const PlayButton: React.FC<Props> = (props) => {
@@ -67,6 +69,7 @@ export const PlayButton: React.FC<Props> = (props) => {
     const audioSource = audioContext.createBufferSource();
     audioSource.buffer = audioBuffer;
     audioSource.connect(audioContext.destination);
+    Log.log(`メトロノーム再生`, "PlayButton");
     audioSource.start();
   };
 
@@ -97,4 +100,4 @@ interface Props {
   size: number;
   /** アイコンのサイズ */
   iconSize: number;
-};
+}

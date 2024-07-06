@@ -11,6 +11,8 @@ import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * エディタのキャンバス
  * @param props {@link CanvasBaseProps}
@@ -42,7 +44,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
     if (props.wav === null) {
       setWidth(props.canvasWidth);
     }
-  }, [props.canvasHeight,props.canvasWidth]);
+  }, [props.canvasHeight, props.canvasWidth]);
 
   /**
    * wavが変更されたとき、fftをしてスペクトラムを求める。
@@ -52,6 +54,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
       setSpec(null);
       setSpecMax(0);
     } else {
+      Log.log(`fft`, "CanvasBase");
       const wa = new WaveAnalyse();
       const s = wa.Spectrogram(props.wav.data);
       setSpec(s);
@@ -65,6 +68,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         }
       }
       setSpecMax(sMax);
+      Log.log(`fft完了。sMax:${sMax}`, "CanvasBase");
     }
   }, [props.wav]);
 
@@ -73,6 +77,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
    */
   React.useEffect(() => {
     setFrameWidth((fftSetting.sampleRate * props.pixelPerMsec) / 1000);
+    Log.log(`倍率変更:${props.pixelPerMsec}`, "CanvasBase");
   }, [props.pixelPerMsec]);
 
   /**
@@ -81,6 +86,10 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   React.useEffect(() => {
     if (props.wav !== null) {
       setWidth(Math.ceil(props.wav.data.length / frameWidth));
+      Log.log(
+        `キャンバスの横幅変更:${Math.ceil(props.wav.data.length / frameWidth)}`,
+        "CanvasBase"
+      );
     }
   }, [frameWidth]);
 
@@ -141,9 +150,9 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
 
 export interface CanvasBaseProps {
   /** canvasの横幅 */
-  canvasWidth:number;
+  canvasWidth: number;
   /** canvasの縦幅 */
-  canvasHeight:number;
+  canvasHeight: number;
   /**ダークモードかライトモードか */
   mode: PaletteMode;
   /**キャンバスの色設定 */
@@ -160,4 +169,4 @@ export interface CanvasBaseProps {
   touchMode: boolean;
   /** overlaplackを使用するか */
   overlapLock: boolean;
-};
+}

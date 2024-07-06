@@ -10,6 +10,8 @@ import {
 } from "../settings/colors";
 import { GetColor } from "../Lib/Color";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * 波形を表示するキャンバス
  * @param props {@link WavCanvasProps}
@@ -51,6 +53,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
+    Log.log(`canvas初期化`, "WavCanvas");
     ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
@@ -79,6 +82,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
     ctx: CanvasRenderingContext2D,
     wav: Wave
   ): Promise<void> => {
+    Log.log(`wav描画`, "WavCanvas");
     RenderBase(ctx);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
@@ -97,6 +101,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
       );
     }
     ctx.stroke();
+    Log.log(`wav描画完了`, "WavCanvas");
   };
 
   /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */

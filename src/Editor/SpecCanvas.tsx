@@ -7,6 +7,7 @@ import { fftSetting } from "../settings/setting";
 import { backgroundColorPallet, specColor } from "../settings/colors";
 import { Color, GetColor, GetColorInterp } from "../Lib/Color";
 
+import { Log } from "../Lib/Logging";
 /**
  * スペクトラム表示
  * @param props {@link SpecCanvasProps}
@@ -47,6 +48,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     wav: Wave,
     spec: Array<Array<number>>
   ): Promise<void> => {
+    Log.log(`canvas初期化`, "SpecCanvas");
     /**キャンバスの初期化 */
     ctx.clearRect(
       0,
@@ -62,6 +64,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
       props.canvasWidth,
       props.canvasHeight
     );
+    Log.log(`スペクトログラム描画`, "SpecCanvas");
     /** キャンバスの周波数方向の分解能 */
     const rh = Math.ceil(
       fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
@@ -106,6 +109,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         );
       }
     }
+    Log.log(`スペクトログラム描画完了`, "SpecCanvas");
   };
 
   /** スペクトラム、色設定、キャンバスサイズが変わった時に再描画 */

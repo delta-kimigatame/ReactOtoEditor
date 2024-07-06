@@ -13,6 +13,8 @@ import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
 import { EditorTable } from "./EditorTable";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * エディタ画面。oto.ini読込後に表示される。
  * @param props {@link EditorViewProps}
@@ -60,6 +62,15 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
 
   /** 画面サイズが変更されたとき、canvasの大きさを設定する。 */
   React.useEffect(() => {
+    Log.log(
+      `Canvasの高さ変更 ${
+        props.windowSize[1] -
+        layout.headerHeight -
+        tableHeight -
+        buttonAreaHeight
+      }`,
+      "EditorView"
+    );
     setCanvasHeight(
       props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
     );
@@ -138,5 +149,5 @@ export interface EditorViewProps {
     [key: string]: JSZip.JSZipObject;
   } | null;
   /** zipのファイル名 */
-  zipFileName:string
+  zipFileName: string;
 }

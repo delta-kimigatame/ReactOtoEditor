@@ -8,10 +8,11 @@ import { PaletteMode } from "@mui/material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 import { EditorButton } from "./EditorButton";
+import { Log } from "../../Lib/Logging";
 
 /**
  * 次のエイリアスに送るボタン
- * @param props 
+ * @param props
  * @returns 次のエイリアスに送るボタン
  */
 export const NextAliasButton: React.FC<Props> = (props) => {
@@ -21,15 +22,25 @@ export const NextAliasButton: React.FC<Props> = (props) => {
    * 次のエイリアスに送る処理
    */
   const OnNextAlias = () => {
+    Log.log(
+      `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex}`,
+      "NextAliasButton"
+    );
     if (props.maxAliasIndex === props.aliasIndex) {
       if (props.maxFileIndex !== props.fileIndex) {
-        const filename = props.oto.GetFileNames(props.targetDir)[props.fileIndex + 1];
+        const filename = props.oto.GetFileNames(props.targetDir)[
+          props.fileIndex + 1
+        ];
         const alias = props.oto.GetAliases(props.targetDir, filename)[0];
         props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
         props.setFileIndex(props.fileIndex + 1);
         props.setAliasIndex(0);
         props.setMaxAliasIndex(
           props.oto.GetAliases(props.targetDir, filename).length - 1
+        );
+        Log.log(
+          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex + 1}、maxAliasIndex:${props.oto.GetAliases(props.targetDir, filename).length - 1}、aliasIndex:${0}`,
+          "NextAliasButton"
         );
       }
     } else {
@@ -41,6 +52,10 @@ export const NextAliasButton: React.FC<Props> = (props) => {
         props.oto.GetRecord(props.targetDir, props.record.filename, alias)
       );
       props.setAliasIndex(props.aliasIndex + 1);
+      Log.log(
+        `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex + 1}`,
+        "NextAliasButton"
+      );
     }
   };
 
@@ -52,7 +67,10 @@ export const NextAliasButton: React.FC<Props> = (props) => {
         icon={<ArrowDropDownIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.next")}
         onClick={OnNextAlias}
-        disabled={props.maxAliasIndex === props.aliasIndex && props.maxFileIndex === props.fileIndex}
+        disabled={
+          props.maxAliasIndex === props.aliasIndex &&
+          props.maxFileIndex === props.fileIndex
+        }
       />
     </>
   );
@@ -87,4 +105,4 @@ interface Props {
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
-};
+}

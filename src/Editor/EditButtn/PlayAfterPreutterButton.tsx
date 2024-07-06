@@ -8,6 +8,7 @@ import { PaletteMode } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { EditorButton } from "./EditorButton";
+import { Log } from "../../Lib/Logging";
 
 /**
  * 先行発声から右ブランクまでを再生するボタン
@@ -51,6 +52,7 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
     const audioSource = audioContext.createBufferSource();
     audioSource.buffer = audioBuffer;
     audioSource.connect(audioContext.destination);
+    Log.log(`先行発声以降再生`, "PlayAfterPreutterButton");
     audioSource.start();
   };
   

@@ -7,6 +7,8 @@ import { PaletteMode } from "@mui/material";
 import { lineColorPallet } from "../settings/colors";
 import { GetColor } from "../Lib/Color";
 
+import { Log } from "../Lib/Logging";
+
 /**
  * 原音設定パラメータを表示するキャンバス
  * @param props {@link OtoCanvasProps}
@@ -38,6 +40,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
+    Log.log(`キャンバス初期化`, "OtoCanvas");
     ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
   };
 
@@ -158,6 +161,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
   const RenderAll = (ctx: CanvasRenderingContext2D) => {
     if (ctx) {
       RenderBase(ctx);
+      Log.log(`oto.ini描画`, "OtoCanvas");
       RenderOffset(ctx);
       RenderOverlap(ctx);
       RenderPreutter(ctx);
@@ -214,6 +218,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param clickX タップされたX座標
    */
   const UpdateOto = (target: string, clickX: number) => {
+    Log.log(`編集対象:${target}、clickX:${clickX}、オーバーラップロック:${props.overlapLock}`, "OtoCanvas");
     if (target === "offset") {
       /**
        * オフセットが対象の場合 \
@@ -315,6 +320,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     const clickY: number =
       e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
+    Log.log(`編集対象特定。touchMode:${props.touchMode}`, "OtoCanvas");
     if (props.touchMode) {
       /** touchModeがtrueの場合、問答無用でpreが対象 */
       t = "pre";
@@ -334,6 +340,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         /** 右ブランクが正の場合値を更新する */
         blankPos = props.canvasWidth - props.record.blank / props.pixelPerMsec;
       }
+      Log.log(`clickX:${clickX}、clickY:${clickY}、offset:${offsetPos}、overlapPos:${overlapPos}、preutterPos:${preutterPos}、velocityPos:${velocityPos}、blankPos:${blankPos}`, "OtoCanvas");
 
       /** 最も近い値を特定するための変数 */
       let minRange = oto.defaultRange;

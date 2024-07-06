@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 
 import { FullWidthTextField } from "../Common/FullWidthTextField";
+import { Log } from "../Lib/Logging";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
@@ -42,6 +43,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
+      Log.log(`エイリアス変更。変更前:${props.record.alias}、変更後:${alias}`, "AliasDialog");
       props.oto.SetAlias(
         props.targetDir,
         props.record.filename,
@@ -69,6 +71,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
+      Log.log(`エイリアス複製。複製元:${props.record.alias}、複製後:${alias}`, "AliasDialog");
       props.oto.SetParams(
         props.targetDir,
         props.record.filename,
@@ -96,6 +99,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
    * 最後のエイリアスの場合1つ前、それ以外の場合1つ後ろのエイリアスをrecordにセットする。
    */
   const OnDeleteClick = () => {
+    Log.log(`エイリアス削除。${props.record.alias}`, "AliasDialog");
     props.oto.RemoveAlias(
       props.targetDir,
       props.record.filename,

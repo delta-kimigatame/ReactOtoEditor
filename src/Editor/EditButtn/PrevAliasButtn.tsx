@@ -8,6 +8,7 @@ import { PaletteMode } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { EditorButton } from "./EditorButton";
+import { Log } from "../../Lib/Logging";
 
 /**
  * 前のエイリアスに送るボタン
@@ -21,6 +22,10 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
    * 前のエイリアスに送る処理
    */
   const OnPrevAlias = () => {
+    Log.log(
+      `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex}`,
+      "PrevAliasButton"
+    );
     if (props.aliasIndex === 0) {
       if (props.fileIndex !== 0) {
         const filename = props.oto.GetFileNames(props.targetDir)[props.fileIndex - 1];
@@ -30,9 +35,13 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
           maxAliases
         ];
         props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
-        props.setFileIndex(props.fileIndex + 1);
+        props.setFileIndex(props.fileIndex - 1);
         props.setAliasIndex(0);
         props.setMaxAliasIndex(maxAliases);
+        Log.log(
+          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex - 1}、maxAliasIndex:${maxAliases}、aliasIndex:${0}`,
+          "PrevAliasButton"
+        );
       }
     } else {
       const alias = props.oto.GetAliases(
@@ -43,6 +52,10 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
         props.oto.GetRecord(props.targetDir, props.record.filename, alias)
       );
       props.setAliasIndex(props.aliasIndex - 1);
+      Log.log(
+        `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex - 1}`,
+        "PrevAliasButton"
+      );
     }
   };
 

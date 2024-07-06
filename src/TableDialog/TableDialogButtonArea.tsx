@@ -18,6 +18,7 @@ import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthSelect } from "../Common/FullWidthSelect";
 import { FullWidthTextField } from "../Common/FullWidthTextField";
 import * as BP from "../Lib/OtoBatchProcess";
+import { Log } from "../Lib/Logging";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -99,6 +100,10 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   };
 
   const OnSubmitClick = () => {
+    Log.log(
+      `一括処理:${batchList[batchIndex].description}`,
+      "TableDialogButtonArea"
+    );
     let param:
       | { [key: string]: JSZip.JSZipObject }
       | string
@@ -108,16 +113,20 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       param = props.zip;
     } else if (batchList[batchIndex].requireString) {
       param = surfix;
+      Log.log(`surfix:${surfix}`, "TableDialogButtonArea");
     } else if (batchList[batchIndex].requireTarget) {
       param = targetParam;
+      Log.log(`targetParam:${targetParam}`, "TableDialogButtonArea");
     }
     if (param === null) {
       batchList[batchIndex].endPoint(props.oto, props.targetDir);
     } else if (batchList[batchIndex].requireNumber) {
+      Log.log(`value:${value}`, "TableDialogButtonArea");
       batchList[batchIndex].endPoint(props.oto, props.targetDir, param, value);
     } else {
       batchList[batchIndex].endPoint(props.oto, props.targetDir, param);
     }
+    Log.log(`一括処理完了`, "TableDialogButtonArea");
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
     const storagedOto_: string | null = localStorage.getItem("oto");
@@ -131,6 +140,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       update_date: new Date().toJSON(),
     };
     localStorage.setItem("oto", JSON.stringify(storagedOto));
+    Log.log(`localstorageに保存`, "TableDialogButtonArea");
   };
 
   return (
