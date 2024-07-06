@@ -23,7 +23,7 @@ export const PlayButton: React.FC<Props> = (props) => {
   const [metronome, setMetronome] = React.useState<Wave>(null);
   /** メトロノームのwavデータを読み込む処理 */
   React.useMemo(() => {
-    fetch("/static/metronome.wav").then((res) => {
+    fetch(location.href + "static/metronome.wav").then((res) => {
       res.arrayBuffer().then((buf) => {
         const m = new Wave(buf);
         setMetronome(m);
