@@ -36,10 +36,10 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
         ];
         props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
         props.setFileIndex(props.fileIndex - 1);
-        props.setAliasIndex(0);
+        props.setAliasIndex(maxAliases);
         props.setMaxAliasIndex(maxAliases);
         Log.log(
-          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex - 1}、maxAliasIndex:${maxAliases}、aliasIndex:${0}`,
+          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex - 1}、maxAliasIndex:${maxAliases}、aliasIndex:${maxAliases}`,
           "PrevAliasButton"
         );
       }
