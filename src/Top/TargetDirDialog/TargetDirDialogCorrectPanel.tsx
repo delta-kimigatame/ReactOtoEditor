@@ -5,12 +5,12 @@ import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import { FormControlLabel } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import { AddParams } from "../../Lib/OtoBatchProcess";
 import { TargetDirDialogAliasVariant } from "./TargetDirDialogAliasVariant";
 import { FullWidthButton } from "../../Common/FullWidthButton";
+import { FullWidthTextField } from "../../Common/FullWidthTextField";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面
@@ -151,11 +151,9 @@ export const TargetDirDialogCorrectPanel: React.FC<
   };
   return (
     <>
-    <FullWidthButton
-        onClick={OnCorrectClick}>
+      <FullWidthButton onClick={OnCorrectClick}>
         {t("targetDirDialog.submit")}
-
-    </FullWidthButton>
+      </FullWidthButton>
       <FormControlLabel
         control={
           <Checkbox
@@ -170,12 +168,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
       <br />
       {isCorrectOffset && (
         <>
-          <TextField
-            fullWidth
-            variant="outlined"
-            sx={{
-              m: 1,
-            }}
+          <FullWidthTextField
             type="number"
             label={t("targetDirDialog.beforeOffset")}
             value={beforeOffset}
@@ -183,12 +176,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
               setBeforeOffset(parseFloat(e.target.value));
             }}
           />
-          <TextField
-            fullWidth
-            variant="outlined"
-            sx={{
-              m: 1,
-            }}
+          <FullWidthTextField
             type="number"
             label={t("targetDirDialog.afterOffset")}
             value={afterOffset}
@@ -217,12 +205,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
               <br />
               {isCorrectTempo && (
                 <>
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    sx={{
-                      m: 1,
-                    }}
+                  <FullWidthTextField
                     type="number"
                     label={t("targetDirDialog.beforeTempo")}
                     value={beforeTempo}
@@ -230,12 +213,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
                       setBeforeTempo(parseFloat(e.target.value));
                     }}
                   />
-                  <TextField
-                    fullWidth
-                    variant="outlined"
-                    sx={{
-                      m: 1,
-                    }}
+                  <FullWidthTextField
                     type="number"
                     label={t("targetDirDialog.afterTempo")}
                     value={afterTempo}

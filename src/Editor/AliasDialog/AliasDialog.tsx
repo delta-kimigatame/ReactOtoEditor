@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
+import { FullWidthTextField } from "../../Common/FullWidthTextField";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
@@ -183,12 +184,8 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         </IconButton>
         <DialogTitle>{t("aliasDialog.title")}</DialogTitle>
         <DialogContent>
-          <TextField
-            fullWidth
-            variant="outlined"
-            sx={{
-              m: 1,
-            }}
+          <FullWidthTextField
+            type="text"
             label={t("aliasDialog.textField")}
             value={alias}
             onChange={(e) => {

@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
-import TextField from "@mui/material/TextField";
 import Snackbar from "@mui/material/Snackbar";
 import Accordion from "@mui/material/Accordion";
 import AccordionSummary from "@mui/material/AccordionSummary";
@@ -17,6 +16,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { FullWidthButton } from "../../Common/FullWidthButton";
 import { FullWidthSelect } from "../../Common/FullWidthSelect";
 import { Box } from "@mui/material";
+import { FullWidthTextField } from "../../Common/FullWidthTextField";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -150,26 +150,15 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               </MenuItem>
             ))}
           </FullWidthSelect>
-          <TextField
-            fullWidth
-            variant="outlined"
-            sx={{
-              m: 1,
-              display: batchList[batchIndex].requireString !== true && "none",
-            }}
+          <FullWidthTextField
+            type="text"
             label={t("tableDialog.stringTitle")}
             value={surfix}
             onChange={(e) => {
               setSurfix(e.target.value);
             }}
           />
-          <TextField
-            fullWidth
-            variant="outlined"
-            sx={{
-              m: 1,
-              display: batchList[batchIndex].requireNumber !== true && "none",
-            }}
+          <FullWidthTextField
             type="number"
             label={t("tableDialog.numberTitle")}
             value={value}
