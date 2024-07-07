@@ -131,6 +131,10 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
         width={props.canvasWidth}
         height={props.canvasHeight}
         ref={canvas}
+        style={{
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",}}
       />
     </>
   );

@@ -108,7 +108,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         sx={{
           overflowX: scrollable ? "scroll" : "hidden",
           height: height,
-          overflowY: "hidden",
+          overflowY: "clip",
         }}
       >
         <WavCanvas

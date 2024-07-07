@@ -131,6 +131,11 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         width={props.canvasWidth}
         height={props.canvasHeight}
         ref={canvas}
+        style={{
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
+        }}
       />
     </>
   );

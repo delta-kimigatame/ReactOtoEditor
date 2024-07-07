@@ -218,7 +218,10 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param clickX タップされたX座標
    */
   const UpdateOto = (target: string, clickX: number) => {
-    Log.log(`編集対象:${target}、clickX:${clickX}、オーバーラップロック:${props.overlapLock}`, "OtoCanvas");
+    Log.log(
+      `編集対象:${target}、clickX:${clickX}、オーバーラップロック:${props.overlapLock}`,
+      "OtoCanvas"
+    );
     if (target === "offset") {
       /**
        * オフセットが対象の場合 \
@@ -340,7 +343,10 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         /** 右ブランクが正の場合値を更新する */
         blankPos = props.canvasWidth - props.record.blank / props.pixelPerMsec;
       }
-      Log.log(`clickX:${clickX}、clickY:${clickY}、offset:${offsetPos}、overlapPos:${overlapPos}、preutterPos:${preutterPos}、velocityPos:${velocityPos}、blankPos:${blankPos}`, "OtoCanvas");
+      Log.log(
+        `clickX:${clickX}、clickY:${clickY}、offset:${offsetPos}、overlapPos:${overlapPos}、preutterPos:${preutterPos}、velocityPos:${velocityPos}、blankPos:${blankPos}`,
+        "OtoCanvas"
+      );
 
       /** 最も近い値を特定するための変数 */
       let minRange = oto.defaultRange;
@@ -389,7 +395,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
 
   /**
    * ドラッグ・スワイプした際の処理
-   * @param e 
+   * @param e
    */
   const OnMouseMove = (e) => {
     if (targetParam !== null) {
@@ -407,7 +413,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
 
   /**
    * ドラッグ・スワイプが終了した際の処理
-   * @param e 
+   * @param e
    */
   const OnMouseUp = (e) => {
     if (targetParam !== null) {
@@ -428,6 +434,9 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
           position: "relative",
           top: -1 * props.canvasHeight,
           zIndex: 2,
+          userSelect: "none",
+          WebkitUserSelect: "none",
+          MozUserSelect: "none",
         }}
         onMouseDown={OnMouseDown}
         onTouchStart={OnMouseDown}
