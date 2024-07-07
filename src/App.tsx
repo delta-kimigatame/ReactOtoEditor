@@ -82,10 +82,12 @@ export const App: React.FC = () => {
   React.useLayoutEffect(() => {
     Log.log(window.navigator.userAgent, "App");
     const updateSize = (): void => {
-      setWindowSize([window.innerWidth, window.innerHeight]);
-      Log.log("画面サイズ:" + [window.innerWidth, window.innerHeight], "App");
+      setTimeout(()=>{
+        setWindowSize([window.innerWidth, window.innerHeight]);
+        Log.log("画面サイズ:" + [window.innerWidth, window.innerHeight], "App");
+      },100)
     };
-    window.addEventListener("resize", updateSize);
+    window.addEventListener("orientationchange", updateSize); 
     updateSize();
 
     return () => window.removeEventListener("resize", updateSize);
