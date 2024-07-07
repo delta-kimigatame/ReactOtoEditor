@@ -10,7 +10,9 @@
     "toDarkMode":"ダークモードにする",
     "toLightMode":"ライトモードにする",
     "changeColor":"色設定",
-    "changeLanguage":"言語設定"
+    "changeLanguage":"言語設定",
+    "showLog":"操作ログ表示",
+    "logAttention":"ログは自動では送信されません。必要に応じて開発者に送付してください。"
   },
   "downloadZipDialog":{
     "current":"作業中のoto.ini",

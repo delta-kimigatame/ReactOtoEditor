@@ -10,7 +10,9 @@
     "toDarkMode":"to Dark Mode",
     "toLightMode":"to Light Mode",
     "changeColor":"Color setting",
-    "changeLanguage":"Language setting"
+    "changeLanguage":"Language setting",
+    "showLog":"Show Log",
+    "logAttention":"Logs are not sent automatically, so please send them to the developer if necessary."
   },
   "downloadZipDialog":{
     "current":"Current",

@@ -15,6 +15,7 @@ import { ColorMenu } from "./HeaderMenuItem/ColorMenu";
 import { TargetDirMenu } from "./HeaderMenuItem/TargetDirMenu";
 import { DownloadOtoMenu } from "./HeaderMenuItem/DownloadOtoMenu";
 import { DownloadZipMenu } from "./HeaderMenuItem/DownloadZipMenu";
+import { ShowLogMenu } from "./HeaderMenuItem/ShowLogMenu";
 
 /**
  * ヘッダメニュー
@@ -77,6 +78,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           setMode={props.setMode}
           setMenuAnchor={props.setMenuAnchor}
         />
+        <Divider />
+        <ShowLogMenu setMenuAnchor={props.setMenuAnchor} />
       </Menu>
     </>
   );
@@ -114,5 +117,5 @@ export interface HeaderMenuProps {
   /**メニューの表示制御 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** zipのファイル名 */
-  zipFileName:string
+  zipFileName: string;
 }
