@@ -5,18 +5,18 @@ import { useTranslation } from "react-i18next";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
 import { useCookies } from "react-cookie";
 import { getDesignTokens } from "./settings/theme";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 
 import { BasePaper } from "./Common/BasePaper";
-import { Log } from "./Lib/Logging";
 import { Footer } from "./Fotter";
 import { FullWidthButton } from "./Common/FullWidthButton";
+import { LogPaper } from "./Top/LogPaper";
+
+import { Log } from "./Lib/Logging";
 
 export const ErrorPaper: React.FC<FallbackProps> = ({
   error,
@@ -62,19 +62,7 @@ export const ErrorPaper: React.FC<FallbackProps> = ({
           </Box>
         }
       />
-      <BasePaper
-        title={t("error.log")}
-        body={
-          <Box sx={{ m: 1, p: 1 }}>
-            {Log.datas.map((l) => (
-              <>
-                <Typography variant="body2">{l}</Typography>
-                <Divider />
-              </>
-            ))}
-          </Box>
-        }
-      />
+      <LogPaper />
       <Footer theme={theme} />
     </>
   );
