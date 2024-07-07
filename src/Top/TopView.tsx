@@ -5,6 +5,7 @@ import { Oto } from "utauoto";
 import { PrivacyPaper } from "./PrivacyPaper";
 import { RulePaper } from "./RulePaper";
 import { TopPaper } from "./TopPaper";
+import { HistoryPaper } from "./HistoryPaper";
 import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
 import { Log } from "../Lib/Logging";
@@ -63,6 +64,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       />
       <RulePaper />
       <PrivacyPaper />
+      <HistoryPaper />
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}
         setDialogOpen={setTargetDirDialogOpen}

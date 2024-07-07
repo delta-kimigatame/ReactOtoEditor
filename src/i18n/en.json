@@ -26,7 +26,9 @@
     "ruleDescription2": "If you wish to use someone else's voice, you must obtain their explicit permission.",
     "privacy": "Privacy Policy",
     "privacyAnalytics": "This website uses Google's access analysis tool \"Google Analytics.\" Google Analytics uses cookies to collect data. This data is collected anonymously and does not identify individuals.",
-    "privacyCookie": "We use cookies on our site to customize how you experience our site."
+    "privacyCookie": "We use cookies on our site to customize how you experience our site.",
+    "history":"Release Note",
+    "changelog":["2024/07/07 Release"]
   },
   "loadZipDialog": {
     "title": "Read Zip",
