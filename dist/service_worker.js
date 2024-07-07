@@ -1,5 +1,12 @@
 const cacheName = "LABERU_20240707";
-const urlsToCache = ["/"];
+const urlsToCache = [
+  "./",
+  "./index.html",
+  "./index.js",
+  "./static/logo192.png",
+  "./static/logo512.png",
+  "./static/metronome.wav",
+];
 self.addEventListener("install", (e) => {
   e.waitUntil(
     caches.open(cacheName).then((cache) => {
