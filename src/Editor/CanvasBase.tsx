@@ -35,6 +35,8 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   );
   /** キャンバスを格納するBoxへのref */
   const boxRef = React.useRef(null);
+  /** スクロール用のBoxへのref */
+  const scrollBoxRef = React.useRef(null);
 
   /** 画面サイズが変更された際、キャンバスのサイズも変更する。 \
    * ただし横幅はwav読込後はwavに依存して固定
@@ -97,8 +99,15 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
    * canvasを含むBoxを指定の位置までスクロールする
    * @param point スクロールする位置
    */
-  const SetScrolled = (point: number) => {
+  const SetScrolled = (point: number, sync: boolean = true) => {
     boxRef.current.scrollTo(Math.max(point), 0);
+    if (sync) {
+      scrollBoxRef.current.scrollTo(Math.max(point), 0);
+    }
+  };
+
+  const OnScrollChange = (e) => {
+    SetScrolled(e.target.scrollLeft);
   };
 
   return (
@@ -147,6 +156,21 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           touchMode={props.touchMode}
           overlapLock={props.overlapLock}
         />
+      </Box>
+      <Box
+        ref={scrollBoxRef}
+        sx={{
+          overflowX: "scroll",
+          height: 24,
+          backgroundColor: "#bdbdbd",
+        }}
+        onScroll={OnScrollChange}
+      >
+        <Box
+          sx={{
+            width: width,
+          }}
+        ></Box>
       </Box>
     </>
   );

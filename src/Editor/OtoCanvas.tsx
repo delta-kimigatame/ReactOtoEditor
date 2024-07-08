@@ -179,7 +179,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
       RenderAll(ctx);
       if (props.record !== null) {
         if (alias !== props.record.alias) {
-          props.SetSclolled((props.record.offset+props.record.pre) / props.pixelPerMsec - 100);
+          props.SetSclolled(props.record.offset / props.pixelPerMsec - 100);
           setAlias(props.record.alias);
         }
       } else {
@@ -196,7 +196,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     if (ctx) {
       RenderAll(ctx);
       if (props.record !== null) {
-        props.SetSclolled((props.record.offset+props.record.pre) / props.pixelPerMsec - 100);
+        props.SetSclolled(props.record.offset / props.pixelPerMsec - 100);
         setAlias(props.record.alias);
       }
     }

@@ -71,12 +71,17 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         props.windowSize[1] -
         layout.headerHeight -
         tableHeight -
-        buttonAreaHeight
+        buttonAreaHeight -
+        24
       }`,
       "EditorView"
     );
     setCanvasHeight(
-      props.windowSize[1] - layout.headerHeight - tableHeight - buttonAreaHeight
+      props.windowSize[1] -
+        layout.headerHeight -
+        tableHeight -
+        buttonAreaHeight -
+        24
     );
   }, [props.windowSize, tableHeight, buttonAreaHeight]);
 
