@@ -191,73 +191,21 @@ export const MakeOto = (
           break;
         }
         const cv = filename.slice(begin, end);
-        if (ini.consonant[cv].consonant === "") {
-          MakeVCV(
-            ini,
-            oto,
-            targetDir,
-            f,
-            cv,
-            beatsLength,
-            beats,
-            preutter,
-            overlap,
-            consonant,
-            blank,
-            prev_vowel,
-            aliasCounter
-          );
-        } else if (ini.consonant[cv].consonant === "-") {
-          /** onset consonant cluster */
-          MakeOnsetConsonantCluster(
-            ini,
-            oto,
-            targetDir,
-            f,
-            cv,
-            beatsLength,
-            beats,
-            preutter,
-            overlap,
-            consonant,
-            blank,
-            prev_vowel,
-            aliasCounter
-          );
-        } else if (ini.consonant[cv].consonant === "*") {
-          /** coda consonant cluster */
-          MakeCodaConsonantCluster(
-            ini,
-            oto,
-            targetDir,
-            f,
-            cv,
-            beatsLength,
-            beats,
-            preutter,
-            overlap,
-            consonant,
-            blank,
-            aliasCounter
-          );
-        } else if (prev_vowel == "-") {
-          MakeCV(ini, oto, targetDir, f, cv, beatsLength, beats, aliasCounter);
-        } else {
-          /** CVVC。prev_vowelには必ず-以外が入っている。 */
-          MakeCVVC(
-            ini,
-            oto,
-            targetDir,
-            f,
-            cv,
-            beatsLength,
-            beats,
-            preutter,
-            overlap,
-            prev_vowel,
-            aliasCounter
-          );
-        }
+        MakeRecord(
+          ini,
+          oto,
+          targetDir,
+          f,
+          cv,
+          beatsLength,
+          beats,
+          preutter,
+          overlap,
+          consonant,
+          blank,
+          prev_vowel,
+          aliasCounter
+        );
         prev_vowel = SetVowel(ini, cv);
         beats++;
         begin = end;
@@ -265,6 +213,106 @@ export const MakeOto = (
     }
   });
   return oto;
+};
+
+/**
+ * エイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param preutter 先行発声
+ * @param overlap オーバーラップ
+ * @param consonant 固定範囲
+ * @param blank 右ブランク
+ * @param prev_vowel 前置母音
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
+export const MakeRecord = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  preutter: number,
+  overlap: number,
+  consonant: number,
+  blank: number,
+  prev_vowel: string,
+  aliasCounter: { [key: string]: number }
+) => {
+  if (ini.consonant[cv].consonant === "") {
+    MakeVCV(
+      ini,
+      oto,
+      targetDir,
+      f,
+      cv,
+      beatsLength,
+      beats,
+      preutter,
+      overlap,
+      consonant,
+      blank,
+      prev_vowel,
+      aliasCounter
+    );
+  } else if (ini.consonant[cv].consonant === "-") {
+    /** onset consonant cluster */
+    MakeOnsetConsonantCluster(
+      ini,
+      oto,
+      targetDir,
+      f,
+      cv,
+      beatsLength,
+      beats,
+      preutter,
+      overlap,
+      consonant,
+      blank,
+      prev_vowel,
+      aliasCounter
+    );
+  } else if (ini.consonant[cv].consonant === "*") {
+    /** coda consonant cluster */
+    MakeCodaConsonantCluster(
+      ini,
+      oto,
+      targetDir,
+      f,
+      cv,
+      beatsLength,
+      beats,
+      preutter,
+      overlap,
+      consonant,
+      blank,
+      aliasCounter
+    );
+  } else if (prev_vowel == "-") {
+    MakeCV(ini, oto, targetDir, f, cv, beatsLength, beats, aliasCounter);
+  } else {
+    /** CVVC。prev_vowelには必ず-以外が入っている。 */
+    MakeCVVC(
+      ini,
+      oto,
+      targetDir,
+      f,
+      cv,
+      beatsLength,
+      beats,
+      preutter,
+      overlap,
+      prev_vowel,
+      aliasCounter
+    );
+  }
 };
 
 /**
