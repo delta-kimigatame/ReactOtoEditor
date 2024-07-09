@@ -162,9 +162,7 @@ export const MakeOto = (
   filenames.forEach((f) => {
     if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
       /** ファイル名。skipBeginingNumberがtrueの場合ファイル名頭の連番を無視する。 */
-      const filename: string = (
-        skipBiginingNumber ? f.replace(/^[0-9]+/, "") : f
-      ).replace(".wav", "");
+      const filename: string = GetFilename(f, targetDir, skipBiginingNumber);
       /** エイリアスの開始文字のインデックス。冒頭のアンダーバーは無視する。 */
       let begin: number = filename[0] === "_" ? 1 : 0;
       /** 接頭辞 */
@@ -329,6 +327,25 @@ export const MakeOto = (
     }
   });
   return oto;
+};
+
+/**
+ * ファイル名からエイリアス判定に必要な部分を抽出する。
+ * @param filename 元のファイル名
+ * @param targetDir 音源ルートからの相対パス
+ * @param skipBiginingNumber 冒頭の数字を無視するか否か
+ * @returns 抽出後のファイル名
+ */
+export const GetFilename = (
+  filename: string,
+  targetDir: string,
+  skipBiginingNumber: boolean
+): string => {
+  const f = filename.replace(targetDir + "/", "");
+  return (skipBiginingNumber ? f.replace(/^[0-9]+/, "") : f).replace(
+    ".wav",
+    ""
+  );
 };
 
 /**
