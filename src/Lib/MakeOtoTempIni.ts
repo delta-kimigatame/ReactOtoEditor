@@ -115,7 +115,7 @@ export const ParseIni = (data: string): MakeOtoTempIni => {
       } else {
         console.warn("VOWELに=が無い行があるため無視しました。");
       }
-    } else if (mode === "MODE") {
+    } else if (mode === "CONSONANT") {
       try {
         if (line.includes("=")) {
           const [v, keys, l] = line.split("=");
