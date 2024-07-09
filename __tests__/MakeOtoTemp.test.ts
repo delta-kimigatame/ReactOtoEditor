@@ -12,6 +12,7 @@ import {
   MakeVCV,
   MakeCVVC,
   MakeRecord,
+  MakeOto,
 } from "../src/Lib/MakeOtoTempIni";
 
 describe("MakeOtoTempIniのテスト", () => {
@@ -969,5 +970,96 @@ describe("MakeRecord", () => {
     );
     expect(oto.HasOtoRecord("a", "b.wav", "か")).toBe(true);
     expect(oto.HasOtoRecord("a", "b.wav", "a k")).toBe(true);
+  });
+});
+
+describe("MakeOto", () => {
+  test("MakeVCV", () => {
+    const ini = ParseIni(
+      "[VOWEL]\r\na=あ\r\ni=い\r\nu=う\r\ne=え\r\no=お\r\nn=ん\r\n[CONSONANT]\r\n=あ,い,う,え,お,ん=0"
+    );
+    ini.noVCV = false;
+    ini.beginingCv = true;
+    ini.noHead = false;
+    ini.offset = 1000;
+    ini.tempo = 100;
+    const oto = MakeOto(ini, ["/_ああいあうえあ.wav"], "");
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "- あ")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "a あ")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "a い")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "i あ")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "a う")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "u え")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "e あ")).toBe(true);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "- あ")?.offset).toBe(700);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "a あ")?.offset).toBe(1300);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "a い")?.offset).toBe(1900);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "i あ")?.offset).toBe(2500);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "a う")?.offset).toBe(3100);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "u え")?.offset).toBe(3700);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "e あ")?.offset).toBe(4300);
+  });
+
+  test("MakeCV", () => {
+    const ini = ParseIni(
+      "[VOWEL]\r\n-=あ,い,う,え,お,ん\r\n[CONSONANT]\r\n_=あ,い,う,え,お,ん=0"
+    );
+    ini.noVCV = false;
+    ini.beginingCv = true;
+    ini.noHead = false;
+    ini.offset = 1000;
+    ini.tempo = 100;
+    ini.max = 2;
+    const oto = MakeOto(ini, ["/_ああいあうえあ.wav"], "");
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "あ")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "あ2")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "い")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "う")).toBe(true);
+    expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "え")).toBe(true);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "あ")?.offset).toBe(1000);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "あ2")?.offset).toBe(1600);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "い")?.offset).toBe(2200);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "う")?.offset).toBe(3400);
+    expect(oto.GetRecord("", "_ああいあうえあ.wav", "え")?.offset).toBe(4000);
+  });
+  test("MakeCVVC", () => {
+    const ini = ParseIni(
+      "[VOWEL]\r\na=あ,か\r\ni=い,き\r\nu=う,く\r\ne=え,け\r\no=お,こ\r\nn=ん\r\n[CONSONANT]\r\n=あ,い,う,え,お,ん=0\r\nk=か,く,け,こ=60,ky=き=80"
+    );
+    ini.noVCV = false;
+    ini.beginingCv = false;
+    ini.noHead = false;
+    ini.offset = 1000;
+    ini.tempo = 100;
+    ini.max = 2;
+    const oto = MakeOto(ini, ["/_いかくけこかんか.wav"], "");
+    expect(oto.GetAliases("", "_いかくけこかんか.wav")).toEqual([
+      "い",
+      "i k",
+      "か",
+      "a k",
+      "く",
+      "u k",
+      "け",
+      "e k",
+      "こ",
+      "o k",
+      "か2",
+      "a ん",
+      "n k",
+    ]);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "い")?.offset).toBe(700);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "か")?.offset).toBe(1600-60);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "く")?.offset).toBe(2200-60);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "け")?.offset).toBe(2800-60);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "こ")?.offset).toBe(3400-60);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "か2")?.offset).toBe(4000-60);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "a ん")?.offset).toBe(4600-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "i k")?.offset).toBe(1600-60-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "a k")?.offset).toBe(2200-60-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "u k")?.offset).toBe(2800-60-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "e k")?.offset).toBe(3400-60-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "o k")?.offset).toBe(4000-60-300);
+    expect(oto.GetRecord("", "_いかくけこかんか.wav", "n k")?.offset).toBe(5200-60-300);
   });
 });
