@@ -195,7 +195,7 @@ export const MakeOto = (
           ini,
           oto,
           targetDir,
-          f,
+          f.replace(targetDir + "/", ""),
           cv,
           beatsLength,
           beats,
