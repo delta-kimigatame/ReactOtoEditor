@@ -244,44 +244,19 @@ export const MakeOto = (
           MakeCV(ini, oto, targetDir, f, cv, beatsLength, beats, aliasCounter);
         } else {
           /** CVVC。prev_vowelには必ず-以外が入っている。 */
-          /** VCの追加 */
-          oto.SetParams(
+          MakeCVVC(
+            ini,
+            oto,
             targetDir,
             f,
-            ReplaceAlias(ini, prev_vowel + " " + ini.consonant[cv].consonant),
-            ini.offset -
-              preutter +
-              (beats - 1) * beatsLength -
-              ini.consonant[cv].length,
-            overlap,
+            cv,
+            beatsLength,
+            beats,
             preutter,
-            preutter + ini.consonant[cv].length / 2,
-            -preutter - (ini.consonant[cv].length * 3) / 4
+            overlap,
+            prev_vowel,
+            aliasCounter
           );
-          //CV
-          oto.SetParams(
-            targetDir,
-            f,
-            ReplaceAlias(ini, cv),
-            ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
-            ini.consonant[cv].length / 3,
-            ini.consonant[cv].length,
-            ini.consonant[cv].length * 1.5,
-            -1 * (beatsLength + ini.consonant[cv].length / 3)
-          );
-          //only consonant
-          if (ini.onlyConsonant) {
-            oto.SetParams(
-              targetDir,
-              f,
-              ReplaceAlias(ini, ini.consonant[cv].consonant),
-              ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
-              ini.consonant[cv].length * 0.3,
-              ini.consonant[cv].length * 0.1,
-              ini.consonant[cv].length / 2,
-              -1 * ini.consonant[cv].length
-            );
-          }
         }
         prev_vowel = SetVowel(ini, cv);
         beats++;
@@ -307,6 +282,92 @@ const UpdateAliasCounter = (
     aliasCounter[alias] = 1;
   }
 };
+
+/**
+ * 連続音[V CV]のエイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param preutter 先行発声
+ * @param overlap オーバーラップ
+ * @param prev_vowel 前置母音
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
+export const MakeCVVC = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  preutter: number,
+  overlap: number,
+  prev_vowel: string,
+  aliasCounter: { [key: string]: number }
+) => {
+  const VCalias = ReplaceAlias(
+    ini,
+    ReplaceAlias(ini, prev_vowel + " " + ini.consonant[cv].consonant)
+  );
+  UpdateAliasCounter(VCalias, aliasCounter);
+  if (ini.max === 0 || aliasCounter[VCalias] <= ini.max) {
+    /** VCの追加 */
+    oto.SetParams(
+      targetDir,
+      f,
+      VCalias + (aliasCounter[VCalias] !== 1 ? aliasCounter[VCalias] : ""),
+      ini.offset -
+        preutter +
+        (beats - 1) * beatsLength -
+        ini.consonant[cv].length,
+      overlap,
+      preutter,
+      preutter + ini.consonant[cv].length / 2,
+      -preutter - (ini.consonant[cv].length * 3) / 4
+    );
+  }
+  //CV
+  const CValias = ReplaceAlias(ini, ReplaceAlias(ini, cv));
+  UpdateAliasCounter(CValias, aliasCounter);
+  if (ini.max === 0 || aliasCounter[CValias] <= ini.max) {
+    oto.SetParams(
+      targetDir,
+      f,
+      CValias + (aliasCounter[CValias] !== 1 ? aliasCounter[CValias] : ""),
+      ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
+      ini.consonant[cv].length / 3,
+      ini.consonant[cv].length,
+      ini.consonant[cv].length * 1.5,
+      -1 * (beatsLength + ini.consonant[cv].length / 3)
+    );
+  }
+  //only consonant
+  if (ini.onlyConsonant) {
+    const Calias = ReplaceAlias(
+      ini,
+      ReplaceAlias(ini, ini.consonant[cv].consonant)
+    );
+    UpdateAliasCounter(Calias, aliasCounter);
+    if (ini.max === 0 || aliasCounter[Calias] <= ini.max) {
+      oto.SetParams(
+        targetDir,
+        f,
+        Calias + (aliasCounter[Calias] !== 1 ? aliasCounter[Calias] : ""),
+        ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
+        ini.consonant[cv].length * 0.3,
+        ini.consonant[cv].length * 0.1,
+        ini.consonant[cv].length / 2,
+        -1 * ini.consonant[cv].length
+      );
+    }
+  }
+};
+
 /**
  * 連続音[V CV]のエイリアスを生成する。
  * @param ini 設定
