@@ -159,6 +159,8 @@ export const MakeOto = (
   const consonant: number = preutter * 1.5;
   /** 右ブランク */
   const blank: number = -1 * (beatsLength + overlap);
+  /** エイリアスカウンタ */
+  const aliasCounter: { [key: string]: number } = {};
   filenames.forEach((f) => {
     if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
       /** ファイル名。skipBeginingNumberがtrueの場合ファイル名頭の連番を無視する。 */
@@ -232,42 +234,24 @@ export const MakeOto = (
             overlap,
             consonant,
             blank,
-            prev_vowel
+            prev_vowel,
+            aliasCounter
           );
         } else if (ini.consonant[cv].consonant === "*") {
           /** coda consonant cluster */
-          let parse = 1;
-          while (begin < end - parse) {
-            if (
-              !Object.keys(ini.consonant).includes(
-                filename.slice(begin, end - parse)
-              )
-            ) {
-              parse++;
-            } else if (
-              ["-", "*"].includes(
-                ini.consonant[filename.slice(begin, end - parse)].consonant
-              )
-            ) {
-              parse++;
-            } else {
-              break;
-            }
-          }
-          oto.SetParams(
+          MakeCodaConsonantCluster(
+            ini,
+            oto,
             targetDir,
             f,
-            ReplaceAlias(
-              ini,
-              filename.slice(begin, end - parse) +
-                " " +
-                filename.slice(end - parse, end)
-            ),
-            ini.offset - preutter + (beats - 1) * beatsLength,
-            overlap,
+            cv,
+            beatsLength,
+            beats,
             preutter,
+            overlap,
             consonant,
-            blank
+            blank,
+            aliasCounter
           );
         } else if (prev_vowel == "-") {
           /** 接頭単独音 */
@@ -333,6 +317,22 @@ export const MakeOto = (
   return oto;
 };
 
+/**
+ * 語頭子音群[- CC]のエイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param preutter 先行発声
+ * @param overlap オーバーラップ
+ * @param consonant 固定範囲
+ * @param blank 右ブランク
+ * @param prev_vowel 前置母音
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
 export const MakeOnsetConsonantCluster = (
   ini: MakeOtoTempIni,
   oto: Oto,
@@ -345,18 +345,94 @@ export const MakeOnsetConsonantCluster = (
   overlap: number,
   consonant: number,
   blank: number,
-  prev_vowel: string
+  prev_vowel: string,
+  aliasCounter: { [key: string]: number }
 ) => {
-  oto.SetParams(
-    targetDir,
-    f,
-    (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv),
-    ini.offset - preutter + (beats - 1) * beatsLength,
-    overlap,
-    preutter,
-    consonant,
-    blank
+  const alias = (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv);
+  if (Object.keys(aliasCounter).includes(alias)) {
+    aliasCounter[alias]++;
+  } else {
+    aliasCounter[alias] = 1;
+  }
+  if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
+    oto.SetParams(
+      targetDir,
+      f,
+      alias + (aliasCounter[alias] !== 1 ? aliasCounter[alias] : ""),
+      ini.offset - preutter + (beats - 1) * beatsLength,
+      overlap,
+      preutter,
+      consonant,
+      blank
+    );
+  }
+};
+
+/**
+ * 語尾子音群[C C]のエイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param preutter 先行発声
+ * @param overlap オーバーラップ
+ * @param consonant 固定範囲
+ * @param blank 右ブランク
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
+export const MakeCodaConsonantCluster = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  preutter: number,
+  overlap: number,
+  consonant: number,
+  blank: number,
+  aliasCounter: { [key: string]: number }
+) => {
+  let parse = 1;
+  const begin = 0;
+  const end = cv.length;
+  while (begin < end - parse) {
+    if (!Object.keys(ini.consonant).includes(cv.slice(begin, end - parse))) {
+      parse++;
+    } else if (
+      ["-", "*"].includes(ini.consonant[cv.slice(begin, end - parse)].consonant)
+    ) {
+      parse++;
+    } else {
+      break;
+    }
+  }
+  const alias = ReplaceAlias(
+    ini,
+    cv.slice(begin, end - parse) + " " + cv.slice(end - parse, end)
   );
+  if (Object.keys(aliasCounter).includes(alias)) {
+    aliasCounter[alias]++;
+  } else {
+    aliasCounter[alias] = 1;
+  }
+  console.log(alias)
+  if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
+    oto.SetParams(
+      targetDir,
+      f,
+      alias + (aliasCounter[alias] !== 1 ? aliasCounter[alias] : ""),
+      ini.offset - preutter + (beats - 1) * beatsLength,
+      overlap,
+      preutter,
+      consonant,
+      blank
+    );
+  }
 };
 
 /**
