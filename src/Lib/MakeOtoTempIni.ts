@@ -254,19 +254,7 @@ export const MakeOto = (
             aliasCounter
           );
         } else if (prev_vowel == "-") {
-          /** 接頭単独音 */
-          if (!ini.noHead) {
-            oto.SetParams(
-              targetDir,
-              f,
-              (ini.beginingCv ? "" : "- ") + ReplaceAlias(ini, cv),
-              ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
-              ini.consonant[cv].length / 3,
-              ini.consonant[cv].length,
-              ini.consonant[cv].length * 1.5,
-              -1 * (beatsLength + ini.consonant[cv].length / 3)
-            );
-          }
+          MakeCV(ini, oto, targetDir, f, cv, beatsLength, beats, aliasCounter);
         } else {
           /** CVVC。prev_vowelには必ず-以外が入っている。 */
           /** VCの追加 */
@@ -315,6 +303,49 @@ export const MakeOto = (
     }
   });
   return oto;
+};
+
+/**
+ * [- CV]のエイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
+export const MakeCV = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  aliasCounter: { [key: string]: number }
+) => {
+  if (!ini.noHead) {
+    const alias = (ini.beginingCv ? "" : "- ") + ReplaceAlias(ini, cv);
+    if (Object.keys(aliasCounter).includes(alias)) {
+      aliasCounter[alias]++;
+    } else {
+      aliasCounter[alias] = 1;
+    }
+    if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
+      oto.SetParams(
+        targetDir,
+        f,
+        alias + (aliasCounter[alias] !== 1 ? aliasCounter[alias] : ""),
+        ini.offset - ini.consonant[cv].length + (beats - 1) * beatsLength,
+        ini.consonant[cv].length / 3,
+        ini.consonant[cv].length,
+        ini.consonant[cv].length * 1.5,
+        -1 * (beatsLength + ini.consonant[cv].length / 3)
+      );
+    }
+  }
 };
 
 /**
@@ -420,7 +451,7 @@ export const MakeCodaConsonantCluster = (
   } else {
     aliasCounter[alias] = 1;
   }
-  console.log(alias)
+  console.log(alias);
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
       targetDir,
