@@ -570,7 +570,6 @@ export const MakeCodaConsonantCluster = (
     cv.slice(begin, end - parse) + " " + cv.slice(end - parse, end)
   );
   UpdateAliasCounter(alias, aliasCounter);
-  console.log(alias);
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
       targetDir,
