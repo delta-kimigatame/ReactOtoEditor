@@ -1,4 +1,3 @@
-import JSZip from "jszip";
 import { Oto } from "utauoto";
 
 /**
@@ -44,7 +43,7 @@ export const ParseIni = (data: string): MakeOtoTempIni => {
     consonant: {},
     replace: [],
   };
-  const lines: string[] = data.replace("\r\n", "\n").split("\n");
+  const lines: string[] = data.replace(/\r\n/g, "\n").split("\n");
   let mode: string = "";
   lines.forEach((line) => {
     if (line === "") {
@@ -142,7 +141,7 @@ export const ParseIni = (data: string): MakeOtoTempIni => {
   return ini;
 };
 
-const MakeOto = (
+export const MakeOto = (
   ini: MakeOtoTempIni,
   filenames: string[],
   targetDir: string,
@@ -338,7 +337,7 @@ const MakeOto = (
  * @param alias エイリアス
  * @returns 指定したエイリアスに該当する`ini.vowel`の値
  */
-const SetVowel = (ini: MakeOtoTempIni, alias: string): string => {
+export const SetVowel = (ini: MakeOtoTempIni, alias: string): string => {
   for (let i = 0; i < alias.length; i++) {
     if (Object.keys(ini.vowel).includes(alias.slice(i))) {
       return ini.vowel[alias.slice(i)];
@@ -353,12 +352,12 @@ const SetVowel = (ini: MakeOtoTempIni, alias: string): string => {
  * @param begin エイリアスの開始インデックス
  * @param filename ファイル名
  * @param beats 拍数
- * @param prev_vowel 前置母音 
+ * @param prev_vowel 前置母音
  * @returns begin エイリアスの開始インデックス
  * @returns beats 拍数
  * @returns prev_vowel 前置母音
  */
-const CheckUnderbar = (
+export const CheckUnderbar = (
   ini: MakeOtoTempIni,
   begin: number,
   filename: string,
@@ -381,13 +380,13 @@ const CheckUnderbar = (
  * @param begin エイリアスの開始インデックス
  * @param filename ファイル名
  * @param beats 拍数
- * @param prev_vowel 前置母音 
+ * @param prev_vowel 前置母音
  * @returns begin エイリアスの開始インデックス
  * @returns end エイリアスの終了インデックス
  * @returns beats 拍数
  * @returns prev_vowel 前置母音
  */
-const GetRange = (
+export const GetRange = (
   ini: MakeOtoTempIni,
   begin: number,
   filename: string,
@@ -423,9 +422,9 @@ const GetRange = (
  * @param cv エイリアス
  * @returns 置換されたエイリアス。
  */
-const ReplaceAlias = (ini: MakeOtoTempIni, cv: string): string => {
+export const ReplaceAlias = (ini: MakeOtoTempIni, cv: string): string => {
   ini.replace.forEach((r) => {
-    cv.replace(r[0], r[1]);
+    cv = cv.replace(r[0], r[1]);
   });
   return cv;
 };
