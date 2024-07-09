@@ -11,6 +11,7 @@ import {
   MakeCV,
   MakeVCV,
   MakeCVVC,
+  MakeRecord,
 } from "../src/Lib/MakeOtoTempIni";
 
 describe("MakeOtoTempIniのテスト", () => {
@@ -834,5 +835,139 @@ describe("MakeCVVCのテスト", () => {
     expect(oto.HasOtoRecord("a", "b.wav", "さ3")).toBe(false);
     expect(oto.HasOtoRecord("a", "b.wav", "a s3")).toBe(false);
     expect(oto.HasOtoRecord("a", "b.wav", "s3")).toBe(false);
+  });
+});
+
+describe("MakeRecord", () => {
+  const ini = ParseIni("");
+  ini.offset = 1000;
+  ini.consonant["あ"] = { consonant: "", length: 0 };
+  ini.consonant["か"] = { consonant: "k", length: 50 };
+  ini.consonant["さ"] = { consonant: "s", length: 120 };
+  ini.consonant["n"] = { consonant: "n", length: 60 };
+  ini.consonant["s"] = { consonant: "s", length: 100 };
+  ini.consonant["st"] = { consonant: "-", length: 120 };
+  ini.consonant["str"] = { consonant: "-", length: 150 };
+  ini.consonant["ng"] = { consonant: "*", length: 150 };
+  test("VCV", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "あ",
+      600,
+      2,
+      300,
+      100,
+      450,
+      -700,
+      "a",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "a あ")).toBe(true);
+  });
+  test("HeadVCV", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "あ",
+      600,
+      1,
+      300,
+      100,
+      450,
+      -700,
+      "-",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "- あ")).toBe(true);
+  });
+  test("OnsetConsonantCluster", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "str",
+      600,
+      1,
+      300,
+      100,
+      450,
+      -700,
+      "-",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "- str")).toBe(true);
+  });
+  test("CodaConsonantCluster", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "ng",
+      600,
+      1,
+      300,
+      100,
+      450,
+      -700,
+      "-",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "n g")).toBe(true);
+  });
+  test("CV", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "か",
+      600,
+      1,
+      300,
+      100,
+      450,
+      -700,
+      "-",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "か")).toBe(true);
+  });
+  test("CVVC", () => {
+    const oto = new Oto();
+    const aliasCounter: { [key: string]: number } = {};
+    MakeRecord(
+      ini,
+      oto,
+      "a",
+      "b.wav",
+      "か",
+      600,
+      2,
+      300,
+      100,
+      450,
+      -700,
+      "a",
+      aliasCounter
+    );
+    expect(oto.HasOtoRecord("a", "b.wav", "か")).toBe(true);
+    expect(oto.HasOtoRecord("a", "b.wav", "a k")).toBe(true);
   });
 });
