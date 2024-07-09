@@ -1,6 +1,6 @@
 import { Oto } from "utauoto";
+import {ParseIni} from "../src/Lib/MakeOtoTemp/Input";
 import {
-  ParseIni,
   ReplaceAlias,
   SetVowel,
   CheckUnderbar,
@@ -13,7 +13,7 @@ import {
   MakeCVVC,
   MakeRecord,
   MakeOto,
-} from "../src/Lib/MakeOtoTempIni";
+} from "../src/Lib/MakeOtoTemp/MakeOto";
 
 describe("MakeOtoTempIniのテスト", () => {
   test("ReplaceAlias", () => {
