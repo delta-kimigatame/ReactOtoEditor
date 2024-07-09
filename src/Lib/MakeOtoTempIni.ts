@@ -220,15 +220,19 @@ export const MakeOto = (
           }
         } else if (ini.consonant[cv].consonant === "-") {
           /** onset consonant cluster */
-          oto.SetParams(
+          MakeOnsetConsonantCluster(
+            ini,
+            oto,
             targetDir,
             f,
-            (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv),
-            ini.offset - preutter + (beats - 1) * beatsLength,
-            overlap,
+            cv,
+            beatsLength,
+            beats,
             preutter,
+            overlap,
             consonant,
-            blank
+            blank,
+            prev_vowel
           );
         } else if (ini.consonant[cv].consonant === "*") {
           /** coda consonant cluster */
@@ -327,6 +331,32 @@ export const MakeOto = (
     }
   });
   return oto;
+};
+
+export const MakeOnsetConsonantCluster = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  preutter: number,
+  overlap: number,
+  consonant: number,
+  blank: number,
+  prev_vowel: string
+) => {
+  oto.SetParams(
+    targetDir,
+    f,
+    (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv),
+    ini.offset - preutter + (beats - 1) * beatsLength,
+    overlap,
+    preutter,
+    consonant,
+    blank
+  );
 };
 
 /**
