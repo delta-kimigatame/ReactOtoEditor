@@ -192,34 +192,21 @@ export const MakeOto = (
         }
         const cv = filename.slice(begin, end);
         if (ini.consonant[cv].consonant === "") {
-          /** 連続音 */
-          if (prev_vowel === "-" && ini.noHead) {
-          } else if (prev_vowel === "-" && !ini.beginingCv) {
-            /** 接頭単独音かつハイフン無し */
-            oto.SetParams(
-              targetDir,
-              f,
-              ReplaceAlias(ini, cv),
-              ini.offset - preutter + (beats - 1) * beatsLength,
-              overlap,
-              preutter,
-              consonant,
-              blank
-            );
-          } else if (!ini.noVCV) {
-          } else {
-            /** VCV */
-            oto.SetParams(
-              targetDir,
-              f,
-              prev_vowel + " " + ReplaceAlias(ini, cv),
-              ini.offset - preutter + (beats - 1) * beatsLength,
-              overlap,
-              preutter,
-              consonant,
-              blank
-            );
-          }
+          MakeVCV(
+            ini,
+            oto,
+            targetDir,
+            f,
+            cv,
+            beatsLength,
+            beats,
+            preutter,
+            overlap,
+            consonant,
+            blank,
+            prev_vowel,
+            aliasCounter
+          );
         } else if (ini.consonant[cv].consonant === "-") {
           /** onset consonant cluster */
           MakeOnsetConsonantCluster(
@@ -310,13 +297,83 @@ export const MakeOto = (
  * @param alias エイリアス
  * @param aliasCounter 更新するエイリアスカウンタ
  */
-const UpdateAliasCounter=(alias:string,aliasCounter:{ [key: string]: number })=>{
+const UpdateAliasCounter = (
+  alias: string,
+  aliasCounter: { [key: string]: number }
+) => {
   if (Object.keys(aliasCounter).includes(alias)) {
     aliasCounter[alias]++;
   } else {
     aliasCounter[alias] = 1;
   }
-}
+};
+/**
+ * 連続音[V CV]のエイリアスを生成する。
+ * @param ini 設定
+ * @param oto 原音設定
+ * @param targetDir 原音ルートからの相対パス
+ * @param f ファイル名
+ * @param cv エイリアスの元の値
+ * @param beatsLength 1拍の長さ
+ * @param beats 拍数
+ * @param preutter 先行発声
+ * @param overlap オーバーラップ
+ * @param consonant 固定範囲
+ * @param blank 右ブランク
+ * @param prev_vowel 前置母音
+ * @param aliasCounter エイリアスの重複カウンタ
+ */
+export const MakeVCV = (
+  ini: MakeOtoTempIni,
+  oto: Oto,
+  targetDir: string,
+  f: string,
+  cv: string,
+  beatsLength: number,
+  beats: number,
+  preutter: number,
+  overlap: number,
+  consonant: number,
+  blank: number,
+  prev_vowel: string,
+  aliasCounter: { [key: string]: number }
+) => {
+  if (prev_vowel === "-" && ini.noHead) {
+  } else if (prev_vowel === "-" && !ini.beginingCv) {
+    /** 接頭単独音かつハイフン無し */
+    const alias = ReplaceAlias(ini, cv);
+    UpdateAliasCounter(alias, aliasCounter);
+    if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
+      oto.SetParams(
+        targetDir,
+        f,
+        alias + (aliasCounter[alias] !== 1 ? aliasCounter[alias] : ""),
+        ini.offset - preutter + (beats - 1) * beatsLength,
+        overlap,
+        preutter,
+        consonant,
+        blank
+      );
+    }
+  } else if (ini.noVCV) {
+  } else {
+    /** VCV */
+    const alias = prev_vowel + " " + ReplaceAlias(ini, cv);
+    UpdateAliasCounter(alias, aliasCounter);
+    if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
+      oto.SetParams(
+        targetDir,
+        f,
+        alias + (aliasCounter[alias] !== 1 ? aliasCounter[alias] : ""),
+        ini.offset - preutter + (beats - 1) * beatsLength,
+        overlap,
+        preutter,
+        consonant,
+        blank
+      );
+    }
+  }
+};
 
 /**
  * [- CV]のエイリアスを生成する。
@@ -341,7 +398,7 @@ export const MakeCV = (
 ) => {
   if (!ini.noHead) {
     const alias = (ini.beginingCv ? "" : "- ") + ReplaceAlias(ini, cv);
-    UpdateAliasCounter(alias,aliasCounter)
+    UpdateAliasCounter(alias, aliasCounter);
     if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
       oto.SetParams(
         targetDir,
@@ -389,7 +446,7 @@ export const MakeOnsetConsonantCluster = (
   aliasCounter: { [key: string]: number }
 ) => {
   const alias = (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv);
-  UpdateAliasCounter(alias,aliasCounter)
+  UpdateAliasCounter(alias, aliasCounter);
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
       targetDir,
@@ -451,7 +508,7 @@ export const MakeCodaConsonantCluster = (
     ini,
     cv.slice(begin, end - parse) + " " + cv.slice(end - parse, end)
   );
-  UpdateAliasCounter(alias,aliasCounter)
+  UpdateAliasCounter(alias, aliasCounter);
   console.log(alias);
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
