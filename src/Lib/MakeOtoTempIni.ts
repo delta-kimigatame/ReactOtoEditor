@@ -306,6 +306,19 @@ export const MakeOto = (
 };
 
 /**
+ * エイリアスカウンタを更新する。
+ * @param alias エイリアス
+ * @param aliasCounter 更新するエイリアスカウンタ
+ */
+const UpdateAliasCounter=(alias:string,aliasCounter:{ [key: string]: number })=>{
+  if (Object.keys(aliasCounter).includes(alias)) {
+    aliasCounter[alias]++;
+  } else {
+    aliasCounter[alias] = 1;
+  }
+}
+
+/**
  * [- CV]のエイリアスを生成する。
  * @param ini 設定
  * @param oto 原音設定
@@ -328,11 +341,7 @@ export const MakeCV = (
 ) => {
   if (!ini.noHead) {
     const alias = (ini.beginingCv ? "" : "- ") + ReplaceAlias(ini, cv);
-    if (Object.keys(aliasCounter).includes(alias)) {
-      aliasCounter[alias]++;
-    } else {
-      aliasCounter[alias] = 1;
-    }
+    UpdateAliasCounter(alias,aliasCounter)
     if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
       oto.SetParams(
         targetDir,
@@ -380,11 +389,7 @@ export const MakeOnsetConsonantCluster = (
   aliasCounter: { [key: string]: number }
 ) => {
   const alias = (prev_vowel === "-" ? "- " : "") + ReplaceAlias(ini, cv);
-  if (Object.keys(aliasCounter).includes(alias)) {
-    aliasCounter[alias]++;
-  } else {
-    aliasCounter[alias] = 1;
-  }
+  UpdateAliasCounter(alias,aliasCounter)
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
       targetDir,
@@ -446,11 +451,7 @@ export const MakeCodaConsonantCluster = (
     ini,
     cv.slice(begin, end - parse) + " " + cv.slice(end - parse, end)
   );
-  if (Object.keys(aliasCounter).includes(alias)) {
-    aliasCounter[alias]++;
-  } else {
-    aliasCounter[alias] = 1;
-  }
+  UpdateAliasCounter(alias,aliasCounter)
   console.log(alias);
   if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
     oto.SetParams(
