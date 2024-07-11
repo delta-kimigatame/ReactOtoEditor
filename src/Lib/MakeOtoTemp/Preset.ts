@@ -241,7 +241,7 @@ const consonantString =
   "・=・あ,・い,・う,・え,・お,・ん=50\n";
 
 export const MakeJpCv = (): MakeOtoTempIni => {
-  const ini = ParseIni("");
+  const ini = ParseIni(consonantString);
   ini.noVCV = false;
   ini.beginingCv = true;
   ini.noHead = false;
@@ -249,7 +249,6 @@ export const MakeJpCv = (): MakeOtoTempIni => {
   const consonant = {};
   cvs.forEach((cv) => {
     vowel[cv] = "-";
-    consonant[cv] = { consonant: "_", length: 0 };
   });
   ini.vowel = vowel;
   ini.consonant = consonant;
@@ -263,7 +262,7 @@ export const MakeJpVCV = (): MakeOtoTempIni => {
   ini.noHead = false;
   const consonant = {};
   cvs.forEach((cv) => {
-    consonant[cv] = { consonant: "_", length: 0 };
+    consonant[cv] = { consonant: "", length: 0 };
   });
   ini.consonant = consonant;
   return ini;

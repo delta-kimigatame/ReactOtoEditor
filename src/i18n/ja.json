@@ -3,22 +3,22 @@
     "ja": "日本語",
     "en": "英語"
   },
-  "menu":{
-    "changeTargetDir":"フォルダ選択",
-    "otoDownload":"oto.iniをダウンロード",
-    "zipDownload":"zipをダウンロード",
-    "toDarkMode":"ダークモードにする",
-    "toLightMode":"ライトモードにする",
-    "changeColor":"色設定",
-    "changeLanguage":"言語設定",
-    "showLog":"操作ログ表示",
-    "logAttention":"ログは自動では送信されません。必要に応じて開発者に送付してください。"
+  "menu": {
+    "changeTargetDir": "フォルダ選択",
+    "otoDownload": "oto.iniをダウンロード",
+    "zipDownload": "zipをダウンロード",
+    "toDarkMode": "ダークモードにする",
+    "toLightMode": "ライトモードにする",
+    "changeColor": "色設定",
+    "changeLanguage": "言語設定",
+    "showLog": "操作ログ表示",
+    "logAttention": "ログは自動では送信されません。必要に応じて開発者に送付してください。"
   },
-  "downloadZipDialog":{
-    "current":"作業中のoto.ini",
-    "storaged":"保存されたoto.ini",
-    "readed":"元のoto.ini",
-    "none":"(なし)"
+  "downloadZipDialog": {
+    "current": "作業中のoto.ini",
+    "storaged": "保存されたoto.ini",
+    "readed": "元のoto.ini",
+    "none": "(なし)"
   },
   "top": {
     "description": "LABERUはUTAU音源のための原音設定ツールです。",
@@ -29,8 +29,12 @@
     "privacy": "プライバシーポリシー",
     "privacyAnalytics": "当サイトでは、Googleによるアクセス解析ツール「Googleアナリティクス」を使用しています。このGoogleアナリティクスはデータの収集のためにCookieを使用しています。このデータは匿名で収集されており、個人を特定するものではありません。",
     "privacyCookie": "当サイトでは、表示方法をカスタマイズするためにcookieを使用します。",
-    "history":"更新履歴",
-    "changelog":["2024/07/09 画面内の表示を元に戻した。スクロール機能の実装","2024/07/08 画面内に必ず先行発声が表示されるようにした。","2024/07/07 初版公開"]
+    "history": "更新履歴",
+    "changelog": [
+      "2024/07/09 画面内の表示を元に戻した。スクロール機能の実装",
+      "2024/07/08 画面内に必ず先行発声が表示されるようにした。",
+      "2024/07/07 初版公開"
+    ]
   },
   "loadZipDialog": {
     "title": "ZIP読込",
@@ -50,23 +54,58 @@
     "nothingOto": "oto.iniが見つかりませんでした。",
     "nothingHistory": "履歴はありませんでした",
     "readHistory": "読み込む履歴",
-    "readTemplate":"テンプレートを読み込む",
-    "correctOffset":"オフセットを補正する",
-    "correctTempo":"テンポを補正する",
-    "beforeOffset":"テンプレートのオフセット",
-    "afterOffset":"変更後のオフセット",
-    "beforeTempo":"テンプレートのテンポ",
-    "afterTempo":"変更後のテンポ",
-    "correctType":"エイリアス分類",
-    "hasPositiveBlankError":"右ブランクが正の数のため、テンポの補正はできません。",
-    "CV":"単独音",
-    "VCV":"連続音",
-    "VC":"VC",
-    "tab":{
-      "zip":"zip内",
-      "storaged":"履歴",
-      "template":"テンプレート読込",
-      "make":"生成(開発中)"
+    "readTemplate": "テンプレートを読み込む",
+    "correctOffset": "オフセットを補正する",
+    "correctTempo": "テンポを補正する",
+    "beforeOffset": "テンプレートのオフセット",
+    "afterOffset": "変更後のオフセット",
+    "beforeTempo": "テンプレートのテンポ",
+    "afterTempo": "変更後のテンポ",
+    "correctType": "エイリアス分類",
+    "hasPositiveBlankError": "右ブランクが正の数のため、テンポの補正はできません。",
+    "CV": "単独音",
+    "VCV": "連続音",
+    "VC": "VC",
+    "tab": {
+      "zip": "zip内",
+      "storaged": "履歴",
+      "template": "テンプレート読込",
+      "make": "生成"
+    },
+    "makePanel": {
+      "title": "生成方法",
+      "single": "単独発声(ファイル名 = エイリアス)(開発中)",
+      "multi": "連続発声",
+      "analyze": "wavを解析して補正(開発中",
+      "loadini": "設定読込",
+      "CVPreset": "日本語単独音",
+      "VCVPreset": "日本語連続音",
+      "CVVCPreset": "日本語CVVC",
+      "load": "mkototemp.ini読み込み",
+      "iniDetail":"設定詳細",
+      "make":"生成",
+      "settings": {
+        "skipBeginingNumber": "ファイル名頭の数字を無視する",
+        "tempo": "ガイドBGMのbpm",
+        "offset": "wavの頭から1拍目までの長さ(ms)",
+        "maxnum": "重複エイリアスの作成数(0の場合無制限)",
+        "underbar": "ファイル名途中のアンダーバーを1拍分の休符とみなす",
+        "beginingCv": "wavの頭のエイリアスに-をつける",
+        "Head": "wavの頭のエイリアスを生成する",
+        "VCV": "連続音を生成する",
+        "onlyConsonant": "子音単体音を生成する",
+        "vowel": "母音",
+        "vowelSymbol": "母音のエイリアス",
+        "vowelVariant": "種類(後方一致)　,で区切る",
+        "add":"追加",
+        "consonant": "子音",
+        "consonantSymbol": "子音のエイリアス",
+        "consonantVariant": "種類(完全一致)　,で区切る",
+        "consonantLength": "子音の平均長さ(ms)",
+        "replace": "ファイル名の置換",
+        "replaceFilename": "置換前",
+        "replaceAlias": "置換後"
+      }
     }
   },
   "oto": {
@@ -87,29 +126,29 @@
       "limitedNumber": "連番の数を制限する",
       "negativeBlank": "右ブランクを負の数にする",
       "forceOverlapRate": "オーバーラップを先行発声の1/3にする",
-      "removeSurfix":"エイリアスの末尾を削除",
-      "addSurfix":"エイリアスの末尾に文字を追加",
-      "addParams":"指定パラメータの増減",
-      "changeParams":"指定パラメータの変更",
-      "aliasComplement":"を/ぢ/づの補完"
+      "removeSurfix": "エイリアスの末尾を削除",
+      "addSurfix": "エイリアスの末尾に文字を追加",
+      "addParams": "指定パラメータの増減",
+      "changeParams": "指定パラメータの変更",
+      "aliasComplement": "を/ぢ/づの補完"
     },
     "targetTitle": "対象パラメータ",
-    "numberTitle":"数",
-    "stringTitle":"エイリアス",
-    "submit":"実行",
-    "processed":"実行しました"
+    "numberTitle": "数",
+    "stringTitle": "エイリアス",
+    "submit": "実行",
+    "processed": "実行しました"
   },
-  "aliasDialog":{
-    "title":"エイリアス編集",
-    "textField":"エイリアス",
-    "change":"変更",
-    "duplication":"複製",
-    "delete":"削除",
-    "barText":{
-      "change":"変更しました",
-      "duplication":"複製しました",
-      "delete":"削除しました",
-      "error":"このエイリアスは既に存在します。"
+  "aliasDialog": {
+    "title": "エイリアス編集",
+    "textField": "エイリアス",
+    "change": "変更",
+    "duplication": "複製",
+    "delete": "削除",
+    "barText": {
+      "change": "変更しました",
+      "duplication": "複製しました",
+      "delete": "削除しました",
+      "error": "このエイリアスは既に存在します。"
     }
   },
   "editor": {
@@ -145,10 +184,10 @@
   "xbutton": {
     "share": "共有"
   },
-  "error":{
-    "title":"エラー",
-    "message":"予期せぬエラーが生じました。下記のボタンからlogをダウンロードし、開発者に送付してください。",
-    "download":"ログをダウンロード",
-    "log":"操作ログ"
+  "error": {
+    "title": "エラー",
+    "message": "予期せぬエラーが生じました。下記のボタンからlogをダウンロードし、開発者に送付してください。",
+    "download": "ログをダウンロード",
+    "log": "操作ログ"
   }
 }
