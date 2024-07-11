@@ -410,7 +410,7 @@ describe("MAKECVのテスト", () => {
     const oto = new Oto();
     const aliasCounter: { [key: string]: number } = {};
     ini.noHead = false;
-    ini.beginingCv = true;
+    ini.beginingCv = false;
     MakeCV(ini, oto, "a", "b.wav", "か", 600, 1, aliasCounter);
     expect(oto.HasOtoRecord("a", "b.wav", "か")).toBe(true);
     const record = oto.GetRecord("a", "b.wav", "か");
@@ -426,7 +426,7 @@ describe("MAKECVのテスト", () => {
     const oto = new Oto();
     const aliasCounter: { [key: string]: number } = {};
     ini.noHead = false;
-    ini.beginingCv = true;
+    ini.beginingCv = false;
     ini.max = 2;
     MakeCV(ini, oto, "a", "b.wav", "か", 600, 1, aliasCounter);
     MakeCV(ini, oto, "a", "b.wav", "か", 600, 1, aliasCounter);
@@ -439,7 +439,7 @@ describe("MAKECVのテスト", () => {
     const oto = new Oto();
     const aliasCounter: { [key: string]: number } = {};
     ini.noHead = false;
-    ini.beginingCv = false;
+    ini.beginingCv = true;
     MakeCV(ini, oto, "a", "b.wav", "か", 600, 1, aliasCounter);
     expect(oto.HasOtoRecord("a", "b.wav", "- か")).toBe(true);
     const record = oto.GetRecord("a", "b.wav", "- か");
@@ -455,7 +455,7 @@ describe("MAKECVのテスト", () => {
     const oto = new Oto();
     const aliasCounter: { [key: string]: number } = {};
     ini.noHead = false;
-    ini.beginingCv = true;
+    ini.beginingCv = false;
     MakeCV(ini, oto, "a", "b.wav", "さ", 600, 2, aliasCounter);
     expect(oto.HasOtoRecord("a", "b.wav", "さ")).toBe(true);
     const record = oto.GetRecord("a", "b.wav", "さ");
@@ -800,6 +800,7 @@ describe("MakeCVVCのテスト", () => {
     const aliasCounter: { [key: string]: number } = {};
     ini.onlyConsonant = true;
     ini.max = 2;
+    ini.beginingCv=false
     MakeCV(ini, oto, "a", "b.wav", "さ", 600, 2, aliasCounter);
     expect(oto.HasOtoRecord("a", "b.wav", "さ")).toBe(true);
     MakeCVVC(ini, oto, "a", "b.wav", "さ", 600, 2, 300, 100, "a", aliasCounter);
@@ -933,6 +934,7 @@ describe("MakeRecord", () => {
   test("CV", () => {
     const oto = new Oto();
     const aliasCounter: { [key: string]: number } = {};
+    ini.beginingCv=false
     MakeRecord(
       ini,
       oto,
@@ -1005,7 +1007,7 @@ describe("MakeOto", () => {
       "[VOWEL]\r\n-=あ,い,う,え,お,ん\r\n[CONSONANT]\r\n_=あ,い,う,え,お,ん=0"
     );
     ini.noVCV = false;
-    ini.beginingCv = true;
+    ini.beginingCv = false;
     ini.noHead = false;
     ini.offset = 1000;
     ini.tempo = 100;

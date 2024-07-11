@@ -242,8 +242,8 @@ const consonantString =
 
 export const MakeJpCv = (): MakeOtoTempIni => {
   const ini = ParseIni(consonantString);
-  ini.noVCV = false;
-  ini.beginingCv = true;
+  ini.noVCV = true;
+  ini.beginingCv = false;
   ini.noHead = false;
   const vowel = {};
   const consonant = {};
@@ -251,7 +251,6 @@ export const MakeJpCv = (): MakeOtoTempIni => {
     vowel[cv] = "-";
   });
   ini.vowel = vowel;
-  ini.consonant = consonant;
   return ini;
 };
 

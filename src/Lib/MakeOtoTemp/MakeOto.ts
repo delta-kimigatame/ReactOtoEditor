@@ -366,7 +366,7 @@ export const MakeCV = (
   aliasCounter: { [key: string]: number }
 ) => {
   if (!ini.noHead) {
-    const alias = (ini.beginingCv ? "" : "- ") + ReplaceAlias(ini, cv);
+    const alias = (ini.beginingCv ? "- " : "") + ReplaceAlias(ini, cv);
     UpdateAliasCounter(alias, aliasCounter);
     if (ini.max === 0 || aliasCounter[alias] <= ini.max) {
       oto.SetParams(
