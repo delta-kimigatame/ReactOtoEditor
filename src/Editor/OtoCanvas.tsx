@@ -186,7 +186,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         setAlias(null);
       }
     }
-  }, [props.record]);
+  }, [props.record,props.updateSignal]);
 
   /**
    * キャンバスの大きさが変更となった際の処理
@@ -472,4 +472,6 @@ export interface OtoCanvasProps {
   touchMode: boolean;
   /** overlaplackを使用するか */
   overlapLock: boolean;
+  /** recordの更新通知 */
+  updateSignal: number;
 }

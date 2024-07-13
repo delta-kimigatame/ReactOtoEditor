@@ -155,6 +155,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           setScrollable={setScrollable}
           touchMode={props.touchMode}
           overlapLock={props.overlapLock}
+          updateSignal={props.updateSignal}
         />
       </Box>
       <Box
@@ -205,4 +206,6 @@ export interface CanvasBaseProps {
   setWavProgress: React.Dispatch<React.SetStateAction<boolean>>;
   /** スペクトログラムの読込状態の更新 */
   setSpecProgress: React.Dispatch<React.SetStateAction<boolean>>;
+  /** recordの更新通知 */
+  updateSignal: number;
 }

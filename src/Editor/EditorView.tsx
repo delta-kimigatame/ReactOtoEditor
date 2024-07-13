@@ -107,6 +107,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         specProgress={specProgress}
         setWavProgress={setWavProgress}
         setSpecProgress={setSpecProgress}
+        updateSignal={updateSignal}
       />
       <EditorTable
         windowWidth={props.windowSize[0]}

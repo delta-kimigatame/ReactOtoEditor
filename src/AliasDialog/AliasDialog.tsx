@@ -11,14 +11,31 @@ import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
+import Divider from "@mui/material/Divider";
 
 import { FullWidthTextField } from "../Common/FullWidthTextField";
 import { Log } from "../Lib/Logging";
+import { FullWidthButton } from "../Common/FullWidthButton";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
   /** aliasのtmp */
   const alias_ = props.record === null ? "" : props.record.alias;
+  const [offset_, overlap_, pre_, velocity_, blank_] =
+    props.record === null
+      ? [0, 0, 0, 0, 0]
+      : [
+          props.record.offset,
+          props.record.overlap,
+          props.record.pre,
+          props.record.velocity,
+          props.record.blank,
+        ];
+  const [offset, setOffset] = React.useState<number>(offset_);
+  const [overlap, setOverlap] = React.useState<number>(overlap_);
+  const [preutter, setPreutter] = React.useState<number>(pre_);
+  const [velocity, setVelocity] = React.useState<number>(velocity_);
+  const [blank, setBlank] = React.useState<number>(blank_);
   /** テキストフィールドで編集できるalias */
   const [alias, setAlias] = React.useState<string>(alias_);
   /** スナックバーの表示 */
@@ -30,6 +47,11 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   React.useEffect(() => {
     if (props.record !== null) {
       setAlias(props.record.alias);
+      setOffset(props.record.offset);
+      setOverlap(props.record.overlap);
+      setPreutter(props.record.pre);
+      setVelocity(props.record.velocity);
+      setBlank(props.record.blank);
     }
   }, [props.record]);
 
@@ -43,7 +65,10 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
-      Log.log(`エイリアス変更。変更前:${props.record.alias}、変更後:${alias}`, "AliasDialog");
+      Log.log(
+        `エイリアス変更。変更前:${props.record.alias}、変更後:${alias}`,
+        "AliasDialog"
+      );
       props.oto.SetAlias(
         props.targetDir,
         props.record.filename,
@@ -71,7 +96,10 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
-      Log.log(`エイリアス複製。複製元:${props.record.alias}、複製後:${alias}`, "AliasDialog");
+      Log.log(
+        `エイリアス複製。複製元:${props.record.alias}、複製後:${alias}`,
+        "AliasDialog"
+      );
       props.oto.SetParams(
         props.targetDir,
         props.record.filename,
@@ -165,6 +193,39 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
     setBarOpen(true);
     setBarText(t("aliasDialog.barText.delete"));
   };
+
+  const OnParameterChangeClick = () => {
+    let update = false;
+    if (offset !== props.record.offset) {
+      props.record.offset = offset;
+      update = true;
+      Log.log(`オフセット変更。${props.record.offset}`, "AliasDialog");
+    }
+    if (overlap !== props.record.overlap) {
+      props.record.overlap = overlap;
+      update = true;
+      Log.log(`オーバーラップ変更。${props.record.overlap}`, "AliasDialog");
+    }
+    if (preutter !== props.record.pre) {
+      props.record.pre = preutter;
+      update = true;
+      Log.log(`先行発声変更。${props.record.pre}`, "AliasDialog");
+    }
+    if (velocity !== props.record.velocity) {
+      props.record.velocity = velocity;
+      update = true;
+      Log.log(`子音部変更。${props.record.velocity}`, "AliasDialog");
+    }
+    if (blank !== props.record.blank) {
+      props.record.blank = blank;
+      update = true;
+      Log.log(`右ブランク変更。${props.record.blank}`, "AliasDialog");
+    }
+    if (update) {
+      props.setUpdateSignal(Math.random());
+    }
+    props.setDialogOpen(false);
+  };
   return (
     <>
       <Dialog
@@ -222,6 +283,53 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
               {t("aliasDialog.delete")}
             </Button>
           </Box>
+          <Divider />
+          <FullWidthTextField
+            type="number"
+            value={offset}
+            label={t("oto.offset")}
+            onChange={(e) => {
+              setOffset(e.target.value);
+            }}
+          />
+          <FullWidthTextField
+            type="number"
+            value={overlap}
+            label={t("oto.overlap")}
+            onChange={(e) => {
+              setOverlap(e.target.value);
+            }}
+          />
+          <FullWidthTextField
+            type="number"
+            value={preutter}
+            label={t("oto.preutter")}
+            onChange={(e) => {
+              setPreutter(e.target.value);
+            }}
+          />
+          <FullWidthTextField
+            type="number"
+            value={velocity}
+            label={t("oto.velocity")}
+            onChange={(e) => {
+              setVelocity(e.target.value);
+            }}
+          />
+          <FullWidthTextField
+            type="number"
+            value={blank}
+            label={t("oto.blank")}
+            onChange={(e) => {
+              setBlank(e.target.value);
+            }}
+          />
+          <FullWidthButton
+            onClick={OnParameterChangeClick}
+            disabled={props.record === null}
+          >
+            {t("aliasDialog.change")}
+          </FullWidthButton>
         </DialogContent>
       </Dialog>
       <Snackbar
