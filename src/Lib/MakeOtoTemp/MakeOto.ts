@@ -1,6 +1,8 @@
 import { Oto } from "utauoto";
 import JSZip from "jszip";
 import { MakeOtoTempIni } from "./Interface";
+import { Wave } from "utauwav";
+import { AnalyzeParamByPower } from "./AnalyzeWav";
 
 export const MakeOtoSingle = (
   readZip: { [key: string]: JSZip.JSZipObject },
@@ -12,7 +14,7 @@ export const MakeOtoSingle = (
   const oto = new Oto();
   const files = Object.keys(readZip).slice();
   files.sort();
-  files.forEach((f) => {
+  files.forEach(async (f) => {
     if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
       /** ファイル名。 \
        * zipファイル名から、フォルダ名、冒頭連番、.wavを削除したもの
@@ -23,6 +25,21 @@ export const MakeOtoSingle = (
        */
       const alias: string = filename[0] === "_" ? filename.slice(1) : filename;
       if (analyze) {
+        const buf: ArrayBuffer = await readZip[f].async("arraybuffer");
+        const wav = new Wave(buf);
+        const [offsetPoint, preutterPoint, blankPoint] =
+          AnalyzeParamByPower(wav);
+        const preutter = preutterPoint - offsetPoint;
+        oto.SetParams(
+          targetDir,
+          f.replace(targetDir + "/", ""),
+          alias,
+          offsetPoint,
+          preutter / 3,
+          preutter,
+          preutter * 1.5,
+          offsetPoint - blankPoint
+        );
       } else {
         /** 解析がオフの場合、全パラメータ0で生成する。 */
         oto.SetParams(

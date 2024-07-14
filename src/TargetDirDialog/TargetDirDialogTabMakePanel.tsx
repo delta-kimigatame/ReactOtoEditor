@@ -275,7 +275,6 @@ export const TargetDirDialogTabMakePanel: React.FC<
         checked={analyze}
         setChecked={setAnalyze}
         label={t("targetDirDialog.makePanel.analyze")}
-        disabled={true}
       />
       <br />
       <CommonCheckBox
