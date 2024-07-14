@@ -272,18 +272,20 @@ export const TargetDirDialogTabMakePanel: React.FC<
         </Box>
       )}
       <CommonCheckBox
+        disabled={mode === null}
         checked={analyze}
         setChecked={setAnalyze}
         label={t("targetDirDialog.makePanel.analyze")}
       />
       <br />
       <CommonCheckBox
+        disabled={mode === null}
         checked={skipBeginingNumber}
         setChecked={setSkipBeginingNumber}
         label={t("targetDirDialog.makePanel.settings.skipBeginingNumber")}
       />
       <br />
-      <FullWidthButton onClick={OnMakeClick}>
+      <FullWidthButton onClick={OnMakeClick} disabled={mode === null}>
         {t("targetDirDialog.makePanel.make")}
       </FullWidthButton>
     </TabPanel>
