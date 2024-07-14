@@ -76,7 +76,7 @@
     },
     "makePanel": {
       "title": "generate mode",
-      "single": "filename = alias(developping)",
+      "single": "filename = alias",
       "multi": "Multiple aliases from one wav file.",
       "analyze": "analyze wav(developping)",
       "loadini": "Load Setting",

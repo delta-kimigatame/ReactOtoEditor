@@ -1,5 +1,45 @@
 import { Oto } from "utauoto";
+import JSZip from "jszip";
 import { MakeOtoTempIni } from "./Interface";
+
+export const MakeOtoSingle = (
+  readZip: { [key: string]: JSZip.JSZipObject },
+  targetDir: string,
+  skipBiginingNumber: boolean = true,
+  analyze: boolean
+): Oto => {
+  /** 返す原音設定値 */
+  const oto = new Oto();
+  const files = Object.keys(readZip).slice();
+  files.sort();
+  files.forEach((f) => {
+    if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
+      /** ファイル名。 \
+       * zipファイル名から、フォルダ名、冒頭連番、.wavを削除したもの
+       */
+      const filename: string = GetFilename(f, targetDir, skipBiginingNumber);
+      /**  エイリアス名 \
+       * `filename`から冒頭の_を取り除いたもの
+       */
+      const alias: string = filename[0] === "_" ? filename.slice(1) : filename;
+      if (analyze) {
+      } else {
+        /** 解析がオフの場合、全パラメータ0で生成する。 */
+        oto.SetParams(
+          targetDir,
+          f.replace(targetDir + "/", ""),
+          alias,
+          0,
+          0,
+          0,
+          0,
+          0
+        );
+      }
+    }
+  });
+  return oto;
+};
 
 export const MakeOto = (
   ini: MakeOtoTempIni,

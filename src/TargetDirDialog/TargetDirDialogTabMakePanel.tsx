@@ -25,7 +25,7 @@ import { MakePanelSelectPreset } from "./MakePanel/MakePanelSelectPreset";
 
 import { Log } from "../Lib/Logging";
 import { MakeOtoTempIni } from "../Lib/MakeOtoTemp/Interface";
-import { MakeOto } from "../Lib/MakeOtoTemp/MakeOto";
+import { MakeOto, MakeOtoSingle } from "../Lib/MakeOtoTemp/MakeOto";
 
 /**
  * oto.iniを生成する場合のパネル
@@ -124,8 +124,16 @@ export const TargetDirDialogTabMakePanel: React.FC<
   }, [ini]);
 
   const OnMakeClick = () => {
-    Log.log(`oto.iniを生成します。mode:${mode}`,"TargetDirDialogTabMakePanel")
+    Log.log(`oto.iniを生成します。mode:${mode}`, "TargetDirDialogTabMakePanel");
     if (mode === "single") {
+      const oto = MakeOtoSingle(
+        props.readZip,
+        props.targetDir,
+        skipBeginingNumber,
+        analyze
+      );
+      Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
+      props.setOto(oto);
     } else {
       ini.tempo = tempo;
       ini.offset = offset;
@@ -157,14 +165,14 @@ export const TargetDirDialogTabMakePanel: React.FC<
       });
       ini.consonant = consonant_;
       ini.replace = replace;
-      Log.log(`ini:${JSON.stringify(ini)}`,"TargetDirDialogTabMakePanel")
+      Log.log(`ini:${JSON.stringify(ini)}`, "TargetDirDialogTabMakePanel");
       const oto = MakeOto(
         ini,
         Object.keys(props.readZip),
         props.targetDir,
         skipBeginingNumber
       );
-      Log.log(`oto.iniを生成しました。`,"TargetDirDialogTabMakePanel")
+      Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       props.setOto(oto);
     }
   };
@@ -177,7 +185,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
           value={mode}
           onChange={OnModeChange}
         >
-          <MenuItem value={"single"} disabled>
+          <MenuItem value={"single"}>
             {t("targetDirDialog.makePanel.single")}
           </MenuItem>
           <MenuItem value={"multi"}>
