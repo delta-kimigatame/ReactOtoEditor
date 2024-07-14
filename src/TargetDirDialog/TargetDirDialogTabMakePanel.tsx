@@ -271,13 +271,16 @@ export const TargetDirDialogTabMakePanel: React.FC<
           </Accordion>
         </Box>
       )}
-      <CommonCheckBox
-        disabled={mode === null}
-        checked={analyze}
-        setChecked={setAnalyze}
-        label={t("targetDirDialog.makePanel.analyze")}
-      />
-      <br />
+      {mode === "single" && (
+        <>
+          <CommonCheckBox
+            checked={analyze}
+            setChecked={setAnalyze}
+            label={t("targetDirDialog.makePanel.analyze")}
+          />
+          <br />
+        </>
+      )}
       <CommonCheckBox
         disabled={mode === null}
         checked={skipBeginingNumber}

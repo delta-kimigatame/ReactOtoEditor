@@ -78,7 +78,7 @@
       "title": "生成方法",
       "single": "単独発声(ファイル名 = エイリアス)",
       "multi": "連続発声",
-      "analyze": "wavを解析して補正(開発中",
+      "analyze": "wavを解析して補正",
       "loadini": "設定読込",
       "CVPreset": "日本語単独音",
       "VCVPreset": "日本語連続音",

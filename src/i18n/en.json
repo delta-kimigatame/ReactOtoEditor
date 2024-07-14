@@ -78,7 +78,7 @@
       "title": "generate mode",
       "single": "filename = alias",
       "multi": "Multiple aliases from one wav file.",
-      "analyze": "analyze wav(developping)",
+      "analyze": "analyze wav",
       "loadini": "Load Setting",
       "CVPreset": "JP-CV",
       "VCVPreset": "JP-VCV",
