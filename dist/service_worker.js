@@ -1,4 +1,4 @@
-const cacheName = "LABERU_20240711";
+const cacheName = "LABERU_20240714";
 const urlsToCache = [
   "./",
   "./index.html",
