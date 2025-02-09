@@ -31,6 +31,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2025/02/09 bug fixed:filename normalize of ヴ",
       "2024/07/15 Speeding up internal processing",
       "2024/07/14 Add:Make Oto Template for filename = alias.",
       "2024/07/12 Each parameter can now be changed on the alias editing view.",
