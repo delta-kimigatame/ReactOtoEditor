@@ -8,6 +8,12 @@ import { backgroundColorPallet, specColor } from "../settings/colors";
 import { Color, GetColor, GetColorInterp } from "../Lib/Color";
 
 import { Log } from "../Lib/Logging";
+
+/** キャンバスの周波数方向の分解能 */
+const rh = Math.ceil(
+  fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
+);
+
 /**
  * スペクトラム表示
  * @param props {@link SpecCanvasProps}
@@ -37,6 +43,20 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     setFillColor(specColor[colorTheme][props.mode]);
   }, [props.mode]);
 
+  /** fft 1パラメータ当たりの縦幅 */
+  const h = React.useMemo(() => props.canvasHeight / rh, [props.canvasHeight]);
+
+  /** fft1パラメータ当たりの横幅 */
+  const w = React.useMemo(
+    () => (props.canvasWidth / props.wav.data.length) * props.frameWidth,
+    [props.canvasWidth, props.wav, props.frameWidth]
+  );
+
+  const xOffset = React.useMemo(
+    () => fftSetting.fftsize / props.frameWidth,
+    [props.frameWidth]
+  );
+
   /**
    * スペクトラムの描画処理
    * @param ctx canvasのコンテクスト
@@ -49,54 +69,46 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     spec: Array<Array<number>>
   ): Promise<void> => {
     Log.log(`canvas初期化`, "SpecCanvas");
+    const windowSize = fftSetting.windowSize;
+    const canvasWidth = props.canvasWidth;
+    const canvasHeight = props.canvasHeight;
+    const specMax = props.specMax;
+    const frameWidth=props.frameWidth
     /**キャンバスの初期化 */
-    ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     /** 背景色の描画 */
     ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
     Log.log(`スペクトログラム描画`, "SpecCanvas");
-    /** キャンバスの周波数方向の分解能 */
-    const rh = Math.ceil(
-      fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
-    );
-    /** fft 1パラメータ当たりの縦幅 */
-    const h = props.canvasHeight / rh;
-    /** fft1パラメータ当たりの横幅 */
-    const w = (props.canvasWidth / wav.data.length) * props.frameWidth;
     /** 描画のメイン処理 時間軸方向のループ */
-    for (let i = 0; i < wav.data.length / props.frameWidth; i++) {
+    for (let i = 0; i < wav.data.length / frameWidth; i++) {
       /** spectrum描画位置直前のインデックス */
       const timeIndex1 = Math.min(
-        Math.floor((i * props.frameWidth) / fftSetting.windowSize),
+        Math.floor((i * frameWidth) / windowSize),
         spec.length - 1
       );
       /** spectrum描画位置直後のインデックス */
       const timeIndex2 = Math.min(
-        Math.ceil((i * props.frameWidth) / fftSetting.windowSize),
+        Math.ceil((i * frameWidth) / windowSize),
         spec.length - 1
       );
       /** spectrum描画位置直前からの経過フレーム数 */
-      const steps = (i * props.frameWidth) % fftSetting.windowSize;
+      const steps = (i * frameWidth) % windowSize;
       /** 周波数方向のループ */
       for (let j = 0; j < rh; j++) {
         /** 描画座標における強さ。timeIndex1とtimeIndex2を使って線形補間 */
         const amp =
           (Math.max(spec[timeIndex1][j], 0) ** 2 *
-            (fftSetting.windowSize - steps)) /
-            fftSetting.windowSize +
+            (windowSize - steps)) /
+            windowSize +
           (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) /
-            fftSetting.windowSize;
+            windowSize;
         /** 描画座標における強さを0 ～ 1で正規化 */
-        const colorRatio = amp / props.specMax;
+        const colorRatio = amp / specMax;
         /** 描画色の設定 */
         ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
         /** 描画 */
-        ctx.fillRect(
-          i * w + fftSetting.fftsize / props.frameWidth,
-          props.canvasHeight - h * (j + 1),
-          w,
-          h
-        );
+        ctx.fillRect(i * w + xOffset, canvasHeight - h * (j + 1), w, h);
       }
     }
     props.setSpecProgress(false);
