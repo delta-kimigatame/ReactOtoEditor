@@ -43,6 +43,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
 
   const pathString=React.useMemo(()=>{
     Log.log(`wav描画内容の計算`, "WavCanvas");
+    if(props.wav===null) return ""
     const canvasWidth = props.canvasWidth;
     const canvasHeight = props.canvasHeight;
     const maxValue = 2 ** (props.wav.bitDepth - 1) - 1;

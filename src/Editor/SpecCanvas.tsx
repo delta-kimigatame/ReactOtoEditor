@@ -48,7 +48,9 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
 
   /** fft1パラメータ当たりの横幅 */
   const w = React.useMemo(
-    () => (props.canvasWidth / props.wav.data.length) * props.frameWidth,
+    () => {
+      if(props.wav===null)return 0
+      return(props.canvasWidth / props.wav.data.length) * props.frameWidth},
     [props.canvasWidth, props.wav, props.frameWidth]
   );
 
