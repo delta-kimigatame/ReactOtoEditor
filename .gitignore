@@ -1,3 +1,7 @@
 /node_modules
 /imgtmp
+/dist
 memo
+/hosts
+ansible.cfg
+deploy.yml
