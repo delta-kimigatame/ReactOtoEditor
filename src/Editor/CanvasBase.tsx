@@ -27,6 +27,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
       Log.log(`fft`, "CanvasBase");
       const wa = new WaveAnalyse();
       const s = wa.Spectrogram(props.wav.data);
+      Log.log(`fftend`, "CanvasBase");
       return s;
     }
   }, [props.wav]);
