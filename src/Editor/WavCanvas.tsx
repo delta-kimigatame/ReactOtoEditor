@@ -18,8 +18,14 @@ import { Log } from "../Lib/Logging";
  * @returns 波形を表示するキャンバス
  */
 export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
+  /** canvasへのref */
+  const canvas = React.useRef(null);
   /** 色設定 */
   const [colorTheme, setColorTheme] = React.useState<string>(props.color);
+  /** 背景色 */
+  const [backgroundColor, setBackgroundColor] = React.useState<string>(
+    GetColor(backgroundColorPallet[props.mode])
+  );
   /** 区分線の色 */
   const [lineColor, setLineColor] = React.useState<string>(
     GetColor(lineColorPallet[props.mode])
@@ -37,56 +43,99 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
 
   /** ライトモード・ダークモードが変更された際の処理 */
   React.useEffect(() => {
+    setBackgroundColor(GetColor(backgroundColorPallet[props.mode]));
     setLineColor(GetColor(lineColorPallet[props.mode]));
     setWavColor(GetColor(wavColorPallet[colorTheme][props.mode]));
   }, [props.mode]);
 
-  const pathString=React.useMemo(()=>{
-    Log.log(`wav描画内容の計算`, "WavCanvas");
-    if(props.wav===null) return ""
-    const canvasWidth = props.canvasWidth;
-    const canvasHeight = props.canvasHeight;
-    const maxValue = 2 ** (props.wav.bitDepth - 1) - 1;
-    const centerY = canvasHeight / 2;
-    const xScale = canvasWidth / props.wav.data.length;
+  /**
+   * canvasの初期化。0線の描画
+   * @param ctx canvasのコンテクスト
+   */
+  const RenderBase = (ctx: CanvasRenderingContext2D) => {
+    Log.log(`canvas初期化`, "WavCanvas");
+    ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
+    ctx.fillStyle = backgroundColor;
+    ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, props.canvasHeight / 2);
+    ctx.lineTo(props.canvasWidth, props.canvasHeight / 2);
+    ctx.stroke();
+  };
 
-    let pathString = `M 0,${centerY}`;
-    for (let i = 0; i < props.wav.data.length; i++) {
-      const y = centerY + (-props.wav.data[i] / maxValue) * (canvasHeight / 2);
-      const x = i * xScale;
-      pathString += ` L ${x},${y}`;
+  /** 線の色が変わった際にキャンバスを初期化する。 */
+  React.useEffect(() => {
+    const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+    if (ctx) {
+      RenderBase(ctx);
     }
-    return pathString
+  }, [lineColor]);
 
-  },[props.wav,props.canvasWidth,props.canvasHeight])
+  /**
+   * wavの描画処理
+   * @param ctx canvasのコンテクスト
+   * @param wav 描画するwav
+   */
+  const RenderWave = async (
+    ctx: CanvasRenderingContext2D,
+    wav: Wave
+  ): Promise<void> => {
+    Log.log(`wav描画`, "WavCanvas");
+    RenderBase(ctx);
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 1;
+    ctx.moveTo(0, props.canvasHeight / 2);
+    ctx.lineTo(props.canvasWidth, props.canvasHeight / 2);
+    ctx.stroke();
+    ctx.strokeStyle = wavColor;
+    ctx.lineWidth = 1;
+    const maxValue = 2 ** (wav.bitDepth - 1) - 1;
+    ctx.beginPath();
+    ctx.moveTo(0, props.canvasHeight / 2);
+    for (let i = 0; i < wav.data.length; i++) {
+      ctx.lineTo(
+        (i / wav.data.length) * props.canvasWidth,
+        ((-wav.data[i] / maxValue) * props.canvasHeight) / 2 +
+          props.canvasHeight / 2
+      );
+    }
+    ctx.stroke();
+    props.setWavProgress(false);
+    Log.log(`wav描画完了`, "WavCanvas");
+  };
+
+  /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */
+  React.useEffect(() => {
+    OnChangeWav();
+  }, [props.wav, wavColor, props.canvasWidth, props.canvasHeight]);
+
+  /**
+   * 波形描画を非同期で実施する
+   */
+  const OnChangeWav = async () => {
+    const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+    if (ctx && props.wav !== null) {
+      props.setWavProgress(true);
+      RenderWave(ctx, props.wav);
+    } else if (ctx) {
+      RenderBase(ctx);
+    }
+  };
 
   return (
     <>
-      <svg
+      <canvas
+        id="wavCanvas"
         width={props.canvasWidth}
         height={props.canvasHeight}
+        ref={canvas}
         style={{
           userSelect: "none",
           WebkitUserSelect: "none",
-          MozUserSelect: "none",
-          pointerEvents: "none",
-          display: "block",
-        }}
-      >
-        <line
-          x1={0}
-          x2={props.canvasWidth}
-          y1={props.canvasHeight / 2}
-          y2={props.canvasHeight / 2}
-          stroke={lineColor}
-          strokeWidth={1}
-        />
-        <path
-          d={pathString}
-          stroke={wavColor}
-          strokeWidth={1}
-          />
-      </svg>
+          MozUserSelect: "none",}}
+      />
     </>
   );
 };
