@@ -20,19 +20,50 @@ import { Log } from "../Lib/Logging";
  */
 export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   /** wavのスペクトル */
-  const [spec, setSpec] = React.useState<Array<Array<number>> | null>(null);
-  /** 横幅 */
-  const [width, setWidth] = React.useState<number>(props.canvasWidth);
+  const spec = React.useMemo(() => {
+    if (props.wav === null) {
+      return null;
+    } else {
+      Log.log(`fft`, "CanvasBase");
+      const wa = new WaveAnalyse();
+      const s = wa.Spectrogram(props.wav.data);
+      return s;
+    }
+  }, [props.wav]);
   /** 縦幅 */
   const [height, setHeight] = React.useState<number>(props.canvasHeight);
   /** スペクトルの最大値 */
-  const [specMax, setSpecMax] = React.useState<number>(0);
+  const specMax = React.useMemo(() => {
+    if (spec === null) return 0;
+    let sMax = 0;
+    for (let i = 0; i < spec.length; i++) {
+      for (let j = 0; j < spec[0].length; j++) {
+        if (sMax < Math.max(spec[i][j], 0) ** 2) {
+          sMax = Math.max(spec[i][j], 0) ** 2;
+        }
+      }
+    }
+    return sMax;
+  }, [spec]);
   /** キャンバスのスクロール可否 */
   const [scrollable, setScrollable] = React.useState<boolean>(false);
   /** wav1フレーム当たりの横幅 */
-  const [frameWidth, setFrameWidth] = React.useState<number>(
-    (fftSetting.sampleRate * props.pixelPerMsec) / 1000
+  const frameWidth = React.useMemo(
+    () => (fftSetting.sampleRate * props.pixelPerMsec) / 1000,
+    [props.pixelPerMsec]
   );
+  /** 横幅 */
+  const width = React.useMemo(() => {
+    if (props.wav !== null) {
+      Log.log(
+        `キャンバスの横幅変更:${Math.ceil(props.wav.data.length / frameWidth)}`,
+        "CanvasBase"
+      );
+      return Math.ceil(props.wav.data.length / frameWidth);
+    } else {
+      return 0;
+    }
+  }, [props.wav, frameWidth]);
   /** キャンバスを格納するBoxへのref */
   const boxRef = React.useRef(null);
   /** スクロール用のBoxへのref */
@@ -43,57 +74,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
    */
   React.useEffect(() => {
     setHeight(props.canvasHeight);
-    if (props.wav === null) {
-      setWidth(props.canvasWidth);
-    }
   }, [props.canvasHeight, props.canvasWidth]);
-
-  /**
-   * wavが変更されたとき、fftをしてスペクトラムを求める。
-   */
-  React.useEffect(() => {
-    if (props.wav === null) {
-      setSpec(null);
-      setSpecMax(0);
-    } else {
-      Log.log(`fft`, "CanvasBase");
-      const wa = new WaveAnalyse();
-      const s = wa.Spectrogram(props.wav.data);
-      setSpec(s);
-      setWidth(Math.ceil(props.wav.data.length / frameWidth));
-      let sMax = 0;
-      for (let i = 0; i < s.length; i++) {
-        for (let j = 0; j < s[0].length; j++) {
-          if (sMax < Math.max(s[i][j], 0) ** 2) {
-            sMax = Math.max(s[i][j], 0) ** 2;
-          }
-        }
-      }
-      setSpecMax(sMax);
-      Log.log(`fft完了。sMax:${sMax}`, "CanvasBase");
-    }
-  }, [props.wav]);
-
-  /**
-   * 拡大縮小操作をされたとき、1pixelあたりの横幅を変更する。
-   */
-  React.useEffect(() => {
-    setFrameWidth((fftSetting.sampleRate * props.pixelPerMsec) / 1000);
-    Log.log(`倍率変更:${props.pixelPerMsec}`, "CanvasBase");
-  }, [props.pixelPerMsec]);
-
-  /**
-   * 1pixelあたりの横幅が変わった時、canvasの横幅を変更する。
-   */
-  React.useEffect(() => {
-    if (props.wav !== null) {
-      setWidth(Math.ceil(props.wav.data.length / frameWidth));
-      Log.log(
-        `キャンバスの横幅変更:${Math.ceil(props.wav.data.length / frameWidth)}`,
-        "CanvasBase"
-      );
-    }
-  }, [frameWidth]);
 
   /**
    * canvasを含むBoxを指定の位置までスクロールする
