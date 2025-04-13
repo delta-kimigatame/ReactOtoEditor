@@ -5,7 +5,7 @@ import { PaletteMode } from "@mui/material";
 
 import { fftSetting } from "../settings/setting";
 import { backgroundColorPallet, specColor } from "../settings/colors";
-import { Color, GetColor, GetColorInterp } from "../Lib/Color";
+import { Color, GetColor, GetColorInterp, GetColorInterpParam } from "../Lib/Color";
 
 import { Log } from "../Lib/Logging";
 
@@ -76,43 +76,65 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     const canvasHeight = props.canvasHeight;
     const specMax = props.specMax;
     const frameWidth=props.frameWidth
-    /**キャンバスの初期化 */
-    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-    /** 背景色の描画 */
-    ctx.fillStyle = backgroundColor;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+    
+    // ImageDataを作成
+    const imageData = ctx.createImageData(canvasWidth, canvasHeight);
+    const data = imageData.data; // Uint8ClampedArray
+
+    /** 副作用との関係を整理する必要があるが暫定的に直接処理 */
+    const bg=backgroundColorPallet[props.mode]
+    for (let i = 0; i < data.length; i += 4) {
+      data[i] = bg.r;
+      data[i + 1] = bg.g;
+      data[i + 2] = bg.b;
+      data[i + 3] = 255;
+    }
     Log.log(`スペクトログラム描画`, "SpecCanvas");
-    /** 描画のメイン処理 時間軸方向のループ */
-    for (let i = 0; i < wav.data.length / frameWidth; i++) {
-      /** spectrum描画位置直前のインデックス */
+    // メインの描画処理（時間軸方向のループ）
+    const numBlocks = Math.floor(wav.data.length / frameWidth);
+    for (let i = 0; i < numBlocks; i++) {
+      // timeIndex の計算
       const timeIndex1 = Math.min(
         Math.floor((i * frameWidth) / windowSize),
         spec.length - 1
       );
-      /** spectrum描画位置直後のインデックス */
       const timeIndex2 = Math.min(
         Math.ceil((i * frameWidth) / windowSize),
         spec.length - 1
       );
-      /** spectrum描画位置直前からの経過フレーム数 */
+      // 現在のブロック開始位置からの余剰フレーム数
       const steps = (i * frameWidth) % windowSize;
-      /** 周波数方向のループ */
+      // 周波数方向のループ
       for (let j = 0; j < rh; j++) {
-        /** 描画座標における強さ。timeIndex1とtimeIndex2を使って線形補間 */
+        // 線形補間による振幅の計算（各ブロックの強度）
         const amp =
-          (Math.max(spec[timeIndex1][j], 0) ** 2 *
-            (windowSize - steps)) /
+          (Math.max(spec[timeIndex1][j], 0) ** 2 * (windowSize - steps)) /
             windowSize +
-          (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) /
-            windowSize;
-        /** 描画座標における強さを0 ～ 1で正規化 */
+          (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) / windowSize;
+        // 正規化された強度
         const colorRatio = amp / specMax;
-        /** 描画色の設定 */
-        ctx.fillStyle = GetColorInterp(colorRatio, fillColor);
-        /** 描画 */
-        ctx.fillRect(i * w + xOffset, canvasHeight - h * (j + 1), w, h);
+        // 各セルの描画色を導出
+        const col = GetColorInterpParam(colorRatio, fillColor);
+  
+        // ブロックの描画領域計算
+        const xStart = Math.floor(i * w + xOffset);
+        const xEnd = Math.floor(i * w + xOffset + w);
+        const yStart = Math.floor(canvasHeight - h * (j + 1));
+        const yEnd = Math.floor(canvasHeight - h * j);
+  
+        // このセルの領域内の各ピクセルに対して色を設定
+        for (let y = yStart; y < yEnd; y++) {
+          for (let x = xStart; x < xEnd; x++) {
+            const index = (y * canvasWidth + x) * 4;
+            data[index] = col.r;
+            data[index + 1] = col.g;
+            data[index + 2] = col.b;
+            data[index + 3] = 255;
+          }
+        }
       }
     }
+    ctx.putImageData(imageData, 0, 0);//ちゃんとimageData.dataの値はさまざまになっている
     props.setSpecProgress(false);
     Log.log(`スペクトログラム描画完了`, "SpecCanvas");
   };
