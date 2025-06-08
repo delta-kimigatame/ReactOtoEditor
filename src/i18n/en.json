@@ -31,6 +31,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2025/04/20 Faster processing",
       "2025/04/13 Faster processing",
       "2025/02/16 Fixed a bug where the first WAV file was not loaded correctly when recording with a specific reclist.",
       "2025/02/09 bug fixed:filename normalize of ヴ",
