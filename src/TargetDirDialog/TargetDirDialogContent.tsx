@@ -50,12 +50,13 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
    * @param encoding_ 文字コード
    */
   const LoadOto = (encoding_: string = "SJIS") => {
-    if (Object.keys(props.readZip).includes(props.targetDir + "/oto.ini")) {
+    const otoPath=props.targetDir===""?"oto.ini":props.targetDir + "/oto.ini"
+    if (Object.keys(props.readZip).includes(otoPath)) {
       Log.log(
-        `${props.targetDir + "/oto.ini"}読込。文字コード:${encoding_}`,
+        `${otoPath}読込。文字コード:${encoding_}`,
         "TargetDirDialogContent"
       );
-      props.readZip[props.targetDir + "/oto.ini"]
+      props.readZip[otoPath]
         .async("arraybuffer")
         .then((result) => {
           const oto = new Oto();
@@ -67,7 +68,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
             )
             .then(() => {
               Log.log(
-                `${props.targetDir + "/oto.ini"}読込完了`,
+                `${otoPath}読込完了`,
                 "TargetDirDialogContent"
               );
               setOto(oto);
