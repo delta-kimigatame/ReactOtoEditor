@@ -16,6 +16,7 @@ import { TargetDirMenu } from "./HeaderMenuItem/TargetDirMenu";
 import { DownloadOtoMenu } from "./HeaderMenuItem/DownloadOtoMenu";
 import { DownloadZipMenu } from "./HeaderMenuItem/DownloadZipMenu";
 import { ShowLogMenu } from "./HeaderMenuItem/ShowLogMenu";
+import { HeaderMenuClearCache } from "./HeaderMenuItem/HeaderMenuClearCache";
 
 /**
  * ヘッダメニュー
@@ -78,6 +79,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           setMode={props.setMode}
           setMenuAnchor={props.setMenuAnchor}
         />
+        <Divider />
+        <HeaderMenuClearCache setMenuAnchor={props.setMenuAnchor}/>
         <Divider />
         <ShowLogMenu setMenuAnchor={props.setMenuAnchor} />
       </Menu>

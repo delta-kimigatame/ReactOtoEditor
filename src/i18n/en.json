@@ -12,6 +12,7 @@
     "changeColor": "Color setting",
     "changeLanguage": "Language setting",
     "showLog": "Show Log",
+    "clearAppCache": "Clear this app caches",
     "logAttention": "Logs are not sent automatically, so please send them to the developer if necessary."
   },
   "downloadZipDialog": {
@@ -31,6 +32,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2025/06/08 Fixed a bug:Cannot read wav file if it has metadata",
       "2025/04/20 Faster processing",
       "2025/04/13 Faster processing",
       "2025/02/16 Fixed a bug where the first WAV file was not loaded correctly when recording with a specific reclist.",
