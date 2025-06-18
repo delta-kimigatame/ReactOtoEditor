@@ -130,8 +130,9 @@ export const App: React.FC = () => {
       setWav(null);
       Log.log("wavを初期化", "App");
     } else if (readZip !== null) {
-      if (Object.keys(readZip).includes(targetDir + "/" + wavFileName)) {
-        readZip[targetDir + "/" + wavFileName]
+      const wPath=targetDir===""?wavFileName:targetDir + "/" + wavFileName
+      if (Object.keys(readZip).includes(wPath)) {
+        readZip[wPath]
           .async("arraybuffer")
           .then((result) => {
             const w = new Wave(result);
@@ -141,11 +142,11 @@ export const App: React.FC = () => {
             w.RemoveDCOffset();
             w.VolumeNormalize();
             setWav(w);
-            Log.log(`wav読込完了。${targetDir + "/" + wavFileName}`, "App");
+            Log.log(`wav読込完了。${wPath}`, "App");
           });
       } else {
         Log.log(
-          `zip内にwavが見つかりませんでした。${targetDir + "/" + wavFileName}`,
+          `zip内にwavが見つかりませんでした。${wPath}`,
           "App"
         );
         setWav(null);
