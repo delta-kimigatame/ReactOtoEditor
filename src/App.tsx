@@ -20,6 +20,7 @@ import { EditorView } from "./Editor/EditorView";
 
 import { Log } from "./Lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "./Lib/StorageOto";
+declare const __BUILD_TIMESTAMP__: string;
 
 /**
  * Reactのエンドポイント
@@ -89,6 +90,7 @@ export const App: React.FC = () => {
     };
     window.addEventListener("orientationchange", updateSize); 
     updateSize();
+    Log.log(`build: ${__BUILD_TIMESTAMP__}`, "App");
 
     return () => window.removeEventListener("resize", updateSize);
   }, []);
