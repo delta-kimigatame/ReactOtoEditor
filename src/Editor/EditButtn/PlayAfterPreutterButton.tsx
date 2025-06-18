@@ -12,7 +12,7 @@ import { Log } from "../../Lib/Logging";
 
 /**
  * 先行発声から右ブランクまでを再生するボタン
- * @param props 
+ * @param props
  * @returns 先行発声から右ブランクまでを再生するボタン
  */
 export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
@@ -20,7 +20,7 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
 
   /**
    * 先行発声から右ブランクまでを再生する処理
-   * @returns 
+   * @returns
    */
   const OnPlayAfterPreutter = () => {
     const audioContext = new AudioContext();
@@ -53,9 +53,10 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
     audioSource.buffer = audioBuffer;
     audioSource.connect(audioContext.destination);
     Log.log(`先行発声以降再生`, "PlayAfterPreutterButton");
+    Log.gtag("playAfter");
     audioSource.start();
   };
-  
+
   return (
     <>
       <EditorButton
@@ -85,4 +86,4 @@ interface Props {
   size: number;
   /** アイコンのサイズ */
   iconSize: number;
-};
+}

@@ -17,6 +17,7 @@ export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
   const { t } = useTranslation();
   const OnClick = () => {
     Log.log(`oto.iniのダウンロード`, "DownloadOtoMenu");
+    Log.gtag("downloadOto");
     const f = props.oto.OutputOto();
     let url = "";
     f.forEach((file) => {

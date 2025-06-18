@@ -37,6 +37,7 @@ export const TargetDirDialogButtonArea: React.FC<
    */
   const OnSubmitClick = () => {
     Log.log(`oto.ini確定`, "TargetDirDialogButtonArea");
+    Log.gtag("loadoto")
     props.setOto(props.oto);
     props.setDialogOpen(false);
   };

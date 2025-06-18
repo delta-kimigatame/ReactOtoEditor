@@ -60,9 +60,15 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   /** touchmodeを使用するか */
   const [touchMode, setTouchMode] = React.useState<boolean>(touchMode_);
   /** toutchModeが更新された際、cookieに保存する。 */
-  React.useMemo(() => setCookie("touchMode", touchMode), [touchMode]);
+  React.useMemo(() => {
+    setCookie("touchMode", touchMode);
+    Log.gtag("toggleMode");
+  }, [touchMode]);
   /** overlapLockが更新された際、cookieに保存する。 */
-  React.useMemo(() => setCookie("overlapLock", overlapLock), [overlapLock]);
+  React.useMemo(() => {
+    setCookie("overlapLock", overlapLock);
+    Log.gtag("toggleOverlap");
+  }, [overlapLock]);
 
   /** 画面サイズが変更されたとき、canvasの大きさを設定する。 */
   React.useEffect(() => {

@@ -56,10 +56,14 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
     setReadFile(e.target.files[0]);
   };
   const LoadOto = (encoding_: string = "SJIS") => {
-    Log.log(`oto.ini"読込。文字コード:${encoding_}`, "TargetDirDialogTabPanelTemplate");
+    Log.log(
+      `oto.ini"読込。文字コード:${encoding_}`,
+      "TargetDirDialogTabPanelTemplate"
+    );
     const oto_ = new Oto();
     oto_.InputOtoAsync(props.targetDir, readFile, encoding_).then(() => {
       Log.log(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
+      Log.gtag("loadTemplateOto");
       setOto(oto_);
       setProcessing(false);
     });

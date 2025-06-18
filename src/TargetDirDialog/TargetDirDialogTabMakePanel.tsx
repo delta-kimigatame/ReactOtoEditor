@@ -132,6 +132,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
         skipBeginingNumber,
         analyze
       );
+      Log.gtag("makeSingleOto");
       Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       props.setOto(oto);
     } else {
@@ -172,6 +173,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
         props.targetDir,
         skipBeginingNumber
       );
+      Log.gtag("makeOto");
       Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       props.setOto(oto);
     }

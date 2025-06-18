@@ -69,7 +69,10 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
-        Log.log(`編集中データの保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
+        Log.log(
+          `編集中データの保存:${td + "/oto.ini"}`,
+          "DownloadZipDialogTitle"
+        );
         newZip.file(td + "/oto.ini", f);
       } else if (props.targetList[i] === 1) {
         /** 保存されたデータ */
@@ -97,6 +100,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     a.href = url;
     a.download = props.zipFileName;
     Log.log(`zipダウンロード`, "DownloadZipDialogTitle");
+    Log.gtag("downloadZip");
     a.click();
     setProgress(false);
     props.setDialogOpen(false);

@@ -44,6 +44,7 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
     audioSource.buffer = audioBuffer;
     audioSource.connect(audioContext.destination);
     Log.log(`先行発声まで再生`, "PlayBeforePreutterButton");
+        Log.gtag("playBefore");
     audioSource.start();
   };
   

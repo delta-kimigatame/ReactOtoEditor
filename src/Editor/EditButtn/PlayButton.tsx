@@ -70,6 +70,7 @@ export const PlayButton: React.FC<Props> = (props) => {
     audioSource.buffer = audioBuffer;
     audioSource.connect(audioContext.destination);
     Log.log(`メトロノーム再生`, "PlayButton");
+    Log.gtag("playMetronome");
     audioSource.start();
   };
 

@@ -83,12 +83,12 @@ export const App: React.FC = () => {
   React.useLayoutEffect(() => {
     Log.log(window.navigator.userAgent, "App");
     const updateSize = (): void => {
-      setTimeout(()=>{
+      setTimeout(() => {
         setWindowSize([window.innerWidth, window.innerHeight]);
         Log.log("画面サイズ:" + [window.innerWidth, window.innerHeight], "App");
-      },100)
+      }, 100);
     };
-    window.addEventListener("orientationchange", updateSize); 
+    window.addEventListener("orientationchange", updateSize);
     updateSize();
     Log.log(`build: ${__BUILD_TIMESTAMP__}`, "App");
 
@@ -123,6 +123,7 @@ export const App: React.FC = () => {
       if (wavFileName !== record.filename) {
         setWavFileName(record.filename);
       }
+      Log.gtag("changeRecord");
     }
     Log.log("localstorageに保存", "App");
   }, [record]);
@@ -132,25 +133,21 @@ export const App: React.FC = () => {
       setWav(null);
       Log.log("wavを初期化", "App");
     } else if (readZip !== null) {
-      const wPath=targetDir===""?wavFileName:targetDir + "/" + wavFileName
+      const wPath =
+        targetDir === "" ? wavFileName : targetDir + "/" + wavFileName;
       if (Object.keys(readZip).includes(wPath)) {
-        readZip[wPath]
-          .async("arraybuffer")
-          .then((result) => {
-            const w = new Wave(result);
-            w.channels = fftSetting.channels;
-            w.bitDepth = fftSetting.bitDepth;
-            w.sampleRate = fftSetting.sampleRate;
-            w.RemoveDCOffset();
-            w.VolumeNormalize();
-            setWav(w);
-            Log.log(`wav読込完了。${wPath}`, "App");
-          });
+        readZip[wPath].async("arraybuffer").then((result) => {
+          const w = new Wave(result);
+          w.channels = fftSetting.channels;
+          w.bitDepth = fftSetting.bitDepth;
+          w.sampleRate = fftSetting.sampleRate;
+          w.RemoveDCOffset();
+          w.VolumeNormalize();
+          setWav(w);
+          Log.log(`wav読込完了。${wPath}`, "App");
+        });
       } else {
-        Log.log(
-          `zip内にwavが見つかりませんでした。${wPath}`,
-          "App"
-        );
+        Log.log(`zip内にwavが見つかりませんでした。${wPath}`, "App");
         setWav(null);
       }
     }
