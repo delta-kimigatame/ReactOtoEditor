@@ -57,7 +57,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
   ) => {
     const k = Object.keys(files)[index];
     files[k].async("arraybuffer").then((result) => {
-      newZip.file(NormalizeJP(k.replace(/\uFEFF/, "")), result);
+      newZip.file(NormalizeJP(k.replace(/\uFEFF/, "")).replace(/\wav$/i,"wav"), result);
       if (index < Object.keys(files).length - 1) {
         ZipExtract(files, index + 1, newZip);
       } else {

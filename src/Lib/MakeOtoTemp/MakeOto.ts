@@ -13,9 +13,10 @@ export const MakeOtoSingle = (
   /** 返す原音設定値 */
   const oto = new Oto();
   const files = Object.keys(readZip).slice();
+  const targetPrePath = targetDir === "" ? "" : targetDir + "/";
   files.sort();
   files.forEach(async (f) => {
-    if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
+    if (f.startsWith(targetPrePath) && f.endsWith(".wav")) {
       /** ファイル名。 \
        * zipファイル名から、フォルダ名、冒頭連番、.wavを削除したもの
        */
@@ -32,7 +33,7 @@ export const MakeOtoSingle = (
         const preutter = preutterPoint - offsetPoint;
         oto.SetParams(
           targetDir,
-          f.replace(targetDir + "/", ""),
+          f.replace(targetPrePath, ""),
           alias,
           offsetPoint,
           preutter / 3,
@@ -44,7 +45,7 @@ export const MakeOtoSingle = (
         /** 解析がオフの場合、全パラメータ0で生成する。 */
         oto.SetParams(
           targetDir,
-          f.replace(targetDir + "/", ""),
+          f.replace(targetPrePath, ""),
           alias,
           0,
           0,
@@ -78,8 +79,9 @@ export const MakeOto = (
   const blank: number = -1 * (beatsLength + overlap);
   /** エイリアスカウンタ */
   const aliasCounter: { [key: string]: number } = {};
+  const targetPrePath = targetDir === "" ? "" : targetDir + "/";
   filenames.forEach((f) => {
-    if (f.startsWith(targetDir + "/") && f.endsWith(".wav")) {
+    if (f.startsWith(targetPrePath) && f.endsWith(".wav")) {
       /** ファイル名。skipBeginingNumberがtrueの場合ファイル名頭の連番を無視する。 */
       const filename: string = GetFilename(f, targetDir, skipBiginingNumber);
       /** エイリアスの開始文字のインデックス。冒頭のアンダーバーは無視する。 */
@@ -112,7 +114,7 @@ export const MakeOto = (
           ini,
           oto,
           targetDir,
-          f.replace(targetDir + "/", ""),
+          f.replace(targetPrePath, ""),
           cv,
           beatsLength,
           beats,
@@ -561,7 +563,8 @@ export const GetFilename = (
   targetDir: string,
   skipBiginingNumber: boolean
 ): string => {
-  const f = filename.replace(targetDir + "/", "");
+  const targetPrePath = targetDir === "" ? "" : targetDir + "/";
+  const f = filename.replace(targetPrePath, "");
   return (skipBiginingNumber ? f.replace(/^[0-9]+/, "") : f).replace(
     ".wav",
     ""
