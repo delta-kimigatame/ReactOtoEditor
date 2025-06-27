@@ -32,6 +32,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2025/06/18 Support for wav file extensions in uppercase",
       "2025/06/08 Fixed a bug:Cannot read wav file in root folder.",
       "2025/06/08 Fixed a bug:Cannot read oto.ini in root folder.",
       "2025/06/08 Fixed a bug:Cannot read wav file if it has metadata",
