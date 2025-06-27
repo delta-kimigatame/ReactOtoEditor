@@ -1,0 +1,232 @@
+{
+  "language": {
+    "ja": "日语",
+    "en": "英语",
+    "zh": "中文"
+  },
+  "menu": {
+    "changeTargetDir": "选择文件夹",
+    "otoDownload": "下载 oto.ini",
+    "zipDownload": "下载 Zip",
+    "toDarkMode": "切换到深色模式",
+    "toLightMode": "切换到浅色模式",
+    "changeColor": "颜色设置",
+    "changeLanguage": "语言设置",
+    "showLog": "显示日志",
+    "clearAppCache": "清除应用缓存",
+    "logAttention": "日志不会自动发送，如有需要请将其发送给开发者。"
+  },
+  "downloadZipDialog": {
+    "current": "当前",
+    "storaged": "历史记录",
+    "readed": "已上传的 zip",
+    "none": "(无)"
+  },
+  "top": {
+    "description": "LABERU 是用于 UTAU 音源的 oto 设置工具。",
+    "selectZipButtonText": "同意使用条款并选择 UTAU 音源的 zip 文件",
+    "rule": "使用条款",
+    "ruleDescription": "仅可使用已获得声音权利人许可的音源。",
+    "ruleDescription2": "如果您希望使用他人的声音，必须获得其明确许可。",
+    "privacy": "隐私政策",
+    "privacyAnalytics": "本网站使用 Google 的访问分析工具“Google Analytics”。Google Analytics 使用 Cookie 收集数据。这些数据是匿名收集的，不会识别个人。",
+    "privacyCookie": "我们使用 Cookie 来定制您在我们网站上的体验。",
+    "history": "更新日志",
+    "changelog": [
+      "2025/06/18 支持大写的 wav 文件扩展名",
+      "2025/06/08 修复了无法读取根文件夹中的 wav 文件的错误。",
+      "2025/06/08 修复了无法读取根文件夹中的 oto.ini 的错误。",
+      "2025/06/08 修复了带有元数据的 wav 文件无法读取的错误。",
+      "2025/04/20 提高处理速度",
+      "2025/04/13 提高处理速度",
+      "2025/02/16 修复了使用特定录音列表录音时，第一个 WAV 文件无法正确加载的错误。",
+      "2025/02/09 修复了文件名包含“ヴ”时无法正确规范化的错误。",
+      "2024/07/15 加快内部处理速度",
+      "2024/07/14 添加：为文件名 = 别名生成 Oto 模板。",
+      "2024/07/12 现在可以在别名编辑视图中更改每个参数。",
+      "2024/07/11 添加：生成 Oto 模板。",
+      "2024/07/09 恢复了屏幕上的显示。实现了滚动功能。",
+      "2024/07/08 屏幕上始终显示先行发声。",
+      "2024/07/07 初次发布"
+    ],
+    "shortcut": {
+      "title": "键盘快捷键",
+      "changeParam": "更改参数",
+      "offset": "`Q`: 更改偏移量",
+      "pre": "`W`: 更改先行发声",
+      "overlap": "`E`: 更改重叠",
+      "velocity": "`R`: 更改固定范围",
+      "blank": "`T`: 更改右空白",
+      "play": "播放",
+      "playBeforePreutter": "`1`: 播放先行发声之前",
+      "prayAfterPreutter": "`2`: 播放先行发声之后",
+      "playMetronome": "`3`: 与节拍器一起播放",
+      "changeMode": "更改模式",
+      "toggleOverlapLock": "`4`: 切换重叠锁定",
+      "toggleTouchMode": "`5`: 切换触摸模式",
+      "show": "显示编辑屏幕",
+      "showAliasDialog": "`6`: 编辑别名",
+      "showTableDialog": "`7`: 显示列表",
+      "zoom": "缩放",
+      "zoomIn": "`+`: 放大",
+      "zoomOut": "`-`: 缩小",
+      "alias": "别名",
+      "aliasPrev": "`←` 或 `↑`: 上一个别名",
+      "aliasNext": "`→` 或 `↓`: 下一个别名"
+    }
+  },
+  "loadZipDialog": {
+    "title": "读取 Zip",
+    "encodeCheck": "检查编码",
+    "encoding": "字符编码",
+    "reload": "使用指定的字符编码重新加载",
+    "submit": "确定",
+    "error": "错误"
+  },
+  "targetDirDialog": {
+    "title": "选择要设置的文件夹",
+    "targetDir": "选择文件夹",
+    "encodeCheck": "检查编码",
+    "encoding": "字符编码",
+    "reload": "使用指定的字符编码重新加载",
+    "submit": "确定",
+    "nothingOto": "未找到 oto.ini。",
+    "nothingHistory": "没有历史记录",
+    "readHistory": "加载历史记录",
+    "readTemplate": "加载模板",
+    "correctOffset": "校正偏移量",
+    "correctTempo": "校正录音 BPM",
+    "beforeOffset": "校正前的偏移量",
+    "afterOffset": "校正后的偏移量",
+    "beforeTempo": "校正前的录音 BPM",
+    "afterTempo": "校正后的录音 BPM",
+    "correctType": "分类别名",
+    "hasPositiveBlankError": "右空白为正数，因此无法校正录音 BPM。",
+    "CV": "单独音",
+    "VCV": "连续音",
+    "VC": "VC",
+    "tab": {
+      "zip": "Zip 内",
+      "storaged": "历史记录",
+      "template": "加载模板",
+      "make": "生成"
+    },
+    "makePanel": {
+      "title": "生成方式",
+      "single": "单独发声（文件名 = 别名）",
+      "multi": "连续发声",
+      "analyze": "解析 wav 并校正",
+      "loadini": "加载设置",
+      "CVPreset": "日语单独音",
+      "VCVPreset": "日语连续音",
+      "CVVCPreset": "日语 CVVC",
+      "load": "加载 mkototemp.ini",
+      "iniDetail": "设置详情",
+      "make": "生成",
+      "settings": {
+        "skipBeginingNumber": "忽略文件名开头的数字",
+        "tempo": "引导 BGM 的 BPM",
+        "offset": "从 wav 开头到第一拍的长度（毫秒）",
+        "maxnum": "重复别名的生成数量（0 表示无限制）",
+        "underbar": "将文件名中的下划线视为 1 拍的休止符",
+        "beginingCv": "在 wav 开头的别名前添加 -",
+        "Head": "生成 wav 开头的别名",
+        "VCV": "生成连续音",
+        "onlyConsonant": "生成单独的辅音",
+        "vowel": "元音",
+        "vowelSymbol": "元音的别名",
+        "vowelVariant": "类型（后缀匹配），用逗号分隔",
+        "add": "添加",
+        "consonant": "辅音",
+        "consonantSymbol": "辅音的别名",
+        "consonantVariant": "类型（完全匹配），用逗号分隔",
+        "consonantLength": "辅音的平均长度（毫秒）",
+        "replace": "替换文件名",
+        "replaceFilename": "替换前",
+        "replaceAlias": "替换后"
+      }
+    }
+  },
+  "oto": {
+    "filename": "文件名",
+    "alias": "别名",
+    "offset": "左空白",
+    "overlap": "重叠",
+    "preutter": "先行发声",
+    "velocity": "固定范围",
+    "blank": "右空白"
+  },
+  "tableDialog": {
+    "title": "批量处理",
+    "batchProcess": {
+      "wavNotFound": "删除不存在 wav 的记录",
+      "recordNotFound": "为没有数据的 wav 添加记录",
+      "numberingDuplicationAlias": "为重复的别名编号",
+      "limitedNumber": "限制编号的数量",
+      "negativeBlank": "将右空白设为负数",
+      "forceOverlapRate": "将重叠设为先行发声的 1/3",
+      "removeSurfix": "删除别名后缀",
+      "addSurfix": "为别名添加后缀",
+      "addParams": "增加或减少指定参数",
+      "changeParams": "更改指定参数",
+      "aliasComplement": "补全 を/ぢ/づ"
+    },
+    "targetTitle": "目标参数",
+    "numberTitle": "数量",
+    "stringTitle": "别名",
+    "submit": "执行",
+    "processed": "已处理"
+  },
+  "aliasDialog": {
+    "title": "编辑别名",
+    "textField": "别名",
+    "change": "更改",
+    "duplication": "复制",
+    "delete": "删除",
+    "barText": {
+      "change": "已更改",
+      "duplication": "已复制",
+      "delete": "已删除",
+      "error": "该别名已存在。"
+    }
+  },
+  "editor": {
+    "playBeforePreutter": "播放先行发声之前。",
+    "playAfterPreutter": "播放先行发声之后。",
+    "play": "与节拍器一起播放。",
+    "lockOverlap": "将重叠强制为先行发声的 1/3。",
+    "touchMode": "先行发声将移动到您点击的位置，其他参数将随之调整。无法单独操作参数。",
+    "editAlias": "编辑别名",
+    "showTable": "显示列表",
+    "zoomin": "放大",
+    "zoomout": "缩小",
+    "prev": "上一个别名",
+    "next": "下一个别名"
+  },
+  "color": {
+    "gray": "灰色",
+    "red": "红色",
+    "blue": "蓝色",
+    "green": "绿色",
+    "aqua": "水色",
+    "orange": "橙色",
+    "magenta": "洋红",
+    "rainbow": "彩虹"
+  },
+  "footer": {
+    "disclaimer": "UTAU 是由 飴屋／菖蒲 开发并发布的 Windows 歌声合成软件。",
+    "disclaimer2": "本软件与 UTAU 官方无关。",
+    "developerx": "开发者 X 账号",
+    "github": "GitHub",
+    "discord": "Discord"
+  },
+  "xbutton": {
+    "share": "分享"
+  },
+  "error": {
+    "title": "错误",
+    "message": "发生了意外错误。请从下面的按钮下载日志并将其发送给开发者。",
+    "download": "下载日志",
+    "log": "日志"
+  }
+}

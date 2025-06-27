@@ -1,7 +1,8 @@
 {
   "language": {
     "ja": "JA",
-    "en": "EN"
+    "en": "EN",
+    "zh": "ZH"
   },
   "menu": {
     "changeTargetDir": "Select the folder to oto",

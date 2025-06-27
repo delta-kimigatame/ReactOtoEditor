@@ -1,7 +1,8 @@
 {
   "language": {
     "ja": "日本語",
-    "en": "英語"
+    "en": "英語",
+    "zh": "中国語"
   },
   "menu": {
     "changeTargetDir": "フォルダ選択",
