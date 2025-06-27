@@ -85,7 +85,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       } else if (tableDialogOpen || aliasDialogOpen) {
         return;
       }
-      console.log("Key pressed:", e.key);
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         OnPrevAlias(
           props.oto,

@@ -35,6 +35,50 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     setAlpha(props.mode === "light" ? 0.1 : 0.3);
   }, [props.mode]);
 
+  /** キーボードショートカット用にマウスの座標を保存する。 */
+  const lastClickXRef = React.useRef<number | null>(null);
+
+  const handleKeyDown = React.useCallback(
+    (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLElement &&
+        ["INPUT", "TEXTAREA"].includes(e.target.tagName)
+      ) {
+        return;
+      }
+      console.log(e.key,lastClickXRef.current)
+      if (e.key === "Q" || e.key === "q") {
+        const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+        UpdateOto("offset", lastClickXRef.current ?? 0);
+        RenderAll(ctx);
+      } else if (e.key === "W" || e.key === "w") {
+        const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+        UpdateOto("overlap", lastClickXRef.current ?? 0);
+        RenderAll(ctx);
+      } else if (e.key === "E" || e.key === "e") {
+        const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+        UpdateOto("pre", lastClickXRef.current ?? 0);
+        RenderAll(ctx);
+      } else if (e.key === "R" || e.key === "r") {
+        const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+        UpdateOto("velocity", lastClickXRef.current ?? 0);
+        RenderAll(ctx);
+      } else if (e.key === "T" || e.key === "t") {
+        const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
+        UpdateOto("blank", lastClickXRef.current ?? 0);
+        RenderAll(ctx);
+      }
+    },
+    [lastClickXRef]
+  );
+  /** キーボードショートカットの作成 */
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   /**
    * キャンバスの初期化
    * @param ctx canvasのコンテクスト
@@ -186,7 +230,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         setAlias(null);
       }
     }
-  }, [props.record,props.updateSignal]);
+  }, [props.record, props.updateSignal]);
 
   /**
    * キャンバスの大きさが変更となった際の処理
@@ -398,16 +442,18 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param e
    */
   const OnMouseMove = (e) => {
+    /**
+     * 現在のX座標
+     */
+    const clickX =
+      props.boxRef.current.scrollLeft +
+      (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
     if (targetParam !== null) {
-      /**
-       * 現在のX座標
-       */
-      const clickX =
-        props.boxRef.current.scrollLeft +
-        (e.clientX !== undefined ? e.clientX : e.touches[0].clientX);
       const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
       UpdateOto(targetParam, clickX);
       RenderAll(ctx);
+    } else {
+      lastClickXRef.current = clickX;
     }
   };
 
