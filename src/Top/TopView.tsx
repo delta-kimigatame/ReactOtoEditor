@@ -9,6 +9,7 @@ import { HistoryPaper } from "./HistoryPaper";
 import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
 import { Log } from "../Lib/Logging";
+import { ShortcutPaper } from "./ShortcutPaper";
 
 /**
  * zipデータを読み込む前の画面
@@ -64,6 +65,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       />
       <RulePaper />
       <PrivacyPaper />
+      <ShortcutPaper />
       <HistoryPaper />
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}

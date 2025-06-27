@@ -47,7 +47,32 @@
       "2024/07/09 The display on the screen has been restored. Scrolling function has been implemented.",
       "2024/07/08 The preutter is always displayed on the screen.",
       "2024/07/07 Release"
-    ]
+    ],
+    "shortcut": {
+      "title": "Keyboard Shortcuts",
+      "changeParam": "Change Parameters",
+      "offset": "`Q`: Change Offset",
+      "pre": "`W`: Change Preutterance",
+      "overlap": "`E`: Change Overlap",
+      "velocity": "`R`: Change Fixed Range",
+      "blank": "`T`: Change Right Blank",
+      "play": "Playback",
+      "playBeforePreutter": "`1`: Play Before Preutterance",
+      "prayAfterPreutter": "`2`: Play After Preutterance",
+      "playMetronome": "`3`: Play with Metronome",
+      "changeMode": "Change Mode",
+      "toggleOverlapLock": "`4`: Toggle Overlap Lock",
+      "toggleTouchMode": "`5`: Toggle Touch Mode",
+      "show": "Display Editing Screen",
+      "showAliasDialog": "`6`: Edit Alias",
+      "showTableDialog": "`7`: Show List",
+      "zoom": "Zoom",
+      "zoomIn": "`+`: Zoom In",
+      "zoomOut": "`-`: Zoom Out",
+      "alias": "Alias",
+      "aliasPrev": "`←` or `↑`: Previous Alias",
+      "aliasNext": "`→` or `↓`: Next Alias"
+    }
   },
   "loadZipDialog": {
     "title": "Read Zip",

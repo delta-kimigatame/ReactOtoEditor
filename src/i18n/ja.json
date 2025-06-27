@@ -47,7 +47,32 @@
       "2024/07/09 画面内の表示を元に戻した。スクロール機能の実装",
       "2024/07/08 画面内に必ず先行発声が表示されるようにした。",
       "2024/07/07 初版公開"
-    ]
+    ],
+    "shortcut": {
+      "title":"キーボードショートカット",
+      "changeParam": "パラメータを変更",
+      "offset": "`Q`:オフセットを変更",
+      "pre": "`W`:先行発声を変更",
+      "overlap": "`E`:オーバーラップを変更",
+      "velocity": "`R`:固定範囲を変更",
+      "blank": "`T`:右ブランクを変更",
+      "play": "再生",
+      "playBeforePreutter": "`1`:先行発声より前を再生",
+      "prayAfterPreutter": "`2`:先行発声より後を再生",
+      "playMetronome": "`3`:メトロノームと合わせて再生",
+      "changeMode": "モードを変更",
+      "toggleOverlapLock": "`4`:オーバーラップロックを切り替え",
+      "toggleTouchMode": "`5`:タッチモードを切り替え",
+      "show":"編集画面表示",
+      "showAliasDialog": "`6`:エイリアス編集",
+      "showTableDialog": "`7`:一覧を表示",
+      "zoom": "ズーム",
+      "zoomIn": "`+`:拡大",
+      "zoomOut": "`-`:縮小",
+      "alias": "エイリアス",
+      "aliasPrev": "`←` or `↑`:前のエイリアス",
+      "aliasNext": "`→` or `↓`:次のエイリアス"
+    }
   },
   "loadZipDialog": {
     "title": "ZIP読込",
