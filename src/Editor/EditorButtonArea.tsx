@@ -19,11 +19,17 @@ import TouchAppIcon from "@mui/icons-material/TouchApp";
 
 import { layout } from "../settings/setting";
 import { EditorButton } from "./EditButtn/EditorButton";
-import { NextAliasButton } from "./EditButtn/NextAliasButton";
-import { PrevAliasButton } from "./EditButtn/PrevAliasButtn";
-import { PlayBeforePreutterButton } from "./EditButtn/PlayBeforePreutterButton";
-import { PlayAfterPreutterButton } from "./EditButtn/PlayAfterPreutterButton";
-import { PlayButton } from "./EditButtn/PlayButton";
+import { NextAliasButton, OnNextAlias } from "./EditButtn/NextAliasButton";
+import { OnPrevAlias, PrevAliasButton } from "./EditButtn/PrevAliasButtn";
+import {
+  OnPlayBeforePreutter,
+  PlayBeforePreutterButton,
+} from "./EditButtn/PlayBeforePreutterButton";
+import {
+  OnPlayAfterPreutter,
+  PlayAfterPreutterButton,
+} from "./EditButtn/PlayAfterPreutterButton";
+import { OnPlay, PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "../TableDialog/TableDialog";
 import { AliasDialog } from "../AliasDialog/AliasDialog";
 
@@ -50,6 +56,17 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const [tableDialogOpen, setTableDialogOpen] = React.useState<boolean>(false);
   /** AliasDialogの表示 */
   const [aliasDialogOpen, setAliasDialogOpen] = React.useState<boolean>(false);
+  /** メトロノームのwavデータ */
+  const [metronome, setMetronome] = React.useState<Wave>(null);
+  /** メトロノームのwavデータを読み込む処理 */
+  React.useMemo(() => {
+    fetch(location.href + "static/metronome.wav").then((res) => {
+      res.arrayBuffer().then((buf) => {
+        const m = new Wave(buf);
+        setMetronome(m);
+      });
+    });
+  }, []);
 
   /** 画面サイズが変わった際、ボタンの大きさを再度算定する。 */
   React.useEffect(() => {
@@ -57,6 +74,83 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
     props.setButtonAreaHeight(areaRef.current.getBoundingClientRect().height);
   }, [props.windowWidth, props.windowHeight]);
   const areaRef = React.useRef(null);
+
+  const handleKeyDown = React.useCallback(
+    (e: KeyboardEvent) => {
+      if (
+        e.target instanceof HTMLElement &&
+        ["INPUT", "TEXTAREA"].includes(e.target.tagName)
+      ) {
+        return;
+      } else if (tableDialogOpen || aliasDialogOpen) {
+        return;
+      }
+      console.log("Key pressed:", e.key);
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        OnPrevAlias(
+          props.oto,
+          props.targetDir,
+          props.record,
+          maxFileIndex,
+          fileIndex,
+          maxAliasIndex,
+          aliasIndex,
+          props.setRecord,
+          setFileIndex,
+          setAliasIndex,
+          setMaxAliasIndex
+        );
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        OnNextAlias(
+          props.oto,
+          props.targetDir,
+          props.record,
+          maxFileIndex,
+          fileIndex,
+          maxAliasIndex,
+          aliasIndex,
+          props.setRecord,
+          setFileIndex,
+          setAliasIndex,
+          setMaxAliasIndex
+        );
+      } else if (e.key === "+") {
+        OnZoomIn();
+      } else if (e.key === "-") {
+        OnZoomOut();
+      } else if (e.key === "1") {
+        OnPlayBeforePreutter(props.record, props.wav);
+      } else if (e.key === "2") {
+        OnPlayAfterPreutter(props.record, props.wav);
+      } else if (e.key === "3") {
+        OnPlay(props.record, props.wav, metronome);
+      } else if (e.key === "4") {
+        props.setOverlapLock(!props.overlapLock);
+      } else if (e.key === "5") {
+        props.setTouchMode(!props.touchMode);
+      } else if (e.key === "6") {
+        setAliasDialogOpen(true);
+      } else if (e.key === "7") {
+        setTableDialogOpen(true);
+      }
+    },
+    [
+      props,
+      maxFileIndex,
+      fileIndex,
+      maxAliasIndex,
+      aliasIndex,
+      tableDialogOpen,
+      aliasDialogOpen,
+    ]
+  );
+  /** キーボードショートカットの作成 */
+  React.useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   /**
    * ボタンの大きさを算定する
@@ -167,6 +261,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             mode={props.mode}
             size={size}
             iconSize={iconSize}
+            metronome={metronome}
           />
         </StyledBox>
         <StyledBox>

@@ -22,39 +22,8 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
    * 先行発声から右ブランクまでを再生する処理
    * @returns
    */
-  const OnPlayAfterPreutter = () => {
-    const audioContext = new AudioContext();
-    const startFlame =
-      ((props.record.offset + props.record.pre) * props.wav.sampleRate) / 1000;
-    let endFlame = 0;
-    if (props.record.blank < 0) {
-      endFlame =
-        ((props.record.offset - props.record.blank) * props.wav.sampleRate) /
-        1000;
-    } else {
-      endFlame =
-        props.wav.data.length -
-        (props.record.blank * props.wav.sampleRate) / 1000;
-    }
-    if (endFlame <= startFlame) {
-      return;
-    }
-    const wavData = props.wav.LogicalNormalize(1).slice(startFlame, endFlame);
-    const audioBuffer = audioContext.createBuffer(
-      props.wav.channels,
-      wavData.length,
-      props.wav.sampleRate
-    );
-    const buffering = audioBuffer.getChannelData(0);
-    for (let i = 0; i < wavData.length; i++) {
-      buffering[i] = wavData[i];
-    }
-    const audioSource = audioContext.createBufferSource();
-    audioSource.buffer = audioBuffer;
-    audioSource.connect(audioContext.destination);
-    Log.log(`先行発声以降再生`, "PlayAfterPreutterButton");
-    Log.gtag("playAfter");
-    audioSource.start();
+  const OnPlayAfterPreutter_ = () => {
+    OnPlayAfterPreutter(props.record, props.wav);
   };
 
   return (
@@ -64,7 +33,7 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
         size={props.size}
         icon={<VolumeUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.playAfterPreutter")}
-        onClick={OnPlayAfterPreutter}
+        onClick={OnPlayAfterPreutter_}
         background={
           "linear-gradient(to right,#ff0000,#bdbdbd 10%,#bdbdbd 35%,#0000ff 40%,#bdbdbd 45%)"
         }
@@ -87,3 +56,33 @@ interface Props {
   /** アイコンのサイズ */
   iconSize: number;
 }
+
+export const OnPlayAfterPreutter = (record: OtoRecord | null, wav: Wave) => {
+  const audioContext = new AudioContext();
+  const startFlame = ((record.offset + record.pre) * wav.sampleRate) / 1000;
+  let endFlame = 0;
+  if (record.blank < 0) {
+    endFlame = ((record.offset - record.blank) * wav.sampleRate) / 1000;
+  } else {
+    endFlame = wav.data.length - (record.blank * wav.sampleRate) / 1000;
+  }
+  if (endFlame <= startFlame) {
+    return;
+  }
+  const wavData = wav.LogicalNormalize(1).slice(startFlame, endFlame);
+  const audioBuffer = audioContext.createBuffer(
+    wav.channels,
+    wavData.length,
+    wav.sampleRate
+  );
+  const buffering = audioBuffer.getChannelData(0);
+  for (let i = 0; i < wavData.length; i++) {
+    buffering[i] = wavData[i];
+  }
+  const audioSource = audioContext.createBufferSource();
+  audioSource.buffer = audioBuffer;
+  audioSource.connect(audioContext.destination);
+  Log.log(`先行発声以降再生`, "PlayAfterPreutterButton");
+  Log.gtag("playAfter");
+  audioSource.start();
+};

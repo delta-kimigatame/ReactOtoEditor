@@ -20,50 +20,20 @@ export const NextAliasButton: React.FC<Props> = (props) => {
   /**
    * 次のエイリアスに送る処理
    */
-  const OnNextAlias = () => {
-    Log.log(
-      `エイリアス変更前。maxFileIndex:${props.maxFileIndex}、fileIndex:${props.fileIndex}、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${props.aliasIndex}`,
-      "NextAliasButton"
-    );
-    if (props.maxAliasIndex === props.aliasIndex) {
-      if (props.maxFileIndex !== props.fileIndex) {
-        const filename = props.oto.GetFileNames(props.targetDir)[
-          props.fileIndex + 1
-        ];
-        const alias = props.oto.GetAliases(props.targetDir, filename)[0];
-        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
-        props.setFileIndex(props.fileIndex + 1);
-        props.setAliasIndex(0);
-        props.setMaxAliasIndex(
-          props.oto.GetAliases(props.targetDir, filename).length - 1
-        );
-        Log.log(
-          `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${
-            props.fileIndex + 1
-          }、maxAliasIndex:${
-            props.oto.GetAliases(props.targetDir, filename).length - 1
-          }、aliasIndex:${0}`,
-          "NextAliasButton"
-        );
-      }
-    } else {
-      const alias = props.oto.GetAliases(
+  const OnNextAlias_ = () => {
+      OnNextAlias(
+        props.oto,
         props.targetDir,
-        props.record.filename
-      )[props.aliasIndex + 1];
-      props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+        props.record,
+        props.maxFileIndex,
+        props.fileIndex,
+        props.maxAliasIndex,
+        props.aliasIndex,
+        props.setRecord,
+        props.setFileIndex,
+        props.setAliasIndex,
+        props.setMaxAliasIndex
       );
-      props.setAliasIndex(props.aliasIndex + 1);
-      Log.log(
-        `エイリアス変更後。maxFileIndex:${props.maxFileIndex}、fileIndex:${
-          props.fileIndex
-        }、maxAliasIndex:${props.maxAliasIndex}、aliasIndex:${
-          props.aliasIndex + 1
-        }`,
-        "NextAliasButton"
-      );
-    }
   };
 
   return (
@@ -73,7 +43,7 @@ export const NextAliasButton: React.FC<Props> = (props) => {
         size={props.size}
         icon={<ArrowDropDownIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.next")}
-        onClick={OnNextAlias}
+        onClick={OnNextAlias_}
         disabled={
           (props.maxAliasIndex === props.aliasIndex &&
             props.maxFileIndex === props.fileIndex) ||
@@ -116,3 +86,60 @@ interface Props {
   /** キャンバスの読込状態 */
   progress: boolean;
 }
+
+export const OnNextAlias = (
+  oto: Oto,
+  targetDir: string,
+  record: OtoRecord | null,
+  maxFileIndex: number,
+  fileIndex: number,
+  maxAliasIndex: number,
+  aliasIndex: number,
+  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>,
+  setFileIndex: React.Dispatch<React.SetStateAction<number>>,
+  setAliasIndex: React.Dispatch<React.SetStateAction<number>>,
+  setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>
+) => {
+  Log.log(
+    `エイリアス変更前。maxFileIndex:${maxFileIndex}、fileIndex:${fileIndex}、maxAliasIndex:${maxAliasIndex}、aliasIndex:${aliasIndex}`,
+    "NextAliasButton"
+  );
+  if (maxAliasIndex === aliasIndex) {
+    if (maxFileIndex !== fileIndex) {
+      const filename = oto.GetFileNames(targetDir)[
+        fileIndex + 1
+      ];
+      const alias = oto.GetAliases(targetDir, filename)[0];
+      setRecord(oto.GetRecord(targetDir, filename, alias));
+      setFileIndex(fileIndex + 1);
+      setAliasIndex(0);
+      setMaxAliasIndex(
+        oto.GetAliases(targetDir, filename).length - 1
+      );
+      Log.log(
+        `エイリアス変更後。maxFileIndex:${maxFileIndex}、fileIndex:${
+          fileIndex + 1
+        }、maxAliasIndex:${
+          oto.GetAliases(targetDir, filename).length - 1
+        }、aliasIndex:${0}`,
+        "NextAliasButton"
+      );
+    }
+  } else {
+    const alias = oto.GetAliases(targetDir, record.filename)[
+      aliasIndex + 1
+    ];
+    setRecord(
+      oto.GetRecord(targetDir, record.filename, alias)
+    );
+    setAliasIndex(aliasIndex + 1);
+    Log.log(
+      `エイリアス変更後。maxFileIndex:${maxFileIndex}、fileIndex:${
+        fileIndex
+      }、maxAliasIndex:${maxAliasIndex}、aliasIndex:${
+        aliasIndex + 1
+      }`,
+      "NextAliasButton"
+    );
+  }
+};

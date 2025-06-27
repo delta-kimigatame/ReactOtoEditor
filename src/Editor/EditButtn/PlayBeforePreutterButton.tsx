@@ -12,7 +12,7 @@ import { Log } from "../../Lib/Logging";
 
 /**
  * 左ブランクから先行発声までを再生するボタン
- * @param props 
+ * @param props
  * @returns 左ブランクから先行発声までを再生するボタン
  */
 export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
@@ -20,34 +20,12 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
 
   /**
    * 左ブランクから先行発声までを再生する処理
-   * @returns 
+   * @returns
    */
-  const OnPlayBeforePreutter = () => {
-    const audioContext = new AudioContext();
-    const startFlame = (props.record.offset * props.wav.sampleRate) / 1000;
-    const endFlame =
-      ((props.record.offset + props.record.pre) * props.wav.sampleRate) / 1000;
-    if (endFlame <= startFlame) {
-      return;
-    }
-    const wavData = props.wav.LogicalNormalize(1).slice(startFlame, endFlame);
-    const audioBuffer = audioContext.createBuffer(
-      props.wav.channels,
-      wavData.length,
-      props.wav.sampleRate
-    );
-    const buffering = audioBuffer.getChannelData(0);
-    for (let i = 0; i < wavData.length; i++) {
-      buffering[i] = wavData[i];
-    }
-    const audioSource = audioContext.createBufferSource();
-    audioSource.buffer = audioBuffer;
-    audioSource.connect(audioContext.destination);
-    Log.log(`先行発声まで再生`, "PlayBeforePreutterButton");
-        Log.gtag("playBefore");
-    audioSource.start();
+  const OnPlayBeforePreutter_ = () => {
+    OnPlayBeforePreutter(props.record, props.wav);
   };
-  
+
   return (
     <>
       <EditorButton
@@ -55,7 +33,7 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
         size={props.size}
         icon={<VolumeUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.playBeforePreutter")}
-        onClick={OnPlayBeforePreutter}
+        onClick={OnPlayBeforePreutter_}
         background={
           "linear-gradient(to right,#bdbdbd,#bdbdbd 10%,#bdbdbd 25%,#00ff00 30%,#bdbdbd 35%,#bdbdbd 90%,#ff0000)"
         }
@@ -77,4 +55,29 @@ interface Props {
   size: number;
   /** アイコンのサイズ */
   iconSize: number;
+}
+
+export const OnPlayBeforePreutter = (record: OtoRecord | null, wav: Wave) => {
+  const audioContext = new AudioContext();
+  const startFlame = (record.offset * wav.sampleRate) / 1000;
+  const endFlame = ((record.offset + record.pre) * wav.sampleRate) / 1000;
+  if (endFlame <= startFlame) {
+    return;
+  }
+  const wavData = wav.LogicalNormalize(1).slice(startFlame, endFlame);
+  const audioBuffer = audioContext.createBuffer(
+    wav.channels,
+    wavData.length,
+    wav.sampleRate
+  );
+  const buffering = audioBuffer.getChannelData(0);
+  for (let i = 0; i < wavData.length; i++) {
+    buffering[i] = wavData[i];
+  }
+  const audioSource = audioContext.createBufferSource();
+  audioSource.buffer = audioBuffer;
+  audioSource.connect(audioContext.destination);
+  Log.log(`先行発声まで再生`, "PlayBeforePreutterButton");
+  Log.gtag("playBefore");
+  audioSource.start();
 };
