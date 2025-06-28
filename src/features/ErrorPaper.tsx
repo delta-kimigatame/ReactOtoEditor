@@ -51,17 +51,14 @@ export const ErrorPaper: React.FC<FallbackProps> = ({
 
   return (
     <>
-      <BasePaper
-        title={t("error.title")}
-        body={
-          <Box sx={{ m: 1, p: 1 }}>
-            <Typography variant="body2">{t("error.message")}</Typography>
-            <FullWidthButton color="error" onClick={OnLogDownload}>
-              {t("error.download")}
-            </FullWidthButton>
-          </Box>
-        }
-      />
+      <BasePaper title={t("error.title")}>
+        <Box sx={{ m: 1, p: 1 }}>
+          <Typography variant="body2">{t("error.message")}</Typography>
+          <FullWidthButton color="error" onClick={OnLogDownload}>
+            {t("error.download")}
+          </FullWidthButton>
+        </Box>
+      </BasePaper>
       <LogPaper />
       <Footer />
     </>

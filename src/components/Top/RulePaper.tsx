@@ -14,18 +14,15 @@ export const RulePaper: React.FC = () => {
   const { t } = useTranslation();
   return (
     <>
-      <BasePaper
-        title={t("top.rule")}
-        body={
-          <Box sx={{ m: 1, p: 1 }}>
-            <Typography variant="body1">{t("top.ruleDescription")}</Typography>
-            <Typography variant="caption" color="inherit">
-              {t("top.ruleDescription2")}
-            </Typography>
-            <br />
-          </Box>
-        }
-      />
+      <BasePaper title={t("top.rule")}>
+        <Box sx={{ m: 1, p: 1 }}>
+          <Typography variant="body1">{t("top.ruleDescription")}</Typography>
+          <Typography variant="caption" color="inherit">
+            {t("top.ruleDescription2")}
+          </Typography>
+          <br />
+        </Box>
+      </BasePaper>
     </>
   );
 };

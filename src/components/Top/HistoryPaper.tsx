@@ -16,8 +16,7 @@ export const HistoryPaper: React.FC = () => {
   return (
     <>
       <BasePaper
-        title={t("top.history")}
-        body={
+        title={t("top.history")}>
           <Box sx={{ m: 1, p: 1 }}>
             {(t("top.changelog", { returnObjects: true }) as Array<string>).map(
               (l) => (
@@ -28,8 +27,7 @@ export const HistoryPaper: React.FC = () => {
               )
             )}
           </Box>
-        }
-      />
+      </BasePaper>
     </>
   );
 };

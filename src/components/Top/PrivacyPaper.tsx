@@ -13,16 +13,14 @@ export const PrivacyPaper: React.FC = () => {
   const { t } = useTranslation();
   return (
     <>
-      <BasePaper
-        title={t("top.privacy")}
-        body={<><Typography variant="caption">
-        <ul>
-          <li>{t("top.privacyAnalytics")}</li>
-          <li>{t("top.privacyCookie")}</li>
-        </ul>
-      </Typography>
-        </>}
-      />
+      <BasePaper title={t("top.privacy")}>
+        <Typography variant="caption">
+          <ul>
+            <li>{t("top.privacyAnalytics")}</li>
+            <li>{t("top.privacyCookie")}</li>
+          </ul>
+        </Typography>
+      </BasePaper>
     </>
   );
 };

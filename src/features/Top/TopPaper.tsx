@@ -22,7 +22,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const TopPaper: React.FC<TopPaperProps> = (props) => {
   /** 隠し表示する<input>へのref */
   const inputRef = React.useRef(null);
-  const { readZip,setReadZip } = useOtoProjectStore();
+  const { readZip, setReadZip } = useOtoProjectStore();
   const { t } = useTranslation();
   /** 読込中判定 */
   const [processing, setProcessing] = React.useState<boolean>(false);
@@ -75,26 +75,23 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         ref={inputRef}
         accept="application/zip"
       ></input>
-      <BasePaper
-        title={setting.productName}
-        body={
-          <Box sx={{ m: 1, p: 1 }}>
-            <Typography variant="body1">{t("top.description")}</Typography>
-            <br />
-            <FullWidthButton
-              disabled={processing}
-              onClick={OnButtonClick}
-              color="primary"
-            >
-              {!processing ? (
-                <>{t("top.selectZipButtonText")}</>
-              ) : (
-                <CircularProgress color="inherit" size={20} />
-              )}
-            </FullWidthButton>
-          </Box>
-        }
-      />
+      <BasePaper title={setting.productName}>
+        <Box sx={{ m: 1, p: 1 }}>
+          <Typography variant="body1">{t("top.description")}</Typography>
+          <br />
+          <FullWidthButton
+            disabled={processing}
+            onClick={OnButtonClick}
+            color="primary"
+          >
+            {!processing ? (
+              <>{t("top.selectZipButtonText")}</>
+            ) : (
+              <CircularProgress color="inherit" size={20} />
+            )}
+          </FullWidthButton>
+        </Box>
+      </BasePaper>
       <LoadZipDialog
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
@@ -105,5 +102,4 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
   );
 };
 
-export interface TopPaperProps {
-}
+export interface TopPaperProps {}

@@ -17,8 +17,7 @@ export const LogPaper: React.FC = () => {
   return (
     <>
       <BasePaper
-        title={t("error.log")}
-        body={
+        title={t("error.log")}>
           <Box sx={{ m: 1, p: 1 }}>
             {Log.datas.map((l) => (
               <>
@@ -27,8 +26,7 @@ export const LogPaper: React.FC = () => {
               </>
             ))}
           </Box>
-        }
-      />
+        </BasePaper>
     </>
   );
 };
