@@ -16,11 +16,11 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  */
 export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
   const { t } = useTranslation();
-  const { targetDir } = useOtoProjectStore();
+  const { targetDir,oto } = useOtoProjectStore();
   const OnClick = () => {
     Log.log(`oto.iniのダウンロード`, "DownloadOtoMenu");
     Log.gtag("downloadOto");
-    const f = props.oto.OutputOto();
+    const f = oto.OutputOto();
     let url = "";
     f.forEach((file) => {
       if (file.name === targetDir) {
@@ -46,8 +46,6 @@ export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
 };
 
 export interface DownloadOtoMenuProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

@@ -10,19 +10,21 @@ import TabPanel from "@mui/lab/TabPanel";
 
 import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { TargetDirDialogButtonArea } from "../../features/TargetDirDialog/TargetDirDialogButtonArea";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * zip内からoto.iniを読み込む場合のパネル
  * @param props {@link TargetDirDialogTabPanelZipProps}
  * @returns zip内からoto.iniを読み込む場合のパネル
  */
-export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProps> = (
-  props
-) => {
+export const TargetDirDialogTabPanelZip: React.FC<
+  TargetDirDialogTabPanelZipProps
+> = (props) => {
   const { t } = useTranslation();
   /** oto.ini読込の文字コード */
   const [encoding, setEncoding] = React.useState<string>("SJIS");
 
+  const { oto } = useOtoProjectStore();
   return (
     <TabPanel value="1" sx={{ p: 0 }}>
       {props.nothingOto ? (
@@ -33,7 +35,6 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
         <>
           <TargetDirDialogButtonArea
             oto={props.oto}
-            setOto={props.setOto}
             setOtoTemp={props.setOtoTemp}
             setDialogOpen={props.setDialogOpen}
             LoadOto={props.LoadOto}
@@ -41,9 +42,7 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
             setEncoding={setEncoding}
           />
           <Divider />
-          <TargetDirDialogCheckList
-            oto={props.oto}
-          />
+          <TargetDirDialogCheckList oto={props.oto} />
         </>
       ) : (
         <Box sx={{ textAlign: "center", minHeight: 150 }}>
@@ -57,14 +56,12 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
 export interface TargetDirDialogTabPanelZipProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */
   setOtoTemp: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** oto.iniを読み込む処理 */
   LoadOto: (string) => void;
   /** zip内のoto.iniの有無 */
   nothingOto: boolean;
+  /** 仮に読み込んだoto.iniのデータ */
+  oto: Oto;
 }

@@ -9,6 +9,7 @@ import { Log } from "../../lib/Logging";
 
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログの文字コードを設定するエリア
@@ -19,6 +20,7 @@ export const TargetDirDialogButtonArea: React.FC<
   TargetDirDialogButtonAreaProps
 > = (props) => {
   const { t } = useTranslation();
+  const { setOto } = useOtoProjectStore();
 
   /**
    * 文字コードが変更されたときの処理。 \
@@ -37,8 +39,8 @@ export const TargetDirDialogButtonArea: React.FC<
    */
   const OnSubmitClick = () => {
     Log.log(`oto.ini確定`, "TargetDirDialogButtonArea");
-    Log.gtag("loadoto")
-    props.setOto(props.oto);
+    Log.gtag("loadoto");
+    setOto(props.oto);
     props.setDialogOpen(false);
   };
 
@@ -65,8 +67,6 @@ export interface TargetDirDialogButtonAreaProps {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */
   setOtoTemp: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** oto.iniを読み込む処理 */

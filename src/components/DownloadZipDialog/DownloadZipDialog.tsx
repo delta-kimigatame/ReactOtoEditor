@@ -24,7 +24,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
         fullScreen
       >
         <DownloadZipDialogTitle
-          oto={props.oto}
           setMenuAnchor={props.setMenuAnchor}
           setDialogOpen={props.setDialogOpen}
           storagedOto={props.storagedOto}
@@ -42,8 +41,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
 };
 
 export interface DownloadZipDialogProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** ダイアログを表示するか否か */

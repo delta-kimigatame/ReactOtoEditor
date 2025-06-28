@@ -24,12 +24,12 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   TargetDirDialogTabPanelStoragedProps
 > = (props) => {
   const { t } = useTranslation();
-  const { zipFileName, targetDir } = useOtoProjectStore();
+  const { zipFileName, targetDir, setOto } = useOtoProjectStore();
   const storagedOto_: string | null = localStorage.getItem("oto");
   const [storagedOto, setStoragedOto] = React.useState<{}>({});
   const [selectHistory, setSelectHistory] = React.useState<string>(null);
   /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
-  const [oto, setOto] = React.useState<Oto | null>(null);
+  const [oto, setOtoTemp] = React.useState<Oto | null>(null);
 
   React.useEffect(() => {
     const storagedOto__ = storagedOto_ === null ? {} : JSON.parse(storagedOto_);
@@ -69,7 +69,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
           `oto.ini読込完了。ファイル名${f}、フォルダ名:${d}`,
           "TargetDirDialogTabPanelStoraged"
         );
-        setOto(oto_);
+        setOtoTemp(oto_);
       });
   }, [selectHistory]);
   const OnSelectChange = (e: SelectChangeEvent) => {
@@ -86,7 +86,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   const OnSubmitClick = () => {
     Log.log(`oto.ini確定`, "TargetDirDialogTabPanelStoraged");
     Log.gtag("loadStoragedOto");
-    props.setOto(oto);
+    setOto(oto);
     props.setDialogOpen(false);
   };
   return (
@@ -131,6 +131,4 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
 export interface TargetDirDialogTabPanelStoragedProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

@@ -1,6 +1,4 @@
 import * as React from "react";
-import JSZip from "jszip";
-import { Oto } from "utauoto";
 import { useTranslation } from "react-i18next";
 
 import FolderZipIcon from "@mui/icons-material/FolderZip";
@@ -69,7 +67,6 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
         <ListItemText>{t("menu.zipDownload")}</ListItemText>
       </MenuItem>
       <DownloadZipDialog
-        oto={props.oto}
         setMenuAnchor={props.setMenuAnchor}
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
@@ -82,8 +79,6 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
 };
 
 export interface DownloadZipMenuProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

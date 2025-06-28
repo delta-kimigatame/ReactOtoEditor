@@ -28,7 +28,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
   /** oto.ini読込の文字コード */
   const [encoding, setEncoding] = React.useState<string>("SJIS");
   /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
-  const [oto, setOto] = React.useState<Oto | null>(null);
+  const [oto, setOtoTemp] = React.useState<Oto | null>(null);
   /** 読込中判定 */
   const [processing, setProcessing] = React.useState<boolean>(false);
   /** 読み込んだファイル */
@@ -66,7 +66,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
     oto_.InputOtoAsync(targetDir, readFile, encoding_).then(() => {
       Log.log(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
       Log.gtag("loadTemplateOto");
-      setOto(oto_);
+      setOtoTemp(oto_);
       setProcessing(false);
     });
   };
@@ -98,8 +98,6 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
         (encodeOk ? (
           <>
             <TargetDirDialogCorrectPanel
-              oto={oto}
-              setOto={props.setOto}
               setDialogOpen={props.setDialogOpen}
             />
           </>
@@ -108,8 +106,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
             <Divider />
             <TargetDirDialogButtonArea
               oto={oto}
-              setOto={setOto}
-              setOtoTemp={setOto}
+              setOtoTemp={setOtoTemp}
               setDialogOpen={SetEncodeOk_}
               LoadOto={LoadOto}
               encoding={encoding}
@@ -125,6 +122,4 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
 export interface TargetDirDialogTabPanelTemplateProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

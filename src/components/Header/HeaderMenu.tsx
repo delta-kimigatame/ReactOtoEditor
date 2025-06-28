@@ -24,6 +24,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  * @returns ヘッダメニュー
  */
 export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
+  const { oto } = useOtoProjectStore();
   return (
     <>
       <Menu
@@ -33,35 +34,19 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           props.setMenuAnchor(null);
         }}
       >
-        <TargetDirMenu
-          oto={props.oto}
-          setOto={props.setOto}
-          setMenuAnchor={props.setMenuAnchor}
-        />
-        {props.oto !== null && (
+        <TargetDirMenu setMenuAnchor={props.setMenuAnchor} />
+        {oto !== null && (
           <>
-            <DownloadOtoMenu
-              oto={props.oto}
-              setMenuAnchor={props.setMenuAnchor}
-            />
-            <DownloadZipMenu
-              oto={props.oto}
-              setMenuAnchor={props.setMenuAnchor}
-            />
+            <DownloadOtoMenu setMenuAnchor={props.setMenuAnchor} />
+            <DownloadZipMenu setMenuAnchor={props.setMenuAnchor} />
             <Divider />
           </>
         )}
-        <LanguageMenu
-          setMenuAnchor={props.setMenuAnchor}
-        />
-        <ColorMenu
-          setMenuAnchor={props.setMenuAnchor}
-        />
-        <DarkModeMenu
-          setMenuAnchor={props.setMenuAnchor}
-        />
+        <LanguageMenu setMenuAnchor={props.setMenuAnchor} />
+        <ColorMenu setMenuAnchor={props.setMenuAnchor} />
+        <DarkModeMenu setMenuAnchor={props.setMenuAnchor} />
         <Divider />
-        <HeaderMenuClearCache setMenuAnchor={props.setMenuAnchor}/>
+        <HeaderMenuClearCache setMenuAnchor={props.setMenuAnchor} />
         <Divider />
         <ShowLogMenu setMenuAnchor={props.setMenuAnchor} />
       </Menu>
@@ -70,10 +55,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
 };
 
 export interface HeaderMenuProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** メニューの表示位置。nullの時は非表示 */
   menuAnchor: null | HTMLElement;
   /**メニューの表示制御 */

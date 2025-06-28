@@ -37,7 +37,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
   TargetDirDialogTabMakePanelProps
 > = (props) => {
   const { t } = useTranslation();
-  const { readZip, targetDir } = useOtoProjectStore();
+  const { readZip, targetDir, setOto } = useOtoProjectStore();
   /** 生成方法 */
   const [mode, setMode] = React.useState<"single" | "multi">(null);
   const [ini, setIni] = React.useState<MakeOtoTempIni>(null);
@@ -136,7 +136,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       );
       Log.gtag("makeSingleOto");
       Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
-      props.setOto(oto);
+      setOto(oto);
     } else {
       ini.tempo = tempo;
       ini.offset = offset;
@@ -177,7 +177,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       );
       Log.gtag("makeOto");
       Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
-      props.setOto(oto);
+      setOto(oto);
     }
   };
 
@@ -302,6 +302,4 @@ export const TargetDirDialogTabMakePanel: React.FC<
 export interface TargetDirDialogTabMakePanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

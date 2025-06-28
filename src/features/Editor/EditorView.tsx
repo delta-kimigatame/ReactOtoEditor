@@ -69,7 +69,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         windowWidth={windowSize.width}
         windowHeight={windowSize.height}
         setButtonAreaHeight={setButtonAreaHeight}
-        oto={props.oto}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
         setUpdateSignal={setUpdateSignal}
@@ -79,7 +78,4 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   );
 };
 
-export interface EditorViewProps {
-  /** 原音設定データ */
-  oto: Oto;
-}
+export interface EditorViewProps {}

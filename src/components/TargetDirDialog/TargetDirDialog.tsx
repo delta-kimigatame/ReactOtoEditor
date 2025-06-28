@@ -27,8 +27,6 @@ export const TargetDirDialog: React.FC<TargetDirDialogProps> = (props) => {
         <Divider />
         <TargetDirDialogContent
           setDialogOpen={props.setDialogOpen}
-          oto={props.oto}
-          setOto={props.setOto}
         />
       </Dialog>
     </>
@@ -40,8 +38,4 @@ export interface TargetDirDialogProps {
   dialogOpen: boolean;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 };

@@ -69,16 +69,9 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}
         setDialogOpen={setTargetDirDialogOpen}
-        oto={props.oto}
-        setOto={props.setOto}
       />
     </>
   );
 };
 
-export interface TopViewProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-}
+export interface TopViewProps {}

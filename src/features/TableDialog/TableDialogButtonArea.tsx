@@ -25,7 +25,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
 ) => {
-  const {zipFileName,readZip,targetDir}=useOtoProjectStore()
+  const { zipFileName, readZip, targetDir, oto } = useOtoProjectStore();
   const { t } = useTranslation();
   const [batchIndex, setBatchIndex] = React.useState<number>(0);
   const [targetParam, setTargetParam] = React.useState<string>("offset");
@@ -122,18 +122,18 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       Log.log(`targetParam:${targetParam}`, "TableDialogButtonArea");
     }
     if (param === null) {
-      batchList[batchIndex].endPoint(props.oto, targetDir);
+      batchList[batchIndex].endPoint(oto, targetDir);
     } else if (batchList[batchIndex].requireNumber) {
       Log.log(`value:${value}`, "TableDialogButtonArea");
-      batchList[batchIndex].endPoint(props.oto, targetDir, param, value);
+      batchList[batchIndex].endPoint(oto, targetDir, param, value);
     } else {
-      batchList[batchIndex].endPoint(props.oto, targetDir, param);
+      batchList[batchIndex].endPoint(oto, targetDir, param);
     }
     Log.log(`一括処理完了`, "TableDialogButtonArea");
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
     const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, props.oto, zipFileName, targetDir);
+    SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
     localStorage.setItem("oto", JSON.stringify(storagedOto));
     Log.log(`localstorageに保存`, "TableDialogButtonArea");
   };
@@ -161,28 +161,28 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               display: batchList[batchIndex].requireString !== true && "none",
             }}
           >
-          <FullWidthTextField
-            type="text"
-            label={t("tableDialog.stringTitle")}
-            value={surfix}
-            onChange={(e) => {
-              setSurfix(e.target.value);
-            }}
-          />
+            <FullWidthTextField
+              type="text"
+              label={t("tableDialog.stringTitle")}
+              value={surfix}
+              onChange={(e) => {
+                setSurfix(e.target.value);
+              }}
+            />
           </Box>
           <Box
             sx={{
               display: batchList[batchIndex].requireNumber !== true && "none",
             }}
           >
-          <FullWidthTextField
-            type="number"
-            label={t("tableDialog.numberTitle")}
-            value={value}
-            onChange={(e) => {
-              setValue(parseFloat(e.target.value));
-            }}
-          />
+            <FullWidthTextField
+              type="number"
+              label={t("tableDialog.numberTitle")}
+              value={value}
+              onChange={(e) => {
+                setValue(parseFloat(e.target.value));
+              }}
+            />
           </Box>
           <Box
             sx={{
@@ -223,8 +223,6 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
 export interface TableDialogButtonAreaProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 原音設定データ */
-  oto: Oto;
   /** 一括変更結果により一覧を更新する。 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
 }

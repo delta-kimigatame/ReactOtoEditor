@@ -31,9 +31,16 @@ export const App: React.FC = () => {
   useInitializeApp();
   const mode_ = useThemeMode();
   const { language } = useCookieStore();
-  const { zipFileName, readZip, targetDir, setWav, record, setRecord } =
-    useOtoProjectStore();
-  const [oto, setOto] = React.useState<Oto | null>(null);
+  const {
+    zipFileName,
+    readZip,
+    targetDir,
+    setWav,
+    record,
+    setRecord,
+    oto,
+    setOto,
+  } = useOtoProjectStore();
   const [wavFileName, setWavFileName] = React.useState<string | null>(null);
   const theme = React.useMemo(
     () => createTheme(getDesignTokens(mode_)),
@@ -105,9 +112,9 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header oto={oto} setOto={setOto} />
-      {oto !== null && <EditorView oto={oto} />}
-      {oto === null && <TopView oto={oto} setOto={setOto} />}
+      <Header />
+      {oto !== null && <EditorView />}
+      {oto === null && <TopView />}
       {oto === null && <Footer theme={theme} />}
     </ThemeProvider>
   );

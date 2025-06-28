@@ -24,7 +24,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  */
 export const EditorTable: React.FC<EditorTableProps> = (props) => {
   const { t } = useTranslation();
-  const { targetDir,record,setRecord } = useOtoProjectStore();
+  const { targetDir, record, setRecord, oto } = useOtoProjectStore();
   /** tableへのref。heightを取得するために使用 */
   const tableRef = React.useRef(null);
   /** 文字の種類 */
@@ -125,7 +125,7 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.oto === undefined ? (
+            {oto === undefined ? (
               record && (
                 <>
                   <TableRow>
@@ -135,9 +135,7 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {record.alias}
-                      </Typography>
+                      <Typography variant={variant}>{record.alias}</Typography>
                     </StyledTableCell>
                     <StyledTableCell size={"small"}>
                       <Typography variant={variant}>
@@ -169,8 +167,8 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
               )
             ) : (
               <>
-                {props.oto.GetFileNames(targetDir).map((f, fi: number) =>
-                  props.oto.GetAliases(targetDir, f).map((a, ai: number) => (
+                {oto.GetFileNames(targetDir).map((f, fi: number) =>
+                  oto.GetAliases(targetDir, f).map((a, ai: number) => (
                     <TableRow
                       sx={{
                         backgroundColor:
@@ -179,11 +177,11 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                           "#fff0f0",
                       }}
                       onClick={() => {
-                        setRecord(props.oto.GetRecord(targetDir, f, a));
+                        setRecord(oto.GetRecord(targetDir, f, a));
                         props.setFileIndex(fi);
                         props.setAliasIndex(ai);
                         props.setMaxAliasIndex(
-                          props.oto.GetAliases(targetDir, f).length - 1
+                          oto.GetAliases(targetDir, f).length - 1
                         );
                       }}
                     >
@@ -195,35 +193,27 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                       </StyledTableCell>
                       <StyledTableCell size={"small"}>
                         <Typography variant={variant}>
-                          {props.oto
-                            .GetRecord(targetDir, f, a)
-                            .offset.toFixed(3)}
+                          {oto.GetRecord(targetDir, f, a).offset.toFixed(3)}
                         </Typography>
                       </StyledTableCell>
                       <StyledTableCell size={"small"}>
                         <Typography variant={variant}>
-                          {props.oto
-                            .GetRecord(targetDir, f, a)
-                            .overlap.toFixed(3)}
+                          {oto.GetRecord(targetDir, f, a).overlap.toFixed(3)}
                         </Typography>
                       </StyledTableCell>
                       <StyledTableCell size={"small"}>
                         <Typography variant={variant}>
-                          {props.oto.GetRecord(targetDir, f, a).pre.toFixed(3)}
+                          {oto.GetRecord(targetDir, f, a).pre.toFixed(3)}
                         </Typography>
                       </StyledTableCell>
                       <StyledTableCell size={"small"}>
                         <Typography variant={variant}>
-                          {props.oto
-                            .GetRecord(targetDir, f, a)
-                            .velocity.toFixed(3)}
+                          {oto.GetRecord(targetDir, f, a).velocity.toFixed(3)}
                         </Typography>
                       </StyledTableCell>
                       <StyledTableCell size={"small"}>
                         <Typography variant={variant}>
-                          {props.oto
-                            .GetRecord(targetDir, f, a)
-                            .blank.toFixed(3)}
+                          {oto.GetRecord(targetDir, f, a).blank.toFixed(3)}
                         </Typography>
                       </StyledTableCell>
                     </TableRow>
@@ -245,8 +235,6 @@ export interface EditorTableProps {
   windowHeight: number;
   /** tableの縦幅を登録する処理 */
   setTableHeight?: React.Dispatch<React.SetStateAction<number>>;
-  /** 原音設定データ */
-  oto?: Oto;
   /** recordの更新通知 */
   updateSignal: number;
   /** 現在のファイルのインデックス */

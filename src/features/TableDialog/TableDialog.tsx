@@ -40,7 +40,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
           {t("tableDialog.title")}
           <TableDialogButtonArea
             setDialogOpen={props.setDialogOpen}
-            oto={props.oto}
             setUpdateSignal={setUpdateSignal}
           />
         </DialogTitle>
@@ -48,7 +47,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
           <EditorTable
             windowWidth={props.windowWidth}
             windowHeight={props.windowHeight}
-            oto={props.oto}
             updateSignal={updateSignal}
             fileIndex={props.fileIndex}
             aliasIndex={props.aliasIndex}
@@ -71,8 +69,6 @@ export interface TableDialogProps {
   windowWidth: number;
   /** 画面の縦幅 */
   windowHeight: number;
-  /** 原音設定データ */
-  oto: Oto;
   /** recordの更新通知 */
   updateSignal: number;
   /** 現在のファイルのインデックス */

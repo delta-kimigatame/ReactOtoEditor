@@ -22,7 +22,7 @@ export const TargetDirDialogAliasVariant: React.FC<
   TargetDirDialogAliasVariantProps
 > = (props) => {
   const { t } = useTranslation();
-    const{targetDir}=useOtoProjectStore()
+    const{targetDir,oto}=useOtoProjectStore()
   const OnAliasVariantChange = (e: SelectChangeEvent, i: number) => {
     const av = props.aliasVariant.slice();
     av[i] = e.target.value as "CV" | "VCV" | "VC";
@@ -36,7 +36,7 @@ export const TargetDirDialogAliasVariant: React.FC<
           <InputLabel>{t("targetDirDialog.correctType")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
-          {props.oto.GetLines()[targetDir].map((l, i) => (
+          {oto.GetLines()[targetDir].map((l, i) => (
             <>
               <FullWidthSelect
                 label={l.split("=")[1].split(",")[0]}
@@ -58,8 +58,6 @@ export const TargetDirDialogAliasVariant: React.FC<
 };
 
 export interface TargetDirDialogAliasVariantProps {
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
   /** エイリアスの種類 */
   aliasVariant: Array<"CV" | "VCV" | "VC"> | null;
   /** エイリアスの種類を設定する。 */

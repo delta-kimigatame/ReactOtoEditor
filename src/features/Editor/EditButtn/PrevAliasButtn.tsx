@@ -19,13 +19,13 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
 export const PrevAliasButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
 
-  const { record, targetDir, setRecord } = useOtoProjectStore();
+  const { record, targetDir, setRecord,oto } = useOtoProjectStore();
   /**
    * 前のエイリアスに送る処理
    */
   const OnPrevAlias_ = () => {
     OnPrevAlias(
-      props.oto,
+      oto,
       targetDir,
       record,
       props.maxFileIndex,
@@ -55,8 +55,6 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
 };
 
 interface Props {
-  /** 原音設定データ */
-  oto: Oto;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

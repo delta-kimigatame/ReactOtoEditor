@@ -41,7 +41,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const { overlapLock, setOverlapLock, touchMode, setTouchMode } =
     useCookieStore();
-  const { targetDir, wav, record, setRecord } = useOtoProjectStore();
+  const { targetDir, wav, record, setRecord,oto } = useOtoProjectStore();
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -90,7 +90,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       }
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         OnPrevAlias(
-          props.oto,
+          oto,
           targetDir,
           record,
           maxFileIndex,
@@ -104,7 +104,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         );
       } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         OnNextAlias(
-          props.oto,
+          oto,
           targetDir,
           record,
           maxFileIndex,
@@ -175,15 +175,15 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
    * 原音設定が初期化された際の処理
    */
   React.useEffect(() => {
-    if (props.oto === null) {
+    if (oto === null) {
       setMaxFileIndex(0);
       setFileIndex(0);
       setAliasIndex(0);
       setMaxAliasIndex(0);
     } else {
-      setMaxFileIndex(props.oto.GetFileNames(targetDir).length - 1);
+      setMaxFileIndex(oto.GetFileNames(targetDir).length - 1);
     }
-  }, [props.oto]);
+  }, [oto]);
 
   /**
    * 選択中の原音設定レコードが変更された際の処理
@@ -194,7 +194,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       setMaxAliasIndex(0);
     } else {
       setMaxAliasIndex(
-        props.oto.GetAliases(targetDir, record.filename).length - 1
+        oto.GetAliases(targetDir, record.filename).length - 1
       );
     }
   }, [record]);
@@ -309,7 +309,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         </StyledBox>
         <StyledBox>
           <PrevAliasButton
-            oto={props.oto}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -322,7 +321,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             progress={props.progress}
           />
           <NextAliasButton
-            oto={props.oto}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -341,7 +339,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         setDialogOpen={setTableDialogOpen}
         windowWidth={props.windowWidth}
         windowHeight={props.windowHeight}
-        oto={props.oto}
         updateSignal={0}
         fileIndex={fileIndex}
         aliasIndex={aliasIndex}
@@ -352,7 +349,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       <AliasDialog
         dialogOpen={aliasDialogOpen}
         setDialogOpen={setAliasDialogOpen}
-        oto={props.oto}
         fileIndex={fileIndex}
         aliasIndex={aliasIndex}
         maxFileIndex={maxFileIndex}
@@ -373,8 +369,6 @@ export interface EditorButtonAreaProps {
   windowHeight: number;
   /** buttonAreaの高さを通知 */
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
-  /** 原音設定データ */
-  oto: Oto;
   /** 横方向1pixelあたりが何msを表すか */
   pixelPerMsec: number;
   /** 横方向1pixelあたりが何msを表すかを変更する処理 */

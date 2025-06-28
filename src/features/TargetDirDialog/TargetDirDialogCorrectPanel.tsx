@@ -25,7 +25,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
   TargetDirDialogCorrectPanelProps
 > = (props) => {
   const { t } = useTranslation();
-  const { targetDir } = useOtoProjectStore();
+  const { targetDir,setOto,oto } = useOtoProjectStore();
   /** オフセット補正の有無 */
   const [isCorrectOffset, setIsCorrectOffset] = React.useState<boolean>(false);
   /** テンポ補正の有無 */
@@ -90,10 +90,10 @@ export const TargetDirDialogCorrectPanel: React.FC<
   };
 
   React.useEffect(() => {
-    if (props.oto !== null) {
-      SetDefaultAliasVariant(props.oto);
+    if (oto !== null) {
+      SetDefaultAliasVariant(oto);
     }
-  }, [props.oto]);
+  }, [oto]);
 
   const OnCorrectClick = () => {
     if (!isCorrectOffset) {
@@ -104,14 +104,14 @@ export const TargetDirDialogCorrectPanel: React.FC<
         "TargetDirDialogCorrectPanel"
       );
       const offsetDif = afterOffset - beforeOffset;
-      AddParams(props.oto, targetDir, "offset", offsetDif);
+      AddParams(oto, targetDir, "offset", offsetDif);
     } else if (!hasPositiveBlank) {
       Log.log(
         `tempoの補正。テンプレートのオフセット:${beforeOffset}、変更後のオフセット:${afterOffset}。テンプレートのテンポ:${beforeTempo}、変更後のテンポ:${afterTempo}`,
         "TargetDirDialogCorrectPanel"
       );
       CorrectTempo(
-        props.oto,
+        oto,
         targetDir,
         aliasVariant,
         beforeOffset,
@@ -121,7 +121,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
       );
     }
     Log.log(`oto.iniの確定`, "TargetDirDialogCorrectPanel");
-    props.setOto(props.oto);
+    setOto(oto);
     props.setDialogOpen(false);
   };
   return (
@@ -197,7 +197,6 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     }}
                   />
                   <TargetDirDialogAliasVariant
-                    oto={props.oto}
                     aliasVariant={aliasVariant}
                     setAliasVariant={setAliasVariant}
                   />
@@ -214,8 +213,4 @@ export const TargetDirDialogCorrectPanel: React.FC<
 export interface TargetDirDialogCorrectPanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
 }

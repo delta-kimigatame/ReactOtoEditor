@@ -32,7 +32,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
   /** oto.iniがディレクトリ内に存在するか否か */
   const [nothingOto, setNothingOto] = React.useState<boolean>(false);
   /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
-  const [oto, setOto] = React.useState<Oto | null>(null);
+  const [oto, setOtoTemp] = React.useState<Oto | null>(null);
   /** oto.ini読込の文字コード */
   const [encoding, setEncoding] = React.useState<string>("SJIS");
   /** tabの表示を切り替える */
@@ -68,7 +68,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
           )
           .then(() => {
             Log.log(`${otoPath}読込完了`, "TargetDirDialogContent");
-            setOto(oto);
+            setOtoTemp(oto);
             setTabIndex("1");
           });
       });
@@ -108,23 +108,19 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                 </TabList>
                 <TargetDirDialogTabPanelZip
                   oto={oto}
-                  setOto={props.setOto}
-                  setOtoTemp={setOto}
+                  setOtoTemp={setOtoTemp}
                   setDialogOpen={props.setDialogOpen}
                   LoadOto={LoadOto}
                   nothingOto={nothingOto}
                 />
                 <TargetDirDialogTabPanelStoraged
                   setDialogOpen={props.setDialogOpen}
-                  setOto={props.setOto}
                 />
                 <TargetDirDialogTabPanelTemplate
                   setDialogOpen={props.setDialogOpen}
-                  setOto={props.setOto}
                 />
                 <TargetDirDialogTabMakePanel
                   setDialogOpen={props.setDialogOpen}
-                  setOto={props.setOto}
                 />
               </TabContext>
             </>
@@ -138,8 +134,4 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
 export interface TargetDirDialogContentProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 読み込んだoto.iniのデータ */
-  oto: Oto;
-  /** 読み込んだoto.iniのデータを変更する処理 */
-  setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }
