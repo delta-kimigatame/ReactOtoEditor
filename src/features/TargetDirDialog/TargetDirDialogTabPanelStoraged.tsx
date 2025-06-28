@@ -12,7 +12,7 @@ import { TargetDirDialogCheckList } from "../../components/TargetDirDialog/Targe
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -33,7 +33,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
 
   React.useEffect(() => {
     const storagedOto__ = storagedOto_ === null ? {} : JSON.parse(storagedOto_);
-    Log.log(`localstorageから編集履歴読込`, "TargetDirDialogTabPanelStoraged");
+    LOG.debug(`localstorageから編集履歴読込`, "TargetDirDialogTabPanelStoraged");
     setStoragedOto(storagedOto__);
   }, []);
 
@@ -43,7 +43,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
       const f = Object.keys(storagedOto)[i];
       const j = Object.keys(storagedOto[f]).indexOf(targetDir);
       if (j >= 0) {
-        Log.log(
+        LOG.debug(
           `当該フォルダの編集履歴が見つかりました`,
           "TargetDirDialogTabPanelStoraged"
         );
@@ -65,7 +65,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         "UTF-8"
       )
       .then(() => {
-        Log.log(
+        LOG.debug(
           `oto.ini読込完了。ファイル名${f}、フォルダ名:${d}`,
           "TargetDirDialogTabPanelStoraged"
         );
@@ -73,7 +73,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
       });
   }, [selectHistory]);
   const OnSelectChange = (e: SelectChangeEvent) => {
-    Log.log(
+    LOG.debug(
       `読込履歴変更:${e.target.value}`,
       "TargetDirDialogTabPanelStoraged"
     );
@@ -84,7 +84,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
    * 現在読み込んでいるoto.iniを親コンポーネントに返し、ダイアログを閉じる。
    */
   const OnSubmitClick = () => {
-    Log.log(`oto.ini確定`, "TargetDirDialogTabPanelStoraged");
+    LOG.debug(`oto.ini確定`, "TargetDirDialogTabPanelStoraged");
     Log.gtag("loadStoragedOto");
     setOto(oto);
     props.setDialogOpen(false);

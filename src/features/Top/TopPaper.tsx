@@ -11,7 +11,7 @@ import { BasePaper } from "../../components/Common/BasePaper";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { setting } from "../../config/setting";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -43,7 +43,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
     setProcessing(true);
     setReadFile(e.target.files[0]);
     setDialogOpen(true);
-    Log.log(`ファイル読み込み。${e.target.files[0].name}`, "TOPPaper");
+    LOG.debug(`ファイル読み込み。${e.target.files[0].name}`, "TOPPaper");
   };
 
   /**
@@ -62,7 +62,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
   React.useEffect(() => {
     if (readZip !== null) {
       setProcessing(false);
-      Log.log(`zip読込完了`, "TOPPaper");
+      LOG.debug(`zip読込完了`, "TOPPaper");
     }
   }, [readZip]);
 

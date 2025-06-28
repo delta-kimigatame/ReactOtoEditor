@@ -13,7 +13,7 @@ import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import { CorrectTempo } from "../../utils/CorrectOto";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -54,34 +54,34 @@ export const TargetDirDialogCorrectPanel: React.FC<
         if (a.match(/\* /)) {
           /**母音結合はCV */
           av.push("CV");
-          Log.log(
+          LOG.debug(
             `aliasVariantの推定。エイリアス:${a}、種類:CV`,
             "TargetDirDialogCorrectPanel"
           );
         } else if (a.match(/ [ぁ-んーァ-ヶー一-龠]+/)) {
           /** 半角スペースの後ろに全角文字があればVCV */
           av.push("VCV");
-          Log.log(
+          LOG.debug(
             `aliasVariantの推定。エイリアス:${a}、種類:VCV`,
             "TargetDirDialogCorrectPanel"
           );
         } else if (a.includes(" ")) {
           /** その他半角スペースがあればVC */
           av.push("VC");
-          Log.log(
+          LOG.debug(
             `aliasVariantの推定。エイリアス:${a}、種類:VC`,
             "TargetDirDialogCorrectPanel"
           );
         } else {
           av.push("CV");
-          Log.log(
+          LOG.debug(
             `aliasVariantの推定。エイリアス:${a}、種類:CV`,
             "TargetDirDialogCorrectPanel"
           );
         }
         if (oto_.GetRecord(targetDir, f, a).blank >= 0) {
           positiveBlank = true;
-          Log.log(`右ブランクが正の数`, "TargetDirDialogCorrectPanel");
+          LOG.debug(`右ブランクが正の数`, "TargetDirDialogCorrectPanel");
         }
       });
     });
@@ -97,16 +97,16 @@ export const TargetDirDialogCorrectPanel: React.FC<
 
   const OnCorrectClick = () => {
     if (!isCorrectOffset) {
-      Log.log(`補正無し`, "TargetDirDialogCorrectPanel");
+      LOG.debug(`補正無し`, "TargetDirDialogCorrectPanel");
     } else if (!isCorrectTempo) {
-      Log.log(
+      LOG.debug(
         `offsetのみ補正。テンプレート:${beforeOffset}、変更後:${afterOffset}`,
         "TargetDirDialogCorrectPanel"
       );
       const offsetDif = afterOffset - beforeOffset;
       AddParams(oto, targetDir, "offset", offsetDif);
     } else if (!hasPositiveBlank) {
-      Log.log(
+      LOG.debug(
         `tempoの補正。テンプレートのオフセット:${beforeOffset}、変更後のオフセット:${afterOffset}。テンプレートのテンポ:${beforeTempo}、変更後のテンポ:${afterTempo}`,
         "TargetDirDialogCorrectPanel"
       );
@@ -120,7 +120,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
         afterTempo
       );
     }
-    Log.log(`oto.iniの確定`, "TargetDirDialogCorrectPanel");
+    LOG.debug(`oto.iniの確定`, "TargetDirDialogCorrectPanel");
     setOto(oto);
     props.setDialogOpen(false);
   };

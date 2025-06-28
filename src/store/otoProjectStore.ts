@@ -4,7 +4,7 @@ import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 import { create } from "zustand";
 import { GetStorageOto, SaveStorageOto } from "../services/StorageOto";
-import { Log } from "../lib/Logging";
+import { LOG } from "../lib/Logging";
 import { fftSetting } from "../config/setting";
 
 interface OtoProjectStore {
@@ -33,7 +33,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
     // oto の変更を監視して処理を実行
     if (oto === null) {
       set({ record: null, wavFileName: null });
-      Log.log("otoを初期化", "OtoProjectStore");
+      LOG.debug("otoを初期化", "OtoProjectStore");
     } else {
       const targetDir = get().targetDir;
       if (targetDir) {
@@ -41,7 +41,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
         const alias: string = oto.GetAliases(targetDir, filename)[0];
         const record: OtoRecord = oto.GetRecord(targetDir, filename, alias);
         set({ wavFileName: filename, record });
-        Log.log(
+        LOG.debug(
           `otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`,
           "OtoProjectStore"
         );
@@ -55,7 +55,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
     // record の変更に基づく処理
     if (record === null) {
       set({ wavFileName: null });
-      Log.log("recordを初期化", "OtoProjectStore");
+      LOG.debug("recordを初期化", "OtoProjectStore");
     } else {
       const { oto, zipFileName, targetDir, wavFileName } = get();
       const storagedOto: {} = GetStorageOto();
@@ -64,7 +64,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
         set({ wavFileName: record.filename });
       }
       Log.gtag("changeRecord");
-      Log.log("localstorageに保存", "OtoProjectStore");
+      LOG.debug("localstorageに保存", "OtoProjectStore");
     }
   },
   targetDir: null,
@@ -78,7 +78,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
     // wavFileName の変更に基づく処理
     if (wavFileName === null) {
       set({ wav: null });
-      Log.log("wavを初期化", "OtoProjectStore");
+      LOG.debug("wavを初期化", "OtoProjectStore");
     } else {
       const { readZip, targetDir } = get();
       if (readZip !== null) {
@@ -93,10 +93,10 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
             w.RemoveDCOffset();
             w.VolumeNormalize();
             set({ wav: w });
-            Log.log(`wav読込完了。${wPath}`, "OtoProjectStore");
+            LOG.debug(`wav読込完了。${wPath}`, "OtoProjectStore");
           });
         } else {
-          Log.log(`zip内にwavが見つかりませんでした。${wPath}`, "OtoProjectStore");
+          LOG.debug(`zip内にwavが見つかりませんでした。${wPath}`, "OtoProjectStore");
           set({ wav: null });
         }
       }

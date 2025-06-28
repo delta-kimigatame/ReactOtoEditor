@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { FullWidthButton } from "../../../components/Common/FullWidthButton";
 
 /**
@@ -52,7 +52,7 @@ export const MakePanelConsonantAccordion: React.FC<
     const consonant_ = props.consonant.slice();
     consonant_.push({ consonant: "", variant: "", length: 0 });
     props.setConsonant(consonant_);
-    Log.log("consonantを追加しました","MakePanelConsonantAccordion")
+    LOG.debug("consonantを追加しました","MakePanelConsonantAccordion")
   };
 
   return (

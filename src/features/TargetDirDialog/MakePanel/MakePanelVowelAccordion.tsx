@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { FullWidthButton } from "../../../components/Common/FullWidthButton";
 
 /**
@@ -35,7 +35,7 @@ export const MakePanelVowelAccordion: React.FC<
     const vowels_ = props.vowel.slice();
     vowels_.push({ vowel: "", variant: "" });
     props.setVowel(vowels_);
-    Log.log("vowelを追加しました","MakePanelVowelAccordion")
+    LOG.debug("vowelを追加しました","MakePanelVowelAccordion")
   };
   return (
     <Accordion>

@@ -8,7 +8,7 @@ import { PaletteMode } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
@@ -70,7 +70,7 @@ export const OnPlayBeforePreutter = (record: OtoRecord | null, wav: Wave) => {
   const audioSource = audioContext.createBufferSource();
   audioSource.buffer = audioBuffer;
   audioSource.connect(audioContext.destination);
-  Log.log(`先行発声まで再生`, "PlayBeforePreutterButton");
+  LOG.debug(`先行発声まで再生`, "PlayBeforePreutterButton");
   Log.gtag("playBefore");
   audioSource.start();
 };

@@ -1,5 +1,5 @@
 import { COOKIE_KEYS, cookieDefaults } from "../config/cookie";
-import { Log } from "../lib/Logging";
+import { LOG } from "../lib/Logging";
 import { ColorTheme } from "../types/colorTheme";
 import { Language } from "../types/language";
 import { Mode } from "../types/mode";
@@ -15,7 +15,7 @@ import { useCookie } from "./useCookie";
  * @returns プロジェクト固有の設定（`mode`, `language`, `colorTheme`, `defaultNote`）と、それらを更新するための関数。
  */
 export const useProjectCookie = () => {
-  Log.log("cookieの取得", "useProjectCookie");
+  LOG.debug("cookieの取得", "useProjectCookie");
   const { getStringCookie, setStringCookie, getObjectCookie, setObjectCookie } =
     useCookie();
   /**
@@ -73,7 +73,7 @@ export const useProjectCookie = () => {
   const setTouchMode = (touchMode: boolean) =>
     setStringCookie(COOKIE_KEYS.touchMode, touchMode.toString());
 
-  Log.log(
+  LOG.debug(
     `mode:${mode},language:${language},colorTheme:${colorTheme},overlapLock:${overlapLock},touchMode:${touchMode}`,
     "useProjectCookie"
   );

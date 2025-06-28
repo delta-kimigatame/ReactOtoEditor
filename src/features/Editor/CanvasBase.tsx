@@ -10,7 +10,7 @@ import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -25,10 +25,10 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
     if (wav === null) {
       return null;
     } else {
-      Log.log(`fft`, "CanvasBase");
+      LOG.debug(`fft`, "CanvasBase");
       const wa = new WaveAnalyse();
       const s = wa.Spectrogram(wav.data);
-      Log.log(`fftend`, "CanvasBase");
+      LOG.debug(`fftend`, "CanvasBase");
       return s;
     }
   }, [wav]);
@@ -57,7 +57,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   /** 横幅 */
   const width = React.useMemo(() => {
     if (wav !== null) {
-      Log.log(
+      LOG.debug(
         `キャンバスの横幅変更:${Math.ceil(wav.data.length / frameWidth)}`,
         "CanvasBase"
       );

@@ -18,7 +18,7 @@ import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import * as BP from "../../lib/OtoBatchProcess";
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../../services/StorageOto";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
@@ -103,7 +103,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   };
 
   const OnSubmitClick = () => {
-    Log.log(
+    LOG.debug(
       `一括処理:${batchList[batchIndex].description}`,
       "TableDialogButtonArea"
     );
@@ -116,26 +116,26 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       param = readZip;
     } else if (batchList[batchIndex].requireString) {
       param = surfix;
-      Log.log(`surfix:${surfix}`, "TableDialogButtonArea");
+      LOG.debug(`surfix:${surfix}`, "TableDialogButtonArea");
     } else if (batchList[batchIndex].requireTarget) {
       param = targetParam;
-      Log.log(`targetParam:${targetParam}`, "TableDialogButtonArea");
+      LOG.debug(`targetParam:${targetParam}`, "TableDialogButtonArea");
     }
     if (param === null) {
       batchList[batchIndex].endPoint(oto, targetDir);
     } else if (batchList[batchIndex].requireNumber) {
-      Log.log(`value:${value}`, "TableDialogButtonArea");
+      LOG.debug(`value:${value}`, "TableDialogButtonArea");
       batchList[batchIndex].endPoint(oto, targetDir, param, value);
     } else {
       batchList[batchIndex].endPoint(oto, targetDir, param);
     }
-    Log.log(`一括処理完了`, "TableDialogButtonArea");
+    LOG.debug(`一括処理完了`, "TableDialogButtonArea");
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
     const storagedOto: {} = GetStorageOto();
     SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
     localStorage.setItem("oto", JSON.stringify(storagedOto));
-    Log.log(`localstorageに保存`, "TableDialogButtonArea");
+    LOG.debug(`localstorageに保存`, "TableDialogButtonArea");
   };
 
   return (

@@ -10,7 +10,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 
 import { TargetDirDialog } from "../../../components/TargetDirDialog/TargetDirDialog";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../../../services/StorageOto";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
@@ -37,7 +37,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
   const OnMenuClick = () => {
     const storagedOto: {} = GetStorageOto();
     SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
-    Log.log(`localstorageに保存`, "TargetDirMenu");
+    LOG.debug(`localstorageに保存`, "TargetDirMenu");
     setTargetDirDialogOpen(true);
   };
 

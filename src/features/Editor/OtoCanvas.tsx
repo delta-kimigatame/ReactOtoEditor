@@ -7,7 +7,7 @@ import { PaletteMode } from "@mui/material";
 import { lineColorPallet } from "../../config/colors";
 import { GetColor } from "../../utils/Color";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
@@ -94,7 +94,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
-    Log.log(`キャンバス初期化`, "OtoCanvas");
+    LOG.debug(`キャンバス初期化`, "OtoCanvas");
     ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
   };
 
@@ -215,7 +215,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
   const RenderAll = (ctx: CanvasRenderingContext2D) => {
     if (ctx) {
       RenderBase(ctx);
-      Log.log(`oto.ini描画`, "OtoCanvas");
+      LOG.debug(`oto.ini描画`, "OtoCanvas");
       RenderOffset(ctx);
       RenderOverlap(ctx);
       RenderPreutter(ctx);
@@ -272,7 +272,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param clickX タップされたX座標
    */
   const UpdateOto = (target: string, clickX: number) => {
-    Log.log(
+    LOG.debug(
       `編集対象:${target}、clickX:${clickX}、オーバーラップロック:${overlapLock}`,
       "OtoCanvas"
     );
@@ -377,7 +377,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     const clickY: number =
       e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
-    Log.log(`編集対象特定。touchMode:${touchMode}`, "OtoCanvas");
+    LOG.debug(`編集対象特定。touchMode:${touchMode}`, "OtoCanvas");
     if (touchMode) {
       /** touchModeがtrueの場合、問答無用でpreが対象 */
       t = "pre";
@@ -397,7 +397,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         /** 右ブランクが正の場合値を更新する */
         blankPos = props.canvasWidth - record.blank / props.pixelPerMsec;
       }
-      Log.log(
+      LOG.debug(
         `clickX:${clickX}、clickY:${clickY}、offset:${offsetPos}、overlapPos:${overlapPos}、preutterPos:${preutterPos}、velocityPos:${velocityPos}、blankPos:${blankPos}`,
         "OtoCanvas"
       );

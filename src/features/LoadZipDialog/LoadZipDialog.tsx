@@ -7,7 +7,7 @@ import Divider from "@mui/material/Divider";
 import { LoadZipDialogContent } from "../../components/LoadZipDialog/LoadZipDialogContent";
 import { LoadZipDialogTitle } from "../../components/LoadZipDialog/LoadZipDialogTitle";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -35,7 +35,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
   const LoadZip = (file: File, encoding: string = "utf-8") => {
     const zip = new JSZip();
     const td = new TextDecoder(encoding);
-    Log.log(`zip読込。文字コード:${encoding}`,"LoadZipDialog")
+    LOG.debug(`zip読込。文字コード:${encoding}`,"LoadZipDialog")
     setZipFileName(file.name);
     zip
       .loadAsync(file, {
@@ -46,7 +46,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
         setProcessing(false);
         setZipFiles(z.files);
         Log.gtag("loadzip")
-        Log.log(`zip読込完了`,"LoadZipDialog")
+        LOG.debug(`zip読込完了`,"LoadZipDialog")
       });
   };
 

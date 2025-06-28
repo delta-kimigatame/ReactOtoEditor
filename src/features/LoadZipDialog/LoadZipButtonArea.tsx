@@ -10,7 +10,7 @@ import { NormalizeJP } from "../../utils/FilenameNormalize";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 
 /**
  * zip読込待ちダイアログの操作ボタン部分
@@ -27,7 +27,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
   const OnSubmitClick = () => {
     if (props.zipFiles === null) return;
     const newZip = new JSZip();
-    Log.log(`zipファイル名正規化開始`, "LoadZipButtonArea");
+    LOG.debug(`zipファイル名正規化開始`, "LoadZipButtonArea");
     ZipExtract(props.zipFiles, 0, newZip);
   };
 
@@ -40,7 +40,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
     props.setEncoding(e.target.value);
     props.setProcessing(true);
     props.setZipFiles(null);
-    Log.log(`zip読込文字コード変更:${e.target.value}`, "LoadZipButtonArea");
+    LOG.debug(`zip読込文字コード変更:${e.target.value}`, "LoadZipButtonArea");
     props.LoadZip(props.file, e.target.value);
   };
 
@@ -61,7 +61,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
       if (index < Object.keys(files).length - 1) {
         ZipExtract(files, index + 1, newZip);
       } else {
-        Log.log(`zipファイル名正規化終了`, "LoadZipButtonArea");
+        LOG.debug(`zipファイル名正規化終了`, "LoadZipButtonArea");
         props.setZipFiles(newZip.files);
         props.setDialogOpen(false);
       }

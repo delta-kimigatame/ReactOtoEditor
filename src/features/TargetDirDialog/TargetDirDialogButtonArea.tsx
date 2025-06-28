@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
@@ -28,7 +28,7 @@ export const TargetDirDialogButtonArea: React.FC<
    * @param e
    */
   const OnSelectChange = (e: SelectChangeEvent) => {
-    Log.log(`文字コードの変更。${e.target.value}`, "TargetDirDialogButtonArea");
+    LOG.debug(`文字コードの変更。${e.target.value}`, "TargetDirDialogButtonArea");
     props.setEncoding(e.target.value);
     props.setOtoTemp(null);
     props.LoadOto(e.target.value);
@@ -38,7 +38,7 @@ export const TargetDirDialogButtonArea: React.FC<
    * 現在読み込んでいるoto.iniを親コンポーネントに返し、ダイアログを閉じる。
    */
   const OnSubmitClick = () => {
-    Log.log(`oto.ini確定`, "TargetDirDialogButtonArea");
+    LOG.debug(`oto.ini確定`, "TargetDirDialogButtonArea");
     Log.gtag("loadoto");
     setOto(props.oto);
     props.setDialogOpen(false);

@@ -14,7 +14,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
 
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
@@ -67,7 +67,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
-      Log.log(
+      LOG.debug(
         `エイリアス変更。変更前:${record.alias}、変更後:${alias}`,
         "AliasDialog"
       );
@@ -91,7 +91,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
-      Log.log(
+      LOG.debug(
         `エイリアス複製。複製元:${record.alias}、複製後:${alias}`,
         "AliasDialog"
       );
@@ -120,7 +120,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
    * 最後のエイリアスの場合1つ前、それ以外の場合1つ後ろのエイリアスをrecordにセットする。
    */
   const OnDeleteClick = () => {
-    Log.log(`エイリアス削除。${record.alias}`, "AliasDialog");
+    LOG.debug(`エイリアス削除。${record.alias}`, "AliasDialog");
     oto.RemoveAlias(targetDir, record.filename, record.alias);
     props.setDialogOpen(false);
     if (
@@ -174,27 +174,27 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
     if (offset !== record.offset) {
       record.offset = offset;
       update = true;
-      Log.log(`オフセット変更。${record.offset}`, "AliasDialog");
+      LOG.debug(`オフセット変更。${record.offset}`, "AliasDialog");
     }
     if (overlap !== record.overlap) {
       record.overlap = overlap;
       update = true;
-      Log.log(`オーバーラップ変更。${record.overlap}`, "AliasDialog");
+      LOG.debug(`オーバーラップ変更。${record.overlap}`, "AliasDialog");
     }
     if (preutter !== record.pre) {
       record.pre = preutter;
       update = true;
-      Log.log(`先行発声変更。${record.pre}`, "AliasDialog");
+      LOG.debug(`先行発声変更。${record.pre}`, "AliasDialog");
     }
     if (velocity !== record.velocity) {
       record.velocity = velocity;
       update = true;
-      Log.log(`子音部変更。${record.velocity}`, "AliasDialog");
+      LOG.debug(`子音部変更。${record.velocity}`, "AliasDialog");
     }
     if (blank !== record.blank) {
       record.blank = blank;
       update = true;
-      Log.log(`右ブランク変更。${record.blank}`, "AliasDialog");
+      LOG.debug(`右ブランク変更。${record.blank}`, "AliasDialog");
     }
     if (update) {
       props.setUpdateSignal(Math.random());

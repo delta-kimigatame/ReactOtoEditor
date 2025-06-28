@@ -5,7 +5,7 @@ import { fftSetting } from "../../config/setting";
 import { backgroundColorPallet, specColor } from "../../config/colors";
 import { GetColor, GetColorInterpParam } from "../../utils/Color";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
@@ -62,7 +62,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     wav: Wave,
     spec: Array<Array<number>>
   ): Promise<void> => {
-    Log.log(`canvas初期化`, "SpecCanvas");
+    LOG.debug(`canvas初期化`, "SpecCanvas");
     const windowSize = fftSetting.windowSize;
     const canvasWidth = props.canvasWidth;
     const canvasHeight = props.canvasHeight;
@@ -81,7 +81,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
       data[i + 2] = bg.b;
       data[i + 3] = 255;
     }
-    Log.log(`スペクトログラム描画`, "SpecCanvas");
+    LOG.debug(`スペクトログラム描画`, "SpecCanvas");
     // メインの描画処理（時間軸方向のループ）
     const numBlocks = Math.floor(wav.data.length / frameWidth);
     for (let i = 0; i < numBlocks; i++) {
@@ -128,7 +128,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     }
     ctx.putImageData(imageData, 0, 0); //ちゃんとimageData.dataの値はさまざまになっている
     props.setSpecProgress(false);
-    Log.log(`スペクトログラム描画完了`, "SpecCanvas");
+    LOG.debug(`スペクトログラム描画完了`, "SpecCanvas");
   };
 
   /** スペクトラム、色設定、キャンバスサイズが変わった時に再描画 */
@@ -143,7 +143,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
       props.setSpecProgress(true);
       await RenderSpec(ctx, wav, props.spec).then(() => {});
     } else if (ctx) {
-      Log.log(`canvas初期化`, "SpecCanvas");
+      LOG.debug(`canvas初期化`, "SpecCanvas");
       /**キャンバスの初期化 */
       ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
       /** 背景色の描画 */

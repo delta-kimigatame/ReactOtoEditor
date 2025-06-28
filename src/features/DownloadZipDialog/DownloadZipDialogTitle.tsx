@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -31,7 +31,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   const OnDownloadClick = () => {
     setProgress(true);
     const newZip = new JSZip();
-    Log.log("zipの生成", "DownloadZipDialogTitle");
+    LOG.debug("zipの生成", "DownloadZipDialogTitle");
     ZipExtract(readZip, 0, newZip);
   };
 
@@ -52,7 +52,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
       if (index < Object.keys(files).length - 1) {
         ZipExtract(files, index + 1, newZip);
       } else {
-        Log.log("元zipの複製完了", "DownloadZipDialogTitle");
+        LOG.debug("元zipの複製完了", "DownloadZipDialogTitle");
         ZipedOto(newZip);
       }
     });
@@ -71,7 +71,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
-        Log.log(
+        LOG.debug(
           `編集中データの保存:${td + "/oto.ini"}`,
           "DownloadZipDialogTitle"
         );
@@ -83,12 +83,12 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
           "oto.ini",
           { type: "text/plane;charset=shift-jis" }
         );
-        Log.log(`履歴から保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
+        LOG.debug(`履歴から保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
         newZip.file(td + "/oto.ini", f);
       } else {
         /** 書き出ししない場合 */
         if (Object.keys(newZip.files).includes(td + "/oto.ini")) {
-          Log.log(`削除:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
+          LOG.debug(`削除:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
           newZip.remove(td + "/oto.ini");
         }
       }
@@ -101,7 +101,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     const a = document.createElement("a");
     a.href = url;
     a.download = zipFileName;
-    Log.log(`zipダウンロード`, "DownloadZipDialogTitle");
+    LOG.debug(`zipダウンロード`, "DownloadZipDialogTitle");
     Log.gtag("downloadZip");
     a.click();
     setProgress(false);

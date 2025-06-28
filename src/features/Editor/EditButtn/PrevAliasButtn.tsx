@@ -8,7 +8,7 @@ import { PaletteMode } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
@@ -90,7 +90,7 @@ export const OnPrevAlias = (
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>,
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>
 ) => {
-  Log.log(
+  LOG.debug(
     `エイリアス変更前。maxFileIndex:${maxFileIndex}、fileIndex:${fileIndex}、maxAliasIndex:${maxAliasIndex}、aliasIndex:${aliasIndex}`,
     "PrevAliasButton"
   );
@@ -103,7 +103,7 @@ export const OnPrevAlias = (
       setFileIndex(fileIndex - 1);
       setAliasIndex(maxAliases);
       setMaxAliasIndex(maxAliases);
-      Log.log(
+      LOG.debug(
         `エイリアス変更後。maxFileIndex:${maxFileIndex}、fileIndex:${
           fileIndex - 1
         }、maxAliasIndex:${maxAliases}、aliasIndex:${maxAliases}`,
@@ -114,7 +114,7 @@ export const OnPrevAlias = (
     const alias = oto.GetAliases(targetDir, record.filename)[aliasIndex - 1];
     setRecord(oto.GetRecord(targetDir, record.filename, alias));
     setAliasIndex(aliasIndex - 1);
-    Log.log(
+    LOG.debug(
       `エイリアス変更前。maxFileIndex:${maxFileIndex}、fileIndex:${fileIndex}、maxAliasIndex:${maxAliasIndex}、aliasIndex:${
         aliasIndex - 1
       }`,

@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { FullWidthButton } from "../../../components/Common/FullWidthButton";
 
 /**
@@ -30,7 +30,7 @@ export const MakePanelReplaceAccordion: React.FC<
     const replace_ = props.replace.slice();
     replace_.push(["", ""]);
     props.setReplace(replace_);
-    Log.log("replaceを追加しました","MakePanelReplaceAccordion")
+    LOG.debug("replaceを追加しました","MakePanelReplaceAccordion")
   };
 
   return (

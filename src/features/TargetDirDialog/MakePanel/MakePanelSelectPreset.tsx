@@ -7,7 +7,7 @@ import { SelectChangeEvent } from "@mui/material/Select";
 
 import { FullWidthSelect } from "../../../components/Common/FullWidthSelect";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { MakeOtoTempIni } from "../../../lib/MakeOtoTemp/Interface";
 import { MakeJpCv, MakeJpCVVC, MakeJpVCV } from "../../../lib/MakeOtoTemp/Preset";
 import { InputFile } from "../../../lib/MakeOtoTemp/Input";
@@ -49,7 +49,7 @@ MakePanelSelectPresetProps
   const OnFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     if (e.target.files.length === 0) return;
-    Log.log(
+    LOG.debug(
       `ファイル読み込み。${e.target.files[0].name}`,
       "TargetDirDialogTabMakePanel"
     );

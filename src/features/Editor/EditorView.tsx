@@ -9,7 +9,7 @@ import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../../config/setting";
 import { EditorTable } from "./EditorTable";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
 /**

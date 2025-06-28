@@ -17,7 +17,7 @@ import Box from "@mui/material/Box";
 import { FullWidthButton } from "../../../components/Common/FullWidthButton";
 import { LogPaper } from "../../../components/Top/LogPaper";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 
 /**
  * logを表示するメニュー
@@ -31,7 +31,7 @@ export const ShowLogMenu: React.FC<ShowLogMenuProps> = (props) => {
    * メニューをクリックした際の処理。ダイアログを開く
    */
   const OnMenuClick = () => {
-    Log.log(`ログ表示`, "ShowLogMenu");
+    LOG.debug(`ログ表示`, "ShowLogMenu");
     setDialogOpen(true);
   };
 

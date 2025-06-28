@@ -4,12 +4,12 @@ import { useTranslation } from "react-i18next";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 export const HeaderMenuClearCache: React.FC<HeaderMenuClearCacheProps> = (props) => {
   const { t } = useTranslation();
   const handleClick = () => {
-    Log.log("click", "HeaderMenuClearCache");
-    Log.log("アプリのキャッシュクリア", "HeaderMenuClearCache");
+    LOG.debug("click", "HeaderMenuClearCache");
+    LOG.debug("アプリのキャッシュクリア", "HeaderMenuClearCache");
     clearAppCache();
   };
 
@@ -17,16 +17,16 @@ export const HeaderMenuClearCache: React.FC<HeaderMenuClearCacheProps> = (props)
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       await registration.unregister();
-      Log.log("swクリア", "HeaderMenuClearCache");
+      LOG.debug("swクリア", "HeaderMenuClearCache");
     } else {
-      Log.log("sw未登録", "HeaderMenuClearCache");
+      LOG.debug("sw未登録", "HeaderMenuClearCache");
     }
     const cacheKeys = await caches.keys();
     for (const key of cacheKeys) {
       await caches.delete(key);
-      Log.log("キャッシュクリア${key}", "HeaderMenuClearCache");
+      LOG.debug("キャッシュクリア${key}", "HeaderMenuClearCache");
     }
-    Log.log("アプリのキャッシュクリア完了", "HeaderMenuClearCache");
+    LOG.debug("アプリのキャッシュクリア完了", "HeaderMenuClearCache");
     props.setMenuAnchor(null);
   };
   return (

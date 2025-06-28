@@ -10,7 +10,7 @@ import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 import { TargetDirDialogCorrectPanel } from "./TargetDirDialogCorrectPanel";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
@@ -50,7 +50,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
   const OnFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
     if (e.target.files.length === 0) return;
-    Log.log(
+    LOG.debug(
       `ファイル読み込み。${e.target.files[0].name}`,
       "TargetDirDialogTabPanelTemplate"
     );
@@ -58,13 +58,13 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
     setReadFile(e.target.files[0]);
   };
   const LoadOto = (encoding_: string = "SJIS") => {
-    Log.log(
+    LOG.debug(
       `oto.ini"読込。文字コード:${encoding_}`,
       "TargetDirDialogTabPanelTemplate"
     );
     const oto_ = new Oto();
     oto_.InputOtoAsync(targetDir, readFile, encoding_).then(() => {
-      Log.log(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
+      LOG.debug(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
       Log.gtag("loadTemplateOto");
       setOtoTemp(oto_);
       setProcessing(false);
@@ -72,7 +72,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
   };
 
   const SetEncodeOk_ = (value: boolean) => {
-    Log.log(`oto.ini読込文字コード確定`, "TargetDirDialogTabPanelTemplate");
+    LOG.debug(`oto.ini読込文字コード確定`, "TargetDirDialogTabPanelTemplate");
     setEncodeOk(!value);
   };
 

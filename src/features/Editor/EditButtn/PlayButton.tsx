@@ -10,7 +10,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
 import { oto } from "../../../config/setting";
 
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
@@ -89,7 +89,7 @@ export const OnPlay = (
   const audioSource = audioContext.createBufferSource();
   audioSource.buffer = audioBuffer;
   audioSource.connect(audioContext.destination);
-  Log.log(`メトロノーム再生`, "PlayButton");
+  LOG.debug(`メトロノーム再生`, "PlayButton");
   Log.gtag("playMetronome");
   audioSource.start();
 };

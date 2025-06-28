@@ -7,7 +7,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
 import { DownloadZipDialog } from "../../../components/DownloadZipDialog/DownloadZipDialog";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { GetStorageOto } from "../../../services/StorageOto";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
@@ -31,7 +31,7 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
    * メニューをクリックした際の処理。ダイアログを開く
    */
   const OnMenuClick = () => {
-    Log.log(`zipダウンロード準備`, "DownloadZipMenu");
+    LOG.debug(`zipダウンロード準備`, "DownloadZipMenu");
     const storagedOtoTemp: {} = GetStorageOto();
     if (!(zipFileName in storagedOtoTemp)) {
       setStoragedOto({});
@@ -41,13 +41,13 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
     const targetList_: Array<number> = [];
     targetDirs.forEach((td) => {
       if (td === targetDir) {
-        Log.log(`編集中フォルダ:${td}`, "DownloadZipMenu");
+        LOG.debug(`編集中フォルダ:${td}`, "DownloadZipMenu");
         targetList_.push(0);
       } else if (td in storagedOtoTemp[zipFileName]) {
-        Log.log(`履歴有:${td}`, "DownloadZipMenu");
+        LOG.debug(`履歴有:${td}`, "DownloadZipMenu");
         targetList_.push(1);
       } else if (Object.keys(readZip).includes(td + "/oto.ini")) {
-        Log.log(`元zip内に有:${td}`, "DownloadZipMenu");
+        LOG.debug(`元zip内に有:${td}`, "DownloadZipMenu");
         targetList_.push(2);
       } else {
         targetList_.push(3);

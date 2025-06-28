@@ -8,7 +8,7 @@ import { TopPaper } from "../../features/Top/TopPaper";
 import { HistoryPaper } from "./HistoryPaper";
 import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { ShortcutPaper } from "./ShortcutPaper";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
@@ -32,7 +32,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
     if (readZip === null) {
       setTargetDirs(null);
       setTargetDir(null);
-      Log.log("targetDir初期化", "TOPView");
+      LOG.debug("targetDir初期化", "TOPView");
     } else {
       const targetDirs: Array<string> = new Array();
       Object.keys(readZip).forEach((f) => {
@@ -55,7 +55,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
   React.useEffect(() => {
     if (targetDirs !== null) {
       setTargetDirDialogOpen(true);
-      Log.log(`targetDirs取得。${targetDirs}`, "TOPView");
+      LOG.debug(`targetDirs取得。${targetDirs}`, "TOPView");
     }
   }, [targetDirs]);
 

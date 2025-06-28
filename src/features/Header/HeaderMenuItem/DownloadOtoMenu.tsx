@@ -6,7 +6,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { Log } from "../../../lib/Logging";
+import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
@@ -18,7 +18,7 @@ export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
   const { t } = useTranslation();
   const { targetDir,oto } = useOtoProjectStore();
   const OnClick = () => {
-    Log.log(`oto.iniのダウンロード`, "DownloadOtoMenu");
+    LOG.debug(`oto.iniのダウンロード`, "DownloadOtoMenu");
     Log.gtag("downloadOto");
     const f = oto.OutputOto();
     let url = "";

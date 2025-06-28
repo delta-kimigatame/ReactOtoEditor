@@ -8,7 +8,7 @@ import {
 } from "../../config/colors";
 import { GetColor } from "../../utils/Color";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
@@ -45,7 +45,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderBase = (ctx: CanvasRenderingContext2D) => {
-    Log.log(`canvas初期化`, "WavCanvas");
+    LOG.debug(`canvas初期化`, "WavCanvas");
     ctx.clearRect(0, 0, props.canvasWidth, props.canvasHeight);
     ctx.fillStyle = backgroundColor;
     ctx.fillRect(0, 0, props.canvasWidth, props.canvasHeight);
@@ -74,7 +74,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
     ctx: CanvasRenderingContext2D,
     wav: Wave
   ): Promise<void> => {
-    Log.log(`wav描画`, "WavCanvas");
+    LOG.debug(`wav描画`, "WavCanvas");
     RenderBase(ctx);
     ctx.strokeStyle = lineColor;
     ctx.lineWidth = 1;
@@ -95,7 +95,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
     }
     ctx.stroke();
     props.setWavProgress(false);
-    Log.log(`wav描画完了`, "WavCanvas");
+    LOG.debug(`wav描画完了`, "WavCanvas");
   };
 
   /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */

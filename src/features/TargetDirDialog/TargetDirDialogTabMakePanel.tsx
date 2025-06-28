@@ -23,7 +23,7 @@ import { MakePanelConsonantAccordion } from "./MakePanel/MakePanelConsonantAccor
 import { MakePanelVowelAccordion } from "./MakePanel/MakePanelVowelAccordion";
 import { MakePanelSelectPreset } from "./MakePanel/MakePanelSelectPreset";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
 import { MakeOto, MakeOtoSingle } from "../../lib/MakeOtoTemp/MakeOto";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
@@ -126,7 +126,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
   }, [ini]);
 
   const OnMakeClick = () => {
-    Log.log(`oto.iniを生成します。mode:${mode}`, "TargetDirDialogTabMakePanel");
+    LOG.debug(`oto.iniを生成します。mode:${mode}`, "TargetDirDialogTabMakePanel");
     if (mode === "single") {
       const oto = MakeOtoSingle(
         readZip,
@@ -135,7 +135,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
         analyze
       );
       Log.gtag("makeSingleOto");
-      Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
+      LOG.debug(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       setOto(oto);
     } else {
       ini.tempo = tempo;
@@ -168,7 +168,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       });
       ini.consonant = consonant_;
       ini.replace = replace;
-      Log.log(`ini:${JSON.stringify(ini)}`, "TargetDirDialogTabMakePanel");
+      LOG.debug(`ini:${JSON.stringify(ini)}`, "TargetDirDialogTabMakePanel");
       const oto = MakeOto(
         ini,
         Object.keys(readZip),
@@ -176,7 +176,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
         skipBeginingNumber
       );
       Log.gtag("makeOto");
-      Log.log(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
+      LOG.debug(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       setOto(oto);
     }
   };

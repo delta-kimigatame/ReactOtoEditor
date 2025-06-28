@@ -15,7 +15,7 @@ import { TargetDirDialogTabPanelZip } from "../../components/TargetDirDialog/Tar
 import { TargetDirDialogTabPanelStoraged } from "./TargetDirDialogTabPanelStoraged";
 import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTemplate";
 
-import { Log } from "../../lib/Logging";
+import { LOG } from "../../lib/Logging";
 import { TargetDirDialogTabMakePanel } from "./TargetDirDialogTabMakePanel";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
@@ -43,7 +43,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
     if (targetDir === null) return;
     if (readZip === null) return;
     setNothingOto(false);
-    Log.log(`targetDirの変更。${targetDir}`, "TargetDirDialogContent");
+    LOG.debug(`targetDirの変更。${targetDir}`, "TargetDirDialogContent");
     LoadOto();
   }, [targetDir]);
 
@@ -54,7 +54,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
   const LoadOto = (encoding_: string = "SJIS") => {
     const otoPath = targetDir === "" ? "oto.ini" : targetDir + "/oto.ini";
     if (Object.keys(readZip).includes(otoPath)) {
-      Log.log(
+      LOG.debug(
         `${otoPath}読込。文字コード:${encoding_}`,
         "TargetDirDialogContent"
       );
@@ -67,13 +67,13 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
             encoding_
           )
           .then(() => {
-            Log.log(`${otoPath}読込完了`, "TargetDirDialogContent");
+            LOG.debug(`${otoPath}読込完了`, "TargetDirDialogContent");
             setOtoTemp(oto);
             setTabIndex("1");
           });
       });
     } else {
-      Log.log(
+      LOG.debug(
         `${targetDir}内にoto.iniが見つかりませんでした。`,
         "TargetDirDialogContent"
       );
@@ -83,7 +83,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
   };
 
   const OnTabChange = (e: React.SyntheticEvent, newValue: string) => {
-    Log.log(`tabpanel変更。${newValue}`, "TargetDirDialogContent");
+    LOG.debug(`tabpanel変更。${newValue}`, "TargetDirDialogContent");
     setTabIndex(newValue);
   };
   return (
