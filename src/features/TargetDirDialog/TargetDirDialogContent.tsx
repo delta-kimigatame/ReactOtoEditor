@@ -28,6 +28,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
   props
 ) => {
   const { t } = useTranslation();
+  const { readZip } = useOtoProjectStore();
   /** oto.iniがディレクトリ内に存在するか否か */
   const [nothingOto, setNothingOto] = React.useState<boolean>(false);
   /** oto.iniの仮読込。文字コード確認のため親コンポーネントとは個別で値を保持する。 */
@@ -40,7 +41,7 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
   /** `props.targetDir`が変更されたとき、oto.iniの読込を行う。 */
   React.useEffect(() => {
     if (props.targetDir === null) return;
-    if (props.readZip === null) return;
+    if (readZip === null) return;
     setNothingOto(false);
     Log.log(`targetDirの変更。${props.targetDir}`, "TargetDirDialogContent");
     LoadOto();
@@ -51,31 +52,27 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
    * @param encoding_ 文字コード
    */
   const LoadOto = (encoding_: string = "SJIS") => {
-    const otoPath=props.targetDir===""?"oto.ini":props.targetDir + "/oto.ini"
-    if (Object.keys(props.readZip).includes(otoPath)) {
+    const otoPath =
+      props.targetDir === "" ? "oto.ini" : props.targetDir + "/oto.ini";
+    if (Object.keys(readZip).includes(otoPath)) {
       Log.log(
         `${otoPath}読込。文字コード:${encoding_}`,
         "TargetDirDialogContent"
       );
-      props.readZip[otoPath]
-        .async("arraybuffer")
-        .then((result) => {
-          const oto = new Oto();
-          oto
-            .InputOtoAsync(
-              props.targetDir,
-              new Blob([result], { type: "text/plain" }),
-              encoding_
-            )
-            .then(() => {
-              Log.log(
-                `${otoPath}読込完了`,
-                "TargetDirDialogContent"
-              );
-              setOto(oto);
-              setTabIndex("1");
-            });
-        });
+      readZip[otoPath].async("arraybuffer").then((result) => {
+        const oto = new Oto();
+        oto
+          .InputOtoAsync(
+            props.targetDir,
+            new Blob([result], { type: "text/plain" }),
+            encoding_
+          )
+          .then(() => {
+            Log.log(`${otoPath}読込完了`, "TargetDirDialogContent");
+            setOto(oto);
+            setTabIndex("1");
+          });
+      });
     } else {
       Log.log(
         `${props.targetDir}内にoto.iniが見つかりませんでした。`,
@@ -136,7 +133,6 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                   setDialogOpen={props.setDialogOpen}
                   setOto={props.setOto}
                   targetDir={props.targetDir}
-                  readZip={props.readZip}
                 />
               </TabContext>
             </>
@@ -160,6 +156,4 @@ export interface TargetDirDialogContentProps {
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
 }

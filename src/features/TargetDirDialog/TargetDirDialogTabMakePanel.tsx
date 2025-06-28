@@ -26,6 +26,7 @@ import { MakePanelSelectPreset } from "./MakePanel/MakePanelSelectPreset";
 import { Log } from "../../lib/Logging";
 import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
 import { MakeOto, MakeOtoSingle } from "../../lib/MakeOtoTemp/MakeOto";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * oto.iniを生成する場合のパネル
@@ -36,6 +37,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
   TargetDirDialogTabMakePanelProps
 > = (props) => {
   const { t } = useTranslation();
+  const { readZip } = useOtoProjectStore();
   /** 生成方法 */
   const [mode, setMode] = React.useState<"single" | "multi">(null);
   const [ini, setIni] = React.useState<MakeOtoTempIni>(null);
@@ -127,7 +129,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
     Log.log(`oto.iniを生成します。mode:${mode}`, "TargetDirDialogTabMakePanel");
     if (mode === "single") {
       const oto = MakeOtoSingle(
-        props.readZip,
+        readZip,
         props.targetDir,
         skipBeginingNumber,
         analyze
@@ -169,7 +171,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       Log.log(`ini:${JSON.stringify(ini)}`, "TargetDirDialogTabMakePanel");
       const oto = MakeOto(
         ini,
-        Object.keys(props.readZip),
+        Object.keys(readZip),
         props.targetDir,
         skipBeginingNumber
       );
@@ -304,6 +306,4 @@ export interface TargetDirDialogTabMakePanelProps {
   targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
 }

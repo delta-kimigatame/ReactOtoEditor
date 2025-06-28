@@ -60,7 +60,6 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
             setTargetDir={props.setTargetDir}
             oto={props.oto}
             setOto={props.setOto}
-            readZip={props.readZip}
           />
         </>
       )}
@@ -79,8 +78,6 @@ export interface TargetDirMenuProps {
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

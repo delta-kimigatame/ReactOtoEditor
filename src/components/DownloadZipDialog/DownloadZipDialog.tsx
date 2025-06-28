@@ -26,7 +26,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
       >
         <DownloadZipDialogTitle
           targetDirs={props.targetDirs}
-          readZip={props.readZip}
           oto={props.oto}
           setMenuAnchor={props.setMenuAnchor}
           setDialogOpen={props.setDialogOpen}
@@ -36,7 +35,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
         />
         <DownloadZipDialogContent
           targetDirs={props.targetDirs}
-          readZip={props.readZip}
           targetDir={props.targetDir}
           storagedOto={props.storagedOto}
           targetList={props.targetList}
@@ -54,8 +52,6 @@ export interface DownloadZipDialogProps {
   targetDir: string | null;
   /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** ダイアログを表示するか否か */

@@ -78,7 +78,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
       </AppBar>
       <HeaderMenu
         record={props.record}
-        readZip={props.readZip}
         targetDirs={props.targetDirs}
         targetDir={props.targetDir}
         setTargetDir={props.setTargetDir}
@@ -104,6 +103,4 @@ export interface HeaderProps {
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
 }

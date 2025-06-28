@@ -10,6 +10,7 @@ import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
 import { Log } from "../../lib/Logging";
 import { ShortcutPaper } from "./ShortcutPaper";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * zipデータを読み込む前の画面
@@ -17,6 +18,7 @@ import { ShortcutPaper } from "./ShortcutPaper";
  * @returns zipデータを読み込む前の画面
  */
 export const TopView: React.FC<TopViewProps> = (props) => {
+  const { readZip } = useOtoProjectStore();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] =
     React.useState<boolean>(false);
@@ -26,13 +28,13 @@ export const TopView: React.FC<TopViewProps> = (props) => {
    * zip内を探索し、wavがあればtargetDirsに登録する。
    */
   React.useEffect(() => {
-    if (props.readZip === null) {
+    if (readZip === null) {
       props.setTargetDirs(null);
       props.setTargetDir(null);
-      Log.log("targetDir初期化","TOPView")
+      Log.log("targetDir初期化", "TOPView");
     } else {
       const targetDirs: Array<string> = new Array();
-      Object.keys(props.readZip).forEach((f) => {
+      Object.keys(readZip).forEach((f) => {
         if (f.endsWith(".wav")) {
           const tmps = f.split("/").slice(0, -1).join("/");
           if (!targetDirs.includes(tmps)) {
@@ -42,7 +44,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       });
       props.setTargetDirs(targetDirs);
     }
-  }, [props.readZip]);
+  }, [readZip]);
 
   /**
    * `props.targetDirs`が変更されたときの処理。
@@ -52,16 +54,13 @@ export const TopView: React.FC<TopViewProps> = (props) => {
   React.useEffect(() => {
     if (props.targetDirs !== null) {
       setTargetDirDialogOpen(true);
-      Log.log(`targetDirs取得。${props.targetDirs}`,"TOPView")
+      Log.log(`targetDirs取得。${props.targetDirs}`, "TOPView");
     }
   }, [props.targetDirs]);
 
   return (
     <>
-      <TopPaper
-        readZip={props.readZip}
-        setReadZip={props.setReadZip}
-      />
+      <TopPaper />
       <RulePaper />
       <PrivacyPaper />
       <ShortcutPaper />
@@ -74,21 +73,12 @@ export const TopView: React.FC<TopViewProps> = (props) => {
         setTargetDir={props.setTargetDir}
         oto={props.oto}
         setOto={props.setOto}
-        readZip={props.readZip}
       />
     </>
   );
 };
 
 export interface TopViewProps {
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
-  /** 読み込んだzipのデータを登録する処理 */
-  setReadZip: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: JSZip.JSZipObject;
-    } | null>
-  >;
   /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */

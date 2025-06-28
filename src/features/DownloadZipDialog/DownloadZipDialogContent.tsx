@@ -7,6 +7,7 @@ import DialogContent from "@mui/material/DialogContent";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * zipをダウンロードするダイアログのコンテンツ部分
@@ -16,6 +17,7 @@ import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 export const DownloadZipDialogContent: React.FC<
   DownloadZipDialogContentProps
 > = (props) => {
+  const { readZip } = useOtoProjectStore();
   /**
    * セレクトボックスを変更した際の処理
    * @param e イベント
@@ -52,7 +54,7 @@ export const DownloadZipDialogContent: React.FC<
                     {props.storagedOto[td]["update_date"]}
                   </MenuItem>
                 )}
-                {Object.keys(props.readZip).includes(td + "/oto.ini") && (
+                {Object.keys(readZip).includes(td + "/oto.ini") && (
                   <MenuItem value={2}>{t("downloadZipDialog.readed")}</MenuItem>
                 )}
                 <MenuItem value={3}>{t("downloadZipDialog.none")}</MenuItem>
@@ -69,8 +71,6 @@ export interface DownloadZipDialogContentProps {
   targetDir: string | null;
   /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
   /** 保存されたoto.ini */
   storagedOto: {};
   /** 書き出すotoの対象リスト */

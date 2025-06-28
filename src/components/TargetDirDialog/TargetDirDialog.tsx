@@ -32,7 +32,6 @@ export const TargetDirDialog: React.FC<TargetDirDialogProps> = (props) => {
           setTargetDir={props.setTargetDir}
           oto={props.oto}
           setOto={props.setOto}
-          readZip={props.readZip}
         />
       </Dialog>
     </>
@@ -54,6 +53,4 @@ export interface TargetDirDialogProps {
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
 };

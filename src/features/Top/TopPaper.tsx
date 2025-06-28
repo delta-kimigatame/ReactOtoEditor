@@ -12,6 +12,7 @@ import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { setting } from "../../config/setting";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper
@@ -21,6 +22,7 @@ import { Log } from "../../lib/Logging";
 export const TopPaper: React.FC<TopPaperProps> = (props) => {
   /** 隠し表示する<input>へのref */
   const inputRef = React.useRef(null);
+  const { readZip,setReadZip } = useOtoProjectStore();
   const { t } = useTranslation();
   /** 読込中判定 */
   const [processing, setProcessing] = React.useState<boolean>(false);
@@ -41,7 +43,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
     setProcessing(true);
     setReadFile(e.target.files[0]);
     setDialogOpen(true);
-    Log.log(`ファイル読み込み。${e.target.files[0].name}`,"TOPPaper")
+    Log.log(`ファイル読み込み。${e.target.files[0].name}`, "TOPPaper");
   };
 
   /**
@@ -50,19 +52,19 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
    */
   const OnButtonClick = () => {
     setProcessing(false);
-    props.setReadZip(null);
+    setReadZip(null);
     inputRef.current.click();
   };
 
   /**
-   * `props.readZip`が`null`になった時`processing`を`false`にする。
+   * `readZip`が`null`になった時`processing`を`false`にする。
    */
   React.useEffect(() => {
-    if (props.readZip !== null) {
+    if (readZip !== null) {
       setProcessing(false);
-      Log.log(`zip読込完了`,"TOPPaper")
+      Log.log(`zip読込完了`, "TOPPaper");
     }
-  }, [props.readZip]);
+  }, [readZip]);
 
   return (
     <>
@@ -97,19 +99,11 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         file={readFile}
-        setZipFiles={props.setReadZip}
+        setZipFiles={setReadZip}
       />
     </>
   );
 };
 
 export interface TopPaperProps {
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
-  /** 読み込んだzipのデータを登録する処理 */
-  setReadZip: React.Dispatch<
-    React.SetStateAction<{
-      [key: string]: JSZip.JSZipObject;
-    } | null>
-  >;
 }

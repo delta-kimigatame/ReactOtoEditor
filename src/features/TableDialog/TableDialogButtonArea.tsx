@@ -25,7 +25,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
 ) => {
-  const {zipFileName}=useOtoProjectStore()
+  const {zipFileName,readZip}=useOtoProjectStore()
   const { t } = useTranslation();
   const [batchIndex, setBatchIndex] = React.useState<number>(0);
   const [targetParam, setTargetParam] = React.useState<string>("offset");
@@ -113,7 +113,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       | ("offset" | "overlap" | "preutter" | "velocity" | "blank")
       | null = null;
     if (batchList[batchIndex].requireZip) {
-      param = props.zip;
+      param = readZip;
     } else if (batchList[batchIndex].requireString) {
       param = surfix;
       Log.log(`surfix:${surfix}`, "TableDialogButtonArea");
@@ -227,10 +227,6 @@ export interface TableDialogButtonAreaProps {
   oto: Oto;
   /** 現在編集対象になっているディレクトリ */
   targetDir: string;
-  /** zipデータ */
-  zip: {
-    [key: string]: JSZip.JSZipObject;
-  } | null;
   /** 一括変更結果により一覧を更新する。 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
 }

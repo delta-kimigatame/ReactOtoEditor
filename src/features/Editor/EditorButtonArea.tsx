@@ -377,7 +377,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         setFileIndex={setFileIndex}
         setAliasIndex={setAliasIndex}
         setMaxAliasIndex={setMaxAliasIndex}
-        zip={props.zip}
       />
       <AliasDialog
         dialogOpen={aliasDialogOpen}
@@ -422,10 +421,6 @@ export interface EditorButtonAreaProps {
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
   /** recordの更新をtableに通知するための処理 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
-  /** zipデータ */
-  zip: {
-    [key: string]: JSZip.JSZipObject;
-  } | null;
   /** キャンバスの読込状態 */
   progress: boolean;
 }

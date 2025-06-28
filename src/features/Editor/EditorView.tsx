@@ -86,7 +86,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         setPixelPerMsec={setPixelPerMsec}
         wav={props.wav}
         setUpdateSignal={setUpdateSignal}
-        zip={props.zip}
         progress={wavProgress || specProgress}
       />
     </>
@@ -104,8 +103,4 @@ export interface EditorViewProps {
   wav: Wave;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
-  /** zipデータ */
-  zip: {
-    [key: string]: JSZip.JSZipObject;
-  } | null;
 }

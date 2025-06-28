@@ -20,6 +20,7 @@ import { Log } from "../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../services/StorageOto";
 import { useInitializeApp } from "../hooks/useInitializeApp";
 import { useThemeMode } from "../hooks/useThemeMode";
+import { useOtoProjectStore } from "../store/otoProjectStore";
 declare const __BUILD_TIMESTAMP__: string;
 
 /**
@@ -30,10 +31,7 @@ export const App: React.FC = () => {
   useInitializeApp();
   const mode_ = useThemeMode();
   const { language } = useCookieStore();
-  const [zipFileName, setZipFileName] = React.useState<string>("");
-  const [readZip, setReadZip] = React.useState<{
-    [key: string]: JSZip.JSZipObject;
-  } | null>(null);
+  const { zipFileName,readZip } = useOtoProjectStore();
   const [targetDirs, setTargetDirs] = React.useState<Array<string> | null>(
     null
   );
@@ -114,7 +112,6 @@ export const App: React.FC = () => {
       <CssBaseline />
       <Header
         record={record}
-        readZip={readZip}
         targetDirs={targetDirs}
         targetDir={targetDir}
         setTargetDir={setTargetDir}
@@ -128,13 +125,10 @@ export const App: React.FC = () => {
           targetDir={targetDir}
           wav={wav}
           setRecord={setRecord}
-          zip={readZip}
         />
       )}
       {oto === null && (
         <TopView
-          readZip={readZip}
-          setReadZip={setReadZip}
           targetDirs={targetDirs}
           targetDir={targetDir}
           setTargetDirs={setTargetDirs}

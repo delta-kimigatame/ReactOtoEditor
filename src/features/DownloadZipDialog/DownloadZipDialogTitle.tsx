@@ -22,7 +22,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   props
 ) => {
-  const {zipFileName}=useOtoProjectStore()
+  const {zipFileName,readZip}=useOtoProjectStore()
   /** zipの書き出し中 */
   const [progress, setProgress] = React.useState<boolean>(false);
   /**
@@ -32,7 +32,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     setProgress(true);
     const newZip = new JSZip();
     Log.log("zipの生成", "DownloadZipDialogTitle");
-    ZipExtract(props.readZip, 0, newZip);
+    ZipExtract(readZip, 0, newZip);
   };
 
   /**
@@ -139,8 +139,6 @@ export interface DownloadZipDialogTitleProps {
   oto: Oto;
   /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */

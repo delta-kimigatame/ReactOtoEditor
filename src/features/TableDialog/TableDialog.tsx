@@ -42,7 +42,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
           <TableDialogButtonArea
             setDialogOpen={props.setDialogOpen}
             oto={props.oto}
-            zip={props.zip}
             targetDir={props.targetDir}
             setUpdateSignal={setUpdateSignal}
           />
@@ -97,8 +96,4 @@ export interface TableDialogProps {
   setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
-  /** zipデータ */
-  zip: {
-    [key: string]: JSZip.JSZipObject;
-  } | null;
 }

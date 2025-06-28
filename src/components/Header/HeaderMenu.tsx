@@ -39,7 +39,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           setTargetDir={props.setTargetDir}
           oto={props.oto}
           setOto={props.setOto}
-          readZip={props.readZip}
           setMenuAnchor={props.setMenuAnchor}
         />
         {props.oto !== null && (
@@ -51,7 +50,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
             />
             <DownloadZipMenu
               targetDirs={props.targetDirs}
-              readZip={props.readZip}
               oto={props.oto}
               targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
@@ -90,8 +88,6 @@ export interface HeaderMenuProps {
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** 読み込んだzipのデータ */
-  readZip: { [key: string]: JSZip.JSZipObject } | null;
   /** メニューの表示位置。nullの時は非表示 */
   menuAnchor: null | HTMLElement;
   /**メニューの表示制御 */
