@@ -13,8 +13,6 @@ interface OtoProjectStore {
   setTargetDir: (targetDir: string | null) => void;
   targetDirs: Array<string> | null;
   setTargetDirs: (targetDirs: Array<string> | null) => void;
-  wavFileName: string | null;
-  setWavFileName: (wavFileName: string | null) => void;
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   setReadZip: (readZip: { [key: string]: JSZip.JSZipObject } | null) => void;
   zipFileName: string;
@@ -32,8 +30,6 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set) => ({
   setTargetDir: (targetDir) => set({ targetDir }),
   targetDirs: null,
   setTargetDirs: (targetDirs) => set({ targetDirs }),
-  wavFileName: null,
-  setWavFileName: (wavFileName) => set({ wavFileName }),
   readZip: null,
   setReadZip: (readZip) => set({ readZip }),
   zipFileName: "",
