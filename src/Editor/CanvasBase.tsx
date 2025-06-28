@@ -11,7 +11,7 @@ import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * エディタのキャンバス

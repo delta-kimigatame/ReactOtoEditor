@@ -11,7 +11,7 @@ import { BasePaper } from "../Common/BasePaper";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { setting } from "../settings/setting";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * トップビューに表示する、zipを読み込むボタンなどを含むPaper

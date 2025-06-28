@@ -6,7 +6,7 @@ import DownloadIcon from "@mui/icons-material/Download";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
-import { Log } from "../../Lib/Logging";
+import { Log } from "../../lib/Logging";
 
 /**
  * oto.iniをダウンロードするメニュー

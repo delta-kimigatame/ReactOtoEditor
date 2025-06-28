@@ -8,7 +8,7 @@ import { PaletteMode } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { EditorButton } from "./EditorButton";
-import { Log } from "../../Lib/Logging";
+import { Log } from "../../lib/Logging";
 
 /**
  * 左ブランクから先行発声までを再生するボタン

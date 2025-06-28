@@ -9,8 +9,8 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
 import { DownloadZipDialog } from "../../DownloadZipDialog/DownloadZipDialog";
-import { Log } from "../../Lib/Logging";
-import { GetStorageOto } from "../../Lib/StorageOto";
+import { Log } from "../../lib/Logging";
+import { GetStorageOto } from "../../services/StorageOto";
 
 /**
  * zipをダウンロードするメニュー

@@ -13,7 +13,7 @@ import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../settings/setting";
 import { EditorTable } from "./EditorTable";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * エディタ画面。oto.ini読込後に表示される。

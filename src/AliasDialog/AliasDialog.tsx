@@ -14,7 +14,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Divider from "@mui/material/Divider";
 
 import { FullWidthTextField } from "../Common/FullWidthTextField";
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 import { FullWidthButton } from "../Common/FullWidthButton";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {

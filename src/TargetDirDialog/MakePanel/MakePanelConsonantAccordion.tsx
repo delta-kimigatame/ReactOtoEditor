@@ -9,7 +9,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import InputLabel from "@mui/material/InputLabel";
 import TextField from "@mui/material/TextField";
 
-import { Log } from "../../Lib/Logging";
+import { Log } from "../../lib/Logging";
 import { FullWidthButton } from "../../Common/FullWidthButton";
 
 /**

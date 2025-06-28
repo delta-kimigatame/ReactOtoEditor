@@ -18,8 +18,8 @@ import { TopView } from "./Top/TopView";
 import { fftSetting, layout } from "./settings/setting";
 import { EditorView } from "./Editor/EditorView";
 
-import { Log } from "./Lib/Logging";
-import { GetStorageOto, SaveStorageOto } from "./Lib/StorageOto";
+import { Log } from "./lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "./services/StorageOto";
 declare const __BUILD_TIMESTAMP__: string;
 
 /**

@@ -10,7 +10,7 @@ import { TargetDirDialogButtonArea } from "./TargetDirDialogButtonArea";
 import { TargetDirDialogCorrectPanel } from "./TargetDirDialogCorrectPanel";
 import { FullWidthButton } from "../Common/FullWidthButton";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル

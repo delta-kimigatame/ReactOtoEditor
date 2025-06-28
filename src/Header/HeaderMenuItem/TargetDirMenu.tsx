@@ -10,8 +10,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import Divider from "@mui/material/Divider";
 
 import { TargetDirDialog } from "../../TargetDirDialog/TargetDirDialog";
-import { Log } from "../../Lib/Logging";
-import { GetStorageOto, SaveStorageOto } from "../../Lib/StorageOto";
+import { Log } from "../../lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "../../services/StorageOto";
 
 /**
  * フォルダ変更ダイアログを表示するボタン

@@ -5,9 +5,9 @@ import { PaletteMode } from "@mui/material";
 
 import { fftSetting } from "../settings/setting";
 import { backgroundColorPallet, specColor } from "../settings/colors";
-import { Color, GetColor, GetColorInterp, GetColorInterpParam } from "../Lib/Color";
+import { Color, GetColor, GetColorInterp, GetColorInterpParam } from "../utils/Color";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /** キャンバスの周波数方向の分解能 */
 const rh = Math.ceil(

@@ -10,7 +10,7 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import { EditorButton } from "./EditorButton";
 import { oto } from "../../settings/setting";
 
-import { Log } from "../../Lib/Logging";
+import { Log } from "../../lib/Logging";
 
 /**
  * メトロノームの4拍目に先行発声が合うように再生するボタン

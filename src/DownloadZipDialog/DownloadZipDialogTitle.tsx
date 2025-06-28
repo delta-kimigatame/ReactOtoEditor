@@ -11,7 +11,7 @@ import Divider from "@mui/material/Divider";
 import CircularProgress from "@mui/material/CircularProgress";
 
 import { FullWidthButton } from "../Common/FullWidthButton";
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * zipをダウンロードするダイアログ

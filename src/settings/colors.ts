@@ -1,4 +1,4 @@
-import { Color } from "../Lib/Color";
+import { Color } from "../utils/Color";
 
 /** canvasの背景色 */
 export const backgroundColorPallet: { [mode: string]: Color } = {

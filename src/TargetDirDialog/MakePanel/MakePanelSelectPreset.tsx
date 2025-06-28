@@ -7,10 +7,10 @@ import { SelectChangeEvent } from "@mui/material/Select";
 
 import { FullWidthSelect } from "../../Common/FullWidthSelect";
 
-import { Log } from "../../Lib/Logging";
-import { MakeOtoTempIni } from "../../Lib/MakeOtoTemp/Interface";
-import { MakeJpCv, MakeJpCVVC, MakeJpVCV } from "../../Lib/MakeOtoTemp/Preset";
-import { InputFile } from "../../Lib/MakeOtoTemp/Input";
+import { Log } from "../../lib/Logging";
+import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
+import { MakeJpCv, MakeJpCVVC, MakeJpVCV } from "../../lib/MakeOtoTemp/Preset";
+import { InputFile } from "../../lib/MakeOtoTemp/Input";
 
 /**
  * oto.iniを生成する場合のパネル。プリセット選択部分

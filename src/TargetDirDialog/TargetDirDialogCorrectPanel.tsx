@@ -7,13 +7,13 @@ import Typography from "@mui/material/Typography";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 
-import { AddParams } from "../Lib/OtoBatchProcess";
+import { AddParams } from "../lib/OtoBatchProcess";
 import { TargetDirDialogAliasVariant } from "./TargetDirDialogAliasVariant";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthTextField } from "../Common/FullWidthTextField";
-import { CorrectTempo } from "../Lib/CorrectOto";
+import { CorrectTempo } from "../utils/CorrectOto";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面

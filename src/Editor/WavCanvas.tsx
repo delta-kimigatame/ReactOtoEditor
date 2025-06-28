@@ -8,9 +8,9 @@ import {
   lineColorPallet,
   wavColorPallet,
 } from "../settings/colors";
-import { GetColor } from "../Lib/Color";
+import { GetColor } from "../utils/Color";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * 波形を表示するキャンバス

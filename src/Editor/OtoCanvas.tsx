@@ -5,9 +5,9 @@ import { oto } from "../settings/setting";
 import { PaletteMode } from "@mui/material";
 
 import { lineColorPallet } from "../settings/colors";
-import { GetColor } from "../Lib/Color";
+import { GetColor } from "../utils/Color";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * 原音設定パラメータを表示するキャンバス

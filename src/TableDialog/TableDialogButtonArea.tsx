@@ -17,9 +17,9 @@ import { SelectChangeEvent } from "@mui/material/Select";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthSelect } from "../Common/FullWidthSelect";
 import { FullWidthTextField } from "../Common/FullWidthTextField";
-import * as BP from "../Lib/OtoBatchProcess";
-import { Log } from "../Lib/Logging";
-import { GetStorageOto, SaveStorageOto } from "../Lib/StorageOto";
+import * as BP from "../lib/OtoBatchProcess";
+import { Log } from "../lib/Logging";
+import { GetStorageOto, SaveStorageOto } from "../services/StorageOto";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props

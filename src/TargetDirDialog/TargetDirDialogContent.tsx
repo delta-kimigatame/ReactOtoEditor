@@ -15,7 +15,7 @@ import { TargetDirDialogTabPanelZip } from "./TargetDirDialogTabPanelZip";
 import { TargetDirDialogTabPanelStoraged } from "./TargetDirDialogTabPanelStoraged";
 import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTemplate";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 import { TargetDirDialogTabMakePanel } from "./TargetDirDialogTabMakePanel";
 
 /**

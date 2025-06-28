@@ -6,11 +6,11 @@ import Divider from "@mui/material/Divider";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
 
-import { NormalizeJP } from "../Lib/FilenameNormalize";
+import { NormalizeJP } from "../utils/FilenameNormalize";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthSelect } from "../Common/FullWidthSelect";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * zip読込待ちダイアログの操作ボタン部分

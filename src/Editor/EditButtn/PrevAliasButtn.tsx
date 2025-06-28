@@ -8,7 +8,7 @@ import { PaletteMode } from "@mui/material";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { EditorButton } from "./EditorButton";
-import { Log } from "../../Lib/Logging";
+import { Log } from "../../lib/Logging";
 
 /**
  * 前のエイリアスに送るボタン

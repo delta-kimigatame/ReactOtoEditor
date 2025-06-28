@@ -8,7 +8,7 @@ import { TopPaper } from "./TopPaper";
 import { HistoryPaper } from "./HistoryPaper";
 import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 import { ShortcutPaper } from "./ShortcutPaper";
 
 /**

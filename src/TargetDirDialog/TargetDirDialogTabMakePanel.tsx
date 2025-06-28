@@ -23,9 +23,9 @@ import { MakePanelConsonantAccordion } from "./MakePanel/MakePanelConsonantAccor
 import { MakePanelVowelAccordion } from "./MakePanel/MakePanelVowelAccordion";
 import { MakePanelSelectPreset } from "./MakePanel/MakePanelSelectPreset";
 
-import { Log } from "../Lib/Logging";
-import { MakeOtoTempIni } from "../Lib/MakeOtoTemp/Interface";
-import { MakeOto, MakeOtoSingle } from "../Lib/MakeOtoTemp/MakeOto";
+import { Log } from "../lib/Logging";
+import { MakeOtoTempIni } from "../lib/MakeOtoTemp/Interface";
+import { MakeOto, MakeOtoSingle } from "../lib/MakeOtoTemp/MakeOto";
 
 /**
  * oto.iniを生成する場合のパネル

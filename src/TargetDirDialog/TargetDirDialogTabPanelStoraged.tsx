@@ -12,7 +12,7 @@ import { TargetDirDialogCheckList } from "./TargetDirDialogCheckList";
 import { FullWidthButton } from "../Common/FullWidthButton";
 import { FullWidthSelect } from "../Common/FullWidthSelect";
 
-import { Log } from "../Lib/Logging";
+import { Log } from "../lib/Logging";
 
 /**
  * 履歴からoto.iniを読み込む場合のパネル
