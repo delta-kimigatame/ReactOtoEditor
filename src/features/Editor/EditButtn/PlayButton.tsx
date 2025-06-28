@@ -11,6 +11,7 @@ import { EditorButton } from "../../../components/Editor/EditButton/EditorButton
 import { oto } from "../../../config/setting";
 
 import { Log } from "../../../lib/Logging";
+import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
  * メトロノームの4拍目に先行発声が合うように再生するボタン
@@ -19,12 +20,13 @@ import { Log } from "../../../lib/Logging";
  */
 export const PlayButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
+  const {wav}=useOtoProjectStore()
 
   /**
    * メトロノームの4拍目に先行発声が合うように再生する処理
    */
   const OnPlay_ = () => {
-    OnPlay(props.record, props.wav, props.metronome);
+    OnPlay(props.record, wav, props.metronome);
   };
 
   return (
@@ -43,8 +45,6 @@ export const PlayButton: React.FC<Props> = (props) => {
 interface Props {
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

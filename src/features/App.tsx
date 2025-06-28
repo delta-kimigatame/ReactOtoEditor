@@ -31,12 +31,10 @@ export const App: React.FC = () => {
   useInitializeApp();
   const mode_ = useThemeMode();
   const { language } = useCookieStore();
-  const { zipFileName,readZip } = useOtoProjectStore();
-  const [targetDir, setTargetDir] = React.useState<string | null>(null);
+  const { zipFileName, readZip, targetDir, setWav } = useOtoProjectStore();
   const [oto, setOto] = React.useState<Oto | null>(null);
   const [record, setRecord] = React.useState<OtoRecord | null>(null);
   const [wavFileName, setWavFileName] = React.useState<string | null>(null);
-  const [wav, setWav] = React.useState<Wave | null>(null);
   const theme = React.useMemo(
     () => createTheme(getDesignTokens(mode_)),
     [mode_]
@@ -107,25 +105,11 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header
-        record={record}
-        oto={oto}
-        setOto={setOto}
-      />
+      <Header record={record} oto={oto} setOto={setOto} />
       {oto !== null && (
-        <EditorView
-          oto={oto}
-          record={record}
-          wav={wav}
-          setRecord={setRecord}
-        />
+        <EditorView oto={oto} record={record} setRecord={setRecord} />
       )}
-      {oto === null && (
-        <TopView
-          oto={oto}
-          setOto={setOto}
-        />
-      )}
+      {oto === null && <TopView oto={oto} setOto={setOto} />}
       {oto === null && <Footer theme={theme} />}
     </ThemeProvider>
   );

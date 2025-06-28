@@ -11,6 +11,7 @@ import { GetColor } from "../../utils/Color";
 import { Log } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 波形を表示するキャンバス
@@ -22,6 +23,7 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
   /** canvasへのref */
   const canvas = React.useRef(null);
   const { colorTheme } = useCookieStore();
+    const {wav}=useOtoProjectStore()
   /** 背景色 */
   const backgroundColor = React.useMemo(
     () => GetColor(backgroundColorPallet[mode]),
@@ -99,16 +101,16 @@ export const WavCanvas: React.FC<WavCanvasProps> = (props) => {
   /** wav,波形色,キャンバスの大きさが変更した際、波形を再描画する。 */
   React.useEffect(() => {
     OnChangeWav();
-  }, [props.wav, wavColor, mode, props.canvasWidth, props.canvasHeight]);
+  }, [wav, wavColor, mode, props.canvasWidth, props.canvasHeight]);
 
   /**
    * 波形描画を非同期で実施する
    */
   const OnChangeWav = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-    if (ctx && props.wav !== null) {
+    if (ctx && wav !== null) {
       props.setWavProgress(true);
-      RenderWave(ctx, props.wav);
+      RenderWave(ctx, wav);
     } else if (ctx) {
       RenderBase(ctx);
     }
@@ -136,8 +138,6 @@ export interface WavCanvasProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** 波形の読込状態 */
   wavProgress: boolean;
   /** 波形の読込状態の更新 */

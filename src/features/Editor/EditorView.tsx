@@ -56,7 +56,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
       <CanvasBase
         canvasWidth={windowSize.width}
         canvasHeight={canvasHeight}
-        wav={props.wav}
         record={props.record}
         pixelPerMsec={pixelPerMsec}
         setUpdateSignal={setUpdateSignal}
@@ -82,7 +81,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         setRecord={props.setRecord}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
-        wav={props.wav}
         setUpdateSignal={setUpdateSignal}
         progress={wavProgress || specProgress}
       />
@@ -95,8 +93,6 @@ export interface EditorViewProps {
   oto: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
 }

@@ -9,6 +9,7 @@ import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
 import { Log } from "../../../lib/Logging";
+import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
  * 先行発声から右ブランクまでを再生するボタン
@@ -17,13 +18,14 @@ import { Log } from "../../../lib/Logging";
  */
 export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
+  const { wav } = useOtoProjectStore();
 
   /**
    * 先行発声から右ブランクまでを再生する処理
    * @returns
    */
   const OnPlayAfterPreutter_ = () => {
-    OnPlayAfterPreutter(props.record, props.wav);
+    OnPlayAfterPreutter(props.record, wav);
   };
 
   return (
@@ -44,8 +46,6 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
 interface Props {
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

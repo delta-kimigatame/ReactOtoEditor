@@ -11,6 +11,7 @@ import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * エディタのキャンバス
@@ -18,18 +19,19 @@ import { Log } from "../../lib/Logging";
  * @returns エディタのキャンバス
  */
 export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
+  const {wav}=useOtoProjectStore()
   /** wavのスペクトル */
   const spec = React.useMemo(() => {
-    if (props.wav === null) {
+    if (wav === null) {
       return null;
     } else {
       Log.log(`fft`, "CanvasBase");
       const wa = new WaveAnalyse();
-      const s = wa.Spectrogram(props.wav.data);
+      const s = wa.Spectrogram(wav.data);
       Log.log(`fftend`, "CanvasBase");
       return s;
     }
-  }, [props.wav]);
+  }, [wav]);
   /** 縦幅 */
   const [height, setHeight] = React.useState<number>(props.canvasHeight);
   /** スペクトルの最大値 */
@@ -54,16 +56,16 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   );
   /** 横幅 */
   const width = React.useMemo(() => {
-    if (props.wav !== null) {
+    if (wav !== null) {
       Log.log(
-        `キャンバスの横幅変更:${Math.ceil(props.wav.data.length / frameWidth)}`,
+        `キャンバスの横幅変更:${Math.ceil(wav.data.length / frameWidth)}`,
         "CanvasBase"
       );
-      return Math.ceil(props.wav.data.length / frameWidth);
+      return Math.ceil(wav.data.length / frameWidth);
     } else {
       return 0;
     }
-  }, [props.wav, frameWidth]);
+  }, [wav, frameWidth]);
   /** キャンバスを格納するBoxへのref */
   const boxRef = React.useRef(null);
   /** スクロール用のBoxへのref */
@@ -104,7 +106,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <WavCanvas
           canvasWidth={width}
           canvasHeight={height / 2}
-          wav={props.wav}
           wavProgress={props.wavProgress}
           setWavProgress={props.setWavProgress}
         />
@@ -112,7 +113,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <SpecCanvas
           canvasWidth={width}
           canvasHeight={height / 2}
-          wav={props.wav}
           spec={spec}
           specMax={specMax}
           frameWidth={frameWidth}
@@ -156,8 +156,6 @@ export interface CanvasBaseProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord;
   /** 横方向1pixelあたりが何msを表すか */

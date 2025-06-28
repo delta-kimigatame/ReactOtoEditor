@@ -1,20 +1,14 @@
 import * as React from "react";
 import { Wave } from "utauwav";
 
-import { PaletteMode } from "@mui/material";
-
 import { fftSetting } from "../../config/setting";
 import { backgroundColorPallet, specColor } from "../../config/colors";
-import {
-  Color,
-  GetColor,
-  GetColorInterp,
-  GetColorInterpParam,
-} from "../../utils/Color";
+import { GetColor, GetColorInterpParam } from "../../utils/Color";
 
 import { Log } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /** キャンバスの周波数方向の分解能 */
 const rh = Math.ceil(
@@ -29,6 +23,7 @@ const rh = Math.ceil(
 export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
   const mode = useThemeMode();
   const { colorTheme } = useCookieStore();
+  const { wav } = useOtoProjectStore();
   /** canvasへのref */
   const canvas = React.useRef(null);
   /** 背景色 */
@@ -37,16 +32,19 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     [mode]
   );
   /** スペクトラムの色 */
-  const fillColor=React.useMemo(()=>specColor[colorTheme][mode],[colorTheme,mode])
+  const fillColor = React.useMemo(
+    () => specColor[colorTheme][mode],
+    [colorTheme, mode]
+  );
 
   /** fft 1パラメータ当たりの縦幅 */
   const h = React.useMemo(() => props.canvasHeight / rh, [props.canvasHeight]);
 
   /** fft1パラメータ当たりの横幅 */
   const w = React.useMemo(() => {
-    if (props.wav === null) return 0;
-    return (props.canvasWidth / props.wav.data.length) * props.frameWidth;
-  }, [props.canvasWidth, props.wav, props.frameWidth]);
+    if (wav === null) return 0;
+    return (props.canvasWidth / wav.data.length) * props.frameWidth;
+  }, [props.canvasWidth, wav, props.frameWidth]);
 
   const xOffset = React.useMemo(
     () => fftSetting.fftsize / props.frameWidth,
@@ -141,9 +139,9 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
   /** スペクトラムの変更処理を非同期で実施する */
   const OnChangeSpec = async () => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
-    if (ctx && props.spec !== null && props.wav !== null) {
+    if (ctx && props.spec !== null && wav !== null) {
       props.setSpecProgress(true);
-      await RenderSpec(ctx, props.wav, props.spec).then(() => {});
+      await RenderSpec(ctx, wav, props.spec).then(() => {});
     } else if (ctx) {
       Log.log(`canvas初期化`, "SpecCanvas");
       /**キャンバスの初期化 */
@@ -176,8 +174,6 @@ export interface SpecCanvasProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** 現在のwavに関連するspectrumデータ */
   spec: Array<Array<number>> | null;
   /** 現在のwavに関連するspectrumデータの最大値 */

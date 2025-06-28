@@ -1,11 +1,9 @@
 import * as React from "react";
-import JSZip from "jszip";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
 import { styled } from "@mui/system";
-import { PaletteMode } from "@mui/material";
 import { useTranslation } from "react-i18next";
 
 import Paper from "@mui/material/Paper";
@@ -43,7 +41,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const { overlapLock, setOverlapLock, touchMode, setTouchMode } =
     useCookieStore();
-  const { targetDir } = useOtoProjectStore();
+  const { targetDir,wav } = useOtoProjectStore();
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -123,11 +121,11 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       } else if (e.key === "-") {
         OnZoomOut();
       } else if (e.key === "1") {
-        OnPlayBeforePreutter(props.record, props.wav);
+        OnPlayBeforePreutter(props.record, wav);
       } else if (e.key === "2") {
-        OnPlayAfterPreutter(props.record, props.wav);
+        OnPlayAfterPreutter(props.record, wav);
       } else if (e.key === "3") {
-        OnPlay(props.record, props.wav, metronome);
+        OnPlay(props.record, wav, metronome);
       } else if (e.key === "4") {
         setOverlapLock(!overlapLock);
       } else if (e.key === "5") {
@@ -243,19 +241,16 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       >
         <StyledBox>
           <PlayBeforePreutterButton
-            wav={props.wav}
             record={props.record}
             size={size}
             iconSize={iconSize}
           />
           <PlayAfterPreutterButton
-            wav={props.wav}
             record={props.record}
             size={size}
             iconSize={iconSize}
           />
           <PlayButton
-            wav={props.wav}
             record={props.record}
             size={size}
             iconSize={iconSize}
@@ -403,8 +398,6 @@ export interface EditorButtonAreaProps {
   oto: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在のrecordに関連するwavデータ */
-  wav: Wave;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
   /** 横方向1pixelあたりが何msを表すか */
