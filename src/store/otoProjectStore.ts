@@ -3,6 +3,9 @@ import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 import { create } from "zustand";
+import { GetStorageOto, SaveStorageOto } from "../services/StorageOto";
+import { Log } from "../lib/Logging";
+import { fftSetting } from "../config/setting";
 
 interface OtoProjectStore {
   oto: Oto | null;
@@ -11,6 +14,8 @@ interface OtoProjectStore {
   setRecord: (record: OtoRecord | null) => void;
   targetDir: string | null;
   setTargetDir: (targetDir: string | null) => void;
+  wavFileName: string | null;
+  setWavFileName: (wavFileName: string | null) => void;
   targetDirs: Array<string> | null;
   setTargetDirs: (targetDirs: Array<string> | null) => void;
   readZip: { [key: string]: JSZip.JSZipObject } | null;
@@ -21,15 +26,82 @@ interface OtoProjectStore {
   setWav: (wav: Wave | null) => void;
 }
 
-export const useOtoProjectStore = create<OtoProjectStore>()((set) => ({
-  oto: null,
-  setOto: (oto) => set({ oto }),
+export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
+  oto: null,setOto: (oto) => {
+    set({ oto });
+
+    // oto の変更を監視して処理を実行
+    if (oto === null) {
+      set({ record: null, wavFileName: null });
+      Log.log("otoを初期化", "OtoProjectStore");
+    } else {
+      const targetDir = get().targetDir;
+      if (targetDir) {
+        const filename: string = oto.GetFileNames(targetDir)[0];
+        const alias: string = oto.GetAliases(targetDir, filename)[0];
+        const record: OtoRecord = oto.GetRecord(targetDir, filename, alias);
+        set({ wavFileName: filename, record });
+        Log.log(
+          `otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`,
+          "OtoProjectStore"
+        );
+      }
+    }
+  },
   record: null,
-  setRecord: (record) => set({ record }),
+  setRecord: (record) => {
+    set({ record });
+
+    // record の変更に基づく処理
+    if (record === null) {
+      set({ wavFileName: null });
+      Log.log("recordを初期化", "OtoProjectStore");
+    } else {
+      const { oto, zipFileName, targetDir, wavFileName } = get();
+      const storagedOto: {} = GetStorageOto();
+      SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
+      if (wavFileName !== record.filename) {
+        set({ wavFileName: record.filename });
+      }
+      Log.gtag("changeRecord");
+      Log.log("localstorageに保存", "OtoProjectStore");
+    }
+  },
   targetDir: null,
   setTargetDir: (targetDir) => set({ targetDir }),
   targetDirs: null,
   setTargetDirs: (targetDirs) => set({ targetDirs }),
+  wavFileName: null,
+  setWavFileName: (wavFileName) => {
+    set({ wavFileName });
+
+    // wavFileName の変更に基づく処理
+    if (wavFileName === null) {
+      set({ wav: null });
+      Log.log("wavを初期化", "OtoProjectStore");
+    } else {
+      const { readZip, targetDir } = get();
+      if (readZip !== null) {
+        const wPath =
+          targetDir === "" ? wavFileName : `${targetDir}/${wavFileName}`;
+        if (Object.keys(readZip).includes(wPath)) {
+          readZip[wPath].async("arraybuffer").then((result) => {
+            const w = new Wave(result);
+            w.channels = fftSetting.channels;
+            w.bitDepth = fftSetting.bitDepth;
+            w.sampleRate = fftSetting.sampleRate;
+            w.RemoveDCOffset();
+            w.VolumeNormalize();
+            set({ wav: w });
+            Log.log(`wav読込完了。${wPath}`, "OtoProjectStore");
+          });
+        } else {
+          Log.log(`zip内にwavが見つかりませんでした。${wPath}`, "OtoProjectStore");
+          set({ wav: null });
+        }
+      }
+    }
+  },
   readZip: null,
   setReadZip: (readZip) => set({ readZip }),
   zipFileName: "",
