@@ -8,6 +8,7 @@ import { LoadZipDialogContent } from "../../components/LoadZipDialog/LoadZipDial
 import { LoadZipDialogTitle } from "../../components/LoadZipDialog/LoadZipDialogTitle";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * zip読込待ちダイアログ \
@@ -16,6 +17,7 @@ import { Log } from "../../lib/Logging";
  * @returns zip読込待ちダイアログ
  */
 export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
+  const {setZipFileName}=useOtoProjectStore()
   /** 読込待ち判定用 */
   const [processing, setProcessing] = React.useState<boolean>(false);
   /** zipファイル。文字コードを確認するために仮で展開するため、親コンポーネントとは独立してデータを保持する。 */
@@ -34,7 +36,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
     const zip = new JSZip();
     const td = new TextDecoder(encoding);
     Log.log(`zip読込。文字コード:${encoding}`,"LoadZipDialog")
-    props.setZipFileName(file.name);
+    setZipFileName(file.name);
     zip
       .loadAsync(file, {
         decodeFileName: (fileNameBinary: Uint8Array) =>
@@ -98,6 +100,4 @@ export interface LoadZipDialogProps {
       [key: string]: JSZip.JSZipObject;
     } | null>
   >;
-  /** 読み込んだファイル名を変更する処理 */
-  setZipFileName: React.Dispatch<React.SetStateAction<string>>;
 }

@@ -87,7 +87,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         wav={props.wav}
         setUpdateSignal={setUpdateSignal}
         zip={props.zip}
-        zipFileName={props.zipFileName}
         progress={wavProgress || specProgress}
       />
     </>
@@ -109,6 +108,4 @@ export interface EditorViewProps {
   zip: {
     [key: string]: JSZip.JSZipObject;
   } | null;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

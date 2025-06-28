@@ -98,7 +98,6 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         setDialogOpen={setDialogOpen}
         file={readFile}
         setZipFiles={props.setReadZip}
-        setZipFileName={props.setZipFileName}
       />
     </>
   );
@@ -113,6 +112,4 @@ export interface TopPaperProps {
       [key: string]: JSZip.JSZipObject;
     } | null>
   >;
-  /** 読み込んだファイル名を変更する処理 */
-  setZipFileName: React.Dispatch<React.SetStateAction<string>>;
 }

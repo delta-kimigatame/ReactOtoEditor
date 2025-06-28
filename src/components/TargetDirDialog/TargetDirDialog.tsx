@@ -33,7 +33,6 @@ export const TargetDirDialog: React.FC<TargetDirDialogProps> = (props) => {
           oto={props.oto}
           setOto={props.setOto}
           readZip={props.readZip}
-          zipFileName={props.zipFileName}
         />
       </Dialog>
     </>
@@ -57,6 +56,4 @@ export interface TargetDirDialogProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
-  /** zipのファイル名 */
-  zipFileName:string
 };

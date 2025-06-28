@@ -120,7 +120,6 @@ export const App: React.FC = () => {
         setTargetDir={setTargetDir}
         oto={oto}
         setOto={setOto}
-        zipFileName={zipFileName}
       />
       {oto !== null && (
         <EditorView
@@ -130,7 +129,6 @@ export const App: React.FC = () => {
           wav={wav}
           setRecord={setRecord}
           zip={readZip}
-          zipFileName={zipFileName}
         />
       )}
       {oto === null && (
@@ -143,8 +141,6 @@ export const App: React.FC = () => {
           setTargetDir={setTargetDir}
           oto={oto}
           setOto={setOto}
-          zipFileName={zipFileName}
-          setZipFileName={setZipFileName}
         />
       )}
       {oto === null && <Footer theme={theme} />}

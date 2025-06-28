@@ -20,10 +20,12 @@ import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import * as BP from "../../lib/OtoBatchProcess";
 import { Log } from "../../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../../services/StorageOto";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
 ) => {
+  const {zipFileName}=useOtoProjectStore()
   const { t } = useTranslation();
   const [batchIndex, setBatchIndex] = React.useState<number>(0);
   const [targetParam, setTargetParam] = React.useState<string>("offset");
@@ -131,7 +133,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
     const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, props.oto, props.zipFileName, props.targetDir);
+    SaveStorageOto(storagedOto, props.oto, zipFileName, props.targetDir);
     localStorage.setItem("oto", JSON.stringify(storagedOto));
     Log.log(`localstorageに保存`, "TableDialogButtonArea");
   };
@@ -231,8 +233,6 @@ export interface TableDialogButtonAreaProps {
   } | null;
   /** 一括変更結果により一覧を更新する。 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
-  /** zipのファイル名 */
-  zipFileName: string;
 }
 
 interface BatchProcess {

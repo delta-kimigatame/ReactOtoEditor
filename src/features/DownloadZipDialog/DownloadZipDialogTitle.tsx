@@ -12,6 +12,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * zipをダウンロードするダイアログ
@@ -21,6 +22,7 @@ import { Log } from "../../lib/Logging";
 export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   props
 ) => {
+  const {zipFileName}=useOtoProjectStore()
   /** zipの書き出し中 */
   const [progress, setProgress] = React.useState<boolean>(false);
   /**
@@ -98,7 +100,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     const url = URL.createObjectURL(zipFile);
     const a = document.createElement("a");
     a.href = url;
-    a.download = props.zipFileName;
+    a.download = zipFileName;
     Log.log(`zipダウンロード`, "DownloadZipDialogTitle");
     Log.gtag("downloadZip");
     a.click();
@@ -141,8 +143,6 @@ export interface DownloadZipDialogTitleProps {
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-  /** zipのファイル名 */
-  zipFileName: string;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   /** 保存されたoto.ini */

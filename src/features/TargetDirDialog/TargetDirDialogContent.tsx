@@ -17,6 +17,7 @@ import { TargetDirDialogTabPanelTemplate } from "./TargetDirDialogTabPanelTempla
 
 import { Log } from "../../lib/Logging";
 import { TargetDirDialogTabMakePanel } from "./TargetDirDialogTabMakePanel";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ
@@ -125,7 +126,6 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
                   setDialogOpen={props.setDialogOpen}
                   targetDir={props.targetDir}
                   setOto={props.setOto}
-                  zipFileName={props.zipFileName}
                 />
                 <TargetDirDialogTabPanelTemplate
                   setDialogOpen={props.setDialogOpen}
@@ -162,6 +162,4 @@ export interface TargetDirDialogContentProps {
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだzipのデータ */
   readZip: { [key: string]: JSZip.JSZipObject } | null;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

@@ -13,6 +13,7 @@ import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 履歴からoto.iniを読み込む場合のパネル
@@ -23,6 +24,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   TargetDirDialogTabPanelStoragedProps
 > = (props) => {
   const { t } = useTranslation();
+  const {zipFileName}=useOtoProjectStore()
   const storagedOto_: string | null = localStorage.getItem("oto");
   const [storagedOto, setStoragedOto] = React.useState<{}>({});
   const [selectHistory, setSelectHistory] = React.useState<string>(null);
@@ -36,7 +38,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   }, []);
 
   React.useEffect(() => {
-    const i = Object.keys(storagedOto).indexOf(props.zipFileName);
+    const i = Object.keys(storagedOto).indexOf(zipFileName);
     if (i >= 0) {
       const f = Object.keys(storagedOto)[i];
       const j = Object.keys(storagedOto[f]).indexOf(props.targetDir);
@@ -133,6 +135,4 @@ export interface TargetDirDialogTabPanelStoragedProps {
   targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

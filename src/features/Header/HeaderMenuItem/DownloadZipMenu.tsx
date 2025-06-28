@@ -11,6 +11,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import { DownloadZipDialog } from "../../../components/DownloadZipDialog/DownloadZipDialog";
 import { Log } from "../../../lib/Logging";
 import { GetStorageOto } from "../../../services/StorageOto";
+import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
  * zipをダウンロードするメニュー
@@ -18,6 +19,7 @@ import { GetStorageOto } from "../../../services/StorageOto";
  * @returns zipをダウンロードするメニュー
  */
 export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
+  const {zipFileName}=useOtoProjectStore()
   /** ダイアログ表示設定 */
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   /** 保存されたoto.ini */
@@ -33,17 +35,17 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
   const OnMenuClick = () => {
     Log.log(`zipダウンロード準備`, "DownloadZipMenu");
     const storagedOtoTemp: {} = GetStorageOto();
-    if (!(props.zipFileName in storagedOtoTemp)) {
+    if (!(zipFileName in storagedOtoTemp)) {
       setStoragedOto({});
     } else {
-      setStoragedOto(storagedOtoTemp[props.zipFileName]);
+      setStoragedOto(storagedOtoTemp[zipFileName]);
     }
     const targetList_: Array<number> = [];
     props.targetDirs.forEach((td) => {
       if (td === props.targetDir) {
         Log.log(`編集中フォルダ:${td}`, "DownloadZipMenu");
         targetList_.push(0);
-      } else if (td in storagedOtoTemp[props.zipFileName]) {
+      } else if (td in storagedOtoTemp[zipFileName]) {
         Log.log(`履歴有:${td}`, "DownloadZipMenu");
         targetList_.push(1);
       } else if (Object.keys(props.readZip).includes(td + "/oto.ini")) {
@@ -72,7 +74,6 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
         oto={props.oto}
         targetDir={props.targetDir}
         setMenuAnchor={props.setMenuAnchor}
-        zipFileName={props.zipFileName}
         dialogOpen={dialogOpen}
         setDialogOpen={setDialogOpen}
         storagedOto={storagedOto}
@@ -94,6 +95,4 @@ export interface DownloadZipMenuProps {
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

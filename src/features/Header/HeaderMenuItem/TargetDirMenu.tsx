@@ -12,6 +12,7 @@ import Divider from "@mui/material/Divider";
 import { TargetDirDialog } from "../../../components/TargetDirDialog/TargetDirDialog";
 import { Log } from "../../../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../../../services/StorageOto";
+import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
  * フォルダ変更ダイアログを表示するボタン
@@ -19,6 +20,7 @@ import { GetStorageOto, SaveStorageOto } from "../../../services/StorageOto";
  * @returns フォルダ変更ダイアログを表示するボタン
  */
 export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
+  const {zipFileName}=useOtoProjectStore()
   const { t } = useTranslation();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] = React.useState<
@@ -34,7 +36,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
   /** 編集中のoto.iniをlocalstorageに書き込んでTargetDirDialogを開く */
   const OnMenuClick = () => {
     const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, props.oto, props.zipFileName, props.targetDir);
+    SaveStorageOto(storagedOto, props.oto, zipFileName, props.targetDir);
     Log.log(`localstorageに保存`, "TargetDirMenu");
     setTargetDirDialogOpen(true);
   };
@@ -59,7 +61,6 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
             oto={props.oto}
             setOto={props.setOto}
             readZip={props.readZip}
-            zipFileName={props.zipFileName}
           />
         </>
       )}
@@ -82,6 +83,4 @@ export interface TargetDirMenuProps {
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

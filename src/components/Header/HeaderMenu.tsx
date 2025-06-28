@@ -16,6 +16,7 @@ import { DownloadOtoMenu } from "../../features/Header/HeaderMenuItem/DownloadOt
 import { DownloadZipMenu } from "../../features/Header/HeaderMenuItem/DownloadZipMenu";
 import { ShowLogMenu } from "../../features/Header/HeaderMenuItem/ShowLogMenu";
 import { HeaderMenuClearCache } from "../../features/Header/HeaderMenuItem/HeaderMenuClearCache";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * ヘッダメニュー
@@ -40,7 +41,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           setOto={props.setOto}
           readZip={props.readZip}
           setMenuAnchor={props.setMenuAnchor}
-          zipFileName={props.zipFileName}
         />
         {props.oto !== null && (
           <>
@@ -55,7 +55,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
               oto={props.oto}
               targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
-              zipFileName={props.zipFileName}
             />
             <Divider />
           </>
@@ -97,6 +96,4 @@ export interface HeaderMenuProps {
   menuAnchor: null | HTMLElement;
   /**メニューの表示制御 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-  /** zipのファイル名 */
-  zipFileName: string;
 }

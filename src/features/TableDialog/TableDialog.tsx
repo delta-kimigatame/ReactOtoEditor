@@ -45,7 +45,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             zip={props.zip}
             targetDir={props.targetDir}
             setUpdateSignal={setUpdateSignal}
-            zipFileName={props.zipFileName}
           />
         </DialogTitle>
         <DialogContent>
@@ -102,6 +101,4 @@ export interface TableDialogProps {
   zip: {
     [key: string]: JSZip.JSZipObject;
   } | null;
-  /** zipのファイル名 */
-  zipFileName:string
 }

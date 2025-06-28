@@ -29,7 +29,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
           readZip={props.readZip}
           oto={props.oto}
           setMenuAnchor={props.setMenuAnchor}
-          zipFileName={props.zipFileName}
           setDialogOpen={props.setDialogOpen}
           storagedOto={props.storagedOto}
           targetList={props.targetList}
@@ -59,8 +58,6 @@ export interface DownloadZipDialogProps {
   readZip: { [key: string]: JSZip.JSZipObject } | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
-  /** zipのファイル名 */
-  zipFileName: string;
   /** ダイアログを表示するか否か */
   dialogOpen: boolean;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
