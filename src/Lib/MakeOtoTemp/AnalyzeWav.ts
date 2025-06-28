@@ -1,5 +1,5 @@
 import { Wave, WaveAnalyse } from "utauwav";
-import { fftSetting } from "../../settings/setting";
+import { fftSetting } from "../../config/setting";
 
 const aryMin = (a, b) => {
   return Math.min(a, b);

@@ -14,7 +14,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
-import { layout } from "../settings/setting";
+import { layout } from "../config/setting";
 
 /**
  * 原音設定パラメータを表示するテーブル

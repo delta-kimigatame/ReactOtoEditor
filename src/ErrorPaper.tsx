@@ -6,7 +6,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useCookies } from "react-cookie";
-import { getDesignTokens } from "./settings/theme";
+import { getDesignTokens } from "./config/theme";
 
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";

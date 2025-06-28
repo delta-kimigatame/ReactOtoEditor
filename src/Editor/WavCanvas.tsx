@@ -7,7 +7,7 @@ import {
   backgroundColorPallet,
   lineColorPallet,
   wavColorPallet,
-} from "../settings/colors";
+} from "../config/colors";
 import { GetColor } from "../utils/Color";
 
 import { Log } from "../lib/Logging";

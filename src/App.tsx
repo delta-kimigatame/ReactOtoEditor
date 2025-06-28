@@ -10,12 +10,12 @@ import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { useCookies } from "react-cookie";
-import { getDesignTokens } from "./settings/theme";
+import { getDesignTokens } from "./config/theme";
 
 import { Header } from "./Header/Header";
 import { Footer } from "./Fotter";
 import { TopView } from "./Top/TopView";
-import { fftSetting, layout } from "./settings/setting";
+import { fftSetting, layout } from "./config/setting";
 import { EditorView } from "./Editor/EditorView";
 
 import { Log } from "./lib/Logging";

@@ -8,7 +8,7 @@ import { PaletteMode } from "@mui/material";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 
 import { EditorButton } from "./EditorButton";
-import { oto } from "../../settings/setting";
+import { oto } from "../../config/setting";
 
 import { Log } from "../../lib/Logging";
 

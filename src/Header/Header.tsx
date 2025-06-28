@@ -14,7 +14,7 @@ import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { setting } from "../settings/setting";
+import { setting } from "../config/setting";
 import { HeaderMenu } from "./HeaderMenu";
 
 /**

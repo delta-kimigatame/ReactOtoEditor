@@ -11,7 +11,7 @@ import Link from "@mui/material/Link";
 import XIcon from "@mui/icons-material/X";
 
 import { XButton } from "./XButton";
-import { setting } from "./settings/setting";
+import { setting } from "./config/setting";
 
 /**
  * フッタ

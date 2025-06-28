@@ -10,7 +10,7 @@ import { useCookies } from "react-cookie";
 
 import { CanvasBase } from "./CanvasBase";
 import { EditorButtonArea } from "./EditorButtonArea";
-import { layout } from "../settings/setting";
+import { layout } from "../config/setting";
 import { EditorTable } from "./EditorTable";
 
 import { Log } from "../lib/Logging";

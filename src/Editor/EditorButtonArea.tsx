@@ -17,7 +17,7 @@ import EditAttributesIcon from "@mui/icons-material/EditAttributes";
 import LockIcon from "@mui/icons-material/Lock";
 import TouchAppIcon from "@mui/icons-material/TouchApp";
 
-import { layout } from "../settings/setting";
+import { layout } from "../config/setting";
 import { EditorButton } from "./EditButtn/EditorButton";
 import { NextAliasButton, OnNextAlias } from "./EditButtn/NextAliasButton";
 import { OnPrevAlias, PrevAliasButton } from "./EditButtn/PrevAliasButtn";

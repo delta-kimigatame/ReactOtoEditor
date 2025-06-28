@@ -1,10 +1,10 @@
 import * as React from "react";
 import OtoRecord from "utauoto/dist/OtoRecord";
-import { oto } from "../settings/setting";
+import { oto } from "../config/setting";
 
 import { PaletteMode } from "@mui/material";
 
-import { lineColorPallet } from "../settings/colors";
+import { lineColorPallet } from "../config/colors";
 import { GetColor } from "../utils/Color";
 
 import { Log } from "../lib/Logging";

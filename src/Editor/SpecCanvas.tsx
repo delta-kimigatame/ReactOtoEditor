@@ -3,8 +3,8 @@ import { Wave } from "utauwav";
 
 import { PaletteMode } from "@mui/material";
 
-import { fftSetting } from "../settings/setting";
-import { backgroundColorPallet, specColor } from "../settings/colors";
+import { fftSetting } from "../config/setting";
+import { backgroundColorPallet, specColor } from "../config/colors";
 import { Color, GetColor, GetColorInterp, GetColorInterpParam } from "../utils/Color";
 
 import { Log } from "../lib/Logging";

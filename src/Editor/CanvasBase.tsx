@@ -6,7 +6,7 @@ import { PaletteMode } from "@mui/material";
 
 import Box from "@mui/material/Box";
 
-import { fftSetting } from "../settings/setting";
+import { fftSetting } from "../config/setting";
 import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";

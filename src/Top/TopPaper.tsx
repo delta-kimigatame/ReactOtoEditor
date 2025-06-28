@@ -9,7 +9,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { LoadZipDialog } from "../LoadZipDialog/LoadZipDialog";
 import { BasePaper } from "../Common/BasePaper";
 import { FullWidthButton } from "../Common/FullWidthButton";
-import { setting } from "../settings/setting";
+import { setting } from "../config/setting";
 
 import { Log } from "../lib/Logging";
 
