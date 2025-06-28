@@ -115,7 +115,7 @@ export const App: React.FC = () => {
       <Header />
       {oto !== null && <EditorView />}
       {oto === null && <TopView />}
-      {oto === null && <Footer theme={theme} />}
+      {oto === null && <Footer />}
     </ThemeProvider>
   );
 };

@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { ThemeOptions } from "@mui/material/styles";
+import { ThemeOptions, useTheme } from "@mui/material/styles";
 import { useTranslation } from "react-i18next";
 
 import Divider from "@mui/material/Divider";
@@ -19,7 +19,7 @@ import { setting } from "../config/setting";
  * @returns フッタ
  */
 export const Footer: React.FC<FooterProps> = (props) => {
-  const theme = props.theme;
+  const theme=useTheme()
   const { t } = useTranslation();
   const matches = useMediaQuery(theme.breakpoints.up("sm"));
   return (
@@ -102,6 +102,4 @@ export const Footer: React.FC<FooterProps> = (props) => {
 };
 
 export interface FooterProps {
-  /** テーマ設定 */
-  theme:ThemeOptions;
 };
