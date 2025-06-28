@@ -2,7 +2,6 @@ import * as React from "react";
 import { Wave, WaveAnalyse } from "utauwav";
 import OtoRecord from "utauoto/dist/OtoRecord";
 
-import { PaletteMode } from "@mui/material";
 
 import Box from "@mui/material/Box";
 
@@ -105,8 +104,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <WavCanvas
           canvasWidth={width}
           canvasHeight={height / 2}
-          mode={props.mode}
-          color={props.color}
           wav={props.wav}
           wavProgress={props.wavProgress}
           setWavProgress={props.setWavProgress}
@@ -115,8 +112,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <SpecCanvas
           canvasWidth={width}
           canvasHeight={height / 2}
-          mode={props.mode}
-          color={props.color}
           wav={props.wav}
           spec={spec}
           specMax={specMax}
@@ -128,7 +123,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <OtoCanvas
           canvasWidth={width}
           canvasHeight={height}
-          mode={props.mode}
           record={props.record}
           boxRef={boxRef}
           pixelPerMsec={props.pixelPerMsec}
@@ -164,10 +158,6 @@ export interface CanvasBaseProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**キャンバスの色設定 */
-  color: string;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
   /** 現在選択されている原音設定レコード */

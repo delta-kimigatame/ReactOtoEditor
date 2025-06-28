@@ -5,9 +5,16 @@ import { PaletteMode } from "@mui/material";
 
 import { fftSetting } from "../../config/setting";
 import { backgroundColorPallet, specColor } from "../../config/colors";
-import { Color, GetColor, GetColorInterp, GetColorInterpParam } from "../../utils/Color";
+import {
+  Color,
+  GetColor,
+  GetColorInterp,
+  GetColorInterpParam,
+} from "../../utils/Color";
 
 import { Log } from "../../lib/Logging";
+import { useThemeMode } from "../../hooks/useThemeMode";
+import { useCookieStore } from "../../store/cookieStore";
 
 /** キャンバスの周波数方向の分解能 */
 const rh = Math.ceil(
@@ -20,39 +27,26 @@ const rh = Math.ceil(
  * @returns スペクトラム表示
  */
 export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
+  const mode = useThemeMode();
+  const { colorTheme } = useCookieStore();
   /** canvasへのref */
   const canvas = React.useRef(null);
-  /** 色設定 */
-  const [colorTheme, setColorTheme] = React.useState<string>(props.color);
   /** 背景色 */
-  const [backgroundColor, setBackgroundColor] = React.useState<string>(
-    GetColor(backgroundColorPallet[props.mode])
+  const backgroundColor = React.useMemo(
+    () => GetColor(backgroundColorPallet[mode]),
+    [mode]
   );
   /** スペクトラムの色 */
-  const [fillColor, setFillColor] = React.useState<Array<Color>>(
-    specColor[colorTheme][props.mode]
-  );
-  /** 色設定が変更された際の処理 */
-  React.useEffect(() => {
-    setColorTheme(props.color);
-    setFillColor(specColor[props.color][props.mode]);
-  }, [props.color]);
-  /** ライトモード・ダークモードが変更された際の処理 */
-  React.useEffect(() => {
-    setBackgroundColor(GetColor(backgroundColorPallet[props.mode]));
-    setFillColor(specColor[colorTheme][props.mode]);
-  }, [props.mode]);
+  const fillColor=React.useMemo(()=>specColor[colorTheme][mode],[colorTheme,mode])
 
   /** fft 1パラメータ当たりの縦幅 */
   const h = React.useMemo(() => props.canvasHeight / rh, [props.canvasHeight]);
 
   /** fft1パラメータ当たりの横幅 */
-  const w = React.useMemo(
-    () => {
-      if(props.wav===null)return 0
-      return(props.canvasWidth / props.wav.data.length) * props.frameWidth},
-    [props.canvasWidth, props.wav, props.frameWidth]
-  );
+  const w = React.useMemo(() => {
+    if (props.wav === null) return 0;
+    return (props.canvasWidth / props.wav.data.length) * props.frameWidth;
+  }, [props.canvasWidth, props.wav, props.frameWidth]);
 
   const xOffset = React.useMemo(
     () => fftSetting.fftsize / props.frameWidth,
@@ -75,14 +69,14 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     const canvasWidth = props.canvasWidth;
     const canvasHeight = props.canvasHeight;
     const specMax = props.specMax;
-    const frameWidth=props.frameWidth
-    
+    const frameWidth = props.frameWidth;
+
     // ImageDataを作成
     const imageData = ctx.createImageData(canvasWidth, canvasHeight);
     const data = imageData.data; // Uint8ClampedArray
 
     /** 副作用との関係を整理する必要があるが暫定的に直接処理 */
-    const bg=backgroundColorPallet[props.mode]
+    const bg = backgroundColorPallet[mode];
     for (let i = 0; i < data.length; i += 4) {
       data[i] = bg.r;
       data[i + 1] = bg.g;
@@ -115,13 +109,13 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         const colorRatio = amp / specMax;
         // 各セルの描画色を導出
         const col = GetColorInterpParam(colorRatio, fillColor);
-  
+
         // ブロックの描画領域計算
         const xStart = Math.floor(i * w + xOffset);
         const xEnd = Math.floor(i * w + xOffset + w);
         const yStart = Math.floor(canvasHeight - h * (j + 1));
         const yEnd = Math.floor(canvasHeight - h * j);
-  
+
         // このセルの領域内の各ピクセルに対して色を設定
         for (let y = yStart; y < yEnd; y++) {
           for (let x = xStart; x < xEnd; x++) {
@@ -134,7 +128,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         }
       }
     }
-    ctx.putImageData(imageData, 0, 0);//ちゃんとimageData.dataの値はさまざまになっている
+    ctx.putImageData(imageData, 0, 0); //ちゃんとimageData.dataの値はさまざまになっている
     props.setSpecProgress(false);
     Log.log(`スペクトログラム描画完了`, "SpecCanvas");
   };
@@ -182,10 +176,6 @@ export interface SpecCanvasProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**キャンバスの色設定 */
-  color: string;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
   /** 現在のwavに関連するspectrumデータ */

@@ -39,7 +39,6 @@ export const NextAliasButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
-        mode={props.mode}
         size={props.size}
         icon={<ArrowDropDownIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.next")}
@@ -63,8 +62,6 @@ interface Props {
   record: OtoRecord | null;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

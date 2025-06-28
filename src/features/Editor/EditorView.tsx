@@ -4,7 +4,6 @@ import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
-import { PaletteMode } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useCookies } from "react-cookie";
 
@@ -101,8 +100,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
       <CanvasBase
         canvasWidth={props.windowSize[0]}
         canvasHeight={canvasHeight}
-        mode={props.mode}
-        color={props.color}
         wav={props.wav}
         record={props.record}
         pixelPerMsec={pixelPerMsec}
@@ -133,7 +130,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         targetDir={props.targetDir}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
-        mode={props.mode}
         wav={props.wav}
         overlapLock={overlapLock}
         touchMode={touchMode}
@@ -151,10 +147,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
 export interface EditorViewProps {
   /** 画面サイズ */
   windowSize: [number, number];
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**キャンバスの色設定 */
-  color: string;
   /** 原音設定データ */
   oto: Oto;
   /** 現在選択されている原音設定レコード */

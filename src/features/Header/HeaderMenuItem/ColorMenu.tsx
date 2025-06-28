@@ -11,6 +11,9 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 
 import { specColor } from "../../../config/colors";
+import { use } from "i18next";
+import { useCookieStore } from "../../../store/cookieStore";
+import { useThemeMode } from "../../../hooks/useThemeMode";
 
 /**
  * 表示色を切り替えるボタン
@@ -19,6 +22,8 @@ import { specColor } from "../../../config/colors";
  */
 export const ColorMenu: React.FC<ColorMenuProps> = (props) => {
   const { t } = useTranslation();
+  const {colorTheme,setColorTheme} = useCookieStore();
+  const mode=useThemeMode()
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
     <>
@@ -28,7 +33,7 @@ export const ColorMenu: React.FC<ColorMenuProps> = (props) => {
         }}
       >
         <ListItemIcon>
-          <ColorAvatar mode={props.mode} color={props.color} />
+          <ColorAvatar mode={mode} color={colorTheme} />
         </ListItemIcon>
         <ListItemText>{t("menu.changeColor")}</ListItemText>
       </MenuItem>
@@ -42,9 +47,9 @@ export const ColorMenu: React.FC<ColorMenuProps> = (props) => {
         {Object.keys(specColor).map((c) => (
           <React.Fragment key={"color_menu_" + c}>
             <ColorMenuItem
-              mode={props.mode}
+              mode={mode}
               color={c}
-              setColor={props.setColor}
+              setColor={setColorTheme}
               setMenuAnchor={setMenuAnchor}
               parentSetMenuAnchor={props.setMenuAnchor}
             />
@@ -56,12 +61,6 @@ export const ColorMenu: React.FC<ColorMenuProps> = (props) => {
 };
 
 export interface ColorMenuProps {
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**キャンバスの色設定 */
-  color: string;
-  /**キャンバスの色設定を変更する */
-  setColor: React.Dispatch<React.SetStateAction<string>>;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

@@ -5,11 +5,9 @@ import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
-import useMediaQuery from "@mui/material/useMediaQuery";
-import { PaletteMode } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useCookies } from "react-cookie";
+import { useCookieStore } from "../store/cookieStore";
 import { getDesignTokens } from "../config/theme";
 
 import { Header } from "./Header/Header";
@@ -20,6 +18,8 @@ import { EditorView } from "./Editor/EditorView";
 
 import { Log } from "../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../services/StorageOto";
+import { useInitializeApp } from "../hooks/useInitializeApp";
+import { useThemeMode } from "../hooks/useThemeMode";
 declare const __BUILD_TIMESTAMP__: string;
 
 /**
@@ -27,28 +27,9 @@ declare const __BUILD_TIMESTAMP__: string;
  * @returns 全体のjsx
  */
 export const App: React.FC = () => {
-  // 端末のダークモード設定取得
-  const prefersDarkMode: boolean = useMediaQuery(
-    "(prefers-color-scheme: dark)"
-  );
-  // cookieの取得
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "mode",
-    "color",
-    "language",
-  ]);
-  const mode_: PaletteMode =
-    cookies.mode !== undefined
-      ? cookies.mode
-      : prefersDarkMode
-      ? "dark"
-      : "light";
-  const color_: string = cookies.color !== undefined ? cookies.color : "gray";
-  const language_: string =
-    cookies.language !== undefined ? cookies.language : "ja";
-  const [mode, setMode] = React.useState<PaletteMode>(mode_);
-  const [color, setColor] = React.useState<string>(color_);
-  const [language, setLanguage] = React.useState<string>(language_);
+  useInitializeApp();
+  const mode_ = useThemeMode();
+  const { language } = useCookieStore();
   const [zipFileName, setZipFileName] = React.useState<string>("");
   const [readZip, setReadZip] = React.useState<{
     [key: string]: JSZip.JSZipObject;
@@ -61,24 +42,14 @@ export const App: React.FC = () => {
   const [record, setRecord] = React.useState<OtoRecord | null>(null);
   const [wavFileName, setWavFileName] = React.useState<string | null>(null);
   const [wav, setWav] = React.useState<Wave | null>(null);
-  const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
-  /**
-   * ダークモード設定が切り替わった際、クッキーに保存する。
-   */
-  const SetCookieMode = React.useMemo(() => {
-    setCookie("mode", mode);
-    Log.log(mode + ":モードを変更", "App");
-  }, [mode]);
+  const theme = React.useMemo(
+    () => createTheme(getDesignTokens(mode_)),
+    [mode_]
+  );
   React.useMemo(() => {
-    setCookie("color", color);
-    Log.log(color + ":表示色を変更", "App");
-  }, [color]);
-  React.useMemo(() => {
-    setCookie("language", language);
     i18n.changeLanguage(language);
-    Log.log(language + ":表示言語を変更", "App");
+    document.documentElement.lang = language;
   }, [language]);
-
   const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
     Log.log(window.navigator.userAgent, "App");
@@ -157,12 +128,6 @@ export const App: React.FC = () => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header
-        mode={mode}
-        setMode={setMode}
-        color={color}
-        setColor={setColor}
-        language={language}
-        setLanguage={setLanguage}
         record={record}
         windowSize={windowSize}
         readZip={readZip}
@@ -176,8 +141,6 @@ export const App: React.FC = () => {
       {oto !== null && (
         <EditorView
           windowSize={windowSize}
-          mode={mode}
-          color={color}
           oto={oto}
           record={record}
           targetDir={targetDir}

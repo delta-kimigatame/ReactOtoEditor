@@ -30,7 +30,6 @@ export const PlayButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
-        mode={props.mode}
         size={props.size}
         icon={<MusicNoteIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.play")}
@@ -48,8 +47,6 @@ interface Props {
   record: OtoRecord | null;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

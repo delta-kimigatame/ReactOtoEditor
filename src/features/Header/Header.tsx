@@ -2,9 +2,6 @@ import * as React from "react";
 import JSZip from "jszip";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
-import { useTranslation } from "react-i18next";
-
-import { PaletteMode } from "@mui/material";
 
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -23,7 +20,6 @@ import { HeaderMenu } from "../../components/Header/HeaderMenu";
  * @returns ヘッダ全体
  */
 export const Header: React.FC<HeaderProps> = (props) => {
-  const { t } = useTranslation();
   /** テキスト表示領域 */
   const [textWidth, setTextWidth] = React.useState<number>(
     props.windowSize[0] - 40 - 24 - 32
@@ -85,12 +81,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
         </Toolbar>
       </AppBar>
       <HeaderMenu
-        mode={props.mode}
-        setMode={props.setMode}
-        color={props.color}
-        setColor={props.setColor}
-        language={props.language}
-        setLanguage={props.setLanguage}
         record={props.record}
         readZip={props.readZip}
         targetDirs={props.targetDirs}
@@ -107,18 +97,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
 };
 
 export interface HeaderProps {
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**ダークモードかライトモードかを変更する */
-  setMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
-  /**キャンバスの色設定 */
-  color: string;
-  /**キャンバスの色設定を変更する */
-  setColor: React.Dispatch<React.SetStateAction<string>>;
-  /**言語設定 */
-  language: string;
-  /**言語設定を変更する処理 */
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
   /**画面サイズ */

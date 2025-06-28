@@ -8,6 +8,7 @@ import { lineColorPallet } from "../../config/colors";
 import { GetColor } from "../../utils/Color";
 
 import { Log } from "../../lib/Logging";
+import { useThemeMode } from "../../hooks/useThemeMode";
 
 /**
  * 原音設定パラメータを表示するキャンバス
@@ -15,15 +16,16 @@ import { Log } from "../../lib/Logging";
  * @returns 原音設定パラメータを表示するキャンバス
  */
 export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
+  const mode=useThemeMode()
   /** canvasへのref */
   const canvas = React.useRef(null);
   /** 区分線の色 */
   const [lineColor, setLineColor] = React.useState<string>(
-    GetColor(lineColorPallet[props.mode])
+    GetColor(lineColorPallet[mode])
   );
   /** 塗りつぶし部分の透過度 */
   const [alpha, setAlpha] = React.useState<number>(
-    props.mode === "light" ? 0.1 : 0.3
+    mode === "light" ? 0.1 : 0.3
   );
   /** タップに追随するパラメータ名 */
   const [targetParam, setTargetParam] = React.useState<string | null>(null);
@@ -31,9 +33,9 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
   const [alias, setAlias] = React.useState<string | null>(null);
   /** ライトモード・ダークモードが変更となった際の処理 */
   React.useEffect(() => {
-    setLineColor(GetColor(lineColorPallet[props.mode]));
-    setAlpha(props.mode === "light" ? 0.1 : 0.3);
-  }, [props.mode]);
+    setLineColor(GetColor(lineColorPallet[mode]));
+    setAlpha(mode === "light" ? 0.1 : 0.3);
+  }, [mode]);
 
   /** キーボードショートカット用にマウスの座標を保存する。 */
   const lastClickXRef = React.useRef<number | null>(null);
@@ -500,8 +502,6 @@ export interface OtoCanvasProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord;
   /** キャンバスを格納するBoxへのref */

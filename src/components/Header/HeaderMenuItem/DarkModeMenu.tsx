@@ -7,6 +7,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuItem from "@mui/material/MenuItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import { useCookieStore } from "../../../store/cookieStore";
 
 /**
  * ライトモード・ダークモードを切り替えるbutton
@@ -15,19 +16,20 @@ import ListItemIcon from "@mui/material/ListItemIcon";
  */
 export const DarkModeMenu: React.FC<DarkModeButtonProps> = (props) => {
   const { t } = useTranslation();
+  const {mode,setMode}=useCookieStore()
   return (
     <>
       <MenuItem
         onClick={() => {
-          props.setMode(props.mode === "dark" ? "light" : "dark");
+          setMode(mode === "dark" ? "light" : "dark");
           props.setMenuAnchor(null)
         }}
       >
         <ListItemIcon>
-          {props.mode === "dark" ? <LightModeIcon /> : <ModeNightIcon />}
+          {mode === "dark" ? <LightModeIcon /> : <ModeNightIcon />}
         </ListItemIcon>
         <ListItemText>
-          {props.mode === "dark" ? t("menu.toLightMode"): t("menu.toDarkMode")}
+          {mode === "dark" ? t("menu.toLightMode"): t("menu.toDarkMode")}
         </ListItemText>
       </MenuItem>
     </>
@@ -35,10 +37,6 @@ export const DarkModeMenu: React.FC<DarkModeButtonProps> = (props) => {
 };
 
 export interface DarkModeButtonProps {
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**ダークモードかライトモードかを変更する */
-  setMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
   /**親メニューを閉じるために使用 */
   setMenuAnchor:React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

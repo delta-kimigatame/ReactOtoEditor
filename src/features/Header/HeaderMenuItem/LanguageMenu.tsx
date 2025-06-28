@@ -7,6 +7,7 @@ import MenuItem from "@mui/material/MenuItem";
 import Avatar from "@mui/material/Avatar";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
+import { useCookieStore } from "../../../store/cookieStore";
 
 /**
  * 言語を切り替えるボタン
@@ -15,6 +16,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
  */
 export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
   const { t } = useTranslation();
+  const{language,setLanguage}=useCookieStore();
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
@@ -26,7 +28,7 @@ export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
       >
         <ListItemIcon>
           <Avatar sx={{ width: 24, height: 24, fontSize: 16 }}>
-            {props.language}
+            {language}
           </Avatar>
         </ListItemIcon>
         <ListItemText>{t("menu.changeLanguage")}</ListItemText>
@@ -40,7 +42,7 @@ export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
       >
         <MenuItem
           onClick={() => {
-            props.setLanguage("ja");
+            setLanguage("ja");
             setMenuAnchor(null);
             props.setMenuAnchor(null);
           }}
@@ -49,7 +51,7 @@ export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            props.setLanguage("en");
+            setLanguage("en");
             setMenuAnchor(null);
             props.setMenuAnchor(null);
           }}
@@ -58,7 +60,7 @@ export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            props.setLanguage("zh");
+            setLanguage("zh");
             setMenuAnchor(null);
             props.setMenuAnchor(null);
           }}
@@ -71,10 +73,6 @@ export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
 };
 
 export interface LanguageButtonProps {
-  /**現在の設定言語 */
-  language: string;
-  /**設定言語を変更する */
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }

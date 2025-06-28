@@ -32,6 +32,7 @@ import {
 import { OnPlay, PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "../TableDialog/TableDialog";
 import { AliasDialog } from "../AliasDialog/AliasDialog";
+import { useThemeMode } from "../../hooks/useThemeMode";
 
 /**
  * 編集画面の操作ボタン
@@ -39,6 +40,7 @@ import { AliasDialog } from "../AliasDialog/AliasDialog";
  * @returns 編集画面の操作ボタン
  */
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
+  const mode=useThemeMode()
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -241,7 +243,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
-            mode={props.mode}
             size={size}
             iconSize={iconSize}
           />
@@ -249,7 +250,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
-            mode={props.mode}
             size={size}
             iconSize={iconSize}
           />
@@ -257,7 +257,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
-            mode={props.mode}
             size={size}
             iconSize={iconSize}
             metronome={metronome}
@@ -265,7 +264,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={
               <LockIcon
@@ -279,7 +277,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             }}
           />
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={
               <TouchAppIcon
@@ -295,7 +292,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={<EditAttributesIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.editAlias")}
@@ -305,7 +301,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             }}
           />
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={<TableViewIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.showTable")}
@@ -316,7 +311,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         </StyledBox>
         <StyledBox>
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={<ZoomInIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomin")}
@@ -324,7 +318,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             onClick={OnZoomIn}
           />
           <EditorButton
-            mode={props.mode}
             size={size}
             icon={<ZoomOutIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.zoomout")}
@@ -338,7 +331,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             oto={props.oto}
             record={props.record}
             setRecord={props.setRecord}
-            mode={props.mode}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -355,7 +347,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             oto={props.oto}
             record={props.record}
             setRecord={props.setRecord}
-            mode={props.mode}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -428,8 +419,6 @@ export interface EditorButtonAreaProps {
   pixelPerMsec: number;
   /** 横方向1pixelあたりが何msを表すかを変更する処理 */
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** overlaplackを使用するか */
   overlapLock: boolean;
   /** touchmodeを使用するか */

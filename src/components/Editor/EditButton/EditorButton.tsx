@@ -5,6 +5,7 @@ import { PaletteMode } from "@mui/material";
 import Tooltip from "@mui/material/Tooltip";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
+import { useThemeMode } from "../../../hooks/useThemeMode";
 
 /**
  * 操作画面のボタンの共通部分
@@ -12,6 +13,7 @@ import Avatar from "@mui/material/Avatar";
  * @returns 操作画面のボタンの共通部分
  */
 export const EditorButton: React.FC<EditorButtonProps> = (props) => {
+  const mode=useThemeMode()
   return (
     <>
       <Tooltip title={props.title}>
@@ -22,13 +24,13 @@ export const EditorButton: React.FC<EditorButtonProps> = (props) => {
               height: props.size,
               background: props.background,
               backgroundColor:
-                props.mode === "dark"
+                mode === "dark"
                   ? props.disabled
                     ? "#757575"
                     : "#bdbdbd"
                   : "#bdbdbd",
               color:
-                props.mode === "light"
+                mode === "light"
                   ? props.disabled
                     ? "#d0d0d0"
                     : "#eeeeee"
@@ -56,6 +58,4 @@ export interface EditorButtonProps {
   disabled?: boolean;
   /** クリック時の処理 */
   onClick: () => void;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
 };

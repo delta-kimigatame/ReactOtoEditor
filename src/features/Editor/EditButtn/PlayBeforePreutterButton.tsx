@@ -29,7 +29,6 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
-        mode={props.mode}
         size={props.size}
         icon={<VolumeUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.playBeforePreutter")}
@@ -49,8 +48,6 @@ interface Props {
   record: OtoRecord | null;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

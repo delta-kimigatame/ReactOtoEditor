@@ -40,7 +40,6 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
-        mode={props.mode}
         size={props.size}
         icon={<ArrowDropUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.prev")}
@@ -62,8 +61,6 @@ interface Props {
   record: OtoRecord | null;
   /** recordを更新する処理 */
   setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

@@ -2,7 +2,6 @@ import * as React from "react";
 import JSZip from "jszip";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
-import { useTranslation } from "react-i18next";
 
 import { PaletteMode } from "@mui/material";
 
@@ -24,8 +23,6 @@ import { HeaderMenuClearCache } from "../../features/Header/HeaderMenuItem/Heade
  * @returns ヘッダメニュー
  */
 export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
-  const { t } = useTranslation();
-
   return (
     <>
       <Menu
@@ -64,19 +61,12 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           </>
         )}
         <LanguageMenu
-          language={props.language}
-          setLanguage={props.setLanguage}
           setMenuAnchor={props.setMenuAnchor}
         />
         <ColorMenu
-          mode={props.mode}
-          color={props.color}
-          setColor={props.setColor}
           setMenuAnchor={props.setMenuAnchor}
         />
         <DarkModeMenu
-          mode={props.mode}
-          setMode={props.setMode}
           setMenuAnchor={props.setMenuAnchor}
         />
         <Divider />
@@ -89,18 +79,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
 };
 
 export interface HeaderMenuProps {
-  /**ダークモードかライトモードか */
-  mode: PaletteMode;
-  /**ダークモードかライトモードかを変更する */
-  setMode: React.Dispatch<React.SetStateAction<PaletteMode>>;
-  /**キャンバスの色設定 */
-  color: string;
-  /**キャンバスの色設定を変更する */
-  setColor: React.Dispatch<React.SetStateAction<string>>;
-  /**言語設定 */
-  language: string;
-  /**言語設定を変更する処理 */
-  setLanguage: React.Dispatch<React.SetStateAction<string>>;
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
   /** zip内のwavファイルがあるディレクトリの一覧 */
