@@ -52,27 +52,31 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
       ) {
         return;
       }
-      console.log(e.key,lastClickXRef.current)
       if (e.key === "Q" || e.key === "q") {
         const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
         UpdateOto("offset", lastClickXRef.current ?? 0);
         RenderAll(ctx);
+        props.setUpdateSignal(Math.random());
       } else if (e.key === "W" || e.key === "w") {
         const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
         UpdateOto("overlap", lastClickXRef.current ?? 0);
         RenderAll(ctx);
+        props.setUpdateSignal(Math.random());
       } else if (e.key === "E" || e.key === "e") {
         const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
         UpdateOto("pre", lastClickXRef.current ?? 0);
         RenderAll(ctx);
+        props.setUpdateSignal(Math.random());
       } else if (e.key === "R" || e.key === "r") {
         const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
         UpdateOto("velocity", lastClickXRef.current ?? 0);
         RenderAll(ctx);
+        props.setUpdateSignal(Math.random());
       } else if (e.key === "T" || e.key === "t") {
         const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
         UpdateOto("blank", lastClickXRef.current ?? 0);
         RenderAll(ctx);
+        props.setUpdateSignal(Math.random());
       }
     },
     [lastClickXRef]
