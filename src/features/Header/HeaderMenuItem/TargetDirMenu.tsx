@@ -20,7 +20,7 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  * @returns フォルダ変更ダイアログを表示するボタン
  */
 export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
-  const {zipFileName}=useOtoProjectStore()
+  const {zipFileName,targetDirs}=useOtoProjectStore()
   const { t } = useTranslation();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] = React.useState<
@@ -43,7 +43,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
 
   return (
     <>
-      {props.targetDirs !== null && props.targetDirs.length !== 1 && (
+      {targetDirs !== null && targetDirs.length !== 1 && (
         <>
           <MenuItem onClick={OnMenuClick}>
             <ListItemIcon>
@@ -55,7 +55,6 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
           <TargetDirDialog
             dialogOpen={targetDirDialogOpen}
             setDialogOpen={setTargetDirDialogOpen}
-            targetDirs={props.targetDirs}
             targetDir={props.targetDir}
             setTargetDir={props.setTargetDir}
             oto={props.oto}
@@ -68,8 +67,6 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
 };
 
 export interface TargetDirMenuProps {
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
   /** 読み込んだoto.iniのデータ */

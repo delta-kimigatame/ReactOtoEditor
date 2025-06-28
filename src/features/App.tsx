@@ -112,7 +112,6 @@ export const App: React.FC = () => {
       <CssBaseline />
       <Header
         record={record}
-        targetDirs={targetDirs}
         targetDir={targetDir}
         setTargetDir={setTargetDir}
         oto={oto}
@@ -129,9 +128,7 @@ export const App: React.FC = () => {
       )}
       {oto === null && (
         <TopView
-          targetDirs={targetDirs}
           targetDir={targetDir}
-          setTargetDirs={setTargetDirs}
           setTargetDir={setTargetDir}
           oto={oto}
           setOto={setOto}

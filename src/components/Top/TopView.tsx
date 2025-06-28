@@ -18,7 +18,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  * @returns zipデータを読み込む前の画面
  */
 export const TopView: React.FC<TopViewProps> = (props) => {
-  const { readZip } = useOtoProjectStore();
+  const { readZip,targetDirs,setTargetDirs } = useOtoProjectStore();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] =
     React.useState<boolean>(false);
@@ -29,7 +29,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
    */
   React.useEffect(() => {
     if (readZip === null) {
-      props.setTargetDirs(null);
+      setTargetDirs(null);
       props.setTargetDir(null);
       Log.log("targetDir初期化", "TOPView");
     } else {
@@ -42,21 +42,21 @@ export const TopView: React.FC<TopViewProps> = (props) => {
           }
         }
       });
-      props.setTargetDirs(targetDirs);
+      setTargetDirs(targetDirs);
     }
   }, [readZip]);
 
   /**
-   * `props.targetDirs`が変更されたときの処理。
+   * `targetDirs`が変更されたときの処理。
    * readzip変更後のzip内全探査が終わった時に起動する想定。
    * 原音設定対象ディレクトリを選択するためのダイアログを表示する。
    */
   React.useEffect(() => {
-    if (props.targetDirs !== null) {
+    if (targetDirs !== null) {
       setTargetDirDialogOpen(true);
-      Log.log(`targetDirs取得。${props.targetDirs}`, "TOPView");
+      Log.log(`targetDirs取得。${targetDirs}`, "TOPView");
     }
-  }, [props.targetDirs]);
+  }, [targetDirs]);
 
   return (
     <>
@@ -68,7 +68,6 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}
         setDialogOpen={setTargetDirDialogOpen}
-        targetDirs={props.targetDirs}
         targetDir={props.targetDir}
         setTargetDir={props.setTargetDir}
         oto={props.oto}
@@ -79,14 +78,10 @@ export const TopView: React.FC<TopViewProps> = (props) => {
 };
 
 export interface TopViewProps {
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** zip内のwavファイルがあるディレクトリの一覧を変更する処理 */
-  setTargetDirs: React.Dispatch<React.SetStateAction<Array<string> | null>>;
   /** 現在原音設定の対象になっているディレクトリを変更する処理 */
   setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */

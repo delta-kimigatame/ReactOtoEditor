@@ -78,7 +78,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
       </AppBar>
       <HeaderMenu
         record={props.record}
-        targetDirs={props.targetDirs}
         targetDir={props.targetDir}
         setTargetDir={props.setTargetDir}
         oto={props.oto}
@@ -93,8 +92,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
 export interface HeaderProps {
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
   /** 読み込んだoto.iniのデータ */

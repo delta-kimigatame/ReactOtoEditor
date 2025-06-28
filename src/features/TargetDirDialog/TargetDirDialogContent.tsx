@@ -91,7 +91,6 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
     <>
       <DialogContent>
         <TargetDirDialogSelectDir
-          targetDirs={props.targetDirs}
           targetDir={props.targetDir}
           setTargetDir={props.setTargetDir}
         />
@@ -146,8 +145,6 @@ export const TargetDirDialogContent: React.FC<TargetDirDialogContentProps> = (
 export interface TargetDirDialogContentProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
   /** 現在原音設定の対象になっているディレクトリを変更する処理 */

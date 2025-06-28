@@ -34,7 +34,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
         }}
       >
         <TargetDirMenu
-          targetDirs={props.targetDirs}
           targetDir={props.targetDir}
           setTargetDir={props.setTargetDir}
           oto={props.oto}
@@ -49,7 +48,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
               setMenuAnchor={props.setMenuAnchor}
             />
             <DownloadZipMenu
-              targetDirs={props.targetDirs}
               oto={props.oto}
               targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
@@ -78,8 +76,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
 export interface HeaderMenuProps {
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
   /** 読み込んだoto.iniのデータ */

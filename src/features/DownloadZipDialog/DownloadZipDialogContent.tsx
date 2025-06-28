@@ -17,7 +17,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const DownloadZipDialogContent: React.FC<
   DownloadZipDialogContentProps
 > = (props) => {
-  const { readZip } = useOtoProjectStore();
+  const { readZip,targetDirs } = useOtoProjectStore();
   /**
    * セレクトボックスを変更した際の処理
    * @param e イベント
@@ -34,7 +34,7 @@ export const DownloadZipDialogContent: React.FC<
     <>
       <DialogContent>
         {props.targetList !== null &&
-          props.targetDirs.map((td, i) => (
+          targetDirs.map((td, i) => (
             <>
               <FullWidthSelect
                 label={td}
@@ -69,8 +69,6 @@ export const DownloadZipDialogContent: React.FC<
 export interface DownloadZipDialogContentProps {
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /** 保存されたoto.ini */
   storagedOto: {};
   /** 書き出すotoの対象リスト */

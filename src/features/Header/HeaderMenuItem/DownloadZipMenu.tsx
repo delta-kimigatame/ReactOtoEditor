@@ -19,7 +19,7 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  * @returns zipをダウンロードするメニュー
  */
 export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
-  const {zipFileName,readZip}=useOtoProjectStore()
+  const { zipFileName, readZip, targetDirs } = useOtoProjectStore();
   /** ダイアログ表示設定 */
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
   /** 保存されたoto.ini */
@@ -41,7 +41,7 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
       setStoragedOto(storagedOtoTemp[zipFileName]);
     }
     const targetList_: Array<number> = [];
-    props.targetDirs.forEach((td) => {
+    targetDirs.forEach((td) => {
       if (td === props.targetDir) {
         Log.log(`編集中フォルダ:${td}`, "DownloadZipMenu");
         targetList_.push(0);
@@ -69,7 +69,6 @@ export const DownloadZipMenu: React.FC<DownloadZipMenuProps> = (props) => {
         <ListItemText>{t("menu.zipDownload")}</ListItemText>
       </MenuItem>
       <DownloadZipDialog
-        targetDirs={props.targetDirs}
         oto={props.oto}
         targetDir={props.targetDir}
         setMenuAnchor={props.setMenuAnchor}
@@ -88,8 +87,6 @@ export interface DownloadZipMenuProps {
   oto: Oto;
   /** 現在原音設定の対象になっているディレクトリ */
   targetDir: string | null;
-  /** zip内のwavファイルがあるディレクトリの一覧 */
-  targetDirs: Array<string> | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
 }
