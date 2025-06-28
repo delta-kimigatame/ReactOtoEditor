@@ -129,8 +129,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           SetSclolled={SetScrolled}
           setUpdateSignal={props.setUpdateSignal}
           setScrollable={setScrollable}
-          touchMode={props.touchMode}
-          overlapLock={props.overlapLock}
           updateSignal={props.updateSignal}
         />
       </Box>
@@ -166,10 +164,6 @@ export interface CanvasBaseProps {
   pixelPerMsec: number;
   /** recordの更新をtableに通知するための処理 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
-  /** touchmodeを使用するか */
-  touchMode: boolean;
-  /** overlaplackを使用するか */
-  overlapLock: boolean;
   /** 波形の読込状態 */
   wavProgress: boolean;
   /** スペクトログラムの読込状態 */

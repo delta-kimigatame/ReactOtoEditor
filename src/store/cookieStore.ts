@@ -29,6 +29,10 @@ interface CookieStore {
    */
   colorTheme: ColorTheme;
 
+  overlapLock: boolean;
+
+  touchMode: boolean;
+
   /**
    * 表示モードを更新する関数。モードを変更するために使用されます。
    *
@@ -49,6 +53,10 @@ interface CookieStore {
    * @param colorTheme 新しいカラーテーマ。
    */
   setColorTheme: (colorTheme: ColorTheme) => void;
+
+  setOverlapLock: (overlapLock: boolean) => void;
+
+  setTouchMode: (touchMode: boolean) => void;
 
   /**
    * cookieに表示モードを保存する関数。
@@ -71,6 +79,10 @@ interface CookieStore {
    */
   setColorThemeInCookie: (colorTheme: ColorTheme) => void;
 
+  setOverlapLockInCookie: (overlapLock: boolean) => void;
+
+  setTouchModeInCookie: (touchMode: boolean) => void;
+
   /**
    * 初期化フラグ。状態が初期化されているかどうかを示します。
    */
@@ -89,6 +101,8 @@ export const useCookieStore = create<CookieStore>((set) => {
     mode: cookieDefaults.mode,
     language: cookieDefaults.language,
     colorTheme: cookieDefaults.colorTheme,
+    overlapLock: cookieDefaults.overlapLock,
+    touchMode: cookieDefaults.touchMode,
     // 状態更新関数
     setMode: (newMode) =>
       set((state) => {
@@ -108,11 +122,23 @@ export const useCookieStore = create<CookieStore>((set) => {
         return { colorTheme: newColorTheme };
       }),
 
+    setOverlapLock: (overlapLock) =>
+      set((state) => {
+        state.setOverlapLockInCookie(overlapLock);
+        return { overlapLock };
+      }),
+    setTouchMode: (touchMode) =>
+      set((state) => {
+        state.setTouchModeInCookie(touchMode);
+        return { touchMode };
+      }),
 
     // 初期状態ではダミー関数を設定
     setModeInCookie: () => {},
     setLanguageInCookie: () => {},
     setColorThemeInCookie: () => {},
+    setOverlapLockInCookie: () => {},
+    setTouchModeInCookie: () => {},
     isInitialized: false,
   };
 });
@@ -126,9 +152,13 @@ export const useInitializeCookieStore = () => {
       mode: projectCookie.mode,
       language: projectCookie.language,
       colorTheme: projectCookie.colorTheme,
+      overlapLock: projectCookie.overlapLock,
+      touchMode: projectCookie.touchMode,
       setModeInCookie: projectCookie.setMode,
       setLanguageInCookie: projectCookie.setLanguage,
       setColorThemeInCookie: projectCookie.setColorTheme,
+      setOverlapLockInCookie: projectCookie.setOverlapLock,
+      setTouchModeInCookie: projectCookie.setTouchMode,
       isInitialized: true,
     });
   }, [projectCookie]);

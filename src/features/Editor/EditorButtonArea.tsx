@@ -33,6 +33,7 @@ import { OnPlay, PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "../TableDialog/TableDialog";
 import { AliasDialog } from "../AliasDialog/AliasDialog";
 import { useThemeMode } from "../../hooks/useThemeMode";
+import { useCookieStore } from "../../store/cookieStore";
 
 /**
  * 編集画面の操作ボタン
@@ -40,7 +41,8 @@ import { useThemeMode } from "../../hooks/useThemeMode";
  * @returns 編集画面の操作ボタン
  */
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
-  const mode=useThemeMode()
+  const { overlapLock, setOverlapLock, touchMode, setTouchMode } =
+    useCookieStore();
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -126,9 +128,9 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       } else if (e.key === "3") {
         OnPlay(props.record, props.wav, metronome);
       } else if (e.key === "4") {
-        props.setOverlapLock(!props.overlapLock);
+        setOverlapLock(!overlapLock);
       } else if (e.key === "5") {
-        props.setTouchMode(!props.touchMode);
+        setTouchMode(!touchMode);
       } else if (e.key === "6") {
         setAliasDialogOpen(true);
       } else if (e.key === "7") {
@@ -268,12 +270,12 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             icon={
               <LockIcon
                 sx={{ fontSize: iconSize }}
-                color={props.overlapLock ? "info" : "inherit"}
+                color={overlapLock ? "info" : "inherit"}
               />
             }
             title={t("editor.lockOverlap")}
             onClick={() => {
-              props.setOverlapLock(!props.overlapLock);
+              setOverlapLock(!overlapLock);
             }}
           />
           <EditorButton
@@ -281,12 +283,12 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             icon={
               <TouchAppIcon
                 sx={{ fontSize: iconSize }}
-                color={props.touchMode ? "info" : "inherit"}
+                color={touchMode ? "info" : "inherit"}
               />
             }
             title={t("editor.touchMode")}
             onClick={() => {
-              props.setTouchMode(!props.touchMode);
+              setTouchMode(!touchMode);
             }}
           />
         </StyledBox>
@@ -419,14 +421,6 @@ export interface EditorButtonAreaProps {
   pixelPerMsec: number;
   /** 横方向1pixelあたりが何msを表すかを変更する処理 */
   setPixelPerMsec: React.Dispatch<React.SetStateAction<number>>;
-  /** overlaplackを使用するか */
-  overlapLock: boolean;
-  /** touchmodeを使用するか */
-  touchMode: boolean;
-  /** overlaplackを使用するかを変更する */
-  setOverlapLock: React.Dispatch<React.SetStateAction<boolean>>;
-  /** touchmodeを使用するかを変更する */
-  setTouchMode: React.Dispatch<React.SetStateAction<boolean>>;
   /** recordの更新をtableに通知するための処理 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   /** zipデータ */

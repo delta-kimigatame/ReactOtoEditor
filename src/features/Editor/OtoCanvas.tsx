@@ -9,6 +9,7 @@ import { GetColor } from "../../utils/Color";
 
 import { Log } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
+import { useCookieStore } from "../../store/cookieStore";
 
 /**
  * 原音設定パラメータを表示するキャンバス
@@ -17,6 +18,7 @@ import { useThemeMode } from "../../hooks/useThemeMode";
  */
 export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
   const mode=useThemeMode()
+  const {overlapLock,touchMode}=useCookieStore()
   /** canvasへのref */
   const canvas = React.useRef(null);
   /** 区分線の色 */
@@ -265,7 +267,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    */
   const UpdateOto = (target: string, clickX: number) => {
     Log.log(
-      `編集対象:${target}、clickX:${clickX}、オーバーラップロック:${props.overlapLock}`,
+      `編集対象:${target}、clickX:${clickX}、オーバーラップロック:${overlapLock}`,
       "OtoCanvas"
     );
     if (target === "offset") {
@@ -280,7 +282,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
       props.record.offset -= moveValue;
       /** 先行発声の最小値は0 */
       props.record.pre = Math.max(props.record.pre + moveValue, 0);
-      if (props.overlapLock) {
+      if (overlapLock) {
         /** オーバーラップロックの場合、先行発声の1/3 */
         props.record.overlap = props.record.pre / 3;
       } else {
@@ -369,8 +371,8 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     const clickY: number =
       e.clientY !== undefined ? e.clientY : e.touches[0].clientY;
 
-    Log.log(`編集対象特定。touchMode:${props.touchMode}`, "OtoCanvas");
-    if (props.touchMode) {
+    Log.log(`編集対象特定。touchMode:${touchMode}`, "OtoCanvas");
+    if (touchMode) {
       /** touchModeがtrueの場合、問答無用でpreが対象 */
       t = "pre";
     } else {
@@ -400,7 +402,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         minRange = Math.abs(offsetPos - clickX);
         t = "offset";
       }
-      if (Math.abs(overlapPos - clickX) < minRange && !props.overlapLock) {
+      if (Math.abs(overlapPos - clickX) < minRange && !overlapLock) {
         minRange = Math.abs(overlapPos - clickX);
         t = "overlap";
       }
@@ -514,10 +516,6 @@ export interface OtoCanvasProps {
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   /** キャンバスのスクロール可否 */
   setScrollable: React.Dispatch<React.SetStateAction<boolean>>;
-  /** touchmodeを使用するか */
-  touchMode: boolean;
-  /** overlaplackを使用するか */
-  overlapLock: boolean;
   /** recordの更新通知 */
   updateSignal: number;
 }

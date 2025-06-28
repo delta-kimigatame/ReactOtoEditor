@@ -39,6 +39,16 @@ export const useProjectCookie = () => {
     COOKIE_KEYS.colorTheme,
     cookieDefaults.colorTheme
   ) as ColorTheme;
+
+  const overlapLock = getStringCookie(
+    COOKIE_KEYS.overlapLock,
+    cookieDefaults.overlapLock.toString()
+  ) as unknown as boolean;
+
+  const touchMode = getStringCookie(
+    COOKIE_KEYS.touchMode,
+    cookieDefaults.touchMode.toString()
+  ) as unknown as boolean;
   /**
    * モードをクッキーに保存します。
    * @param newMode 更新するモード（`light`, `dark`, `system`）
@@ -57,16 +67,26 @@ export const useProjectCookie = () => {
   const setColorTheme = (newColorTheme: ColorTheme) =>
     setStringCookie(COOKIE_KEYS.colorTheme, newColorTheme);
 
+  const setOverlapLock = (overlapLock: boolean) =>
+    setStringCookie(COOKIE_KEYS.overlapLock, overlapLock.toString());
+
+  const setTouchMode = (touchMode: boolean) =>
+    setStringCookie(COOKIE_KEYS.touchMode, touchMode.toString());
+
   Log.log(
-    `mode:${mode},language:${language},colorTheme:${colorTheme}`,
+    `mode:${mode},language:${language},colorTheme:${colorTheme},overlapLock:${overlapLock},touchMode:${touchMode}`,
     "useProjectCookie"
   );
   return {
     mode,
     language,
     colorTheme,
+    overlapLock,
+    touchMode,
     setMode,
     setLanguage,
     setColorTheme,
+    setOverlapLock,
+    setTouchMode,
   };
 };

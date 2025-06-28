@@ -4,9 +4,6 @@ import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 
-import { useTranslation } from "react-i18next";
-import { useCookies } from "react-cookie";
-
 import { CanvasBase } from "./CanvasBase";
 import { EditorButtonArea } from "./EditorButtonArea";
 import { layout } from "../../config/setting";
@@ -20,12 +17,6 @@ import { Log } from "../../lib/Logging";
  * @returns エディタ画面
  */
 export const EditorView: React.FC<EditorViewProps> = (props) => {
-  // cookieの取得
-  const [cookies, setCookie, removeCookie] = useCookies([
-    "overlapLock",
-    "touchMode",
-  ]);
-  const { t } = useTranslation();
   /** EditorTableの高さ */
   const [tableHeight, setTableHeight] = React.useState<number>(
     layout.tableMinSize
@@ -46,28 +37,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   const [wavProgress, setWavProgress] = React.useState<boolean>(false);
   /** スペクトログラムの読込状態 */
   const [specProgress, setSpecProgress] = React.useState<boolean>(false);
-
-  /** overlapLockの初期化 */
-  const overlapLock_: boolean =
-    cookies.overlapLock !== undefined ? cookies.overlapLock : true;
-  /** touchmodeの初期化 */
-  const touchMode_: boolean =
-    cookies.touchMode !== undefined ? cookies.touchMode : true;
-
-  /** overlaplackを使用するか */
-  const [overlapLock, setOverlapLock] = React.useState<boolean>(overlapLock_);
-  /** touchmodeを使用するか */
-  const [touchMode, setTouchMode] = React.useState<boolean>(touchMode_);
-  /** toutchModeが更新された際、cookieに保存する。 */
-  React.useMemo(() => {
-    setCookie("touchMode", touchMode);
-    Log.gtag("toggleMode");
-  }, [touchMode]);
-  /** overlapLockが更新された際、cookieに保存する。 */
-  React.useMemo(() => {
-    setCookie("overlapLock", overlapLock);
-    Log.gtag("toggleOverlap");
-  }, [overlapLock]);
 
   /** 画面サイズが変更されたとき、canvasの大きさを設定する。 */
   React.useEffect(() => {
@@ -104,8 +73,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         record={props.record}
         pixelPerMsec={pixelPerMsec}
         setUpdateSignal={setUpdateSignal}
-        touchMode={touchMode}
-        overlapLock={overlapLock}
         wavProgress={wavProgress}
         specProgress={specProgress}
         setWavProgress={setWavProgress}
@@ -131,10 +98,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
         wav={props.wav}
-        overlapLock={overlapLock}
-        touchMode={touchMode}
-        setOverlapLock={setOverlapLock}
-        setTouchMode={setTouchMode}
         setUpdateSignal={setUpdateSignal}
         zip={props.zip}
         zipFileName={props.zipFileName}

@@ -6,6 +6,8 @@ export const COOKIE_KEYS = {
   mode: "mode",
   language: "language",
   colorTheme: "colorTheme",
+  overlapLock: "overlapLock",
+  touchMode: "touchMode",
 } as const;
 
 const determineDefaultLocale = (): Language => {
@@ -45,8 +47,13 @@ export const cookieDefaults: {
    * アプリケーションのカラーテーマ。デフォルトは`default`
    */
   colorTheme: ColorTheme;
+
+  overlapLock: boolean;
+  touchMode: boolean;
 } = {
   mode: "system",
   language: determineDefaultLocale(),
   colorTheme: "gray",
+  overlapLock: false,
+  touchMode: false,
 };

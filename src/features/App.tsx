@@ -52,7 +52,6 @@ export const App: React.FC = () => {
   }, [language]);
   const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
   React.useLayoutEffect(() => {
-    Log.log(window.navigator.userAgent, "App");
     const updateSize = (): void => {
       setTimeout(() => {
         setWindowSize([window.innerWidth, window.innerHeight]);
@@ -61,8 +60,6 @@ export const App: React.FC = () => {
     };
     window.addEventListener("orientationchange", updateSize);
     updateSize();
-    Log.log(`build: ${__BUILD_TIMESTAMP__}`, "App");
-
     return () => window.removeEventListener("resize", updateSize);
   }, []);
 
