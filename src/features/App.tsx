@@ -50,18 +50,6 @@ export const App: React.FC = () => {
     i18n.changeLanguage(language);
     document.documentElement.lang = language;
   }, [language]);
-  const [windowSize, setWindowSize] = React.useState<[number, number]>([0, 0]);
-  React.useLayoutEffect(() => {
-    const updateSize = (): void => {
-      setTimeout(() => {
-        setWindowSize([window.innerWidth, window.innerHeight]);
-        Log.log("画面サイズ:" + [window.innerWidth, window.innerHeight], "App");
-      }, 100);
-    };
-    window.addEventListener("orientationchange", updateSize);
-    updateSize();
-    return () => window.removeEventListener("resize", updateSize);
-  }, []);
 
   React.useEffect(() => {
     if (oto === null) {
@@ -126,7 +114,6 @@ export const App: React.FC = () => {
       <CssBaseline />
       <Header
         record={record}
-        windowSize={windowSize}
         readZip={readZip}
         targetDirs={targetDirs}
         targetDir={targetDir}
@@ -137,7 +124,6 @@ export const App: React.FC = () => {
       />
       {oto !== null && (
         <EditorView
-          windowSize={windowSize}
           oto={oto}
           record={record}
           targetDir={targetDir}

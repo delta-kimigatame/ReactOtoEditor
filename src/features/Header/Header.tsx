@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 
 import { setting } from "../../config/setting";
 import { HeaderMenu } from "../../components/Header/HeaderMenu";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 /**
  * ヘッダ
@@ -20,14 +21,9 @@ import { HeaderMenu } from "../../components/Header/HeaderMenu";
  * @returns ヘッダ全体
  */
 export const Header: React.FC<HeaderProps> = (props) => {
+  const windowSize=useWindowSize();
   /** テキスト表示領域 */
-  const [textWidth, setTextWidth] = React.useState<number>(
-    props.windowSize[0] - 40 - 24 - 32
-  );
-  /** 画面サイズが変更されたとき、テキスト表示領域も変更する。 */
-  React.useEffect(() => {
-    setTextWidth(props.windowSize[0] - 40 - 24 - 32);
-  }, [props.windowSize]);
+  const textWidth=React.useMemo(()=>windowSize.width - 40 - 24 - 32, [windowSize.width]);
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
@@ -99,8 +95,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
 export interface HeaderProps {
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
-  /**画面サイズ */
-  windowSize: [number, number];
   /** zip内のwavファイルがあるディレクトリの一覧 */
   targetDirs: Array<string> | null;
   /** 現在原音設定の対象になっているディレクトリ */

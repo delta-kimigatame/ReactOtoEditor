@@ -10,6 +10,7 @@ import { layout } from "../../config/setting";
 import { EditorTable } from "./EditorTable";
 
 import { Log } from "../../lib/Logging";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 /**
  * エディタ画面。oto.ini読込後に表示される。
@@ -17,6 +18,7 @@ import { Log } from "../../lib/Logging";
  * @returns エディタ画面
  */
 export const EditorView: React.FC<EditorViewProps> = (props) => {
+  const windowSize = useWindowSize();
   /** EditorTableの高さ */
   const [tableHeight, setTableHeight] = React.useState<number>(
     layout.tableMinSize
@@ -24,10 +26,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   /** buttonAreaの高さ */
   const [buttonAreaHeight, setButtonAreaHeight] = React.useState<number>(
     layout.minButtonSize + layout.iconPadding
-  );
-  /** canvasの高さ */
-  const [canvasHeight, setCanvasHeight] = React.useState<number>(
-    375 - layout.headerHeight - tableHeight - buttonAreaHeight
   );
   /** 横方向1pixelあたりが何msを表すか */
   const [pixelPerMsec, setPixelPerMsec] = React.useState<number>(1);
@@ -38,26 +36,15 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   /** スペクトログラムの読込状態 */
   const [specProgress, setSpecProgress] = React.useState<boolean>(false);
 
-  /** 画面サイズが変更されたとき、canvasの大きさを設定する。 */
-  React.useEffect(() => {
-    Log.log(
-      `Canvasの高さ変更 ${
-        props.windowSize[1] -
-        layout.headerHeight -
-        tableHeight -
-        buttonAreaHeight -
-        24
-      }`,
-      "EditorView"
-    );
-    setCanvasHeight(
-      props.windowSize[1] -
-        layout.headerHeight -
-        tableHeight -
-        buttonAreaHeight -
-        24
-    );
-  }, [props.windowSize, tableHeight, buttonAreaHeight]);
+  const canvasHeight = React.useMemo(
+    () =>
+      windowSize.height -
+      layout.headerHeight -
+      tableHeight -
+      buttonAreaHeight -
+      24,
+    [windowSize, tableHeight, buttonAreaHeight]
+  );
 
   /** props.recordが変更されたとき、updateSignalを初期化する。 */
   React.useMemo(() => {
@@ -67,7 +54,7 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
   return (
     <>
       <CanvasBase
-        canvasWidth={props.windowSize[0]}
+        canvasWidth={windowSize.width}
         canvasHeight={canvasHeight}
         wav={props.wav}
         record={props.record}
@@ -80,16 +67,16 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         updateSignal={updateSignal}
       />
       <EditorTable
-        windowWidth={props.windowSize[0]}
-        windowHeight={props.windowSize[1]}
+        windowWidth={windowSize.width}
+        windowHeight={windowSize.height}
         setTableHeight={setTableHeight}
         record={props.record}
         targetDir={props.targetDir}
         updateSignal={updateSignal}
       />
       <EditorButtonArea
-        windowWidth={props.windowSize[0]}
-        windowHeight={props.windowSize[1]}
+        windowWidth={windowSize.width}
+        windowHeight={windowSize.height}
         setButtonAreaHeight={setButtonAreaHeight}
         oto={props.oto}
         record={props.record}
@@ -108,8 +95,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
 };
 
 export interface EditorViewProps {
-  /** 画面サイズ */
-  windowSize: [number, number];
   /** 原音設定データ */
   oto: Oto;
   /** 現在選択されている原音設定レコード */
