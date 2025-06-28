@@ -13,6 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { setting } from "../../config/setting";
 import { HeaderMenu } from "../../components/Header/HeaderMenu";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * ヘッダ
@@ -25,6 +26,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
   const textWidth=React.useMemo(()=>windowSize.width - 40 - 24 - 32, [windowSize.width]);
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
+
+  const {record}=useOtoProjectStore()
   return (
     <>
       <AppBar position="relative">
@@ -43,7 +46,7 @@ export const Header: React.FC<HeaderProps> = (props) => {
                 />
               </Avatar>
             </IconButton>
-            {props.record === null ? (
+            {record === null ? (
               <Typography variant="subtitle2">
                 {setting.productName}
               </Typography>
@@ -57,9 +60,9 @@ export const Header: React.FC<HeaderProps> = (props) => {
               >
                 <Typography variant="caption">
                   {"(" +
-                    props.record.alias +
+                    record.alias +
                     ")" +
-                    props.record.filename.replace(".wav", "")}
+                    record.filename.replace(".wav", "")}
                 </Typography>
               </Box>
             )}
@@ -76,7 +79,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
         </Toolbar>
       </AppBar>
       <HeaderMenu
-        record={props.record}
         oto={props.oto}
         setOto={props.setOto}
         menuAnchor={menuAnchor}
@@ -87,8 +89,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
 };
 
 export interface HeaderProps {
-  /**現在選択されているoto.iniのレコード */
-  record: OtoRecord | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理 */

@@ -20,13 +20,13 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  */
 export const PlayButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
-  const {wav}=useOtoProjectStore()
+  const {record,wav}=useOtoProjectStore()
 
   /**
    * メトロノームの4拍目に先行発声が合うように再生する処理
    */
   const OnPlay_ = () => {
-    OnPlay(props.record, wav, props.metronome);
+    OnPlay(record, wav, props.metronome);
   };
 
   return (
@@ -43,8 +43,6 @@ export const PlayButton: React.FC<Props> = (props) => {
 };
 
 interface Props {
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

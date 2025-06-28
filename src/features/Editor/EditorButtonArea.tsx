@@ -41,7 +41,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const { overlapLock, setOverlapLock, touchMode, setTouchMode } =
     useCookieStore();
-  const { targetDir,wav } = useOtoProjectStore();
+  const { targetDir, wav, record, setRecord } = useOtoProjectStore();
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -92,12 +92,12 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         OnPrevAlias(
           props.oto,
           targetDir,
-          props.record,
+          record,
           maxFileIndex,
           fileIndex,
           maxAliasIndex,
           aliasIndex,
-          props.setRecord,
+          setRecord,
           setFileIndex,
           setAliasIndex,
           setMaxAliasIndex
@@ -106,12 +106,12 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         OnNextAlias(
           props.oto,
           targetDir,
-          props.record,
+          record,
           maxFileIndex,
           fileIndex,
           maxAliasIndex,
           aliasIndex,
-          props.setRecord,
+          setRecord,
           setFileIndex,
           setAliasIndex,
           setMaxAliasIndex
@@ -121,11 +121,11 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       } else if (e.key === "-") {
         OnZoomOut();
       } else if (e.key === "1") {
-        OnPlayBeforePreutter(props.record, wav);
+        OnPlayBeforePreutter(record, wav);
       } else if (e.key === "2") {
-        OnPlayAfterPreutter(props.record, wav);
+        OnPlayAfterPreutter(record, wav);
       } else if (e.key === "3") {
-        OnPlay(props.record, wav, metronome);
+        OnPlay(record, wav, metronome);
       } else if (e.key === "4") {
         setOverlapLock(!overlapLock);
       } else if (e.key === "5") {
@@ -189,15 +189,15 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
    * 選択中の原音設定レコードが変更された際の処理
    */
   React.useEffect(() => {
-    if (props.record === null) {
+    if (record === null) {
       setAliasIndex(0);
       setMaxAliasIndex(0);
     } else {
       setMaxAliasIndex(
-        props.oto.GetAliases(targetDir, props.record.filename).length - 1
+        props.oto.GetAliases(targetDir, record.filename).length - 1
       );
     }
-  }, [props.record]);
+  }, [record]);
 
   /**
    * キャンバスの拡大
@@ -240,22 +240,9 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         ref={areaRef}
       >
         <StyledBox>
-          <PlayBeforePreutterButton
-            record={props.record}
-            size={size}
-            iconSize={iconSize}
-          />
-          <PlayAfterPreutterButton
-            record={props.record}
-            size={size}
-            iconSize={iconSize}
-          />
-          <PlayButton
-            record={props.record}
-            size={size}
-            iconSize={iconSize}
-            metronome={metronome}
-          />
+          <PlayBeforePreutterButton size={size} iconSize={iconSize} />
+          <PlayAfterPreutterButton size={size} iconSize={iconSize} />
+          <PlayButton size={size} iconSize={iconSize} metronome={metronome} />
         </StyledBox>
         <StyledBox>
           <EditorButton
@@ -290,7 +277,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             size={size}
             icon={<EditAttributesIcon sx={{ fontSize: iconSize }} />}
             title={t("editor.editAlias")}
-            disabled={props.record === null}
+            disabled={record === null}
             onClick={() => {
               setAliasDialogOpen(true);
             }}
@@ -323,8 +310,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         <StyledBox>
           <PrevAliasButton
             oto={props.oto}
-            record={props.record}
-            setRecord={props.setRecord}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -338,8 +323,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
           />
           <NextAliasButton
             oto={props.oto}
-            record={props.record}
-            setRecord={props.setRecord}
             size={size}
             iconSize={iconSize}
             fileIndex={fileIndex}
@@ -359,9 +342,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         windowWidth={props.windowWidth}
         windowHeight={props.windowHeight}
         oto={props.oto}
-        record={props.record}
         updateSignal={0}
-        setRecord={props.setRecord}
         fileIndex={fileIndex}
         aliasIndex={aliasIndex}
         setFileIndex={setFileIndex}
@@ -372,8 +353,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         dialogOpen={aliasDialogOpen}
         setDialogOpen={setAliasDialogOpen}
         oto={props.oto}
-        record={props.record}
-        setRecord={props.setRecord}
         fileIndex={fileIndex}
         aliasIndex={aliasIndex}
         maxFileIndex={maxFileIndex}
@@ -396,10 +375,6 @@ export interface EditorButtonAreaProps {
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
   /** 原音設定データ */
   oto: Oto;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
-  /** recordを更新する処理 */
-  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
   /** 横方向1pixelあたりが何msを表すか */
   pixelPerMsec: number;
   /** 横方向1pixelあたりが何msを表すかを変更する処理 */

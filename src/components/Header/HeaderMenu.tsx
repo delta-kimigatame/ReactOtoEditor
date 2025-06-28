@@ -70,8 +70,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
 };
 
 export interface HeaderMenuProps {
-  /**現在選択されているoto.iniのレコード */
-  record: OtoRecord | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理 */

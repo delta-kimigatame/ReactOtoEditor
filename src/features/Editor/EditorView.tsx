@@ -46,17 +46,11 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
     [windowSize, tableHeight, buttonAreaHeight]
   );
 
-  /** props.recordが変更されたとき、updateSignalを初期化する。 */
-  React.useMemo(() => {
-    setUpdateSignal(0);
-  }, [props.record]);
-
   return (
     <>
       <CanvasBase
         canvasWidth={windowSize.width}
         canvasHeight={canvasHeight}
-        record={props.record}
         pixelPerMsec={pixelPerMsec}
         setUpdateSignal={setUpdateSignal}
         wavProgress={wavProgress}
@@ -69,7 +63,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         windowWidth={windowSize.width}
         windowHeight={windowSize.height}
         setTableHeight={setTableHeight}
-        record={props.record}
         updateSignal={updateSignal}
       />
       <EditorButtonArea
@@ -77,8 +70,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         windowHeight={windowSize.height}
         setButtonAreaHeight={setButtonAreaHeight}
         oto={props.oto}
-        record={props.record}
-        setRecord={props.setRecord}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
         setUpdateSignal={setUpdateSignal}
@@ -91,8 +82,4 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
 export interface EditorViewProps {
   /** 原音設定データ */
   oto: Oto;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
-  /** recordを更新する処理 */
-  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
 }

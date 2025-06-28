@@ -49,11 +49,9 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             windowWidth={props.windowWidth}
             windowHeight={props.windowHeight}
             oto={props.oto}
-            record={props.record}
             updateSignal={updateSignal}
             fileIndex={props.fileIndex}
             aliasIndex={props.aliasIndex}
-            setRecord={props.setRecord}
             setFileIndex={props.setFileIndex}
             setAliasIndex={props.setAliasIndex}
             setMaxAliasIndex={props.setMaxAliasIndex}
@@ -75,12 +73,8 @@ export interface TableDialogProps {
   windowHeight: number;
   /** 原音設定データ */
   oto: Oto;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
   /** recordの更新通知 */
   updateSignal: number;
-  /** recordを更新する処理 */
-  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
   /** 現在のファイルのインデックス */
   fileIndex: number;
   /** 現在のエイリアスのインデックス */

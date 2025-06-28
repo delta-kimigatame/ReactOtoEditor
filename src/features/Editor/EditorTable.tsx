@@ -24,7 +24,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  */
 export const EditorTable: React.FC<EditorTableProps> = (props) => {
   const { t } = useTranslation();
-  const { targetDir } = useOtoProjectStore();
+  const { targetDir,record,setRecord } = useOtoProjectStore();
   /** tableへのref。heightを取得するために使用 */
   const tableRef = React.useRef(null);
   /** 文字の種類 */
@@ -86,14 +86,14 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
    * 原音設定パラメータが更新された際の処理
    */
   React.useEffect(() => {
-    if (props.record !== null) {
-      setOffset(props.record.offset);
-      setOverlap(props.record.overlap);
-      setPreutter(props.record.pre);
-      setVelocity(props.record.velocity);
-      setBlank(props.record.blank);
+    if (record !== null) {
+      setOffset(record.offset);
+      setOverlap(record.overlap);
+      setPreutter(record.pre);
+      setVelocity(record.velocity);
+      setBlank(record.blank);
     }
-  }, [props.record, props.updateSignal]);
+  }, [record, props.updateSignal]);
 
   return (
     <>
@@ -126,17 +126,17 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
           </TableHead>
           <TableBody>
             {props.oto === undefined ? (
-              props.record && (
+              record && (
                 <>
                   <TableRow>
                     <StyledTableCell size={"small"}>
                       <Typography variant={variant}>
-                        {props.record.filename}
+                        {record.filename}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell size={"small"}>
                       <Typography variant={variant}>
-                        {props.record.alias}
+                        {record.alias}
                       </Typography>
                     </StyledTableCell>
                     <StyledTableCell size={"small"}>
@@ -179,7 +179,7 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                           "#fff0f0",
                       }}
                       onClick={() => {
-                        props.setRecord(props.oto.GetRecord(targetDir, f, a));
+                        setRecord(props.oto.GetRecord(targetDir, f, a));
                         props.setFileIndex(fi);
                         props.setAliasIndex(ai);
                         props.setMaxAliasIndex(
@@ -247,12 +247,8 @@ export interface EditorTableProps {
   setTableHeight?: React.Dispatch<React.SetStateAction<number>>;
   /** 原音設定データ */
   oto?: Oto;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
   /** recordの更新通知 */
   updateSignal: number;
-  /** recordを更新する処理 */
-  setRecord?: React.Dispatch<React.SetStateAction<OtoRecord>>;
   /** 現在のファイルのインデックス */
   fileIndex?: number;
   /** 現在のエイリアスのインデックス */

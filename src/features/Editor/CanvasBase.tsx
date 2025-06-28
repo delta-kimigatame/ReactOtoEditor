@@ -123,7 +123,6 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         <OtoCanvas
           canvasWidth={width}
           canvasHeight={height}
-          record={props.record}
           boxRef={boxRef}
           pixelPerMsec={props.pixelPerMsec}
           SetSclolled={SetScrolled}
@@ -156,8 +155,6 @@ export interface CanvasBaseProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord;
   /** 横方向1pixelあたりが何msを表すか */
   pixelPerMsec: number;
   /** recordの更新をtableに通知するための処理 */

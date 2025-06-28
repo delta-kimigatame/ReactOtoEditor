@@ -10,6 +10,7 @@ import { GetColor } from "../../utils/Color";
 import { Log } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 原音設定パラメータを表示するキャンバス
@@ -19,6 +20,7 @@ import { useCookieStore } from "../../store/cookieStore";
 export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
   const mode=useThemeMode()
   const {overlapLock,touchMode}=useCookieStore()
+  const {record}=useOtoProjectStore()
   /** canvasへのref */
   const canvas = React.useRef(null);
   /** 区分線の色 */
@@ -97,8 +99,8 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderOffset = (ctx: CanvasRenderingContext2D) => {
-    if (props.record !== null) {
-      const point = props.record.offset / props.pixelPerMsec;
+    if (record !== null) {
+      const point = record.offset / props.pixelPerMsec;
       ctx.fillStyle = "rgba(0,255,0," + alpha + ")";
       ctx.fillRect(0, 0, point, props.canvasHeight);
       ctx.strokeStyle = lineColor;
@@ -115,12 +117,12 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderBlank = (ctx: CanvasRenderingContext2D) => {
-    if (props.record !== null) {
+    if (record !== null) {
       let point = 0;
-      if (props.record.blank < 0) {
-        point = (props.record.offset - props.record.blank) / props.pixelPerMsec;
+      if (record.blank < 0) {
+        point = (record.offset - record.blank) / props.pixelPerMsec;
       } else {
-        point = props.canvasWidth - props.record.blank / props.pixelPerMsec;
+        point = props.canvasWidth - record.blank / props.pixelPerMsec;
       }
       ctx.fillStyle = "rgba(255,255,0," + alpha + ")";
       ctx.fillRect(point, 0, props.canvasWidth - point, props.canvasHeight);
@@ -138,9 +140,9 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderOverlap = (ctx: CanvasRenderingContext2D) => {
-    if (props.record !== null) {
+    if (record !== null) {
       const point =
-        (props.record.offset + props.record.overlap) / props.pixelPerMsec;
+        (record.offset + record.overlap) / props.pixelPerMsec;
       ctx.strokeStyle = "rgb(0,128,0)";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -158,9 +160,9 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderPreutter = (ctx: CanvasRenderingContext2D) => {
-    if (props.record !== null) {
+    if (record !== null) {
       const point =
-        (props.record.offset + props.record.pre) / props.pixelPerMsec;
+        (record.offset + record.pre) / props.pixelPerMsec;
       ctx.strokeStyle = "rgb(255,0,0)";
       ctx.lineWidth = 1;
       ctx.beginPath();
@@ -178,10 +180,10 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
    * @param ctx canvasのコンテクスト
    */
   const RenderVelocity = (ctx: CanvasRenderingContext2D) => {
-    if (props.record !== null) {
-      const spoint = props.record.offset / props.pixelPerMsec;
+    if (record !== null) {
+      const spoint = record.offset / props.pixelPerMsec;
       const point =
-        (props.record.offset + props.record.velocity) / props.pixelPerMsec;
+        (record.offset + record.velocity) / props.pixelPerMsec;
       ctx.fillStyle = "rgba(0,0,255," + alpha + ")";
       ctx.fillRect(
         spoint,
@@ -225,16 +227,16 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx) {
       RenderAll(ctx);
-      if (props.record !== null) {
-        if (alias !== props.record.alias) {
-          props.SetSclolled(props.record.offset / props.pixelPerMsec - 100);
-          setAlias(props.record.alias);
+      if (record !== null) {
+        if (alias !== record.alias) {
+          props.SetSclolled(record.offset / props.pixelPerMsec - 100);
+          setAlias(record.alias);
         }
       } else {
         setAlias(null);
       }
     }
-  }, [props.record, props.updateSignal]);
+  }, [record, props.updateSignal]);
 
   /**
    * キャンバスの大きさが変更となった際の処理
@@ -243,9 +245,9 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
     const ctx = (canvas.current as HTMLCanvasElement).getContext("2d");
     if (ctx) {
       RenderAll(ctx);
-      if (props.record !== null) {
-        props.SetSclolled(props.record.offset / props.pixelPerMsec - 100);
-        setAlias(props.record.alias);
+      if (record !== null) {
+        props.SetSclolled(record.offset / props.pixelPerMsec - 100);
+        setAlias(record.alias);
       }
     }
   }, [props.canvasWidth, props.canvasHeight]);
@@ -278,26 +280,26 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
        * オーバーラップはオーバーラップロックモードの場合変更する。
        * */
       /** 移動距離 */
-      const moveValue = props.record.offset - clickX * props.pixelPerMsec;
-      props.record.offset -= moveValue;
+      const moveValue = record.offset - clickX * props.pixelPerMsec;
+      record.offset -= moveValue;
       /** 先行発声の最小値は0 */
-      props.record.pre = Math.max(props.record.pre + moveValue, 0);
+      record.pre = Math.max(record.pre + moveValue, 0);
       if (overlapLock) {
         /** オーバーラップロックの場合、先行発声の1/3 */
-        props.record.overlap = props.record.pre / 3;
+        record.overlap = record.pre / 3;
       } else {
         /** オーバーラップロックでない、元位置を維持 */
-        props.record.overlap += moveValue;
+        record.overlap += moveValue;
       }
       /** 子音速度の最小値は設定値 */
-      props.record.velocity = Math.max(
-        props.record.velocity + moveValue,
+      record.velocity = Math.max(
+        record.velocity + moveValue,
         oto.minParams
       );
       /** 右ブランクの最小値は設定値 */
-      if (props.record.blank < 0) {
-        props.record.blank = Math.min(
-          props.record.blank - moveValue,
+      if (record.blank < 0) {
+        record.blank = Math.min(
+          record.blank - moveValue,
           -2 * oto.minParams
         );
       }
@@ -307,10 +309,10 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
        * */
       /** 移動距離 */
       const moveValue =
-        props.record.offset +
-        props.record.overlap -
+        record.offset +
+        record.overlap -
         clickX * props.pixelPerMsec;
-      props.record.overlap -= moveValue;
+      record.overlap -= moveValue;
     } else if (target === "pre") {
       /**
        * 先行発声が対象の場合 \
@@ -318,35 +320,35 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
        * */
       /** 移動距離 */
       const moveValue =
-        props.record.offset + props.record.pre - clickX * props.pixelPerMsec;
-      props.record.offset = props.record.offset - moveValue;
+        record.offset + record.pre - clickX * props.pixelPerMsec;
+      record.offset = record.offset - moveValue;
     } else if (target === "velocity") {
       /**
        * 子音速度が対象の場合
        * */
       /** 移動距離 */
       const moveValue =
-        props.record.offset +
-        props.record.velocity -
+        record.offset +
+        record.velocity -
         clickX * props.pixelPerMsec;
-      props.record.velocity = Math.max(
-        props.record.velocity - moveValue,
+      record.velocity = Math.max(
+        record.velocity - moveValue,
         oto.minParams
       );
       /** 伸縮範囲が設定値以下とならないようにする */
-      props.record.blank = Math.min(
-        props.record.blank,
-        -oto.minParams - props.record.velocity
+      record.blank = Math.min(
+        record.blank,
+        -oto.minParams - record.velocity
       );
     } else if (target === "blank") {
       /**
        * 右ブランクが対象の場合 \
        * 再設定にあわせて数値を正から負に変換する。
        * */
-      const newBlankPos = props.record.offset - clickX * props.pixelPerMsec;
-      props.record.blank = Math.min(
+      const newBlankPos = record.offset - clickX * props.pixelPerMsec;
+      record.blank = Math.min(
         newBlankPos,
-        -oto.minParams - props.record.velocity
+        -oto.minParams - record.velocity
       );
     }
   };
@@ -377,19 +379,19 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
       t = "pre";
     } else {
       /** 各パラメータの座標位置取得 */
-      const offsetPos = props.record.offset / props.pixelPerMsec;
+      const offsetPos = record.offset / props.pixelPerMsec;
       const overlapPos =
-        (props.record.offset + props.record.overlap) / props.pixelPerMsec;
+        (record.offset + record.overlap) / props.pixelPerMsec;
       const preutterPos =
-        (props.record.offset + props.record.pre) / props.pixelPerMsec;
+        (record.offset + record.pre) / props.pixelPerMsec;
       const velocityPos =
-        (props.record.offset + props.record.velocity) / props.pixelPerMsec;
+        (record.offset + record.velocity) / props.pixelPerMsec;
       /** 右ブランクが負の場合 */
       let blankPos =
-        (props.record.offset - props.record.blank) / props.pixelPerMsec;
-      if (props.record.blank >= 0) {
+        (record.offset - record.blank) / props.pixelPerMsec;
+      if (record.blank >= 0) {
         /** 右ブランクが正の場合値を更新する */
-        blankPos = props.canvasWidth - props.record.blank / props.pixelPerMsec;
+        blankPos = props.canvasWidth - record.blank / props.pixelPerMsec;
       }
       Log.log(
         `clickX:${clickX}、clickY:${clickY}、offset:${offsetPos}、overlapPos:${overlapPos}、preutterPos:${preutterPos}、velocityPos:${velocityPos}、blankPos:${blankPos}`,
@@ -504,8 +506,6 @@ export interface OtoCanvasProps {
   canvasWidth: number;
   /** canvasの縦幅 */
   canvasHeight: number;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord;
   /** キャンバスを格納するBoxへのref */
   boxRef: React.MutableRefObject<any>;
   /** 横方向1pixelあたりが何msを表すか */

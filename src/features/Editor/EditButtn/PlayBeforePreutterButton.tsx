@@ -18,14 +18,14 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  */
 export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
-    const {wav}=useOtoProjectStore()
+    const {record,wav}=useOtoProjectStore()
 
   /**
    * 左ブランクから先行発声までを再生する処理
    * @returns
    */
   const OnPlayBeforePreutter_ = () => {
-    OnPlayBeforePreutter(props.record, wav);
+    OnPlayBeforePreutter(record, wav);
   };
 
   return (
@@ -44,8 +44,6 @@ export const PlayBeforePreutterButton: React.FC<Props> = (props) => {
 };
 
 interface Props {
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */

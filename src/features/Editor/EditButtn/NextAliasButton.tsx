@@ -19,7 +19,7 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
 export const NextAliasButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   
-    const{targetDir}=useOtoProjectStore()
+    const{record,targetDir,setRecord}=useOtoProjectStore()
   /**
    * 次のエイリアスに送る処理
    */
@@ -27,12 +27,12 @@ export const NextAliasButton: React.FC<Props> = (props) => {
       OnNextAlias(
         props.oto,
         targetDir,
-        props.record,
+        record,
         props.maxFileIndex,
         props.fileIndex,
         props.maxAliasIndex,
         props.aliasIndex,
-        props.setRecord,
+        setRecord,
         props.setFileIndex,
         props.setAliasIndex,
         props.setMaxAliasIndex
@@ -59,10 +59,6 @@ export const NextAliasButton: React.FC<Props> = (props) => {
 interface Props {
   /** 原音設定データ */
   oto: Oto;
-  /** 現在選択されている原音設定レコード */
-  record: OtoRecord | null;
-  /** recordを更新する処理 */
-  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>;
   /** ボタンのサイズ */
   size: number;
   /** アイコンのサイズ */
