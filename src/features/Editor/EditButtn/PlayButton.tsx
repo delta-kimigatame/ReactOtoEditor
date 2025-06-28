@@ -90,6 +90,6 @@ export const OnPlay = (
   audioSource.buffer = audioBuffer;
   audioSource.connect(audioContext.destination);
   LOG.debug(`メトロノーム再生`, "PlayButton");
-  Log.gtag("playMetronome");
+  LOG.gtag("playMetronome");
   audioSource.start();
 };

@@ -19,7 +19,7 @@ export const LogPaper: React.FC = () => {
       <BasePaper
         title={t("error.log")}>
           <Box sx={{ m: 1, p: 1 }}>
-            {Log.datas.map((l) => (
+            {LOG.datas.map((l) => (
               <>
                 <Typography variant="body2">{l}</Typography>
                 <Divider />

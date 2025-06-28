@@ -102,7 +102,7 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
     a.href = url;
     a.download = zipFileName;
     LOG.debug(`zipダウンロード`, "DownloadZipDialogTitle");
-    Log.gtag("downloadZip");
+    LOG.gtag("downloadZip");
     a.click();
     setProgress(false);
     props.setDialogOpen(false);

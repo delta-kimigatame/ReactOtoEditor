@@ -45,7 +45,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
       .then((z) => {
         setProcessing(false);
         setZipFiles(z.files);
-        Log.gtag("loadzip")
+        LOG.gtag("loadzip")
         LOG.debug(`zip読込完了`,"LoadZipDialog")
       });
   };

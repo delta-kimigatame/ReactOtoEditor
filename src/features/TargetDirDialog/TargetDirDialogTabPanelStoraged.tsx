@@ -85,7 +85,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
    */
   const OnSubmitClick = () => {
     LOG.debug(`oto.ini確定`, "TargetDirDialogTabPanelStoraged");
-    Log.gtag("loadStoragedOto");
+    LOG.gtag("loadStoragedOto");
     setOto(oto);
     props.setDialogOpen(false);
   };

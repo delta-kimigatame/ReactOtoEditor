@@ -76,6 +76,6 @@ export const OnPlayAfterPreutter = (record: OtoRecord | null, wav: Wave) => {
   audioSource.buffer = audioBuffer;
   audioSource.connect(audioContext.destination);
   LOG.debug(`先行発声以降再生`, "PlayAfterPreutterButton");
-  Log.gtag("playAfter");
+  LOG.gtag("playAfter");
   audioSource.start();
 };

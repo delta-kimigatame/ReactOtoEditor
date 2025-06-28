@@ -65,7 +65,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
     const oto_ = new Oto();
     oto_.InputOtoAsync(targetDir, readFile, encoding_).then(() => {
       LOG.debug(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
-      Log.gtag("loadTemplateOto");
+      LOG.gtag("loadTemplateOto");
       setOtoTemp(oto_);
       setProcessing(false);
     });

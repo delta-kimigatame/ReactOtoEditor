@@ -63,7 +63,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
       if (wavFileName !== record.filename) {
         set({ wavFileName: record.filename });
       }
-      Log.gtag("changeRecord");
+      LOG.gtag("changeRecord");
       LOG.debug("localstorageに保存", "OtoProjectStore");
     }
   },

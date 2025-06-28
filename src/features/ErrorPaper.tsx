@@ -38,7 +38,7 @@ export const ErrorPaper: React.FC<FallbackProps> = ({
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   const OnLogDownload = () => {
     const text =
-      Log.datas.join("\r\n") + error.message + "\r\n" + error.stack + "\r\n";
+      LOG.datas.join("\r\n") + error.message + "\r\n" + error.stack + "\r\n";
     const logFile = new File([text], `log_${new Date().toJSON()}.txt`, {
       type: "text/plane;charset=utf-8",
     });

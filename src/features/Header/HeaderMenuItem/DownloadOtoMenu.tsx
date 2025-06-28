@@ -19,7 +19,7 @@ export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
   const { targetDir,oto } = useOtoProjectStore();
   const OnClick = () => {
     LOG.debug(`oto.iniのダウンロード`, "DownloadOtoMenu");
-    Log.gtag("downloadOto");
+    LOG.gtag("downloadOto");
     const f = oto.OutputOto();
     let url = "";
     f.forEach((file) => {
