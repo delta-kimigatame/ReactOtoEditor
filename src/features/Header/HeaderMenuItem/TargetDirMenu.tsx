@@ -20,7 +20,7 @@ import { useOtoProjectStore } from "../../../store/otoProjectStore";
  * @returns フォルダ変更ダイアログを表示するボタン
  */
 export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
-  const {zipFileName,targetDirs}=useOtoProjectStore()
+  const { zipFileName, targetDirs, targetDir } = useOtoProjectStore();
   const { t } = useTranslation();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] = React.useState<
@@ -36,7 +36,7 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
   /** 編集中のoto.iniをlocalstorageに書き込んでTargetDirDialogを開く */
   const OnMenuClick = () => {
     const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, props.oto, zipFileName, props.targetDir);
+    SaveStorageOto(storagedOto, props.oto, zipFileName, targetDir);
     Log.log(`localstorageに保存`, "TargetDirMenu");
     setTargetDirDialogOpen(true);
   };
@@ -55,8 +55,6 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
           <TargetDirDialog
             dialogOpen={targetDirDialogOpen}
             setDialogOpen={setTargetDirDialogOpen}
-            targetDir={props.targetDir}
-            setTargetDir={props.setTargetDir}
             oto={props.oto}
             setOto={props.setOto}
           />
@@ -67,12 +65,8 @@ export const TargetDirMenu: React.FC<TargetDirMenuProps> = (props) => {
 };
 
 export interface TargetDirMenuProps {
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
-  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /**親メニューを閉じるために使用 */

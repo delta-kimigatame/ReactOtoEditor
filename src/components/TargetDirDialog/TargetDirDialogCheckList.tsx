@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 原音設定対象ディレクトリを選択するためのダイアログのボディ内のoto.ini文字化けを確認するエリア
@@ -15,13 +16,14 @@ export const TargetDirDialogCheckList: React.FC<
   TargetDirDialogCheckListProps
 > = (props) => {
   const { t } = useTranslation();
+  const{targetDir}=useOtoProjectStore()
   return (
     <>
       <Box>
         <Typography variant="h6">{t("targetDirDialog.encodeCheck")}</Typography>
         <Divider />
-        {props.oto.GetLines()[props.targetDir] !== undefined &&
-          props.oto.GetLines()[props.targetDir].map((l) => (
+        {props.oto.GetLines()[targetDir] !== undefined &&
+          props.oto.GetLines()[targetDir].map((l) => (
             <>
               <Typography variant="caption">{l}</Typography>
               <Divider />
@@ -33,8 +35,6 @@ export const TargetDirDialogCheckList: React.FC<
 };
 
 export interface TargetDirDialogCheckListProps {
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 仮に読み込んだoto.iniのデータ */
   oto: Oto;
 }

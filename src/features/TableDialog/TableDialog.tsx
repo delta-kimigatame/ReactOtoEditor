@@ -1,5 +1,4 @@
 import * as React from "react";
-import JSZip from "jszip";
 import { useTranslation } from "react-i18next";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
@@ -42,7 +41,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
           <TableDialogButtonArea
             setDialogOpen={props.setDialogOpen}
             oto={props.oto}
-            targetDir={props.targetDir}
             setUpdateSignal={setUpdateSignal}
           />
         </DialogTitle>
@@ -52,7 +50,6 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             windowHeight={props.windowHeight}
             oto={props.oto}
             record={props.record}
-            targetDir={props.targetDir}
             updateSignal={updateSignal}
             fileIndex={props.fileIndex}
             aliasIndex={props.aliasIndex}
@@ -80,8 +77,6 @@ export interface TableDialogProps {
   oto: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** recordの更新通知 */
   updateSignal: number;
   /** recordを更新する処理 */

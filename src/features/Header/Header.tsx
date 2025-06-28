@@ -1,5 +1,4 @@
 import * as React from "react";
-import JSZip from "jszip";
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 
@@ -78,8 +77,6 @@ export const Header: React.FC<HeaderProps> = (props) => {
       </AppBar>
       <HeaderMenu
         record={props.record}
-        targetDir={props.targetDir}
-        setTargetDir={props.setTargetDir}
         oto={props.oto}
         setOto={props.setOto}
         menuAnchor={menuAnchor}
@@ -92,12 +89,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
 export interface HeaderProps {
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
-  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

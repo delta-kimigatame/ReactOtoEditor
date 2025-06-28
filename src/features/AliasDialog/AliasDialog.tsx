@@ -16,9 +16,11 @@ import Divider from "@mui/material/Divider";
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import { Log } from "../../lib/Logging";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
+  const { targetDir } = useOtoProjectStore();
   /** aliasのtmp */
   const alias_ = props.record === null ? "" : props.record.alias;
   const [offset_, overlap_, pre_, velocity_, blank_] =
@@ -61,7 +63,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
    * 変更されたエイリアスをrecordにセットする。
    */
   const OnChangeClick = () => {
-    if (props.oto.HasOtoRecord(props.targetDir, props.record.filename, alias)) {
+    if (props.oto.HasOtoRecord(targetDir, props.record.filename, alias)) {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
@@ -70,7 +72,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         "AliasDialog"
       );
       props.oto.SetAlias(
-        props.targetDir,
+        targetDir,
         props.record.filename,
         props.record.alias,
         alias
@@ -80,7 +82,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       props.setDialogOpen(false);
       props.setAliasIndex(props.maxAliasIndex);
       props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+        props.oto.GetRecord(targetDir, props.record.filename, alias)
       );
       props.setUpdateSignal(Math.random());
     }
@@ -92,7 +94,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
    * 複製されたエイリアスをrecordにセットする。
    */
   const OnDuplicationClick = () => {
-    if (props.oto.HasOtoRecord(props.targetDir, props.record.filename, alias)) {
+    if (props.oto.HasOtoRecord(targetDir, props.record.filename, alias)) {
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.error"));
     } else {
@@ -101,7 +103,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         "AliasDialog"
       );
       props.oto.SetParams(
-        props.targetDir,
+        targetDir,
         props.record.filename,
         alias,
         props.record.offset,
@@ -116,7 +118,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
       props.setMaxAliasIndex(props.maxAliasIndex + 1);
       props.setAliasIndex(props.maxAliasIndex + 1);
       props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+        props.oto.GetRecord(targetDir, props.record.filename, alias)
       );
       props.setUpdateSignal(Math.random());
     }
@@ -129,7 +131,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const OnDeleteClick = () => {
     Log.log(`エイリアス削除。${props.record.alias}`, "AliasDialog");
     props.oto.RemoveAlias(
-      props.targetDir,
+      targetDir,
       props.record.filename,
       props.record.alias
     );
@@ -143,25 +145,25 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         props.setAliasIndex(props.aliasIndex - 1);
         props.setMaxAliasIndex(props.maxAliasIndex - 1);
         const alias = props.oto.GetAliases(
-          props.targetDir,
+          targetDir,
           props.record.filename
         )[props.aliasIndex - 1];
         props.setRecord(
-          props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+          props.oto.GetRecord(targetDir, props.record.filename, alias)
         );
       } else if (props.fileIndex !== 0) {
-        const filename = props.oto.GetFileNames(props.targetDir)[
+        const filename = props.oto.GetFileNames(targetDir)[
           props.fileIndex - 1
         ];
         const maxAliases =
-          props.oto.GetAliases(props.targetDir, filename).length - 1;
-        const alias = props.oto.GetAliases(props.targetDir, filename)[
+          props.oto.GetAliases(targetDir, filename).length - 1;
+        const alias = props.oto.GetAliases(targetDir, filename)[
           maxAliases
         ];
         props.setFileIndex(props.fileIndex - 1);
         props.setAliasIndex(maxAliases);
         props.setMaxAliasIndex(maxAliases);
-        props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
+        props.setRecord(props.oto.GetRecord(targetDir, filename, alias));
       } else {
         //最後のエイリアスを削除
         props.setFileIndex(0);
@@ -170,24 +172,24 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         props.setRecord(null);
       }
     } else if (props.aliasIndex === props.maxAliasIndex) {
-      const filename = props.oto.GetFileNames(props.targetDir)[
+      const filename = props.oto.GetFileNames(targetDir)[
         props.fileIndex + 1
       ];
       const maxAliases =
-        props.oto.GetAliases(props.targetDir, filename).length - 1;
-      const alias = props.oto.GetAliases(props.targetDir, filename)[maxAliases];
+        props.oto.GetAliases(targetDir, filename).length - 1;
+      const alias = props.oto.GetAliases(targetDir, filename)[maxAliases];
       props.setFileIndex(props.fileIndex + 1);
       props.setAliasIndex(0);
       props.setMaxAliasIndex(maxAliases);
-      props.setRecord(props.oto.GetRecord(props.targetDir, filename, alias));
+      props.setRecord(props.oto.GetRecord(targetDir, filename, alias));
     } else {
       props.setMaxAliasIndex(props.maxAliasIndex - 1);
       const alias = props.oto.GetAliases(
-        props.targetDir,
+        targetDir,
         props.record.filename
       )[props.aliasIndex];
       props.setRecord(
-        props.oto.GetRecord(props.targetDir, props.record.filename, alias)
+        props.oto.GetRecord(targetDir, props.record.filename, alias)
       );
     }
     setBarOpen(true);
@@ -354,8 +356,6 @@ export interface TableDialogProps {
   oto: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** recordの更新をtableに通知するための処理 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
   /** recordを更新する処理 */

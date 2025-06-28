@@ -42,8 +42,6 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
 };
 
 interface Props {
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
   /** 現在のrecordに関連するwavデータ */

@@ -24,7 +24,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
   TargetDirDialogTabPanelStoragedProps
 > = (props) => {
   const { t } = useTranslation();
-  const {zipFileName}=useOtoProjectStore()
+  const { zipFileName, targetDir } = useOtoProjectStore();
   const storagedOto_: string | null = localStorage.getItem("oto");
   const [storagedOto, setStoragedOto] = React.useState<{}>({});
   const [selectHistory, setSelectHistory] = React.useState<string>(null);
@@ -41,7 +41,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
     const i = Object.keys(storagedOto).indexOf(zipFileName);
     if (i >= 0) {
       const f = Object.keys(storagedOto)[i];
-      const j = Object.keys(storagedOto[f]).indexOf(props.targetDir);
+      const j = Object.keys(storagedOto[f]).indexOf(targetDir);
       if (j >= 0) {
         Log.log(
           `当該フォルダの編集履歴が見つかりました`,
@@ -50,7 +50,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         setSelectHistory("t_" + i + "_" + j);
       }
     }
-  }, [storagedOto, props.targetDir]);
+  }, [storagedOto, targetDir]);
 
   React.useEffect(() => {
     if (selectHistory === undefined || selectHistory === null) return;
@@ -60,7 +60,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
     const oto_ = new Oto();
     oto_
       .InputOtoAsync(
-        props.targetDir,
+        targetDir,
         new Blob([storagedOto[f][d]["oto"]], { type: "text/plain" }),
         "UTF-8"
       )
@@ -119,7 +119,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
           {oto !== null && (
             <>
               <Divider />
-              <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />
+              <TargetDirDialogCheckList oto={oto} />
             </>
           )}
         </>
@@ -131,8 +131,6 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
 export interface TargetDirDialogTabPanelStoragedProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

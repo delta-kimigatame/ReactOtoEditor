@@ -34,8 +34,6 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
         }}
       >
         <TargetDirMenu
-          targetDir={props.targetDir}
-          setTargetDir={props.setTargetDir}
           oto={props.oto}
           setOto={props.setOto}
           setMenuAnchor={props.setMenuAnchor}
@@ -44,12 +42,10 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
           <>
             <DownloadOtoMenu
               oto={props.oto}
-              targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
             />
             <DownloadZipMenu
               oto={props.oto}
-              targetDir={props.targetDir}
               setMenuAnchor={props.setMenuAnchor}
             />
             <Divider />
@@ -76,12 +72,8 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
 export interface HeaderMenuProps {
   /**現在選択されているoto.iniのレコード */
   record: OtoRecord | null;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
-  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** メニューの表示位置。nullの時は非表示 */

@@ -11,6 +11,7 @@ import { TargetDirDialogCorrectPanel } from "./TargetDirDialogCorrectPanel";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル
@@ -21,6 +22,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
   TargetDirDialogTabPanelTemplateProps
 > = (props) => {
   const { t } = useTranslation();
+  const { targetDir } = useOtoProjectStore();
   /** 隠し表示する<input>へのref */
   const inputRef = React.useRef(null);
   /** oto.ini読込の文字コード */
@@ -61,7 +63,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
       "TargetDirDialogTabPanelTemplate"
     );
     const oto_ = new Oto();
-    oto_.InputOtoAsync(props.targetDir, readFile, encoding_).then(() => {
+    oto_.InputOtoAsync(targetDir, readFile, encoding_).then(() => {
       Log.log(`oto.ini読込完了`, "TargetDirDialogTabPanelTemplate");
       Log.gtag("loadTemplateOto");
       setOto(oto_);
@@ -99,7 +101,6 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
               oto={oto}
               setOto={props.setOto}
               setDialogOpen={props.setDialogOpen}
-              targetDir={props.targetDir}
             />
           </>
         ) : (
@@ -114,7 +115,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
               encoding={encoding}
               setEncoding={setEncoding}
             />
-            <TargetDirDialogCheckList oto={oto} targetDir={props.targetDir} />
+            <TargetDirDialogCheckList oto={oto} />
           </>
         ))}
     </TabPanel>
@@ -124,8 +125,6 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
 export interface TargetDirDialogTabPanelTemplateProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

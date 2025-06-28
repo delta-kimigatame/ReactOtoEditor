@@ -15,6 +15,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 
 import { layout } from "../../config/setting";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 原音設定パラメータを表示するテーブル
@@ -23,6 +24,7 @@ import { layout } from "../../config/setting";
  */
 export const EditorTable: React.FC<EditorTableProps> = (props) => {
   const { t } = useTranslation();
+  const { targetDir } = useOtoProjectStore();
   /** tableへのref。heightを取得するために使用 */
   const tableRef = React.useRef(null);
   /** 文字の種類 */
@@ -167,67 +169,65 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
               )
             ) : (
               <>
-                {props.oto.GetFileNames(props.targetDir).map((f, fi: number) =>
-                  props.oto
-                    .GetAliases(props.targetDir, f)
-                    .map((a, ai: number) => (
-                      <TableRow
-                        sx={{
-                          backgroundColor:
-                            props.fileIndex === fi &&
-                            props.aliasIndex === ai &&
-                            "#fff0f0",
-                        }}
-                        onClick={() => {
-                          props.setRecord(props.oto.GetRecord(props.targetDir, f, a))
-                          props.setFileIndex(fi);
-                          props.setAliasIndex(ai);
-                          props.setMaxAliasIndex(props.oto.GetAliases(props.targetDir, f).length - 1)
-                        }}
-                      >
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>{f}</Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>{a}</Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>
-                            {props.oto
-                              .GetRecord(props.targetDir, f, a)
-                              .offset.toFixed(3)}
-                          </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>
-                            {props.oto
-                              .GetRecord(props.targetDir, f, a)
-                              .overlap.toFixed(3)}
-                          </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>
-                            {props.oto
-                              .GetRecord(props.targetDir, f, a)
-                              .pre.toFixed(3)}
-                          </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>
-                            {props.oto
-                              .GetRecord(props.targetDir, f, a)
-                              .velocity.toFixed(3)}
-                          </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell size={"small"}>
-                          <Typography variant={variant}>
-                            {props.oto
-                              .GetRecord(props.targetDir, f, a)
-                              .blank.toFixed(3)}
-                          </Typography>
-                        </StyledTableCell>
-                      </TableRow>
-                    ))
+                {props.oto.GetFileNames(targetDir).map((f, fi: number) =>
+                  props.oto.GetAliases(targetDir, f).map((a, ai: number) => (
+                    <TableRow
+                      sx={{
+                        backgroundColor:
+                          props.fileIndex === fi &&
+                          props.aliasIndex === ai &&
+                          "#fff0f0",
+                      }}
+                      onClick={() => {
+                        props.setRecord(props.oto.GetRecord(targetDir, f, a));
+                        props.setFileIndex(fi);
+                        props.setAliasIndex(ai);
+                        props.setMaxAliasIndex(
+                          props.oto.GetAliases(targetDir, f).length - 1
+                        );
+                      }}
+                    >
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>{f}</Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>{a}</Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>
+                          {props.oto
+                            .GetRecord(targetDir, f, a)
+                            .offset.toFixed(3)}
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>
+                          {props.oto
+                            .GetRecord(targetDir, f, a)
+                            .overlap.toFixed(3)}
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>
+                          {props.oto.GetRecord(targetDir, f, a).pre.toFixed(3)}
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>
+                          {props.oto
+                            .GetRecord(targetDir, f, a)
+                            .velocity.toFixed(3)}
+                        </Typography>
+                      </StyledTableCell>
+                      <StyledTableCell size={"small"}>
+                        <Typography variant={variant}>
+                          {props.oto
+                            .GetRecord(targetDir, f, a)
+                            .blank.toFixed(3)}
+                        </Typography>
+                      </StyledTableCell>
+                    </TableRow>
+                  ))
                 )}
               </>
             )}
@@ -249,8 +249,6 @@ export interface EditorTableProps {
   oto?: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** recordの更新通知 */
   updateSignal: number;
   /** recordを更新する処理 */

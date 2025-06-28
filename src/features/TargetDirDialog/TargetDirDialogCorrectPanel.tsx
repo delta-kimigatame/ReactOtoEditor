@@ -14,6 +14,7 @@ import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import { CorrectTempo } from "../../utils/CorrectOto";
 
 import { Log } from "../../lib/Logging";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面
@@ -24,6 +25,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
   TargetDirDialogCorrectPanelProps
 > = (props) => {
   const { t } = useTranslation();
+  const { targetDir } = useOtoProjectStore();
   /** オフセット補正の有無 */
   const [isCorrectOffset, setIsCorrectOffset] = React.useState<boolean>(false);
   /** テンポ補正の有無 */
@@ -47,8 +49,8 @@ export const TargetDirDialogCorrectPanel: React.FC<
   const SetDefaultAliasVariant = (oto_: Oto) => {
     const av = new Array<"CV" | "VCV" | "VC">();
     let positiveBlank = false;
-    oto_.GetFileNames(props.targetDir).forEach((f) => {
-      oto_.GetAliases(props.targetDir, f).forEach((a) => {
+    oto_.GetFileNames(targetDir).forEach((f) => {
+      oto_.GetAliases(targetDir, f).forEach((a) => {
         if (a.match(/\* /)) {
           /**母音結合はCV */
           av.push("CV");
@@ -77,7 +79,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
             "TargetDirDialogCorrectPanel"
           );
         }
-        if (oto_.GetRecord(props.targetDir, f, a).blank >= 0) {
+        if (oto_.GetRecord(targetDir, f, a).blank >= 0) {
           positiveBlank = true;
           Log.log(`右ブランクが正の数`, "TargetDirDialogCorrectPanel");
         }
@@ -102,7 +104,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
         "TargetDirDialogCorrectPanel"
       );
       const offsetDif = afterOffset - beforeOffset;
-      AddParams(props.oto, props.targetDir, "offset", offsetDif);
+      AddParams(props.oto, targetDir, "offset", offsetDif);
     } else if (!hasPositiveBlank) {
       Log.log(
         `tempoの補正。テンプレートのオフセット:${beforeOffset}、変更後のオフセット:${afterOffset}。テンプレートのテンポ:${beforeTempo}、変更後のテンポ:${afterTempo}`,
@@ -110,7 +112,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
       );
       CorrectTempo(
         props.oto,
-        props.targetDir,
+        targetDir,
         aliasVariant,
         beforeOffset,
         afterOffset,
@@ -196,7 +198,6 @@ export const TargetDirDialogCorrectPanel: React.FC<
                   />
                   <TargetDirDialogAliasVariant
                     oto={props.oto}
-                    targetDir={props.targetDir}
                     aliasVariant={aliasVariant}
                     setAliasVariant={setAliasVariant}
                   />
@@ -213,8 +214,6 @@ export const TargetDirDialogCorrectPanel: React.FC<
 export interface TargetDirDialogCorrectPanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
   /** 読み込んだoto.iniのデータ */

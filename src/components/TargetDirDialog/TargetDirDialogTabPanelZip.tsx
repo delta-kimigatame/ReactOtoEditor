@@ -43,7 +43,6 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
           <Divider />
           <TargetDirDialogCheckList
             oto={props.oto}
-            targetDir={props.targetDir}
           />
         </>
       ) : (
@@ -58,8 +57,6 @@ export const TargetDirDialogTabPanelZip: React.FC<TargetDirDialogTabPanelZipProp
 export interface TargetDirDialogTabPanelZipProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */

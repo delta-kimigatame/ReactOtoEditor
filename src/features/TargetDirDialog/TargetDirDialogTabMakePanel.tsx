@@ -37,7 +37,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
   TargetDirDialogTabMakePanelProps
 > = (props) => {
   const { t } = useTranslation();
-  const { readZip } = useOtoProjectStore();
+  const { readZip, targetDir } = useOtoProjectStore();
   /** 生成方法 */
   const [mode, setMode] = React.useState<"single" | "multi">(null);
   const [ini, setIni] = React.useState<MakeOtoTempIni>(null);
@@ -130,7 +130,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
     if (mode === "single") {
       const oto = MakeOtoSingle(
         readZip,
-        props.targetDir,
+        targetDir,
         skipBeginingNumber,
         analyze
       );
@@ -172,7 +172,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       const oto = MakeOto(
         ini,
         Object.keys(readZip),
-        props.targetDir,
+        targetDir,
         skipBeginingNumber
       );
       Log.gtag("makeOto");
@@ -302,8 +302,6 @@ export const TargetDirDialogTabMakePanel: React.FC<
 export interface TargetDirDialogTabMakePanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータを変更する処理。親コンポーネントに返す用 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

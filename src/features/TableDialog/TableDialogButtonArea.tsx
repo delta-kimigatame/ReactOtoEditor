@@ -25,7 +25,7 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
 ) => {
-  const {zipFileName,readZip}=useOtoProjectStore()
+  const {zipFileName,readZip,targetDir}=useOtoProjectStore()
   const { t } = useTranslation();
   const [batchIndex, setBatchIndex] = React.useState<number>(0);
   const [targetParam, setTargetParam] = React.useState<string>("offset");
@@ -122,18 +122,18 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       Log.log(`targetParam:${targetParam}`, "TableDialogButtonArea");
     }
     if (param === null) {
-      batchList[batchIndex].endPoint(props.oto, props.targetDir);
+      batchList[batchIndex].endPoint(props.oto, targetDir);
     } else if (batchList[batchIndex].requireNumber) {
       Log.log(`value:${value}`, "TableDialogButtonArea");
-      batchList[batchIndex].endPoint(props.oto, props.targetDir, param, value);
+      batchList[batchIndex].endPoint(props.oto, targetDir, param, value);
     } else {
-      batchList[batchIndex].endPoint(props.oto, props.targetDir, param);
+      batchList[batchIndex].endPoint(props.oto, targetDir, param);
     }
     Log.log(`一括処理完了`, "TableDialogButtonArea");
     props.setUpdateSignal(Math.random());
     setBarOpen(true);
     const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, props.oto, zipFileName, props.targetDir);
+    SaveStorageOto(storagedOto, props.oto, zipFileName, targetDir);
     localStorage.setItem("oto", JSON.stringify(storagedOto));
     Log.log(`localstorageに保存`, "TableDialogButtonArea");
   };
@@ -225,8 +225,6 @@ export interface TableDialogButtonAreaProps {
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   /** 原音設定データ */
   oto: Oto;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** 一括変更結果により一覧を更新する。 */
   setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
 }

@@ -9,6 +9,7 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
 import { Log } from "../../../lib/Logging";
+import { useOtoProjectStore } from "../../../store/otoProjectStore";
 
 /**
  * 前のエイリアスに送るボタン
@@ -18,13 +19,14 @@ import { Log } from "../../../lib/Logging";
 export const PrevAliasButton: React.FC<Props> = (props) => {
   const { t } = useTranslation();
 
+  const{targetDir}=useOtoProjectStore()
   /**
    * 前のエイリアスに送る処理
    */
   const OnPrevAlias_ = () => {
     OnPrevAlias(
       props.oto,
-      props.targetDir,
+      targetDir,
       props.record,
       props.maxFileIndex,
       props.fileIndex,
@@ -53,8 +55,6 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
 };
 
 interface Props {
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** 原音設定データ */
   oto: Oto;
   /** 現在選択されている原音設定レコード */

@@ -32,8 +32,8 @@ import {
 import { OnPlay, PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "../TableDialog/TableDialog";
 import { AliasDialog } from "../AliasDialog/AliasDialog";
-import { useThemeMode } from "../../hooks/useThemeMode";
 import { useCookieStore } from "../../store/cookieStore";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * 編集画面の操作ボタン
@@ -43,6 +43,7 @@ import { useCookieStore } from "../../store/cookieStore";
 export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const { overlapLock, setOverlapLock, touchMode, setTouchMode } =
     useCookieStore();
+  const { targetDir } = useOtoProjectStore();
   const { t } = useTranslation();
   /** ボタンのサイズ */
   const [size, setSize] = React.useState<number>(layout.minButtonSize);
@@ -92,7 +93,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
         OnPrevAlias(
           props.oto,
-          props.targetDir,
+          targetDir,
           props.record,
           maxFileIndex,
           fileIndex,
@@ -106,7 +107,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
         OnNextAlias(
           props.oto,
-          props.targetDir,
+          targetDir,
           props.record,
           maxFileIndex,
           fileIndex,
@@ -182,7 +183,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       setAliasIndex(0);
       setMaxAliasIndex(0);
     } else {
-      setMaxFileIndex(props.oto.GetFileNames(props.targetDir).length - 1);
+      setMaxFileIndex(props.oto.GetFileNames(targetDir).length - 1);
     }
   }, [props.oto]);
 
@@ -195,7 +196,7 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       setMaxAliasIndex(0);
     } else {
       setMaxAliasIndex(
-        props.oto.GetAliases(props.targetDir, props.record.filename).length - 1
+        props.oto.GetAliases(targetDir, props.record.filename).length - 1
       );
     }
   }, [props.record]);
@@ -242,21 +243,18 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
       >
         <StyledBox>
           <PlayBeforePreutterButton
-            targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
             size={size}
             iconSize={iconSize}
           />
           <PlayAfterPreutterButton
-            targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
             size={size}
             iconSize={iconSize}
           />
           <PlayButton
-            targetDir={props.targetDir}
             wav={props.wav}
             record={props.record}
             size={size}
@@ -329,7 +327,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         </StyledBox>
         <StyledBox>
           <PrevAliasButton
-            targetDir={props.targetDir}
             oto={props.oto}
             record={props.record}
             setRecord={props.setRecord}
@@ -345,7 +342,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
             progress={props.progress}
           />
           <NextAliasButton
-            targetDir={props.targetDir}
             oto={props.oto}
             record={props.record}
             setRecord={props.setRecord}
@@ -369,7 +365,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         windowHeight={props.windowHeight}
         oto={props.oto}
         record={props.record}
-        targetDir={props.targetDir}
         updateSignal={0}
         setRecord={props.setRecord}
         fileIndex={fileIndex}
@@ -383,7 +378,6 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
         setDialogOpen={setAliasDialogOpen}
         oto={props.oto}
         record={props.record}
-        targetDir={props.targetDir}
         setRecord={props.setRecord}
         fileIndex={fileIndex}
         aliasIndex={aliasIndex}
@@ -405,8 +399,6 @@ export interface EditorButtonAreaProps {
   windowHeight: number;
   /** buttonAreaの高さを通知 */
   setButtonAreaHeight: React.Dispatch<React.SetStateAction<number>>;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** 原音設定データ */
   oto: Oto;
   /** 現在選択されている原音設定レコード */

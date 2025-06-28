@@ -17,17 +17,17 @@ export const TargetDirDialogSelectDir: React.FC<
   TargetDirDialogSelectDirProps
 > = (props) => {
   const { t } = useTranslation();
-  const {targetDirs}=useOtoProjectStore()
+  const {targetDirs,targetDir,setTargetDir}=useOtoProjectStore()
 
   const OnSelectChange = (e: SelectChangeEvent) => {
-    props.setTargetDir(e.target.value);
+    setTargetDir(e.target.value);
   };
   return (
     <>
       <Box sx={{ p: 1 }}>
         <FullWidthSelect
           label={t("targetDirDialog.targetDir")}
-          value={props.targetDir}
+          value={targetDir}
           onChange={OnSelectChange}
         >
           {targetDirs.map((d) => (
@@ -40,8 +40,4 @@ export const TargetDirDialogSelectDir: React.FC<
 };
 
 export interface TargetDirDialogSelectDirProps {
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
-  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
-  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
 }

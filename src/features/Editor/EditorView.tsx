@@ -71,7 +71,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         windowHeight={windowSize.height}
         setTableHeight={setTableHeight}
         record={props.record}
-        targetDir={props.targetDir}
         updateSignal={updateSignal}
       />
       <EditorButtonArea
@@ -81,7 +80,6 @@ export const EditorView: React.FC<EditorViewProps> = (props) => {
         oto={props.oto}
         record={props.record}
         setRecord={props.setRecord}
-        targetDir={props.targetDir}
         pixelPerMsec={pixelPerMsec}
         setPixelPerMsec={setPixelPerMsec}
         wav={props.wav}
@@ -97,8 +95,6 @@ export interface EditorViewProps {
   oto: Oto;
   /** 現在選択されている原音設定レコード */
   record: OtoRecord | null;
-  /** 現在編集対象になっているディレクトリ */
-  targetDir: string;
   /** 現在のrecordに関連するwavデータ */
   wav: Wave;
   /** recordを更新する処理 */

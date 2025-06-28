@@ -11,6 +11,7 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
+import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面のエイリアスの種類選択部分
@@ -21,6 +22,7 @@ export const TargetDirDialogAliasVariant: React.FC<
   TargetDirDialogAliasVariantProps
 > = (props) => {
   const { t } = useTranslation();
+    const{targetDir}=useOtoProjectStore()
   const OnAliasVariantChange = (e: SelectChangeEvent, i: number) => {
     const av = props.aliasVariant.slice();
     av[i] = e.target.value as "CV" | "VCV" | "VC";
@@ -34,7 +36,7 @@ export const TargetDirDialogAliasVariant: React.FC<
           <InputLabel>{t("targetDirDialog.correctType")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
-          {props.oto.GetLines()[props.targetDir].map((l, i) => (
+          {props.oto.GetLines()[targetDir].map((l, i) => (
             <>
               <FullWidthSelect
                 label={l.split("=")[1].split(",")[0]}
@@ -56,8 +58,6 @@ export const TargetDirDialogAliasVariant: React.FC<
 };
 
 export interface TargetDirDialogAliasVariantProps {
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** エイリアスの種類 */

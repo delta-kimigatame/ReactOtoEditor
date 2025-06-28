@@ -32,9 +32,6 @@ export const App: React.FC = () => {
   const mode_ = useThemeMode();
   const { language } = useCookieStore();
   const { zipFileName,readZip } = useOtoProjectStore();
-  const [targetDirs, setTargetDirs] = React.useState<Array<string> | null>(
-    null
-  );
   const [targetDir, setTargetDir] = React.useState<string | null>(null);
   const [oto, setOto] = React.useState<Oto | null>(null);
   const [record, setRecord] = React.useState<OtoRecord | null>(null);
@@ -112,8 +109,6 @@ export const App: React.FC = () => {
       <CssBaseline />
       <Header
         record={record}
-        targetDir={targetDir}
-        setTargetDir={setTargetDir}
         oto={oto}
         setOto={setOto}
       />
@@ -121,15 +116,12 @@ export const App: React.FC = () => {
         <EditorView
           oto={oto}
           record={record}
-          targetDir={targetDir}
           wav={wav}
           setRecord={setRecord}
         />
       )}
       {oto === null && (
         <TopView
-          targetDir={targetDir}
-          setTargetDir={setTargetDir}
           oto={oto}
           setOto={setOto}
         />

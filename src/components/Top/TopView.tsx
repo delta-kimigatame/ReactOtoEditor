@@ -18,7 +18,8 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  * @returns zipデータを読み込む前の画面
  */
 export const TopView: React.FC<TopViewProps> = (props) => {
-  const { readZip,targetDirs,setTargetDirs } = useOtoProjectStore();
+  const { readZip, targetDirs, setTargetDirs, setTargetDir } =
+    useOtoProjectStore();
   /** 原音設定対象ディレクトリを選択するためのダイアログ表示設定 */
   const [targetDirDialogOpen, setTargetDirDialogOpen] =
     React.useState<boolean>(false);
@@ -30,7 +31,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
   React.useEffect(() => {
     if (readZip === null) {
       setTargetDirs(null);
-      props.setTargetDir(null);
+      setTargetDir(null);
       Log.log("targetDir初期化", "TOPView");
     } else {
       const targetDirs: Array<string> = new Array();
@@ -68,8 +69,6 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}
         setDialogOpen={setTargetDirDialogOpen}
-        targetDir={props.targetDir}
-        setTargetDir={props.setTargetDir}
         oto={props.oto}
         setOto={props.setOto}
       />
@@ -78,12 +77,8 @@ export const TopView: React.FC<TopViewProps> = (props) => {
 };
 
 export interface TopViewProps {
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 現在原音設定の対象になっているディレクトリを変更する処理 */
-  setTargetDir: React.Dispatch<React.SetStateAction<string | null>>;
   /** 読み込んだoto.iniのデータを変更する処理 */
   setOto: React.Dispatch<React.SetStateAction<Oto | null>>;
 }

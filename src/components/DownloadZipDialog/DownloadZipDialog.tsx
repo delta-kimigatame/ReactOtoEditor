@@ -14,7 +14,6 @@ import { DownloadZipDialogTitle } from "../../features/DownloadZipDialog/Downloa
  * @returns zipをダウンロードするダイアログ
  */
 export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
-  const { t } = useTranslation();
   return (
     <>
       <Dialog
@@ -33,7 +32,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
           setTargetList={props.setTargetList}
         />
         <DownloadZipDialogContent
-          targetDir={props.targetDir}
           storagedOto={props.storagedOto}
           targetList={props.targetList}
           setTargetList={props.setTargetList}
@@ -46,8 +44,6 @@ export const DownloadZipDialog: React.FC<DownloadZipDialogProps> = (props) => {
 export interface DownloadZipDialogProps {
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
-  /** 現在原音設定の対象になっているディレクトリ */
-  targetDir: string | null;
   /**親メニューを閉じるために使用 */
   setMenuAnchor: React.Dispatch<React.SetStateAction<null | HTMLElement>>;
   /** ダイアログを表示するか否か */
