@@ -63,7 +63,7 @@ export const ErrorPaper: React.FC<FallbackProps> = ({
         }
       />
       <LogPaper />
-      <Footer theme={theme} />
+      <Footer />
     </>
   );
 };
