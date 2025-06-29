@@ -1,5 +1,5 @@
 import { Oto } from "utauoto";
-import {ParseIni} from "../src/Lib/MakeOtoTemp/Input";
+import {ParseIni} from "../../src/lib/MakeOtoTemp/Input";
 import {
   ReplaceAlias,
   SetVowel,
@@ -13,7 +13,7 @@ import {
   MakeCVVC,
   MakeRecord,
   MakeOto,
-} from "../src/Lib/MakeOtoTemp/MakeOto";
+} from "../../src/lib/MakeOtoTemp/MakeOto";
 
 describe("MakeOtoTempIniのテスト", () => {
   test("ReplaceAlias", () => {
@@ -985,7 +985,7 @@ describe("MakeOto", () => {
     ini.noHead = false;
     ini.offset = 1000;
     ini.tempo = 100;
-    const oto = MakeOto(ini, ["/_ああいあうえあ.wav"], "");
+    const oto = MakeOto(ini, ["_ああいあうえあ.wav"], "");
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "- あ")).toBe(true);
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "a あ")).toBe(true);
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "a い")).toBe(true);
@@ -1012,7 +1012,7 @@ describe("MakeOto", () => {
     ini.offset = 1000;
     ini.tempo = 100;
     ini.max = 2;
-    const oto = MakeOto(ini, ["/_ああいあうえあ.wav"], "");
+    const oto = MakeOto(ini, ["_ああいあうえあ.wav"], "");
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "あ")).toBe(true);
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "あ2")).toBe(true);
     expect(oto.HasOtoRecord("", "_ああいあうえあ.wav", "い")).toBe(true);
@@ -1034,7 +1034,7 @@ describe("MakeOto", () => {
     ini.offset = 1000;
     ini.tempo = 100;
     ini.max = 2;
-    const oto = MakeOto(ini, ["/_いかくけこかんか.wav"], "");
+    const oto = MakeOto(ini, ["_いかくけこかんか.wav"], "");
     expect(oto.GetAliases("", "_いかくけこかんか.wav")).toEqual([
       "い",
       "i k",
