@@ -1,6 +1,9 @@
 import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 
+export const aliasVariant = ["CV", "VCV", "VC"] as const;
+export type AliasValiant = (typeof aliasVariant)[number];
+
 /**
  * 読み込んだoto.iniテンプレートをオフセットとテンポで補正する。
  * @param oto oto.ini
@@ -14,7 +17,7 @@ import OtoRecord from "utauoto/dist/OtoRecord";
 export const CorrectTempo = (
   oto: Oto,
   targetDir: string,
-  aliasVariant: Array<"CV" | "VCV" | "VC"> | null,
+  aliasVariant: Array<AliasValiant> | null,
   beforeOffset: number,
   afterOffset: number,
   beforeTempo: number,
