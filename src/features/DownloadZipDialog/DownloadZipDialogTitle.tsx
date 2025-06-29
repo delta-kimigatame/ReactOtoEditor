@@ -13,7 +13,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
-import { ZipExtract } from "../../utils/ZipExtract";
+import { ZipExtract } from "../../services/ZipExtract";
 
 /**
  * zipをダウンロードするダイアログ
