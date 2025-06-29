@@ -40,9 +40,9 @@ export const GetColorInterp = (
   const index2: number = Math.ceil(r / range);
   const rate: number = (r - index1 * range) / range;
   const color: Color = {
-    r: fillColor[index1].r * (1 - rate) + fillColor[index2].r * rate,
-    g: fillColor[index1].g * (1 - rate) + fillColor[index2].g * rate,
-    b: fillColor[index1].b * (1 - rate) + fillColor[index2].b * rate,
+    r: Math.round(fillColor[index1].r * (1 - rate) + fillColor[index2].r * rate),
+    g: Math.round(fillColor[index1].g * (1 - rate) + fillColor[index2].g * rate),
+    b: Math.round(fillColor[index1].b * (1 - rate) + fillColor[index2].b * rate),
   };
 
   return "rgb(" + color.r + "," + color.g + "," + color.b + ")";
@@ -69,9 +69,9 @@ export const GetColorInterpParam = (
   const index2: number = Math.ceil(r / range);
   const rate: number = (r - index1 * range) / range;
   const color: Color = {
-    r: fillColor[index1].r * (1 - rate) + fillColor[index2].r * rate,
-    g: fillColor[index1].g * (1 - rate) + fillColor[index2].g * rate,
-    b: fillColor[index1].b * (1 - rate) + fillColor[index2].b * rate,
+    r: Math.round(fillColor[index1].r * (1 - rate) + fillColor[index2].r * rate),
+    g: Math.round(fillColor[index1].g * (1 - rate) + fillColor[index2].g * rate),
+    b: Math.round(fillColor[index1].b * (1 - rate) + fillColor[index2].b * rate),
   };
 
   return color;
