@@ -33,6 +33,7 @@ export const ShowLogDialog: React.FC<ShowLogDialogProps> = (props) => {
     const logFile = new File([text], `log_${new Date().toJSON()}.txt`, {
       type: "text/plane;charset=utf-8",
     });
+    LOG.debug("Log ダウンロード","ShowLogDialog")
     const url = URL.createObjectURL(logFile);
     const a = document.createElement("a");
     a.href = url;
@@ -57,6 +58,7 @@ export const ShowLogDialog: React.FC<ShowLogDialogProps> = (props) => {
       </DialogTitle>
       <IconButton
         onClick={props.onClose}
+        data-testid="closeButton"
         sx={{
           position: "absolute",
           right: 8,
