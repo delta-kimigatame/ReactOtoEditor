@@ -23,6 +23,7 @@ export const ColorAvatar: React.FC<{
         width: 24,
         height: 24,
       }}
+      data-testid="ColorAvatar"
     >
       {" "}
     </Avatar>
