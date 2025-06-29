@@ -16,7 +16,7 @@ import { useCookieStore } from "../../../store/cookieStore";
  */
 export const LanguageMenu: React.FC<LanguageButtonProps> = (props) => {
   const { t } = useTranslation();
-  const{language,setLanguage}=useCookieStore();
+  const { language, setLanguage } = useCookieStore();
   /** メニューの表示位置。nullの時は非表示 */
   const [menuAnchor, setMenuAnchor] = React.useState<null | HTMLElement>(null);
   return (
