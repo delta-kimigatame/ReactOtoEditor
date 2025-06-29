@@ -13,6 +13,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { ZipExtract } from "../../utils/ZipExtract";
 
 /**
  * zipをダウンロードするダイアログ
@@ -28,71 +29,32 @@ export const DownloadZipDialogTitle: React.FC<DownloadZipDialogTitleProps> = (
   /**
    * ダウンロードボタンをクリックした際の処理
    */
-  const OnDownloadClick = () => {
+  const OnDownloadClick = async () => {
     setProgress(true);
     const newZip = new JSZip();
     LOG.debug("zipの生成", "DownloadZipDialogTitle");
-    ZipExtract(readZip, 0, newZip);
+
+    try {
+      const extractedZip = await ZipExtract(readZip, 0, newZip);
+      const updatedZip = await AddOtoToZip(
+        extractedZip,
+        targetDirs,
+        props.targetList,
+        props.storagedOto,
+        oto
+      );
+      await DownloadZip(updatedZip);
+    } catch (error) {
+      LOG.error("ZIP生成中にエラーが発生しました", "DownloadZipDialogTitle");
+      setProgress(false);
+    }
   };
 
   /**
-   * zipファイルを再帰呼出しで生成する。
-   * @param files zip内のファイル一覧
-   * @param index 読み込むファイルのインデックス
-   * @param newZip 新しく生成するzip
+   * 完成したzipをダウンロードする。
+   * @param newZip ダウンロードするzip
    */
-  const ZipExtract = (
-    files: { [key: string]: JSZip.JSZipObject },
-    index: number,
-    newZip: JSZip
-  ) => {
-    const k = Object.keys(files)[index];
-    files[k].async("arraybuffer").then((result) => {
-      newZip.file(k, result);
-      if (index < Object.keys(files).length - 1) {
-        ZipExtract(files, index + 1, newZip);
-      } else {
-        LOG.debug("元zipの複製完了", "DownloadZipDialogTitle");
-        ZipedOto(newZip);
-      }
-    });
-  };
-
-  /**
-   * targetListに基づき、oto.ini入りのzipを作成する。
-   * @param newZip 新しく生成するzip。読み込み時のoto.iniが入っている。
-   */
-  const ZipedOto = async (newZip: JSZip) => {
-    const res = await targetDirs.forEach(async (td, i) => {
-      if (props.targetList[i] === 0) {
-        /** 原音設定中のデータ */
-        const f = new File(
-          [iconv.encode(oto.GetLines()[td].join("\r\n"), "Windows-31j")],
-          "oto.ini",
-          { type: "text/plane;charset=shift-jis" }
-        );
-        LOG.debug(
-          `編集中データの保存:${td + "/oto.ini"}`,
-          "DownloadZipDialogTitle"
-        );
-        newZip.file(td + "/oto.ini", f);
-      } else if (props.targetList[i] === 1) {
-        /** 保存されたデータ */
-        const f = new File(
-          [iconv.encode(props.storagedOto[td]["oto"], "Windows-31j")],
-          "oto.ini",
-          { type: "text/plane;charset=shift-jis" }
-        );
-        LOG.debug(`履歴から保存:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
-        newZip.file(td + "/oto.ini", f);
-      } else {
-        /** 書き出ししない場合 */
-        if (Object.keys(newZip.files).includes(td + "/oto.ini")) {
-          LOG.debug(`削除:${td + "/oto.ini"}`, "DownloadZipDialogTitle");
-          newZip.remove(td + "/oto.ini");
-        }
-      }
-    });
+  const DownloadZip = async (newZip: JSZip): Promise<void> => {
     const zipData = await newZip.generateAsync({ type: "uint8array" });
     const zipFile = new Blob([zipData], {
       type: "application/zip",
@@ -146,3 +108,49 @@ export interface DownloadZipDialogTitleProps {
   /** 書き出すotoの対象リストを更新する処理 */
   setTargetList: React.Dispatch<React.SetStateAction<Array<number> | null>>;
 }
+
+/**
+ * targetListに基づき、oto.ini入りのzipを作成する。
+ * @param newZip 新しく生成するzip。読み込み時のoto.iniが入っている。
+ * @param targetDirs 書き出し対象のディレクトリリスト
+ * @param targetList 書き出し対象のリスト (0: 現在のデータ, 1: 保存されたデータ, 2: 書き出さない)
+ * @param storagedOto 保存されたoto.iniのデータ
+ * @param oto Otoインスタンス
+ * @returns 更新されたzipオブジェクト
+ */
+export const AddOtoToZip = async (
+  newZip: JSZip,
+  targetDirs: string[],
+  targetList: Array<number>,
+  storagedOto: { [key: string]: { oto: string } },
+  oto: Oto
+): Promise<JSZip> => {
+  for (const [i, td] of targetDirs.entries()) {
+    if (targetList[i] === 0) {
+      /** 原音設定中のデータ */
+      const f = new File(
+        [iconv.encode(oto.GetLines()[td].join("\r\n"), "Windows-31j")],
+        "oto.ini",
+        { type: "text/plane;charset=shift-jis" }
+      );
+      LOG.debug(`編集中データの保存:${td + "/oto.ini"}`, "AddOtoToZip");
+      newZip.file(td + "/oto.ini", f);
+    } else if (targetList[i] === 1) {
+      /** 保存されたデータ */
+      const f = new File(
+        [iconv.encode(storagedOto[td]["oto"], "Windows-31j")],
+        "oto.ini",
+        { type: "text/plane;charset=shift-jis" }
+      );
+      LOG.debug(`履歴から保存:${td + "/oto.ini"}`, "AddOtoToZip");
+      newZip.file(td + "/oto.ini", f);
+    } else {
+      /** 書き出ししない場合 */
+      if (Object.keys(newZip.files).includes(td + "/oto.ini")) {
+        LOG.debug(`削除:${td + "/oto.ini"}`, "AddOtoToZip");
+        newZip.remove(td + "/oto.ini");
+      }
+    }
+  }
+  return newZip;
+};
