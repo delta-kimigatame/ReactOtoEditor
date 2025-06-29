@@ -26,16 +26,17 @@ interface OtoProjectStore {
   setWav: (wav: Wave | null) => void;
 }
 
-export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
-  oto: null,setOto: (oto) => {
+export const useOtoProjectStore = create<OtoProjectStore>()((set, get) => ({
+  oto: null,
+  setOto: (oto) => {
     set({ oto });
-
     // oto の変更を監視して処理を実行
     if (oto === null) {
       set({ record: null, wavFileName: null });
       LOG.debug("otoを初期化", "OtoProjectStore");
     } else {
       const targetDir = get().targetDir;
+      console.log(targetDir)
       if (targetDir) {
         const filename: string = oto.GetFileNames(targetDir)[0];
         const alias: string = oto.GetAliases(targetDir, filename)[0];
@@ -96,7 +97,10 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set,get) => ({
             LOG.debug(`wav読込完了。${wPath}`, "OtoProjectStore");
           });
         } else {
-          LOG.debug(`zip内にwavが見つかりませんでした。${wPath}`, "OtoProjectStore");
+          LOG.debug(
+            `zip内にwavが見つかりませんでした。${wPath}`,
+            "OtoProjectStore"
+          );
           set({ wav: null });
         }
       }
