@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach,Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { DarkModeMenu, DarkModeButtonProps } from "../../../../src/components/Header/HeaderMenuItem/DarkModeMenu";
 import { useCookieStore } from "../../../../src/store/cookieStore";
@@ -22,7 +22,7 @@ describe("DarkModeMenu", () => {
   });
 
   it("ダークモードの場合、ライトモードへの切り替えが表示される", () => {
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       mode: "dark",
       setMode: vi.fn(),
     });
@@ -35,7 +35,7 @@ describe("DarkModeMenu", () => {
   });
 
   it("ライトモードの場合、ダークモードへの切り替えが表示される", () => {
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       mode: "light",
       setMode: vi.fn(),
     });
@@ -49,7 +49,7 @@ describe("DarkModeMenu", () => {
 
   it("ダークモードからライトモードに切り替える", () => {
     const mockSetMode = vi.fn();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       mode: "dark",
       setMode: mockSetMode,
     });
@@ -69,7 +69,7 @@ describe("DarkModeMenu", () => {
 
   it("ライトモードからダークモードに切り替える", () => {
     const mockSetMode = vi.fn();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       mode: "light",
       setMode: mockSetMode,
     });

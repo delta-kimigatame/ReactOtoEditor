@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { CorrectTempo, AliasVariant } from "../../src/utils/CorrectOto";
 import { Oto } from "utauoto";
+import OtoRecord from "utauoto/dist/OtoRecord";
 
 describe("CorrectOto", () => {
   let dummyOto = new Oto();

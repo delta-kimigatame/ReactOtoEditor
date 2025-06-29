@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach,Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { LanguageMenu, LanguageButtonProps } from "../../../../src/features/Header/HeaderMenuItem/LanguageMenu";
 import { useCookieStore } from "../../../../src/store/cookieStore";
@@ -19,7 +19,7 @@ describe("LanguageMenu", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       language: "en",
       setLanguage: vi.fn(),
     });
@@ -47,7 +47,7 @@ describe("LanguageMenu", () => {
 
   it("日本語を選択すると言語が変更され、メニューが閉じる", () => {
     const mockSetLanguage = vi.fn();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       language: "en",
       setLanguage: mockSetLanguage,
     });
@@ -71,7 +71,7 @@ describe("LanguageMenu", () => {
 
   it("英語を選択すると言語が変更され、メニューが閉じる", () => {
     const mockSetLanguage = vi.fn();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       language: "ja",
       setLanguage: mockSetLanguage,
     });
@@ -95,7 +95,7 @@ describe("LanguageMenu", () => {
 
   it("中国語を選択すると言語が変更され、メニューが閉じる", () => {
     const mockSetLanguage = vi.fn();
-    (useCookieStore as vi.Mock).mockReturnValue({
+    (useCookieStore as unknown as Mock).mockReturnValue({
       language: "en",
       setLanguage: mockSetLanguage,
     });

@@ -1,6 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 import React from "react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach,Mock } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { HeaderMenuClearCache } from "../../../../src/features/Header/HeaderMenuItem/HeaderMenuClearCache";
 
@@ -67,7 +67,7 @@ describe("HeaderMenuClearCache", () => {
 
   it("Service Worker が登録されていない場合の処理を確認", async () => {
     // Service Worker が登録されていない場合をモック
-    (navigator.serviceWorker.getRegistration as vi.Mock).mockResolvedValue(
+    (navigator.serviceWorker.getRegistration as unknown as Mock).mockResolvedValue(
       null
     );
 

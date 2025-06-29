@@ -4,6 +4,7 @@ import { Oto } from "utauoto";
 import OtoRecord from "utauoto/dist/OtoRecord";
 import { Wave } from "utauwav";
 import { GetStorageOto, SaveStorageOto } from "../../src/services/StorageOto";
+import { JSZipObject } from "jszip";
 
 
 
@@ -150,7 +151,7 @@ describe("otoProjectStore", () => {
       "otherDir/other.wav": {
         async: vi.fn(),
       },
-    };
+    } as unknown as { [key: string]: JSZipObject };
 
     useOtoProjectStore.setState({
       readZip: mockReadZip,
@@ -169,7 +170,7 @@ describe("otoProjectStore", () => {
       "testDir/test.wav": {
         async: vi.fn().mockResolvedValue(new ArrayBuffer(8)),
       },
-    };
+    } as unknown as { [key: string]: JSZipObject };;
 
     useOtoProjectStore.setState({
       readZip: mockReadZip,
@@ -196,7 +197,7 @@ describe("otoProjectStore", () => {
   });
 
   it("setReadZip: readZip を設定する", () => {
-    const mockReadZip = { "test/file": {} };
+    const mockReadZip = { "test/file": {} } as unknown as { [key: string]: JSZipObject };;
 
     useOtoProjectStore.getState().setReadZip(mockReadZip);
 

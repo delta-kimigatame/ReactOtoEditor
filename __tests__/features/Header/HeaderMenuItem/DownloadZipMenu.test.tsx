@@ -6,6 +6,7 @@ import { DownloadZipMenu } from "../../../../src/features/Header/HeaderMenuItem/
 import { useOtoProjectStore } from "../../../../src/store/otoProjectStore";
 import { GetStorageOto } from "../../../../src/services/StorageOto";
 import { Oto } from "utauoto";
+import { JSZipObject } from "jszip";
 
 describe("DownloadZipMenu", () => {
   const mockSetMenuAnchor = vi.fn();
@@ -25,9 +26,9 @@ describe("DownloadZipMenu", () => {
     const store = useOtoProjectStore.getState();
     store.zipFileName = "test.zip";
     store.readZip = {
-      "dir1/oto.ini": {},
-      "dir2/oto.ini": {},
-      "dir3/oto.ini": {},
+      "dir1/oto.ini": {} as JSZipObject,
+      "dir2/oto.ini": {} as JSZipObject,
+      "dir3/oto.ini": {} as JSZipObject,
     };
     store.targetDirs = ["dir1", "dir2", "dir3", "dir4"];
     store.targetDir = "dir1";
