@@ -113,7 +113,7 @@ export interface DownloadZipDialogTitleProps {
  * targetListに基づき、oto.ini入りのzipを作成する。
  * @param newZip 新しく生成するzip。読み込み時のoto.iniが入っている。
  * @param targetDirs 書き出し対象のディレクトリリスト
- * @param targetList 書き出し対象のリスト (0: 現在のデータ, 1: 保存されたデータ, 2: 書き出さない)
+ * @param targetList 書き出し対象のリスト (0: 現在のデータ, 1: 保存されたデータ, 2: 元のoto.ini, 3: 書き出ししない)
  * @param storagedOto 保存されたoto.iniのデータ
  * @param oto Otoインスタンス
  * @returns 更新されたzipオブジェクト
@@ -144,7 +144,7 @@ export const AddOtoToZip = async (
       );
       LOG.debug(`履歴から保存:${td + "/oto.ini"}`, "AddOtoToZip");
       newZip.file(td + "/oto.ini", f);
-    } else {
+    } else if (targetList[i] !== 2) { 
       /** 書き出ししない場合 */
       if (Object.keys(newZip.files).includes(td + "/oto.ini")) {
         LOG.debug(`削除:${td + "/oto.ini"}`, "AddOtoToZip");
