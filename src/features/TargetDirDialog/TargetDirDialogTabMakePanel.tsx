@@ -74,55 +74,19 @@ export const TargetDirDialogTabMakePanel: React.FC<
 
   React.useEffect(() => {
     if (ini === null) return;
-    setOffset(ini.offset);
-    setTempo(ini.tempo);
-    setMaxnum(ini.max);
-    setUnderbar(ini.underbar);
-    setBeginingCv(ini.beginingCv);
-    setRequireHead(!ini.noHead);
-    setRequireVCV(!ini.noVCV);
-    setRequireOnlyConsonant(ini.onlyConsonant);
-    const vowels_: { [vowel: string]: string } = {};
-    Object.keys(ini.vowel).forEach((cv) => {
-      if (Object.keys(vowels_).includes(ini.vowel[cv])) {
-        vowels_[ini.vowel[cv]] += "," + cv;
-      } else {
-        vowels_[ini.vowel[cv]] = cv;
-      }
+    updateStateFromIni(ini, {
+      setOffset,
+      setTempo,
+      setMaxnum,
+      setUnderbar,
+      setBeginingCv,
+      setRequireHead,
+      setRequireVCV,
+      setRequireOnlyConsonant,
+      setVowel,
+      setConsonant,
+      setReplace,
     });
-    const vowels__: Array<{ vowel: string; variant: string }> = new Array();
-    Object.keys(vowels_).forEach((v) => {
-      vowels__.push({ vowel: v, variant: vowels_[v] });
-    });
-    setVowel(vowels__);
-    const consonants_: {
-      [consonant: string]: {
-        consonant: string;
-        variant: string;
-        length: number;
-      };
-    } = {};
-    Object.keys(ini.consonant).forEach((cv) => {
-      if (Object.keys(consonants_).includes(ini.consonant[cv].consonant)) {
-        consonants_[ini.consonant[cv].consonant].variant += "," + cv;
-      } else {
-        consonants_[ini.consonant[cv].consonant] = {
-          consonant: ini.consonant[cv].consonant,
-          variant: cv,
-          length: ini.consonant[cv].length,
-        };
-      }
-    });
-    const consonants__: Array<{
-      consonant: string;
-      variant: string;
-      length: number;
-    }> = new Array();
-    Object.keys(consonants_).forEach((c) => {
-      consonants__.push(consonants_[c]);
-    });
-    setConsonant(consonants__);
-    setReplace(ini.replace);
   }, [ini]);
 
   const OnMakeClick = () => {
@@ -138,39 +102,37 @@ export const TargetDirDialogTabMakePanel: React.FC<
       LOG.debug(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       setOto(oto);
     } else {
-      ini.tempo = tempo;
-      ini.offset = offset;
-      ini.max = maxnum;
-      ini.underbar = underbar;
-      ini.beginingCv = beginingCv;
-      ini.noHead = !requireHead;
-      ini.noVCV = !requireVCV;
-      ini.onlyConsonant = requireOnlyConsonant;
-      const vowels_: { [key: string]: string } = {};
-      vowel.forEach((v) => {
-        v.variant.split(",").forEach((cv) => {
-          vowels_[cv] = v.vowel;
-        });
+      // iniがnullの場合はデフォルト値を使用
+      const baseIni = ini || {
+        offset: 1000,
+        tempo: 120,
+        max: 2,
+        underbar: false,
+        beginingCv: false,
+        noHead: false,
+        noVCV: false,
+        onlyConsonant: false,
+        vowel: {},
+        consonant: {},
+        replace: [] as Array<[string, string]>,
+      };
+      
+      const updatedIni = buildIniFromState(baseIni, {
+        tempo,
+        offset,
+        maxnum,
+        underbar,
+        beginingCv,
+        requireHead,
+        requireVCV,
+        requireOnlyConsonant,
+        vowel,
+        consonant,
+        replace
       });
-      ini.vowel = vowels_;
-      const consonant_: {
-        [key: string]: {
-          /** 子音 */
-          consonant: string;
-          /** 子音の標準長さ(ms) */
-          length: number;
-        };
-      } = {};
-      consonant.forEach((c) => {
-        c.variant.split(",").forEach((cv) => {
-          consonant_[cv] = { consonant: c.consonant, length: c.length };
-        });
-      });
-      ini.consonant = consonant_;
-      ini.replace = replace;
-      LOG.debug(`ini:${JSON.stringify(ini)}`, "TargetDirDialogTabMakePanel");
+      LOG.debug(`ini:${JSON.stringify(updatedIni)}`, "TargetDirDialogTabMakePanel");
       const oto = MakeOto(
-        ini,
+        updatedIni,
         Object.keys(readZip),
         targetDir,
         skipBeginingNumber
@@ -188,11 +150,12 @@ export const TargetDirDialogTabMakePanel: React.FC<
           label={t("targetDirDialog.makePanel.title")}
           value={mode}
           onChange={OnModeChange}
+          data-testid="mode-select"
         >
-          <MenuItem value={"single"}>
+          <MenuItem value={"single"} data-testid="mode-single">
             {t("targetDirDialog.makePanel.single")}
           </MenuItem>
-          <MenuItem value={"multi"}>
+          <MenuItem value={"multi"} data-testid="mode-multi">
             {t("targetDirDialog.makePanel.multi")}
           </MenuItem>
         </FullWidthSelect>
@@ -201,8 +164,8 @@ export const TargetDirDialogTabMakePanel: React.FC<
       {mode === "multi" && (
         <Box sx={{ p: 1 }}>
           <MakePanelSelectPreset setIni={setIni} />
-          <Accordion sx={{ m: 1 }}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Accordion sx={{ m: 1 }} data-testid="settings-accordion">
+            <AccordionSummary expandIcon={<ExpandMoreIcon />} data-testid="settings-accordion-summary">
               <InputLabel>
                 {t("targetDirDialog.makePanel.iniDetail")}
               </InputLabel>
@@ -215,6 +178,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
                 onChange={(e) => {
                   setTempo(e.target.value);
                 }}
+                data-testid="tempo-input"
               />
               <FullWidthTextField
                 type="number"
@@ -223,6 +187,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
                 onChange={(e) => {
                   setOffset(e.target.value);
                 }}
+                data-testid="offset-input"
               />
               <FullWidthTextField
                 type="number"
@@ -231,35 +196,41 @@ export const TargetDirDialogTabMakePanel: React.FC<
                 onChange={(e) => {
                   setMaxnum(e.target.value);
                 }}
+                data-testid="maxnum-input"
               />
               <CommonCheckBox
                 checked={underbar}
                 setChecked={setUnderbar}
                 label={t("targetDirDialog.makePanel.settings.underbar")}
+                data-testid="underbar-checkbox"
               />
               <br />
               <CommonCheckBox
                 checked={beginingCv}
                 setChecked={setBeginingCv}
                 label={t("targetDirDialog.makePanel.settings.beginingCv")}
+                data-testid="begining-cv-checkbox"
               />
               <br />
               <CommonCheckBox
                 checked={requireHead}
                 setChecked={setRequireHead}
                 label={t("targetDirDialog.makePanel.settings.Head")}
+                data-testid="require-head-checkbox"
               />
               <br />
               <CommonCheckBox
                 checked={requireVCV}
                 setChecked={setRequireVCV}
                 label={t("targetDirDialog.makePanel.settings.VCV")}
+                data-testid="require-vcv-checkbox"
               />
               <br />
               <CommonCheckBox
                 checked={requireOnlyConsonant}
                 setChecked={setRequireOnlyConsonant}
                 label={t("targetDirDialog.makePanel.settings.onlyConsonant")}
+                data-testid="require-only-consonant-checkbox"
               />
               <br />
               <MakePanelVowelAccordion vowel={vowel} setVowel={setVowel} />
@@ -281,6 +252,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
             checked={analyze}
             setChecked={setAnalyze}
             label={t("targetDirDialog.makePanel.analyze")}
+            data-testid="analyze-checkbox"
           />
           <br />
         </>
@@ -290,9 +262,10 @@ export const TargetDirDialogTabMakePanel: React.FC<
         checked={skipBeginingNumber}
         setChecked={setSkipBeginingNumber}
         label={t("targetDirDialog.makePanel.settings.skipBeginingNumber")}
+        data-testid="skip-begining-number-checkbox"
       />
       <br />
-      <FullWidthButton onClick={OnMakeClick} disabled={mode === null}>
+      <FullWidthButton onClick={OnMakeClick} disabled={mode === null} data-testid="make-button">
         {t("targetDirDialog.makePanel.make")}
       </FullWidthButton>
     </TabPanel>
@@ -301,5 +274,152 @@ export const TargetDirDialogTabMakePanel: React.FC<
 
 export interface TargetDirDialogTabMakePanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
 }
+
+/**
+ * MakeOtoTempIniからStateを更新する
+ */
+export const updateStateFromIni = (
+  ini: MakeOtoTempIni,
+  setters: {
+    setOffset: (value: number) => void;
+    setTempo: (value: number) => void;
+    setMaxnum: (value: number) => void;
+    setUnderbar: (value: boolean) => void;
+    setBeginingCv: (value: boolean) => void;
+    setRequireHead: (value: boolean) => void;
+    setRequireVCV: (value: boolean) => void;
+    setRequireOnlyConsonant: (value: boolean) => void;
+    setVowel: (value: Array<{ vowel: string; variant: string }>) => void;
+    setConsonant: (value: Array<{ consonant: string; variant: string; length: number }>) => void;
+    setReplace: (value: Array<[before: string, after: string]>) => void;
+  }
+) => {
+  setters.setOffset(ini.offset);
+  setters.setTempo(ini.tempo);
+  setters.setMaxnum(ini.max);
+  setters.setUnderbar(ini.underbar);
+  setters.setBeginingCv(ini.beginingCv);
+  setters.setRequireHead(!ini.noHead);
+  setters.setRequireVCV(!ini.noVCV);
+  setters.setRequireOnlyConsonant(ini.onlyConsonant);
+  
+  setters.setVowel(convertVowelsFromIni(ini.vowel));
+  setters.setConsonant(convertConsonantsFromIni(ini.consonant));
+  setters.setReplace(ini.replace);
+};
+
+/**
+ * StateからMakeOtoTempIniを構築する
+ */
+export const buildIniFromState = (
+  baseIni: MakeOtoTempIni,
+  state: {
+    tempo: number;
+    offset: number;
+    maxnum: number;
+    underbar: boolean;
+    beginingCv: boolean;
+    requireHead: boolean;
+    requireVCV: boolean;
+    requireOnlyConsonant: boolean;
+    vowel: Array<{ vowel: string; variant: string }>;
+    consonant: Array<{ consonant: string; variant: string; length: number }>;
+    replace: Array<[before: string, after: string]>;
+  }
+): MakeOtoTempIni => {
+  // 基本プロパティの更新
+  baseIni.tempo = state.tempo;
+  baseIni.offset = state.offset;
+  baseIni.max = state.maxnum;
+  baseIni.underbar = state.underbar;
+  baseIni.beginingCv = state.beginingCv;
+  baseIni.noHead = !state.requireHead;
+  baseIni.noVCV = !state.requireVCV;
+  baseIni.onlyConsonant = state.requireOnlyConsonant;
+
+  // 母音の変換
+  const vowels_: { [key: string]: string } = {};
+  state.vowel.forEach((v) => {
+    v.variant.split(",").forEach((cv) => {
+      vowels_[cv] = v.vowel;
+    });
+  });
+  baseIni.vowel = vowels_;
+
+  // 子音の変換
+  const consonant_: {
+    [key: string]: {
+      consonant: string;
+      length: number;
+    };
+  } = {};
+  state.consonant.forEach((c) => {
+    c.variant.split(",").forEach((cv) => {
+      consonant_[cv] = { consonant: c.consonant, length: c.length };
+    });
+  });
+  baseIni.consonant = consonant_;
+  
+  baseIni.replace = state.replace;
+
+  return baseIni;
+};
+
+/**
+ * MakeOtoTempIniから母音設定を変換する
+ */
+export const convertVowelsFromIni = (iniVowel: { [key: string]: string }): Array<{ vowel: string; variant: string }> => {
+  const vowels_: { [vowel: string]: string } = {};
+  Object.keys(iniVowel).forEach((cv) => {
+    if (Object.keys(vowels_).includes(iniVowel[cv])) {
+      vowels_[iniVowel[cv]] += "," + cv;
+    } else {
+      vowels_[iniVowel[cv]] = cv;
+    }
+  });
+  const vowels__: Array<{ vowel: string; variant: string }> = new Array();
+  Object.keys(vowels_).forEach((v) => {
+    vowels__.push({ vowel: v, variant: vowels_[v] });
+  });
+  return vowels__;
+};
+
+/**
+ * MakeOtoTempIniから子音設定を変換する
+ */
+export const convertConsonantsFromIni = (iniConsonant: {
+  [key: string]: {
+    consonant: string;
+    length: number;
+  };
+}): Array<{ consonant: string; variant: string; length: number }> => {
+  const consonants_: {
+    [consonant: string]: {
+      consonant: string;
+      variant: string;
+      length: number;
+    };
+  } = {};
+  Object.keys(iniConsonant).forEach((cv) => {
+    if (Object.keys(consonants_).includes(iniConsonant[cv].consonant)) {
+      consonants_[iniConsonant[cv].consonant].variant += "," + cv;
+    } else {
+      consonants_[iniConsonant[cv].consonant] = {
+        consonant: iniConsonant[cv].consonant,
+        variant: cv,
+        length: iniConsonant[cv].length,
+      };
+    }
+  });
+  const consonants__: Array<{
+    consonant: string;
+    variant: string;
+    length: number;
+  }> = new Array();
+  Object.keys(consonants_).forEach((c) => {
+    consonants__.push(consonants_[c]);
+  });
+  return consonants__;
+};
