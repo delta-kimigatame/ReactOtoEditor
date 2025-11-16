@@ -28,7 +28,7 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
     if (props.zipFiles === null) return;
     const newZip = new JSZip();
     LOG.debug(`zipファイル名正規化開始`, "LoadZipButtonArea");
-    ZipExtract(props.zipFiles, 0, newZip);
+    ZipExtract_(props.zipFiles, newZip);
   };
 
   /**
@@ -47,25 +47,19 @@ export const LoadZipButtonArea: React.FC<LoadZipButtonAreaProps> = (props) => {
   /**
    * utf-8-macをutf-8に変換したzipファイルを再帰呼出しで生成する。
    * @param files zip内のファイル一覧
-   * @param index 読み込むファイルのインデックス
    * @param newZip 新しく生成するzip
    */
-  const ZipExtract = (
+  const ZipExtract_ = (
     files: { [key: string]: JSZip.JSZipObject },
-    index: number,
     newZip: JSZip
   ) => {
-    const k = Object.keys(files)[index];
-    files[k].async("arraybuffer").then((result) => {
-      newZip.file(NormalizeJP(k.replace(/\uFEFF/, "")).replace(/\wav$/i,"wav"), result);
-      if (index < Object.keys(files).length - 1) {
-        ZipExtract(files, index + 1, newZip);
-      } else {
-        LOG.debug(`zipファイル名正規化終了`, "LoadZipButtonArea");
-        props.setZipFiles(newZip.files);
-        props.setDialogOpen(false);
-      }
-    });
+    ZipExtract(
+      files,
+      0,
+      newZip,
+      props.setZipFiles,
+      props.setDialogOpen
+    );
   };
 
   return (
@@ -111,3 +105,36 @@ export interface LoadZipButtonAreaProps {
     } | null>
   >;
 }
+
+/**
+ * utf-8-macをutf-8に変換したzipファイルを再帰呼出しで生成する。
+ * testableにするためexport化
+ * @param files zip内のファイル一覧
+ * @param index 読み込むファイルのインデックス
+ * @param newZip 新しく生成するzip
+ */
+export const ZipExtract = (
+  files: { [key: string]: JSZip.JSZipObject },
+  index: number,
+  newZip: JSZip,
+  setZipFiles: (files: { [key: string]: JSZip.JSZipObject } | null) => void,
+  setDialogOpen: (open: boolean) => void
+) => {
+  const k = Object.keys(files)[index];
+  files[k].async("arraybuffer").then((result) => {
+    newZip.file(
+      k
+        .replace(/\uFEFF/, "")
+        .normalize("NFC")
+        .replace(/\wav$/i, "wav"),
+      result
+    );
+    if (index < Object.keys(files).length - 1) {
+      ZipExtract(files, index + 1, newZip, setZipFiles, setDialogOpen);
+    } else {
+      LOG.debug(`zipファイル名正規化終了`, "LoadZipButtonArea");
+      setZipFiles(newZip.files);
+      setDialogOpen(false);
+    }
+  });
+};
