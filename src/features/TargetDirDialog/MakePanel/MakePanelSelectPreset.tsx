@@ -65,6 +65,7 @@ MakePanelSelectPresetProps
         hidden
         ref={inputRef}
         accept=".ini"
+        data-testid="make-panel-select-preset-file-input"
       ></input>
       <FullWidthSelect
         label={t("targetDirDialog.makePanel.loadini")}
@@ -91,5 +92,5 @@ MakePanelSelectPresetProps
 
 export interface MakePanelSelectPresetProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setIni: React.Dispatch<React.SetStateAction<MakeOtoTempIni>>;
+  setIni: (MakeOtoTempIni) => void;
 }
