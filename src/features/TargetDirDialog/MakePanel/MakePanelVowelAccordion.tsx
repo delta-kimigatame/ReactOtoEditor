@@ -46,7 +46,7 @@ export const MakePanelVowelAccordion: React.FC<
     </AccordionSummary>
     <AccordionDetails>
       {props.vowel.map((v, i) => (
-        <Box sx={{ display: "flex" }}>
+        <Box key={i} sx={{ display: "flex" }}>
           <TextField
             variant="outlined"
             sx={{
@@ -57,6 +57,7 @@ export const MakePanelVowelAccordion: React.FC<
               "targetDirDialog.makePanel.settings.vowelSymbol"
             )}
             value={v.vowel}
+            data-testid={`vowel-symbol-input-${i}`}
             onChange={(e) => {
               OnVowelChange(e, i, "symbol");
             }}
@@ -72,13 +73,14 @@ export const MakePanelVowelAccordion: React.FC<
               "targetDirDialog.makePanel.settings.vowelVariant"
             )}
             value={v.variant}
+            data-testid={`vowel-variant-input-${i}`}
             onChange={(e) => {
               OnVowelChange(e, i, "variant");
             }}
           />
         </Box>
       ))}
-      <FullWidthButton onClick={OnVowelAdd}>
+      <FullWidthButton onClick={OnVowelAdd} data-testid="vowel-add-button">
         {t("targetDirDialog.makePanel.settings.add")}
       </FullWidthButton>
     </AccordionDetails>
@@ -88,11 +90,7 @@ export const MakePanelVowelAccordion: React.FC<
 
 export interface MakePanelVowelAccordionProps {
   /** 母音の設定値の更新 */
-  setVowel: React.Dispatch<
-    React.SetStateAction<
-    Array<{ vowel: string; variant: string }>
-    >
-  >;
+  setVowel: (vowels: Array<{ vowel: string; variant: string }>) => void;
   /** 母音の設定値 */
   vowel: Array<{ vowel: string; variant: string }>;
 }
