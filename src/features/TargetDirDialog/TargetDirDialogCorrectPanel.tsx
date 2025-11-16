@@ -46,54 +46,11 @@ export const TargetDirDialogCorrectPanel: React.FC<
   const [hasPositiveBlank, SetHasPositiveBlank] =
     React.useState<boolean>(false);
 
-  const SetDefaultAliasVariant = (oto_: Oto) => {
-    const av = new Array<"CV" | "VCV" | "VC">();
-    let positiveBlank = false;
-    oto_.GetFileNames(targetDir).forEach((f) => {
-      oto_.GetAliases(targetDir, f).forEach((a) => {
-        if (a.match(/\* /)) {
-          /**母音結合はCV */
-          av.push("CV");
-          LOG.debug(
-            `aliasVariantの推定。エイリアス:${a}、種類:CV`,
-            "TargetDirDialogCorrectPanel"
-          );
-        } else if (a.match(/ [ぁ-んーァ-ヶー一-龠]+/)) {
-          /** 半角スペースの後ろに全角文字があればVCV */
-          av.push("VCV");
-          LOG.debug(
-            `aliasVariantの推定。エイリアス:${a}、種類:VCV`,
-            "TargetDirDialogCorrectPanel"
-          );
-        } else if (a.includes(" ")) {
-          /** その他半角スペースがあればVC */
-          av.push("VC");
-          LOG.debug(
-            `aliasVariantの推定。エイリアス:${a}、種類:VC`,
-            "TargetDirDialogCorrectPanel"
-          );
-        } else {
-          av.push("CV");
-          LOG.debug(
-            `aliasVariantの推定。エイリアス:${a}、種類:CV`,
-            "TargetDirDialogCorrectPanel"
-          );
-        }
-        if (oto_.GetRecord(targetDir, f, a).blank >= 0) {
-          positiveBlank = true;
-          LOG.debug(`右ブランクが正の数`, "TargetDirDialogCorrectPanel");
-        }
-      });
-    });
-    setAliasVariant(av);
-    SetHasPositiveBlank(positiveBlank);
-  };
-
   React.useEffect(() => {
     if (oto !== null) {
-      SetDefaultAliasVariant(oto);
+      SetDefaultAliasVariant(oto, targetDir, setAliasVariant, SetHasPositiveBlank);
     }
-  }, [oto]);
+  }, [oto, targetDir]);
 
   const OnCorrectClick = () => {
     if (!isCorrectOffset) {
@@ -126,12 +83,13 @@ export const TargetDirDialogCorrectPanel: React.FC<
   };
   return (
     <>
-      <FullWidthButton onClick={OnCorrectClick}>
+      <FullWidthButton data-testid="submit-button" onClick={OnCorrectClick}>
         {t("targetDirDialog.submit")}
       </FullWidthButton>
       <FormControlLabel
         control={
           <Checkbox
+            data-testid="correct-offset-checkbox"
             checked={isCorrectOffset}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               setIsCorrectOffset(e.target.checked);
@@ -144,6 +102,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
       {isCorrectOffset && (
         <>
           <FullWidthTextField
+            data-testid="before-offset-input"
             type="number"
             label={t("targetDirDialog.beforeOffset")}
             value={beforeOffset}
@@ -152,6 +111,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
             }}
           />
           <FullWidthTextField
+            data-testid="after-offset-input"
             type="number"
             label={t("targetDirDialog.afterOffset")}
             value={afterOffset}
@@ -169,6 +129,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
               <FormControlLabel
                 control={
                   <Checkbox
+                    data-testid="correct-tempo-checkbox"
                     checked={isCorrectTempo}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                       setIsCorrectTempo(e.target.checked);
@@ -181,6 +142,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
               {isCorrectTempo && (
                 <>
                   <FullWidthTextField
+                    data-testid="before-tempo-input"
                     type="number"
                     label={t("targetDirDialog.beforeTempo")}
                     value={beforeTempo}
@@ -189,6 +151,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     }}
                   />
                   <FullWidthTextField
+                    data-testid="after-tempo-input"
                     type="number"
                     label={t("targetDirDialog.afterTempo")}
                     value={afterTempo}
@@ -212,5 +175,60 @@ export const TargetDirDialogCorrectPanel: React.FC<
 
 export interface TargetDirDialogCorrectPanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
 }
+
+/**
+ * Otoから期待されるエイリアスの種類を推定し、右ブランクが正の値があるかを確認する
+ * @param oto_ Otoインスタンス
+ * @param targetDir ターゲットディレクトリ
+ * @param setAliasVariant エイリアス種類を設定する関数
+ * @param setHasPositiveBlank 右ブランクが正の値があるかを設定する関数
+ */
+export const SetDefaultAliasVariant = (
+  oto_: Oto,
+  targetDir: string,
+  setAliasVariant: (variant: Array<"CV" | "VCV" | "VC">) => void,
+  setHasPositiveBlank: (hasPositive: boolean) => void
+) => {
+  const av = new Array<"CV" | "VCV" | "VC">();
+  let positiveBlank = false;
+  oto_.GetFileNames(targetDir).forEach((f) => {
+    oto_.GetAliases(targetDir, f).forEach((a) => {
+      if (a.match(/\* /)) {
+        /**母音結合はCV */
+        av.push("CV");
+        LOG.debug(
+          `aliasVariantの推定。エイリアス:${a}、種類:CV`,
+          "TargetDirDialogCorrectPanel"
+        );
+      } else if (a.match(/ [ぁ-んーァ-ヶー一-龠]+/)) {
+        /** 半角スペースの後ろに全角文字があればVCV */
+        av.push("VCV");
+        LOG.debug(
+          `aliasVariantの推定。エイリアス:${a}、種類:VCV`,
+          "TargetDirDialogCorrectPanel"
+        );
+      } else if (a.includes(" ")) {
+        /** その他半角スペースがあればVC */
+        av.push("VC");
+        LOG.debug(
+          `aliasVariantの推定。エイリアス:${a}、種類:VC`,
+          "TargetDirDialogCorrectPanel"
+        );
+      } else {
+        av.push("CV");
+        LOG.debug(
+          `aliasVariantの推定。エイリアス:${a}、種類:CV`,
+          "TargetDirDialogCorrectPanel"
+        );
+      }
+      if (oto_.GetRecord(targetDir, f, a).blank >= 0) {
+        positiveBlank = true;
+        LOG.debug(`右ブランクが正の数`, "TargetDirDialogCorrectPanel");
+      }
+    });
+  });
+  setAliasVariant(av);
+  setHasPositiveBlank(positiveBlank);
+};
