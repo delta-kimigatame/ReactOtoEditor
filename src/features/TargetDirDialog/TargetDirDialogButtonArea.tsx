@@ -46,11 +46,12 @@ export const TargetDirDialogButtonArea: React.FC<
 
   return (
     <>
-      <FullWidthButton onClick={OnSubmitClick}>
+      <FullWidthButton data-testid="submit-button" onClick={OnSubmitClick}>
         {t("targetDirDialog.submit")}
       </FullWidthButton>
       <br />
       <FullWidthSelect
+        data-testid="encoding-select"
         label={t("loadZipDialog.encoding")}
         value={props.encoding}
         onChange={OnSelectChange}
@@ -64,15 +65,15 @@ export const TargetDirDialogButtonArea: React.FC<
 
 export interface TargetDirDialogButtonAreaProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */
-  setOtoTemp: React.Dispatch<React.SetStateAction<Oto | null>>;
+  setOtoTemp: (oto: Oto | null) => void;
   /** oto.iniを読み込む処理 */
   LoadOto: (encoding_?: string) => void;
   /** oto.iniを読み込む際の文字コード */
   encoding: string;
   /** oto.iniを読み込む際の文字コードを変更する処理 */
-  setEncoding: React.Dispatch<React.SetStateAction<string>>;
+  setEncoding: (encoding: string) => void;
 }
