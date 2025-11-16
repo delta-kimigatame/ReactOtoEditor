@@ -11,6 +11,38 @@ import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /**
+ * zipを指定した文字コードで解凍する（テスト可能な外部関数）
+ * @param file 読み込んだファイル
+ * @param encoding 文字コード
+ * @param setZipFileName zipファイル名を設定する関数
+ * @param setProcessing 処理中状態を設定する関数
+ * @param setZipFiles zipファイル一覧を設定する関数
+ */
+export const LoadZip = (
+  file: File,
+  encoding: string = "utf-8",
+  setZipFileName: (filename: string) => void,
+  setProcessing: (processing: boolean) => void,
+  setZipFiles: (files: { [key: string]: JSZip.JSZipObject } | null) => void
+) => {
+  const zip = new JSZip();
+  const td = new TextDecoder(encoding);
+  LOG.debug(`zip読込。文字コード:${encoding}`, "LoadZipDialog");
+  setZipFileName(file.name);
+  zip
+    .loadAsync(file, {
+      decodeFileName: (fileNameBinary: Uint8Array) =>
+        td.decode(fileNameBinary),
+    })
+    .then((z) => {
+      setProcessing(false);
+      setZipFiles(z.files);
+      LOG.gtag("loadzip");
+      LOG.debug(`zip読込完了`, "LoadZipDialog");
+    });
+};
+
+/**
  * zip読込待ちダイアログ \
  * ファイル名の一覧を表示し、必要に応じて読込文字コードを変更する機能を有する。
  * @param props {@link LoadZipDialogProps}
@@ -28,26 +60,12 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
   const [encoding, setEncoding] = React.useState<string>("utf-8");
 
   /**
-   * zipを指定した文字コードで解凍する
+   * zipを指定した文字コードで解凍する（内部関数）
    * @param file 読み込んだファイル
    * @param encoding 文字コード
    */
-  const LoadZip = (file: File, encoding: string = "utf-8") => {
-    const zip = new JSZip();
-    const td = new TextDecoder(encoding);
-    LOG.debug(`zip読込。文字コード:${encoding}`,"LoadZipDialog")
-    setZipFileName(file.name);
-    zip
-      .loadAsync(file, {
-        decodeFileName: (fileNameBinary: Uint8Array) =>
-          td.decode(fileNameBinary),
-      })
-      .then((z) => {
-        setProcessing(false);
-        setZipFiles(z.files);
-        LOG.gtag("loadzip")
-        LOG.debug(`zip読込完了`,"LoadZipDialog")
-      });
+  const LoadZip_ = (file: File, encoding: string = "utf-8") => {
+    LoadZip(file, encoding, setZipFileName, setProcessing, setZipFiles);
   };
 
   /** ファイルが変更された際の処理。 */
@@ -56,7 +74,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
       props.setDialogOpen(false);
     } else {
       setProcessing(true);
-      LoadZip(props.file);
+      LoadZip_(props.file);
     }
   }, [props.file]);
 
@@ -76,7 +94,7 @@ export const LoadZipDialog: React.FC<LoadZipDialogProps> = (props) => {
           processing={processing}
           encoding={encoding}
           zipFiles={zipFiles}
-          LoadZip={LoadZip}
+          LoadZip={LoadZip_}
           setDialogOpen={props.setDialogOpen}
           setProcessing={setProcessing}
           setEncoding={setEncoding}
