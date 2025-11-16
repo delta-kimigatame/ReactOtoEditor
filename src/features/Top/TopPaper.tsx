@@ -74,6 +74,7 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
         hidden
         ref={inputRef}
         accept="application/zip"
+        data-testid="hidden-zip-input"
       ></input>
       <BasePaper title={setting.productName}>
         <Box sx={{ m: 1, p: 1 }}>
