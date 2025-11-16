@@ -64,7 +64,7 @@ export const MakePanelConsonantAccordion: React.FC<
       </AccordionSummary>
       <AccordionDetails>
         {props.consonant.map((c, i) => (
-          <Box sx={{ display: "flex" }}>
+          <Box key={i} sx={{ display: "flex" }}>
             <TextField
               variant="outlined"
               sx={{
@@ -73,6 +73,7 @@ export const MakePanelConsonantAccordion: React.FC<
               type="text"
               label={t("targetDirDialog.makePanel.settings.consonantSymbol")}
               value={c.consonant}
+              data-testid={`consonant-symbol-input-${i}`}
               onChange={(e) => {
                 OnConsonantChange(e, i, "symbol");
               }}
@@ -86,6 +87,7 @@ export const MakePanelConsonantAccordion: React.FC<
               type="text"
               label={t("targetDirDialog.makePanel.settings.consonantVariant")}
               value={c.variant}
+              data-testid={`consonant-variant-input-${i}`}
               onChange={(e) => {
                 OnConsonantChange(e, i, "variant");
               }}
@@ -98,13 +100,14 @@ export const MakePanelConsonantAccordion: React.FC<
               type="number"
               label={t("targetDirDialog.makePanel.settings.consonantLength")}
               value={c.length}
+              data-testid={`consonant-length-input-${i}`}
               onChange={(e) => {
                 OnConsonantChange(e, i, "length");
               }}
             />
           </Box>
         ))}
-        <FullWidthButton onClick={OnConsonantAdd}>
+        <FullWidthButton onClick={OnConsonantAdd} data-testid="consonant-add-button">
           {t("targetDirDialog.makePanel.settings.add")}
         </FullWidthButton>
       </AccordionDetails>
@@ -114,11 +117,7 @@ export const MakePanelConsonantAccordion: React.FC<
 
 export interface MakePanelConsonantAccordionProps {
   /** 子音の設定値の更新 */
-  setConsonant: React.Dispatch<
-    React.SetStateAction<
-      Array<{ consonant: string; variant: string; length: number }>
-    >
-  >;
+  setConsonant: (consonants: Array<{ consonant: string; variant: string; length: number }>) => void;
   /** 子音の設定値 */
   consonant: Array<{ consonant: string; variant: string; length: number }>;
 }
