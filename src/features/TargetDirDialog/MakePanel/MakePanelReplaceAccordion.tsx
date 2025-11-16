@@ -42,7 +42,7 @@ export const MakePanelReplaceAccordion: React.FC<
       </AccordionSummary>
       <AccordionDetails>
         {props.replace.map((r, i) => (
-          <Box sx={{ display: "flex" }}>
+          <Box key={i} sx={{ display: "flex" }}>
             <TextField
               variant="outlined"
               sx={{
@@ -52,6 +52,7 @@ export const MakePanelReplaceAccordion: React.FC<
               type="text"
               label={t("targetDirDialog.makePanel.settings.replaceFilename")}
               value={r[0]}
+              data-testid={`replace-before-input-${i}`}
               onChange={(e) => {
                 OnReplaceChange(e, i, 0);
               }}
@@ -65,13 +66,14 @@ export const MakePanelReplaceAccordion: React.FC<
               type="text"
               label={t("targetDirDialog.makePanel.settings.replaceAlias")}
               value={r[1]}
+              data-testid={`replace-after-input-${i}`}
               onChange={(e) => {
                 OnReplaceChange(e, i, 1);
               }}
             />
           </Box>
         ))}
-        <FullWidthButton onClick={OnReplaceAdd}>
+        <FullWidthButton onClick={OnReplaceAdd} data-testid="replace-add-button">
           {t("targetDirDialog.makePanel.settings.add")}
         </FullWidthButton>
       </AccordionDetails>
@@ -81,9 +83,7 @@ export const MakePanelReplaceAccordion: React.FC<
 
 export interface MakePanelReplaceAccordionProps {
   /** 置換の設定値の更新 */
-  setReplace: React.Dispatch<
-    React.SetStateAction<Array<[before: string, after: string]>>
-  >;
+  setReplace: (replaces: Array<[before: string, after: string]>) => void;
   /** 置換の設定値 */
   replace: Array<[before: string, after: string]>;
 }
