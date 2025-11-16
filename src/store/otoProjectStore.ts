@@ -36,12 +36,12 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set, get) => ({
       LOG.debug("otoを初期化", "OtoProjectStore");
     } else {
       const targetDir = get().targetDir;
-      console.log(targetDir)
       if (targetDir) {
         const filename: string = oto.GetFileNames(targetDir)[0];
         const alias: string = oto.GetAliases(targetDir, filename)[0];
         const record: OtoRecord = oto.GetRecord(targetDir, filename, alias);
-        set({ wavFileName: filename, record });
+        get().setRecord(record);
+        // get().setWavFileName(filename); //ファイルネームはsetRecord内で設定される
         LOG.debug(
           `otoの読込完了。初期ファイルネーム:${filename}、初期エイリアス:${alias}`,
           "OtoProjectStore"
@@ -62,7 +62,7 @@ export const useOtoProjectStore = create<OtoProjectStore>()((set, get) => ({
       const storagedOto: {} = GetStorageOto();
       SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
       if (wavFileName !== record.filename) {
-        set({ wavFileName: record.filename });
+        get().setWavFileName(record.filename);
       }
       LOG.gtag("changeRecord");
       LOG.debug("localstorageに保存", "OtoProjectStore");
