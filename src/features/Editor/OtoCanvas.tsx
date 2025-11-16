@@ -79,7 +79,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         props.setUpdateSignal(Math.random());
       }
     },
-    [lastClickXRef]
+    [record, overlapLock, props.pixelPerMsec, props.setUpdateSignal]
   );
   /** キーボードショートカットの作成 */
   React.useEffect(() => {
@@ -486,6 +486,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         width={props.canvasWidth}
         height={props.canvasHeight}
         ref={canvas}
+        tabIndex={0}
         style={{
           position: "relative",
           top: -1 * props.canvasHeight,
@@ -493,6 +494,7 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
           userSelect: "none",
           WebkitUserSelect: "none",
           MozUserSelect: "none",
+          outline: "none",
         }}
         onMouseDown={OnMouseDown}
         onTouchStart={OnMouseDown}
@@ -500,6 +502,11 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
         onTouchEnd={OnMouseUp}
         onMouseMove={OnMouseMove}
         onTouchMove={OnMouseMove}
+        onClick={() => {
+          if (canvas.current) {
+            (canvas.current as HTMLCanvasElement).focus();
+          }
+        }}
       />
     </>
   );
