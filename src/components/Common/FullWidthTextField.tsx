@@ -7,6 +7,7 @@ export const FullWidthTextField: React.FC<{
   value;
   label;
   type: React.HTMLInputTypeAttribute;
+  "data-testid"?: string;
 }> = (props) => {
   return (
     <TextField
@@ -19,6 +20,7 @@ export const FullWidthTextField: React.FC<{
       label={props.label}
       value={props.value}
       onChange={props.onChange}
+      data-testid={props["data-testid"]}
     />
   );
 };

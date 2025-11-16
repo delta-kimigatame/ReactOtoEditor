@@ -8,6 +8,7 @@ export const CommonCheckBox: React.FC<{
   setChecked: React.Dispatch<React.SetStateAction<boolean>>;
   label: string;
   disabled?: boolean;
+  "data-testid"?: string;
 }> = (props) => {
   return (
     <FormControlLabel
@@ -18,6 +19,7 @@ export const CommonCheckBox: React.FC<{
             props.setChecked(e.target.checked);
           }}
           disabled={props.disabled}
+          data-testid={props["data-testid"]}
         />
       }
       label={props.label}
