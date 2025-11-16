@@ -125,51 +125,13 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {oto === undefined ? (
-              record && (
-                <>
-                  <TableRow>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {record.filename}
-                      </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>{record.alias}</Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {offset.toFixed(3)}
-                      </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {overlap.toFixed(3)}
-                      </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {preutter.toFixed(3)}
-                      </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {velocity.toFixed(3)}
-                      </Typography>
-                    </StyledTableCell>
-                    <StyledTableCell size={"small"}>
-                      <Typography variant={variant}>
-                        {blank.toFixed(3)}
-                      </Typography>
-                    </StyledTableCell>
-                  </TableRow>
-                </>
-              )
-            ) : (
+            {props.showAllRecords && oto && targetDir ? (
+              // TableDialog用：全レコード表示
               <>
                 {oto.GetFileNames(targetDir).map((f, fi: number) =>
                   oto.GetAliases(targetDir, f).map((a, ai: number) => (
                     <TableRow
+                      key={`${f}-${a}`}
                       sx={{
                         backgroundColor:
                           props.fileIndex === fi &&
@@ -178,9 +140,9 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                       }}
                       onClick={() => {
                         setRecord(oto.GetRecord(targetDir, f, a));
-                        props.setFileIndex(fi);
-                        props.setAliasIndex(ai);
-                        props.setMaxAliasIndex(
+                        props.setFileIndex?.(fi);
+                        props.setAliasIndex?.(ai);
+                        props.setMaxAliasIndex?.(
                           oto.GetAliases(targetDir, f).length - 1
                         );
                       }}
@@ -220,6 +182,45 @@ export const EditorTable: React.FC<EditorTableProps> = (props) => {
                   ))
                 )}
               </>
+            ) : (
+              // EditorView用：現在のrecordのみ表示
+              record && (
+                <TableRow>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {record.filename}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>{record.alias}</Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {offset.toFixed(3)}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {overlap.toFixed(3)}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {preutter.toFixed(3)}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {velocity.toFixed(3)}
+                    </Typography>
+                  </StyledTableCell>
+                  <StyledTableCell size={"small"}>
+                    <Typography variant={variant}>
+                      {blank.toFixed(3)}
+                    </Typography>
+                  </StyledTableCell>
+                </TableRow>
+              )
             )}
           </TableBody>
         </Table>
@@ -237,6 +238,8 @@ export interface EditorTableProps {
   setTableHeight?: React.Dispatch<React.SetStateAction<number>>;
   /** recordの更新通知 */
   updateSignal: number;
+  /** 全レコードを表示するかどうか（TableDialog用：true、EditorView用：false） */
+  showAllRecords?: boolean;
   /** 現在のファイルのインデックス */
   fileIndex?: number;
   /** 現在のエイリアスのインデックス */

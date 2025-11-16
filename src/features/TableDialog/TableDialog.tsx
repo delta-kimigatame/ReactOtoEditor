@@ -53,6 +53,7 @@ export const TableDialog: React.FC<TableDialogProps> = (props) => {
             setFileIndex={props.setFileIndex}
             setAliasIndex={props.setAliasIndex}
             setMaxAliasIndex={props.setMaxAliasIndex}
+            showAllRecords={true}
           />
         </DialogContent>
       </Dialog>
