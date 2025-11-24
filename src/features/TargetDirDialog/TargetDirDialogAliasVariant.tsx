@@ -22,8 +22,9 @@ export const TargetDirDialogAliasVariant: React.FC<
   TargetDirDialogAliasVariantProps
 > = (props) => {
   const { t } = useTranslation();
-    const{targetDir,oto}=useOtoProjectStore()
+  const { targetDir, oto } = useOtoProjectStore();
   const OnAliasVariantChange = (e: SelectChangeEvent, i: number) => {
+    if (props.aliasVariant === null) return;
     const av = props.aliasVariant.slice();
     av[i] = e.target.value as "CV" | "VCV" | "VC";
     props.setAliasVariant(av);
@@ -36,21 +37,25 @@ export const TargetDirDialogAliasVariant: React.FC<
           <InputLabel>{t("targetDirDialog.correctType")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
-          {oto.GetLines()[targetDir].map((l, i) => (
-            <>
-              <FullWidthSelect
-                label={l.split("=")[1].split(",")[0]}
-                value={props.aliasVariant[i]}
-                onChange={(e) => {
-                  OnAliasVariantChange(e, i);
-                }}
-              >
-                <MenuItem value="CV">{t("targetDirDialog.CV")}</MenuItem>
-                <MenuItem value="VCV">{t("targetDirDialog.VCV")}</MenuItem>
-                <MenuItem value="VC">{t("targetDirDialog.VC")}</MenuItem>
-              </FullWidthSelect>
-            </>
-          ))}
+          {props.aliasVariant === null ? (
+            <div>Unexpected error</div>
+          ) : (
+            oto.GetLines()[targetDir].map((l, i) => (
+              <>
+                <FullWidthSelect
+                  label={l.split("=")[1].split(",")[0]}
+                  value={props.aliasVariant[i]}
+                  onChange={(e) => {
+                    OnAliasVariantChange(e, i);
+                  }}
+                >
+                  <MenuItem value="CV">{t("targetDirDialog.CV")}</MenuItem>
+                  <MenuItem value="VCV">{t("targetDirDialog.VCV")}</MenuItem>
+                  <MenuItem value="VC">{t("targetDirDialog.VC")}</MenuItem>
+                </FullWidthSelect>
+              </>
+            ))
+          )}
         </AccordionDetails>
       </Accordion>
     </>
