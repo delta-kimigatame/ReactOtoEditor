@@ -65,7 +65,7 @@ export interface TableDialogProps {
   /** ダイアログを表示するか否か */
   dialogOpen: boolean;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
   /** 画面の横幅 */
   windowWidth: number;
   /** 画面の縦幅 */
@@ -77,9 +77,9 @@ export interface TableDialogProps {
   /** 現在のエイリアスのインデックス */
   aliasIndex: number;
   /** 現在のファイルのインデックスを変更する処理 */
-  setFileIndex: React.Dispatch<React.SetStateAction<number>>;
+  setFileIndex: (index: number) => void;
   /** 現在のエイリアスのインデックスを変更する処理 */
-  setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setAliasIndex: (index: number) => void;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
-  setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setMaxAliasIndex: (max: number) => void;
 }
