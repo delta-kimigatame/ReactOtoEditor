@@ -90,8 +90,9 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
         hidden
         ref={inputRef}
         accept=".ini"
+        data-testid="hidden-template-oto-input"
       ></input>
-      <FullWidthButton onClick={OnReadClick} disabled={processing}>
+      <FullWidthButton onClick={OnReadClick} disabled={processing} data-testid="target-dir-dialog-read-template-button">
         {t("targetDirDialog.readTemplate")}
       </FullWidthButton>
       {oto !== null &&
