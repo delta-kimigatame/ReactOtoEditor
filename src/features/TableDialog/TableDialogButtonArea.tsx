@@ -1,11 +1,9 @@
 import * as React from "react";
-import { Oto } from "utauoto";
 import JSZip from "jszip";
 
 import { useTranslation } from "react-i18next";
 
 import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import Snackbar from "@mui/material/Snackbar";
 import Accordion from "@mui/material/Accordion";
@@ -15,12 +13,15 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
-import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
-import * as BP from "../../lib/OtoBatchProcess";
 import { LOG } from "../../lib/Logging";
 import { GetStorageOto, SaveStorageOto } from "../../services/StorageOto";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { BatchSelect } from "../../components/TableDialog/BatchSelect";
+import { TargetParamSelect } from "../../components/TableDialog/TargetParamSelect";
+import { BatchProcess } from "../../types/batchProcess";
+import { getBatchList } from "../../config/batchList";
+import { Oto } from "utauoto";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -32,67 +33,10 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   const [surfix, setSurfix] = React.useState<string>("");
   const [value, setValue] = React.useState<number>(0);
   const [barOpen, setBarOpen] = React.useState<boolean>(false);
-  const batchList: Array<BatchProcess> = React.useMemo(() => {
-    const batches: Array<BatchProcess> = new Array();
-    batches.push({
-      description: t("tableDialog.batchProcess.wavNotFound"),
-      requireZip: true,
-      endPoint: BP.WaveNotFound,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.recordNotFound"),
-      requireZip: true,
-      endPoint: BP.RecordNotFound,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.numberingDuplicationAlias"),
-      requireString: true,
-      requireNumber: true,
-      endPoint: BP.NumberingDuplicationAlias,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.limitedNumber"),
-      requireString: true,
-      requireNumber: true,
-      endPoint: BP.LimitedNumber,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.negativeBlank"),
-      requireZip: true,
-      endPoint: BP.NegativeBlank,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.forceOverlapRate"),
-      endPoint: BP.ForceOverlapRate,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.removeSurfix"),
-      requireString: true,
-      endPoint: BP.RemoveSurfix,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.addSurfix"),
-      requireString: true,
-      endPoint: BP.AddSurfix,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.addParams"),
-      requireNumber: true,
-      requireTarget: true,
-      endPoint: BP.AddParams,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.changeParams"),
-      requireNumber: true,
-      requireTarget: true,
-      endPoint: BP.ChangeParams,
-    });
-    batches.push({
-      description: t("tableDialog.batchProcess.aliasComplement"),
-      endPoint: BP.AliasComplement,
-    });
-    return batches;
-  }, []);
+  const batchList: Array<BatchProcess> = React.useMemo(
+    () => getBatchList(t),
+    [t]
+  );
 
   const OnBatchProcessChange = (e: SelectChangeEvent) => {
     setBatchIndex(parseInt(e.target.value));
@@ -107,11 +51,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       `一括処理:${batchList[batchIndex].description}`,
       "TableDialogButtonArea"
     );
-    let param:
-      | { [key: string]: JSZip.JSZipObject }
-      | string
-      | ("offset" | "overlap" | "preutter" | "velocity" | "blank")
-      | null = null;
+    let param: BatchProps = null;
     if (batchList[batchIndex].requireZip) {
       param = readZip;
     } else if (batchList[batchIndex].requireString) {
@@ -121,41 +61,32 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       param = targetParam;
       LOG.debug(`targetParam:${targetParam}`, "TableDialogButtonArea");
     }
-    if (param === null) {
-      batchList[batchIndex].endPoint(oto, targetDir);
-    } else if (batchList[batchIndex].requireNumber) {
-      LOG.debug(`value:${value}`, "TableDialogButtonArea");
-      batchList[batchIndex].endPoint(oto, targetDir, param, value);
-    } else {
-      batchList[batchIndex].endPoint(oto, targetDir, param);
-    }
-    LOG.debug(`一括処理完了`, "TableDialogButtonArea");
-    props.setUpdateSignal(Math.random());
-    setBarOpen(true);
-    const storagedOto: {} = GetStorageOto();
-    SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
-    localStorage.setItem("oto", JSON.stringify(storagedOto));
-    LOG.debug(`localstorageに保存`, "TableDialogButtonArea");
+    ProcessBatch(
+      param,
+      oto,
+      targetDir,
+      batchList,
+      batchIndex,
+      value,
+      zipFileName,
+      props,
+      setBarOpen
+    );
   };
 
   return (
     <>
-      <Accordion>
+      <Accordion data-testid="table-dialog-accordion">
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <InputLabel>{t("tableDialog.title")}</InputLabel>
         </AccordionSummary>
         <AccordionDetails>
-          <FullWidthSelect
+          <BatchSelect
             label={t("tableDialog.title")}
-            value={batchIndex.toString()}
+            batchIndex={batchIndex}
+            batchList={batchList}
             onChange={OnBatchProcessChange}
-          >
-            {batchList.map((bl, i) => (
-              <MenuItem value={i} key={"BP_" + i}>
-                {bl.description}
-              </MenuItem>
-            ))}
-          </FullWidthSelect>
+          />
           <Box
             sx={{
               display: batchList[batchIndex].requireString !== true && "none",
@@ -168,6 +99,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               onChange={(e) => {
                 setSurfix(e.target.value);
               }}
+              data-testid="table-dialog-surfix-input"
             />
           </Box>
           <Box
@@ -182,6 +114,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               onChange={(e) => {
                 setValue(parseFloat(e.target.value));
               }}
+              data-testid="table-dialog-number-input"
             />
           </Box>
           <Box
@@ -189,20 +122,17 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
               display: batchList[batchIndex].requireTarget !== true && "none",
             }}
           >
-            <FullWidthSelect
+            <TargetParamSelect
               label={t("tableDialog.targetTitle")}
               value={targetParam}
               onChange={OnTargetParamChange}
-            >
-              <MenuItem value={"offset"}>{t("oto.offset")}</MenuItem>
-              <MenuItem value={"overlap"}>{t("oto.overlap")}</MenuItem>
-              <MenuItem value={"preutter"}>{t("oto.preutter")}</MenuItem>
-              <MenuItem value={"velocity"}>{t("oto.velocity")}</MenuItem>
-              <MenuItem value={"blank"}>{t("oto.blank")}</MenuItem>
-            </FullWidthSelect>
+            />
           </Box>
 
-          <FullWidthButton onClick={OnSubmitClick}>
+          <FullWidthButton
+            onClick={OnSubmitClick}
+            data-testid="table-dialog-submit-button"
+          >
             {t("tableDialog.submit")}
           </FullWidthButton>
         </AccordionDetails>
@@ -215,6 +145,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
         }}
         message={t("tableDialog.processed")}
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+        data-testid="table-dialog-snackbar"
       />
     </>
   );
@@ -222,30 +153,41 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
 
 export interface TableDialogButtonAreaProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
   /** 一括変更結果により一覧を更新する。 */
-  setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
+  setUpdateSignal: (signal: number) => void;
 }
 
-interface BatchProcess {
-  /** プロセスの説明文。選択メニューに表示 */
-  description: string;
-  /** 引数として文字列をとるか */
-  requireString?: boolean;
-  /** 引数として数字をとるか */
-  requireNumber?: boolean;
-  /** 引数としてtargetをとるか */
-  requireTarget?: boolean;
-  /** 引数としてzipをとるか */
-  requireZip?: boolean;
-  /** 処理 */
-  endPoint: (
-    oto: Oto,
-    targetDir: string,
-    param?:
-      | { [key: string]: JSZip.JSZipObject }
-      | string
-      | ("offset" | "overlap" | "preutter" | "velocity" | "blank"),
-    value?: number
-  ) => void;
-}
+type BatchProps =
+  | { [key: string]: JSZip.JSZipObject }
+  | string
+  | ("offset" | "overlap" | "preutter" | "velocity" | "blank")
+  | null;
+
+export const ProcessBatch = (
+  param: BatchProps,
+  oto: Oto,
+  targetDir: string,
+  batchList: Array<BatchProcess>,
+  batchIndex: number,
+  value: number,
+  zipFileName: string,
+  props: TableDialogButtonAreaProps,
+  setBarOpen: (open: boolean) => void
+) => {
+  if (param === null) {
+    batchList[batchIndex].endPoint(oto, targetDir);
+  } else if (batchList[batchIndex].requireNumber) {
+    LOG.debug(`value:${value}`, "TableDialogButtonArea");
+    batchList[batchIndex].endPoint(oto, targetDir, param, value);
+  } else {
+    batchList[batchIndex].endPoint(oto, targetDir, param);
+  }
+  LOG.debug(`一括処理完了`, "TableDialogButtonArea");
+  props.setUpdateSignal(Math.random());
+  setBarOpen(true);
+  const storagedOto: {} = GetStorageOto();
+  SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
+  localStorage.setItem("oto", JSON.stringify(storagedOto));
+  LOG.debug(`localstorageに保存`, "TableDialogButtonArea");
+};
