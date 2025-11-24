@@ -17,7 +17,7 @@ export const TargetDirDialogSelectDir: React.FC<
   TargetDirDialogSelectDirProps
 > = (props) => {
   const { t } = useTranslation();
-  const {targetDirs,targetDir,setTargetDir}=useOtoProjectStore()
+  const { targetDirs, targetDir, setTargetDir } = useOtoProjectStore();
 
   const OnSelectChange = (e: SelectChangeEvent) => {
     setTargetDir(e.target.value);
@@ -29,15 +29,16 @@ export const TargetDirDialogSelectDir: React.FC<
           label={t("targetDirDialog.targetDir")}
           value={targetDir}
           onChange={OnSelectChange}
+          data-testid="target-dir-dialog-select-dir"
         >
-          {targetDirs.map((d) => (
-            <MenuItem value={d}>{d === "" ? "/" : d}</MenuItem>
-          ))}
+          {targetDirs !== null &&
+            targetDirs.map((d) => (
+              <MenuItem value={d}>{d === "" ? "/" : d}</MenuItem>
+            ))}
         </FullWidthSelect>
       </Box>
     </>
   );
 };
 
-export interface TargetDirDialogSelectDirProps {
-}
+export interface TargetDirDialogSelectDirProps {}
