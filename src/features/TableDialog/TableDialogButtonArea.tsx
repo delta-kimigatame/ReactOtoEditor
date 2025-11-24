@@ -69,7 +69,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       batchIndex,
       value,
       zipFileName,
-      props,
+      props.setUpdateSignal,
       setBarOpen
     );
   };
@@ -87,47 +87,41 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
             batchList={batchList}
             onChange={OnBatchProcessChange}
           />
-          <Box
-            sx={{
-              display: batchList[batchIndex].requireString !== true && "none",
-            }}
-          >
-            <FullWidthTextField
-              type="text"
-              label={t("tableDialog.stringTitle")}
-              value={surfix}
-              onChange={(e) => {
-                setSurfix(e.target.value);
-              }}
-              data-testid="table-dialog-surfix-input"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: batchList[batchIndex].requireNumber !== true && "none",
-            }}
-          >
-            <FullWidthTextField
-              type="number"
-              label={t("tableDialog.numberTitle")}
-              value={value}
-              onChange={(e) => {
-                setValue(parseFloat(e.target.value));
-              }}
-              data-testid="table-dialog-number-input"
-            />
-          </Box>
-          <Box
-            sx={{
-              display: batchList[batchIndex].requireTarget !== true && "none",
-            }}
-          >
-            <TargetParamSelect
-              label={t("tableDialog.targetTitle")}
-              value={targetParam}
-              onChange={OnTargetParamChange}
-            />
-          </Box>
+          {batchList[batchIndex].requireString === true && (
+            <Box>
+              <FullWidthTextField
+                type="text"
+                label={t("tableDialog.stringTitle")}
+                value={surfix}
+                onChange={(e) => {
+                  setSurfix(e.target.value);
+                }}
+                data-testid="table-dialog-surfix-input"
+              />
+            </Box>
+          )}
+          {batchList[batchIndex].requireNumber === true && (
+            <Box>
+              <FullWidthTextField
+                type="number"
+                label={t("tableDialog.numberTitle")}
+                value={value}
+                onChange={(e) => {
+                  setValue(parseFloat(e.target.value));
+                }}
+                data-testid="table-dialog-number-input"
+              />
+            </Box>
+          )}
+          {batchList[batchIndex].requireTarget === true && (
+            <Box>
+              <TargetParamSelect
+                label={t("tableDialog.targetTitle")}
+                value={targetParam}
+                onChange={OnTargetParamChange}
+              />
+            </Box>
+          )}
 
           <FullWidthButton
             onClick={OnSubmitClick}
@@ -172,7 +166,7 @@ export const ProcessBatch = (
   batchIndex: number,
   value: number,
   zipFileName: string,
-  props: TableDialogButtonAreaProps,
+  setUpdateSignal: (signal: number) => void,
   setBarOpen: (open: boolean) => void
 ) => {
   if (param === null) {
@@ -184,7 +178,7 @@ export const ProcessBatch = (
     batchList[batchIndex].endPoint(oto, targetDir, param);
   }
   LOG.debug(`一括処理完了`, "TableDialogButtonArea");
-  props.setUpdateSignal(Math.random());
+  setUpdateSignal(Math.random());
   setBarOpen(true);
   const storagedOto: {} = GetStorageOto();
   SaveStorageOto(storagedOto, oto, zipFileName, targetDir);
