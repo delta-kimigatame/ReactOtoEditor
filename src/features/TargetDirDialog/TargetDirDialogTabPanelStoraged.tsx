@@ -97,7 +97,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
         </>
       ) : (
         <>
-          <FullWidthButton onClick={OnSubmitClick} disabled={oto === null}>
+          <FullWidthButton onClick={OnSubmitClick} disabled={oto === null} data-testid="target-dir-dialog-storaged-submit-button">
             {t("targetDirDialog.submit")}
           </FullWidthButton>
           <br />
@@ -105,6 +105,7 @@ export const TargetDirDialogTabPanelStoraged: React.FC<
             label={t("targetDirDialog.readHistory")}
             value={selectHistory}
             onChange={OnSelectChange}
+            data-testid="storaged-oto-select"
           >
             {Object.keys(storagedOto).map((f, i) =>
               Object.keys(storagedOto[f]).map((d, j) => (
