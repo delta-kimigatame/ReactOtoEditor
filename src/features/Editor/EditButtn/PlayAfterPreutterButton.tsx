@@ -1,6 +1,4 @@
 import * as React from "react";
-import OtoRecord from "utauoto/dist/OtoRecord";
-import { Wave } from "utauwav";
 import { useTranslation } from "react-i18next";
 
 import { PaletteMode } from "@mui/material";
@@ -8,8 +6,8 @@ import { PaletteMode } from "@mui/material";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { EditorButton } from "../../../components/Editor/EditButton/EditorButton";
-import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
+import { OnPlayAfterPreutter } from "../../../utils/play";
 
 /**
  * 先行発声から右ブランクまでを再生するボタン
@@ -31,6 +29,7 @@ export const PlayAfterPreutterButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
+        data-testid="PlayAfterPreutterButton"
         size={props.size}
         icon={<VolumeUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.playAfterPreutter")}
@@ -49,33 +48,3 @@ interface Props {
   /** アイコンのサイズ */
   iconSize: number;
 }
-
-export const OnPlayAfterPreutter = (record: OtoRecord | null, wav: Wave) => {
-  const audioContext = new AudioContext();
-  const startFlame = ((record.offset + record.pre) * wav.sampleRate) / 1000;
-  let endFlame = 0;
-  if (record.blank < 0) {
-    endFlame = ((record.offset - record.blank) * wav.sampleRate) / 1000;
-  } else {
-    endFlame = wav.data.length - (record.blank * wav.sampleRate) / 1000;
-  }
-  if (endFlame <= startFlame) {
-    return;
-  }
-  const wavData = wav.LogicalNormalize(1).slice(startFlame, endFlame);
-  const audioBuffer = audioContext.createBuffer(
-    wav.channels,
-    wavData.length,
-    wav.sampleRate
-  );
-  const buffering = audioBuffer.getChannelData(0);
-  for (let i = 0; i < wavData.length; i++) {
-    buffering[i] = wavData[i];
-  }
-  const audioSource = audioContext.createBufferSource();
-  audioSource.buffer = audioBuffer;
-  audioSource.connect(audioContext.destination);
-  LOG.debug(`先行発声以降再生`, "PlayAfterPreutterButton");
-  LOG.gtag("playAfter");
-  audioSource.start();
-};
