@@ -116,48 +116,19 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
     LOG.debug(`エイリアス削除。${record.alias}`, "AliasDialog");
     oto.RemoveAlias(targetDir, record.filename, record.alias);
     props.setDialogOpen(false);
-    if (
-      props.aliasIndex === props.maxAliasIndex &&
-      props.fileIndex === props.maxFileIndex
-    ) {
-      // 最後のファイルの最後のインデックスの場合1つ手前を参照する。
-      if (props.aliasIndex !== 0) {
-        props.setAliasIndex(props.aliasIndex - 1);
-        props.setMaxAliasIndex(props.maxAliasIndex - 1);
-        const alias = oto.GetAliases(targetDir, record.filename)[
-          props.aliasIndex - 1
-        ];
-        setRecord(oto.GetRecord(targetDir, record.filename, alias));
-      } else if (props.fileIndex !== 0) {
-        const filename = oto.GetFileNames(targetDir)[props.fileIndex - 1];
-        const maxAliases = oto.GetAliases(targetDir, filename).length - 1;
-        const alias = oto.GetAliases(targetDir, filename)[maxAliases];
-        props.setFileIndex(props.fileIndex - 1);
-        props.setAliasIndex(maxAliases);
-        props.setMaxAliasIndex(maxAliases);
-        setRecord(oto.GetRecord(targetDir, filename, alias));
-      } else {
-        //最後のエイリアスを削除
-        props.setFileIndex(0);
-        props.setAliasIndex(0);
-        props.setMaxAliasIndex(0);
-        setRecord(null);
-      }
-    } else if (props.aliasIndex === props.maxAliasIndex) {
-      const filename = oto.GetFileNames(targetDir)[props.fileIndex + 1];
-      const maxAliases = oto.GetAliases(targetDir, filename).length - 1;
-      const alias = oto.GetAliases(targetDir, filename)[maxAliases];
-      props.setFileIndex(props.fileIndex + 1);
-      props.setAliasIndex(0);
-      props.setMaxAliasIndex(maxAliases);
-      setRecord(oto.GetRecord(targetDir, filename, alias));
-    } else {
-      props.setMaxAliasIndex(props.maxAliasIndex - 1);
-      const alias = oto.GetAliases(targetDir, record.filename)[
-        props.aliasIndex
-      ];
-      setRecord(oto.GetRecord(targetDir, record.filename, alias));
-    }
+    AdjustIndexesAfterRecordDeletion(
+      targetDir,
+      oto,
+      record,
+      setRecord,
+      props.aliasIndex,
+      props.maxAliasIndex,
+      props.fileIndex,
+      props.maxFileIndex,
+      props.setAliasIndex,
+      props.setFileIndex,
+      props.setMaxAliasIndex
+    );
     setBarOpen(true);
     setBarText(t("aliasDialog.barText.delete"));
   };
@@ -347,3 +318,60 @@ export interface TableDialogProps {
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
   setMaxAliasIndex: (max: number) => void;
 }
+
+/** レコードの削除に伴う各indexを調整するための外部関数 */
+export const AdjustIndexesAfterRecordDeletion = (
+  targetDir:string,
+  oto: Oto,
+  record: OtoRecord,
+  setRecord: (record: OtoRecord | null) => void,
+  aliasIndex:number,
+  maxAliasIndex:number,
+  fileIndex:number,
+  maxFileIndex:number,
+  setAliasIndex: (index: number) => void,
+  setFileIndex: (index: number) => void,
+  setMaxAliasIndex: (max: number) => void
+
+) => {
+  if (
+    aliasIndex === maxAliasIndex &&
+    fileIndex === maxFileIndex
+  ) {
+    // 最後のファイルの最後のインデックスの場合1つ手前を参照する。
+    if (aliasIndex !== 0) {
+      setAliasIndex(aliasIndex - 1);
+      setMaxAliasIndex(maxAliasIndex - 1);
+      const alias = oto.GetAliases(targetDir, record.filename)[
+        aliasIndex - 1
+      ];
+      setRecord(oto.GetRecord(targetDir, record.filename, alias));
+    } else if (fileIndex !== 0) {
+      const filename = oto.GetFileNames(targetDir)[fileIndex - 1];
+      const maxAliases = oto.GetAliases(targetDir, filename).length - 1;
+      const alias = oto.GetAliases(targetDir, filename)[maxAliases];
+      setFileIndex(fileIndex - 1);
+      setAliasIndex(maxAliases);
+      setMaxAliasIndex(maxAliases);
+      setRecord(oto.GetRecord(targetDir, filename, alias));
+    } else {
+      //最後のエイリアスを削除
+      setFileIndex(0);
+      setAliasIndex(0);
+      setMaxAliasIndex(0);
+      setRecord(null);
+    }
+  } else if (aliasIndex === maxAliasIndex) {
+    const filename = oto.GetFileNames(targetDir)[fileIndex + 1];
+    const maxAliases = oto.GetAliases(targetDir, filename).length - 1;
+    const alias = oto.GetAliases(targetDir, filename)[0];
+    setFileIndex(fileIndex + 1);
+    setAliasIndex(0);
+    setMaxAliasIndex(maxAliases);
+    setRecord(oto.GetRecord(targetDir, filename, alias));
+  } else {
+    setMaxAliasIndex(maxAliasIndex - 1);
+    const alias = oto.GetAliases(targetDir, record.filename)[aliasIndex];
+    setRecord(oto.GetRecord(targetDir, record.filename, alias));
+  }
+};
