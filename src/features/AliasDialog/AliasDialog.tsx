@@ -71,11 +71,44 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         `エイリアス変更。変更前:${record.alias}、変更後:${alias}`,
         "AliasDialog"
       );
-      oto.SetAlias(targetDir, record.filename, record.alias, alias);
+      // 1. 現在のファイルの全エイリアスとレコードを取得
+      const allAliases = oto.GetAliases(targetDir, record.filename);
+      const allRecords = allAliases.map((a) =>
+        oto.GetRecord(targetDir, record.filename, a)
+      );
+
+      // 2. 現在のインデックス（順番）を保存
+      const currentIndex = props.aliasIndex;
+
+      // 3. 変更対象のエイリアス名を更新
+      const oldAlias = allAliases[currentIndex];
+      allAliases[currentIndex] = alias;
+      // 4. 全エイリアスを削除（元のエイリアス名で削除）
+      allAliases.forEach((a, i) => {
+        // 変更対象は元のエイリアス名で削除
+        const aliasToRemove = i === currentIndex ? oldAlias : a;
+        oto.RemoveAlias(targetDir, record.filename, aliasToRemove);
+      });
+      allRecords[currentIndex].alias = alias;
+      // 5. 順番を維持して再登録
+      allRecords.forEach((rec) => {
+        oto.SetParams(
+          targetDir,
+          rec.filename,
+          rec.alias,
+          rec.offset,
+          rec.overlap,
+          rec.pre,
+          rec.velocity,
+          rec.blank
+        );
+      });
+
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.change"));
       props.setDialogOpen(false);
-      props.setAliasIndex(props.maxAliasIndex);
+      // 6. インデックスは変更しない（順番維持）
+      props.setAliasIndex(currentIndex);
       setRecord(oto.GetRecord(targetDir, record.filename, alias));
       props.setUpdateSignal(Math.random());
     }
@@ -95,21 +128,73 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         `エイリアス複製。複製元:${record.alias}、複製後:${alias}`,
         "AliasDialog"
       );
-      oto.SetParams(
-        targetDir,
-        record.filename,
-        alias,
-        record.offset,
-        record.overlap,
-        record.pre,
-        record.velocity,
-        record.blank
+      // 1. 現在のファイルの全エイリアスとレコードを取得
+      const allAliases = oto.GetAliases(targetDir, record.filename);
+      const allRecords:
+        | OtoRecord
+        | {
+            filename: string;
+            alias: string;
+            offset: number;
+            overlap: number;
+            pre: number;
+            velocity: number;
+            blank: number;
+          }[] = allAliases.map((a) =>
+        oto.GetRecord(targetDir, record.filename, a)
       );
+
+      // 2. 現在のインデックス（順番）を保存
+      const currentIndex = props.aliasIndex;
+
+      // 3. 複製するレコードを作成
+      const duplicatedRecord: {
+        filename: string;
+        alias: string;
+        offset: number;
+        overlap: number;
+        pre: number;
+        velocity: number;
+        blank: number;
+      } = {
+        filename: record.filename,
+        alias: alias,
+        offset: record.offset,
+        overlap: record.overlap,
+        pre: record.pre,
+        velocity: record.velocity,
+        blank: record.blank,
+      };
+
+      // 4. 現在のインデックスの次に複製を挿入
+      allRecords.splice(currentIndex + 1, 0, duplicatedRecord);
+
+      // 5. 全エイリアスを削除
+      allAliases.forEach((a) => {
+        oto.RemoveAlias(targetDir, record.filename, a);
+      });
+
+      // 6. 順番を維持して再登録（複製分も含む）
+      allRecords.forEach((rec) => {
+        oto.SetParams(
+          targetDir,
+          rec.filename,
+          rec.alias,
+          rec.offset,
+          rec.overlap,
+          rec.pre,
+          rec.velocity,
+          rec.blank
+        );
+      });
+
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.duplication"));
       props.setDialogOpen(false);
+
+      // 7. 複製されたエイリアスの位置に移動（現在のインデックス + 1）
       props.setMaxAliasIndex(props.maxAliasIndex + 1);
-      props.setAliasIndex(props.maxAliasIndex + 1);
+      props.setAliasIndex(currentIndex + 1);
       setRecord(oto.GetRecord(targetDir, record.filename, alias));
       props.setUpdateSignal(Math.random());
     }
@@ -324,9 +409,9 @@ export interface TableDialogProps {
   /** ダイアログを表示するか否か */
   dialogOpen: boolean;
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogOpen: (open: boolean) => void;
   /** recordの更新をtableに通知するための処理 */
-  setUpdateSignal: React.Dispatch<React.SetStateAction<number>>;
+  setUpdateSignal: (number: number) => void;
   /** 現在のファイルのインデックス */
   fileIndex: number;
   /** 現在のエイリアスのインデックス */
@@ -336,9 +421,9 @@ export interface TableDialogProps {
   /** 現在のotoに登録されているファイル数 */
   maxFileIndex: number;
   /** 現在のファイルのインデックスを変更する処理 */
-  setFileIndex: React.Dispatch<React.SetStateAction<number>>;
+  setFileIndex: (index: number) => void;
   /** 現在のエイリアスのインデックスを変更する処理 */
-  setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setAliasIndex: (index: number) => void;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
-  setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setMaxAliasIndex: (max: number) => void;
 }
