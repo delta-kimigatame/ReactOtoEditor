@@ -17,6 +17,7 @@ import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import { LOG } from "../../lib/Logging";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { ChangeAlias, DuplicateOtoRecord } from "../../utils/otoRecordUtils";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
@@ -71,44 +72,11 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         `エイリアス変更。変更前:${record.alias}、変更後:${alias}`,
         "AliasDialog"
       );
-      // 1. 現在のファイルの全エイリアスとレコードを取得
-      const allAliases = oto.GetAliases(targetDir, record.filename);
-      const allRecords = allAliases.map((a) =>
-        oto.GetRecord(targetDir, record.filename, a)
-      );
-
-      // 2. 現在のインデックス（順番）を保存
-      const currentIndex = props.aliasIndex;
-
-      // 3. 変更対象のエイリアス名を更新
-      const oldAlias = allAliases[currentIndex];
-      allAliases[currentIndex] = alias;
-      // 4. 全エイリアスを削除（元のエイリアス名で削除）
-      allAliases.forEach((a, i) => {
-        // 変更対象は元のエイリアス名で削除
-        const aliasToRemove = i === currentIndex ? oldAlias : a;
-        oto.RemoveAlias(targetDir, record.filename, aliasToRemove);
-      });
-      allRecords[currentIndex].alias = alias;
-      // 5. 順番を維持して再登録
-      allRecords.forEach((rec) => {
-        oto.SetParams(
-          targetDir,
-          rec.filename,
-          rec.alias,
-          rec.offset,
-          rec.overlap,
-          rec.pre,
-          rec.velocity,
-          rec.blank
-        );
-      });
-
+      ChangeAlias(targetDir, record, alias, props.aliasIndex, oto);
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.change"));
       props.setDialogOpen(false);
-      // 6. インデックスは変更しない（順番維持）
-      props.setAliasIndex(currentIndex);
+      props.setAliasIndex(props.aliasIndex);
       setRecord(oto.GetRecord(targetDir, record.filename, alias));
       props.setUpdateSignal(Math.random());
     }
@@ -128,73 +96,13 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         `エイリアス複製。複製元:${record.alias}、複製後:${alias}`,
         "AliasDialog"
       );
-      // 1. 現在のファイルの全エイリアスとレコードを取得
-      const allAliases = oto.GetAliases(targetDir, record.filename);
-      const allRecords:
-        | OtoRecord
-        | {
-            filename: string;
-            alias: string;
-            offset: number;
-            overlap: number;
-            pre: number;
-            velocity: number;
-            blank: number;
-          }[] = allAliases.map((a) =>
-        oto.GetRecord(targetDir, record.filename, a)
-      );
-
-      // 2. 現在のインデックス（順番）を保存
-      const currentIndex = props.aliasIndex;
-
-      // 3. 複製するレコードを作成
-      const duplicatedRecord: {
-        filename: string;
-        alias: string;
-        offset: number;
-        overlap: number;
-        pre: number;
-        velocity: number;
-        blank: number;
-      } = {
-        filename: record.filename,
-        alias: alias,
-        offset: record.offset,
-        overlap: record.overlap,
-        pre: record.pre,
-        velocity: record.velocity,
-        blank: record.blank,
-      };
-
-      // 4. 現在のインデックスの次に複製を挿入
-      allRecords.splice(currentIndex + 1, 0, duplicatedRecord);
-
-      // 5. 全エイリアスを削除
-      allAliases.forEach((a) => {
-        oto.RemoveAlias(targetDir, record.filename, a);
-      });
-
-      // 6. 順番を維持して再登録（複製分も含む）
-      allRecords.forEach((rec) => {
-        oto.SetParams(
-          targetDir,
-          rec.filename,
-          rec.alias,
-          rec.offset,
-          rec.overlap,
-          rec.pre,
-          rec.velocity,
-          rec.blank
-        );
-      });
+      DuplicateOtoRecord(targetDir, record, alias, props.aliasIndex, oto);
 
       setBarOpen(true);
       setBarText(t("aliasDialog.barText.duplication"));
       props.setDialogOpen(false);
-
-      // 7. 複製されたエイリアスの位置に移動（現在のインデックス + 1）
       props.setMaxAliasIndex(props.maxAliasIndex + 1);
-      props.setAliasIndex(currentIndex + 1);
+      props.setAliasIndex(props.aliasIndex + 1);
       setRecord(oto.GetRecord(targetDir, record.filename, alias));
       props.setUpdateSignal(Math.random());
     }
@@ -289,6 +197,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   return (
     <>
       <Dialog
+        data-testid="AliasDialog-root"
         onClose={() => {
           props.setDialogOpen(false);
         }}
@@ -296,6 +205,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         fullScreen
       >
         <IconButton
+          data-testid="AliasDialog-close"
           onClick={() => {
             props.setDialogOpen(false);
           }}
@@ -310,6 +220,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
         <DialogTitle>{t("aliasDialog.title")}</DialogTitle>
         <DialogContent>
           <FullWidthTextField
+            data-testid="AliasDialog-alias"
             type="text"
             label={t("aliasDialog.textField")}
             value={alias}
@@ -319,6 +230,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
           />
           <Box sx={{ display: "flex" }}>
             <Button
+              data-testid="AliasDialog-change"
               variant="contained"
               color="inherit"
               sx={{ m: 1, flexGrow: 1 }}
@@ -327,6 +239,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
               {t("aliasDialog.change")}
             </Button>
             <Button
+              data-testid="AliasDialog-duplication"
               variant="contained"
               color="inherit"
               sx={{ m: 1, flexGrow: 1 }}
@@ -335,6 +248,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
               {t("aliasDialog.duplication")}
             </Button>
             <Button
+              data-testid="AliasDialog-delete"
               variant="contained"
               color="error"
               sx={{ m: 1, flexGrow: 1 }}
@@ -345,6 +259,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
           </Box>
           <Divider />
           <FullWidthTextField
+            data-testid="AliasDialog-offset"
             type="number"
             value={offset}
             label={t("oto.offset")}
@@ -353,6 +268,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             }}
           />
           <FullWidthTextField
+            data-testid="AliasDialog-overlap"
             type="number"
             value={overlap}
             label={t("oto.overlap")}
@@ -361,6 +277,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             }}
           />
           <FullWidthTextField
+            data-testid="AliasDialog-preutter"
             type="number"
             value={preutter}
             label={t("oto.preutter")}
@@ -369,6 +286,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             }}
           />
           <FullWidthTextField
+            data-testid="AliasDialog-velocity"
             type="number"
             value={velocity}
             label={t("oto.velocity")}
@@ -377,6 +295,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             }}
           />
           <FullWidthTextField
+            data-testid="AliasDialog-blank"
             type="number"
             value={blank}
             label={t("oto.blank")}
@@ -385,6 +304,7 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             }}
           />
           <FullWidthButton
+            data-testid="AliasDialog-paramchange"
             onClick={OnParameterChangeClick}
             disabled={record === null}
           >
