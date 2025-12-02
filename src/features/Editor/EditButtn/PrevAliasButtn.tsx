@@ -42,6 +42,7 @@ export const PrevAliasButton: React.FC<Props> = (props) => {
   return (
     <>
       <EditorButton
+        data-testid="PrevAliasButton"
         size={props.size}
         icon={<ArrowDropUpIcon sx={{ fontSize: props.iconSize }} />}
         title={t("editor.prev")}
@@ -68,11 +69,11 @@ interface Props {
   /** 現在のファイルに登録されているエイリアス数 */
   maxAliasIndex: number;
   /** 現在のファイルのインデックスを変更する処理 */
-  setFileIndex: React.Dispatch<React.SetStateAction<number>>;
+  setFileIndex: (index: number) => void;
   /** 現在のエイリアスのインデックスを変更する処理 */
-  setAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setAliasIndex: (index: number) => void;
   /** 現在のファイルに登録されているエイリアス数を変更する処理 */
-  setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>;
+  setMaxAliasIndex: (max: number) => void;
   /** キャンバスの読込状態 */
   progress: boolean;
 }
@@ -85,10 +86,10 @@ export const OnPrevAlias = (
   fileIndex: number,
   maxAliasIndex: number,
   aliasIndex: number,
-  setRecord: React.Dispatch<React.SetStateAction<OtoRecord>>,
-  setFileIndex: React.Dispatch<React.SetStateAction<number>>,
-  setAliasIndex: React.Dispatch<React.SetStateAction<number>>,
-  setMaxAliasIndex: React.Dispatch<React.SetStateAction<number>>
+  setRecord: (record: OtoRecord | null) => void,
+  setFileIndex: (index: number) => void,
+  setAliasIndex: (index: number) => void,
+  setMaxAliasIndex: (max: number) => void
 ) => {
   LOG.debug(
     `エイリアス変更前。maxFileIndex:${maxFileIndex}、fileIndex:${fileIndex}、maxAliasIndex:${maxAliasIndex}、aliasIndex:${aliasIndex}`,
