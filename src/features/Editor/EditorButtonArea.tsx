@@ -20,18 +20,17 @@ import { EditorButton } from "../../components/Editor/EditButton/EditorButton";
 import { NextAliasButton, OnNextAlias } from "./EditButtn/NextAliasButton";
 import { OnPrevAlias, PrevAliasButton } from "./EditButtn/PrevAliasButtn";
 import {
-  OnPlayBeforePreutter,
   PlayBeforePreutterButton,
 } from "./EditButtn/PlayBeforePreutterButton";
 import {
-  OnPlayAfterPreutter,
   PlayAfterPreutterButton,
 } from "./EditButtn/PlayAfterPreutterButton";
-import { OnPlay, PlayButton } from "./EditButtn/PlayButton";
+import {  PlayButton } from "./EditButtn/PlayButton";
 import { TableDialog } from "../TableDialog/TableDialog";
 import { AliasDialog } from "../AliasDialog/AliasDialog";
 import { useCookieStore } from "../../store/cookieStore";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { OnPlay, OnPlayAfterPreutter, OnPlayBeforePreutter } from "../../utils/play";
 
 /**
  * 編集画面の操作ボタン
@@ -63,12 +62,19 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
   const [metronome, setMetronome] = React.useState<Wave>(null);
   /** メトロノームのwavデータを読み込む処理 */
   React.useMemo(() => {
-    fetch(location.href + "static/metronome.wav").then((res) => {
-      res.arrayBuffer().then((buf) => {
-        const m = new Wave(buf);
-        setMetronome(m);
+    fetch(location.href + "static/metronome.wav")
+      .then((res) => res.arrayBuffer())
+      .then((buf) => {
+        try {
+          const m = new Wave(buf);
+          setMetronome(m);
+        } catch (error) {
+          // メトロノームの読み込みに失敗した場合は何もしない
+        }
+      })
+      .catch(() => {
+        // fetchに失敗した場合も何もしない
       });
-    });
   }, []);
 
   /** 画面サイズが変わった際、ボタンの大きさを再度算定する。 */
@@ -189,13 +195,15 @@ export const EditorButtonArea: React.FC<EditorButtonAreaProps> = (props) => {
    * 選択中の原音設定レコードが変更された際の処理
    */
   React.useEffect(() => {
-    if (record === null) {
+    if (record === null || oto === null) {
       setAliasIndex(0);
       setMaxAliasIndex(0);
     } else {
-      setMaxAliasIndex(
-        oto.GetAliases(targetDir, record.filename).length - 1
-      );
+      const aliases = oto.GetAliases(targetDir, record.filename);
+      const fileNames = oto.GetFileNames(targetDir);
+      setMaxAliasIndex(aliases.length - 1);
+      setFileIndex(fileNames.indexOf(record.filename));
+      setAliasIndex(aliases.indexOf(record.alias));
     }
   }, [record]);
 
