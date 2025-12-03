@@ -36,8 +36,20 @@ export const RecordNotFound = (
   const files = oto.GetFileNames(targetDir);
   Object.keys(zip).forEach((f) => {
     if (f.startsWith(targetDir + "/")) {
-      if (!files.includes(f.replace(targetDir + "/", "")) && f.replace(targetDir + "/", "").endsWith(".wav")) {
-        oto.SetParams(targetDir, f.replace(targetDir + "/", ""), "", 0, 0, 0, 0, 0);
+      if (
+        !files.includes(f.replace(targetDir + "/", "")) &&
+        f.replace(targetDir + "/", "").endsWith(".wav")
+      ) {
+        oto.SetParams(
+          targetDir,
+          f.replace(targetDir + "/", ""),
+          "",
+          0,
+          0,
+          0,
+          0,
+          0
+        );
       }
     }
   });
@@ -102,7 +114,8 @@ export const LimitedNumber = (
         tmp = a.replace(surfix, "");
       }
       const result = tmp.match(reg);
-      if (result.length >= 1) {
+      if (result === null) {
+      } else if (result.length >= 1) {
         const n = parseInt(result[0]);
         if (n > limit) {
           oto.RemoveAlias(targetDir, f, a);
@@ -118,12 +131,12 @@ export const LimitedNumber = (
  * @param targetDir zipファイル内のoto.iniまでの相対パス
  * @param zip zip内のファイル一覧
  */
-export const NegativeBlank = (
+export const NegativeBlank = async (
   oto: Oto,
   targetDir: string,
   zip: { [key: string]: JSZip.JSZipObject }
 ) => {
-  oto.GetFileNames(targetDir).forEach(async (f) => {
+  for (const f of oto.GetFileNames(targetDir)) {
     const buf = await zip[targetDir + "/" + f].async("arraybuffer");
     const wav = new Wave(buf);
     oto.GetAliases(targetDir, f).forEach((a) => {
@@ -134,7 +147,7 @@ export const NegativeBlank = (
         record.blank = record.offset - blankPos;
       }
     });
-  });
+  }
 };
 
 /**
