@@ -6,6 +6,13 @@ import { PaletteMode } from "@mui/material";
 
 import { lineColorPallet } from "../../config/colors";
 import { GetColor } from "../../utils/Color";
+import {
+  calculateOffsetUpdate,
+  calculateOverlapUpdate,
+  calculatePreUpdate,
+  calculateVelocityUpdate,
+  calculateBlankUpdate,
+} from "../../utils/otoCalculations";
 
 import { LOG } from "../../lib/Logging";
 import { useThemeMode } from "../../hooks/useThemeMode";
@@ -277,83 +284,35 @@ export const OtoCanvas: React.FC<OtoCanvasProps> = (props) => {
       "OtoCanvas"
     );
     if (target === "offset") {
-      /**
-       * オフセットが対象の場合 \
-       * 基本的には他のパラメータの位置は変更しない。\
-       * オーバーラップ以外の各パラメータは最小値を下回る場合変更する。\
-       * オーバーラップはオーバーラップロックモードの場合変更する。
-       * */
-      /** 移動距離 */
-      const moveValue = record.offset - clickX * props.pixelPerMsec;
-      record.offset -= moveValue;
-      /** 先行発声の最小値は0 */
-      record.pre = Math.max(record.pre + moveValue, 0);
-      if (overlapLock) {
-        /** オーバーラップロックの場合、先行発声の1/3 */
-        record.overlap = record.pre / 3;
-      } else {
-        /** オーバーラップロックでない、元位置を維持 */
-        record.overlap += moveValue;
-      }
-      /** 子音速度の最小値は設定値 */
-      record.velocity = Math.max(
-        record.velocity + moveValue,
-        oto.minParams
+      const result = calculateOffsetUpdate(
+        record,
+        clickX,
+        props.pixelPerMsec,
+        overlapLock
       );
-      /** 右ブランクの最小値は設定値 */
-      if (record.blank < 0) {
-        record.blank = Math.min(
-          record.blank - moveValue,
-          -2 * oto.minParams
-        );
-      }
+      record.offset = result.offset;
+      record.pre = result.pre;
+      record.overlap = result.overlap;
+      record.velocity = result.velocity;
+      record.blank = result.blank;
     } else if (target === "overlap") {
-      /**
-       * オーバーラップが対象の場合
-       * */
-      /** 移動距離 */
-      const moveValue =
-        record.offset +
-        record.overlap -
-        clickX * props.pixelPerMsec;
-      record.overlap -= moveValue;
+      record.overlap = calculateOverlapUpdate(
+        record,
+        clickX,
+        props.pixelPerMsec
+      );
     } else if (target === "pre") {
-      /**
-       * 先行発声が対象の場合 \
-       * 先行発声が指定した位置となるよう、offsetを変更
-       * */
-      /** 移動距離 */
-      const moveValue =
-        record.offset + record.pre - clickX * props.pixelPerMsec;
-      record.offset = record.offset - moveValue;
+      record.offset = calculatePreUpdate(record, clickX, props.pixelPerMsec);
     } else if (target === "velocity") {
-      /**
-       * 子音速度が対象の場合
-       * */
-      /** 移動距離 */
-      const moveValue =
-        record.offset +
-        record.velocity -
-        clickX * props.pixelPerMsec;
-      record.velocity = Math.max(
-        record.velocity - moveValue,
-        oto.minParams
+      const result = calculateVelocityUpdate(
+        record,
+        clickX,
+        props.pixelPerMsec
       );
-      /** 伸縮範囲が設定値以下とならないようにする */
-      record.blank = Math.min(
-        record.blank,
-        -oto.minParams - record.velocity
-      );
+      record.velocity = result.velocity;
+      record.blank = result.blank;
     } else if (target === "blank") {
-      /**
-       * 右ブランクが対象の場合 \
-       * 再設定にあわせて数値を正から負に変換する。
-       * */
-      const newBlankPos = record.offset - clickX * props.pixelPerMsec;
-      record.blank = Math.min(
-        newBlankPos,
-        -oto.minParams - record.velocity
-      );
+      record.blank = calculateBlankUpdate(record, clickX, props.pixelPerMsec);
     }
   };
 
