@@ -5,3 +5,7 @@ memo
 /hosts
 ansible.cfg
 deploy.yml
+/docs/storybook
+
+*storybook.log
+storybook-static
