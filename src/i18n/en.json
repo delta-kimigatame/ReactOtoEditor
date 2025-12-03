@@ -33,6 +33,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2025/12/03 Fixed various internal structures and a bug where keyboard shortcuts did not work properly.",
       "2025/06/28 Added keyboard shortcuts. Added Chinese UI.",
       "2025/06/18 Support for wav file extensions in uppercase",
       "2025/06/08 Fixed a bug:Cannot read wav file in root folder.",
