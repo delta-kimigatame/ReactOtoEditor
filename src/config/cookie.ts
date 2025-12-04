@@ -3,11 +3,11 @@ import { Language, languages } from "../types/language";
 import { Mode } from "../types/mode";
 
 export const COOKIE_KEYS = {
-  mode: "mode",
-  language: "language",
-  colorTheme: "colorTheme",
-  overlapLock: "overlapLock",
-  touchMode: "touchMode",
+  mode: "laberuMode",
+  language: "laberuLanguage",
+  colorTheme: "laberuColorTheme",
+  overlapLock: "laberuOverlapLock",
+  touchMode: "laberuTouchMode",
 } as const;
 
 const determineDefaultLocale = (): Language => {
