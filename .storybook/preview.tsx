@@ -1,7 +1,11 @@
 import type { Preview } from '@storybook/react-vite';
 import { I18nextProvider } from 'react-i18next';
 import i18n from '../src/i18n/configs';
-import React from 'react';
+import React, { useMemo } from 'react';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { getDesignTokens } from '../src/config/theme';
+import { PaletteMode } from '@mui/material';
 
 const preview: Preview = {
   parameters: {
@@ -16,22 +20,29 @@ const preview: Preview = {
     }
   },
 
-  // i18n統合
+  // i18n統合 + テーマ統合
   decorators: [
     (Story, context) => {
       // グローバルツールバーから言語を取得
       const locale = context.globals.locale || 'ja';
       i18n.changeLanguage(locale);
       
+      // グローバルツールバーからテーマモードを取得
+      const mode = (context.globals.theme || 'light') as PaletteMode;
+      const theme = useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+      
       return (
-        <I18nextProvider i18n={i18n}>
-          <Story />
-        </I18nextProvider>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <I18nextProvider i18n={i18n}>
+            <Story />
+          </I18nextProvider>
+        </ThemeProvider>
       );
     },
   ],
 
-  // グローバルツールバーで言語切り替え
+  // グローバルツールバーで言語切り替え + テーマ切り替え
   globalTypes: {
     locale: {
       description: '言語',
@@ -44,6 +55,19 @@ const preview: Preview = {
           { value: 'zh', title: '中文' },
         ],
         showName: true,
+      },
+    },
+    theme: {
+      description: 'テーマ',
+      defaultValue: 'light',
+      toolbar: {
+        icon: 'circlehollow',
+        items: [
+          { value: 'light', title: 'Light' },
+          { value: 'dark', title: 'Dark' },
+        ],
+        showName: true,
+        dynamicTitle: true,
       },
     },
   },
