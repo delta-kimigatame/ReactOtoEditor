@@ -1,0 +1,72 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/ja/06-2.既存のotoiniを使う" />
+
+# 既存のoto.iniを使う
+
+フォルダ内にoto.iniファイルがある場合、それを読み込んで編集できます。
+最も一般的な使い方です。
+
+## こんな時に使います
+
+- ✅ **既に作ったoto.iniを修正したい**
+- ✅ **配布されている音源のoto.iniを調整したい**
+- ✅ **wavファイルと一緒にテンプレートもzipに入れた**
+
+## 手順
+
+### 1. 読み込み方法を選ぶ
+
+ダイアログ上部のタブから「**zip内**」を選びます。
+
+このタブは、フォルダ内にoto.iniがある場合、最初から選ばれています。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--zip-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="zip内タブ選択画面"
+  />
+</div>
+
+### 2. 設定を確認する
+
+ファイル内のエイリアス（音の名前）や設定値が一覧で表示されます。
+
+このプレビュー画面では：
+- **文字化けの確認**: エイリアスやファイル名が正しく表示されているか
+- **文字コードの選択**: 文字化けしている場合は文字コードを変更できます
+
+> 💡 **ヒント**: oto.iniは通常Shift-JIS（日本語Windows標準）で保存されていますが、
+> 「あ」が「縺ゅ」のように表示される場合は、文字コードを「UTF-8」などに変更してみてください。
+
+### 3. 「OK」で編集開始
+
+問題なければ「OK」をタップして、編集画面に進みます。
+
+## oto.iniが見つからない場合
+
+フォルダ内にoto.iniがない場合、このタブは使えません。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogtabpanelzip--nothing-oto&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="oto.iniが見つからない画面"
+  />
+</div>
+
+代わりに以下の方法を試してください：
+
+- **[6-1.外部からoto.iniを読み込む](/docs/tutorial-ja-6-1-外部からotoiniを読み込む--docs)** - 他のoto.iniをテンプレートに使う
+- **[6-3.新規作成する](/docs/tutorial-ja-6-3-新規作成する--docs)** - 自動で設定値を生成
+
+## 次のステップ
+
+既存のoto.iniを読み込んだら、実際の音を聞きながら微調整していきましょう。
+編集画面の使い方は、後のチュートリアルで詳しく解説します。
+
+---
+
+- 前のページ: [6-1.外部からoto.iniを読み込む](/docs/tutorial-ja-06-1-外部からotoiniを読み込む--docs)
+- 次のページ: [6-3.新規作成する](/docs/tutorial-ja-06-3-新規作成する--docs)

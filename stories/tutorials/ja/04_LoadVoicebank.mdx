@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TopPaper } from '../../../src/features/Top/TopPaper';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { getDesignTokens } from '../../../src/config/theme';
+
+export const ThemedTopPaper = () => {
+  const theme = createTheme(getDesignTokens('light'));
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <TopPaper />
+    </ThemeProvider>
+  );
+};
+
+<Meta title="Tutorial/ja/04.音源を読み込む" />
+
+# 音源を読み込む
+
+LABERUで原音設定を編集するには、まず音源を読み込む必要があります。
+
+## 用意するもの
+
+LABERUで編集できるのは、以下の形式の音源です：
+
+### ZIPファイル
+- **wavファイル**（音声）と **oto.ini**（原音設定）が入ったZIPファイル
+- UTAU音源として配布されているものや、自分で録音したもの
+
+### 必要なファイル
+- `*.wav` - 音声ファイル（複数可）
+- `oto.ini` - 原音設定ファイル（なくても読み込めます）
+
+> 💡 **oto.iniがない場合**: LABERUが自動的に作成します。ゼロから原音設定を始められます。
+
+## 読み込み方法
+
+### 1. LABERUを開く
+ブラウザで [LABERU](https://k-uta.jp/laberu/) にアクセスします。
+
+### 2. ZIPファイルを選ぶ
+画面上部の「ZIP読み込み」ボタンをタップ（またはクリック）します。
+
+<div style={{marginTop: '16px', marginBottom: '16px', pointerEvents: 'none'}}>
+  <ThemedTopPaper />
+</div>
+
+
+### 3. ファイルを選択
+ 📱 スマホやタブレットの場合：
+-ファイルアプリから音源のZIPを選択
+
+ 💻 パソコンの場合：
+-エクスプローラーから音源のZIPを選択
+
+### 4. 読み込み完了
+音源が読み込まれると、音声ファイルの一覧が表示されます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-loadzipdialog-loadzipdialog--opened&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="ZIP読み込み完了画面"
+  />
+</div>
+
+読み込みが完了したら、「決定」ボタンをタップして編集画面に進みます。
+
+## 読み込めないとき
+
+以下の場合、読み込みがうまくいかないことがあります：
+
+### ファイル名が文字化けしている
+- ZIPの文字コードが合っていない可能性があります
+- 文字コードを選び直して再度読み込んでみてください
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-loadzipdialog-loadzipdialog--character-corruption&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="文字化けの例"
+  />
+</div>
+
+このように文字が正しく表示されない場合は、文字コード選択で「Shift-JIS」などを試してみてください。
+
+### ZIPが大きすぎる
+- ブラウザのメモリ制限により、非常に大きなZIPは読み込めないことがあります
+- 音源を分割して読み込んでください
+
+### wavファイルが見つからない
+- ZIPの中にwavファイルが入っているか確認してください
+- フォルダの中に入っている場合も読み込めます
+
+---
+
+- 前のページ: [3.原音設定とは](/docs/tutorial-ja-3-原音設定とは--docs)
+- 次のページ: [5.対象フォルダを選択する](/docs/tutorial-ja-5-対象フォルダを選択する--docs)

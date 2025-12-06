@@ -8,20 +8,13 @@ import Divider from "@mui/material/Divider";
 import TabPanel from "@mui/lab/TabPanel";
 import MenuItem from "@mui/material/MenuItem";
 import { SelectChangeEvent } from "@mui/material/Select";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import InputLabel from "@mui/material/InputLabel";
 
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
 import { FullWidthTextField } from "../../components/Common/FullWidthTextField";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { CommonCheckBox } from "../../components/Common/CommonCheckBox";
-import { MakePanelReplaceAccordion } from "./MakePanel/MakePanelReplaceAccordion";
-import { MakePanelConsonantAccordion } from "./MakePanel/MakePanelConsonantAccordion";
-import { MakePanelVowelAccordion } from "./MakePanel/MakePanelVowelAccordion";
 import { MakePanelSelectPreset } from "./MakePanel/MakePanelSelectPreset";
+import { MakePanelSettingsAccordion } from "../../components/TargetDirDialog/MakePanelSettingsAccordion";
 
 import { LOG } from "../../lib/Logging";
 import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
@@ -164,86 +157,30 @@ export const TargetDirDialogTabMakePanel: React.FC<
       {mode === "multi" && (
         <Box sx={{ p: 1 }}>
           <MakePanelSelectPreset setIni={setIni} />
-          <Accordion sx={{ m: 1 }} data-testid="settings-accordion">
-            <AccordionSummary expandIcon={<ExpandMoreIcon />} data-testid="settings-accordion-summary">
-              <InputLabel>
-                {t("targetDirDialog.makePanel.iniDetail")}
-              </InputLabel>
-            </AccordionSummary>
-            <AccordionDetails>
-              <FullWidthTextField
-                type="number"
-                label={t("targetDirDialog.makePanel.settings.tempo")}
-                value={tempo}
-                onChange={(e) => {
-                  setTempo(e.target.value);
-                }}
-                data-testid="tempo-input"
-              />
-              <FullWidthTextField
-                type="number"
-                label={t("targetDirDialog.makePanel.settings.offset")}
-                value={offset}
-                onChange={(e) => {
-                  setOffset(e.target.value);
-                }}
-                data-testid="offset-input"
-              />
-              <FullWidthTextField
-                type="number"
-                label={t("targetDirDialog.makePanel.settings.maxnum")}
-                value={maxnum}
-                onChange={(e) => {
-                  setMaxnum(e.target.value);
-                }}
-                data-testid="maxnum-input"
-              />
-              <CommonCheckBox
-                checked={underbar}
-                setChecked={setUnderbar}
-                label={t("targetDirDialog.makePanel.settings.underbar")}
-                data-testid="underbar-checkbox"
-              />
-              <br />
-              <CommonCheckBox
-                checked={beginingCv}
-                setChecked={setBeginingCv}
-                label={t("targetDirDialog.makePanel.settings.beginingCv")}
-                data-testid="begining-cv-checkbox"
-              />
-              <br />
-              <CommonCheckBox
-                checked={requireHead}
-                setChecked={setRequireHead}
-                label={t("targetDirDialog.makePanel.settings.Head")}
-                data-testid="require-head-checkbox"
-              />
-              <br />
-              <CommonCheckBox
-                checked={requireVCV}
-                setChecked={setRequireVCV}
-                label={t("targetDirDialog.makePanel.settings.VCV")}
-                data-testid="require-vcv-checkbox"
-              />
-              <br />
-              <CommonCheckBox
-                checked={requireOnlyConsonant}
-                setChecked={setRequireOnlyConsonant}
-                label={t("targetDirDialog.makePanel.settings.onlyConsonant")}
-                data-testid="require-only-consonant-checkbox"
-              />
-              <br />
-              <MakePanelVowelAccordion vowel={vowel} setVowel={setVowel} />
-              <MakePanelConsonantAccordion
-                consonant={consonant}
-                setConsonant={setConsonant}
-              />
-              <MakePanelReplaceAccordion
-                replace={replace}
-                setReplace={setReplace}
-              />
-            </AccordionDetails>
-          </Accordion>
+          <MakePanelSettingsAccordion
+            tempo={tempo}
+            setTempo={setTempo}
+            offset={offset}
+            setOffset={setOffset}
+            maxnum={maxnum}
+            setMaxnum={setMaxnum}
+            underbar={underbar}
+            setUnderbar={setUnderbar}
+            beginingCv={beginingCv}
+            setBeginingCv={setBeginingCv}
+            requireHead={requireHead}
+            setRequireHead={setRequireHead}
+            requireVCV={requireVCV}
+            setRequireVCV={setRequireVCV}
+            requireOnlyConsonant={requireOnlyConsonant}
+            setRequireOnlyConsonant={setRequireOnlyConsonant}
+            vowel={vowel}
+            setVowel={setVowel}
+            consonant={consonant}
+            setConsonant={setConsonant}
+            replace={replace}
+            setReplace={setReplace}
+          />
         </Box>
       )}
       {mode === "single" && (

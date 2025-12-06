@@ -35,7 +35,7 @@ export const MakePanelReplaceAccordion: React.FC<
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} data-testid="replace-accordion-summary">
         <InputLabel>
           {t("targetDirDialog.makePanel.settings.replace")}
         </InputLabel>

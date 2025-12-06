@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MakePanelVowelAccordion } from "../../../../src/features/TargetDirDialog/MakePanel/MakePanelVowelAccordion";
 
 const meta = {
@@ -55,6 +55,39 @@ export const ManyVowels: Story = {
       { vowel: "o", variant: "お,オ" },
       { vowel: "n", variant: "ん,ン" },
     ]);
+
+    return <MakePanelVowelAccordion vowel={vowel} setVowel={setVowel} />;
+  },
+};
+
+/**
+ * 開いた状態
+ */
+export const Expanded: Story = {
+  render: () => {
+    const [vowel, setVowel] = useState([
+      { vowel: "a", variant: "あ,ア" },
+      { vowel: "i", variant: "い,イ" },
+      { vowel: "u", variant: "う,ウ" },
+      { vowel: "e", variant: "え,エ" },
+      { vowel: "o", variant: "お,オ" },
+    ]);
+
+    // Accordionを自動的に開く
+    useEffect(() => {
+      const expandAccordion = () => {
+        const accordionSummary = document.querySelector('.MuiAccordionSummary-root') as HTMLElement;
+        
+        if (accordionSummary && accordionSummary.getAttribute('aria-expanded') === 'false') {
+          accordionSummary.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window }));
+          accordionSummary.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true, view: window }));
+          accordionSummary.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
+        }
+      };
+
+      const timer = setTimeout(expandAccordion, 100);
+      return () => clearTimeout(timer);
+    }, []);
 
     return <MakePanelVowelAccordion vowel={vowel} setVowel={setVowel} />;
   },

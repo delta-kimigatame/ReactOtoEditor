@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MakePanelConsonantAccordion } from "../../../../src/features/TargetDirDialog/MakePanel/MakePanelConsonantAccordion";
 
 const meta = {
@@ -79,6 +79,36 @@ export const VariousLengths: Story = {
       { consonant: "t", variant: "た", length: 50 },
       { consonant: "ch", variant: "ちゃ", length: 120 },
     ]);
+
+    return <MakePanelConsonantAccordion consonant={consonant} setConsonant={setConsonant} />;
+  },
+};
+
+/**
+ * アコーディオンを展開した状態（チュートリアル用）
+ */
+export const Expanded: Story = {
+  render: () => {
+    const [consonant, setConsonant] = useState([
+      { consonant: "k", variant: "か,カ", length: 60 },
+      { consonant: "s", variant: "さ,サ", length: 80 },
+      { consonant: "t", variant: "た,タ", length: 60 },
+      { consonant: "n", variant: "な,ナ", length: 60 },
+      { consonant: "h", variant: "は,ハ", length: 80 },
+    ]);
+
+    useEffect(() => {
+      const accordionSummary = document.querySelector('[data-testid="consonant-accordion-summary"]');
+      if (accordionSummary) {
+        const mousedownEvent = new MouseEvent("mousedown", { bubbles: true, cancelable: true });
+        const mouseupEvent = new MouseEvent("mouseup", { bubbles: true, cancelable: true });
+        const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
+        
+        accordionSummary.dispatchEvent(mousedownEvent);
+        accordionSummary.dispatchEvent(mouseupEvent);
+        accordionSummary.dispatchEvent(clickEvent);
+      }
+    }, []);
 
     return <MakePanelConsonantAccordion consonant={consonant} setConsonant={setConsonant} />;
   },

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MakePanelReplaceAccordion } from "../../../../src/features/TargetDirDialog/MakePanel/MakePanelReplaceAccordion";
 
 const meta = {
@@ -71,6 +71,33 @@ export const RealWorldExample: Story = {
       ["_お", "お"],
       ["_", ""],
     ]);
+
+    return <MakePanelReplaceAccordion replace={replace} setReplace={setReplace} />;
+  },
+};
+
+/**
+ * アコーディオンを展開した状態（チュートリアル用）
+ */
+export const Expanded: Story = {
+  render: () => {
+    const [replace, setReplace] = useState<Array<[string, string]>>([
+      ["_", ""],
+      ["-", ""],
+    ]);
+
+    useEffect(() => {
+      const accordionSummary = document.querySelector('[data-testid="replace-accordion-summary"]');
+      if (accordionSummary) {
+        const mousedownEvent = new MouseEvent("mousedown", { bubbles: true, cancelable: true });
+        const mouseupEvent = new MouseEvent("mouseup", { bubbles: true, cancelable: true });
+        const clickEvent = new MouseEvent("click", { bubbles: true, cancelable: true });
+        
+        accordionSummary.dispatchEvent(mousedownEvent);
+        accordionSummary.dispatchEvent(mouseupEvent);
+        accordionSummary.dispatchEvent(clickEvent);
+      }
+    }, []);
 
     return <MakePanelReplaceAccordion replace={replace} setReplace={setReplace} />;
   },

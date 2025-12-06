@@ -1,0 +1,120 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/ja/06-1.外部からotoiniを読み込む" />
+
+# 外部からoto.iniを読み込む
+
+初めてUTAU音源を作る方に最もおすすめの方法です。
+既に完成している他のoto.iniをテンプレートとして使えば、簡単に原音設定ができます。
+
+## この方法がおすすめな理由
+
+**「UTAU音源を作りたいサーバー」**（通称: オンゲントロサバ、トロサバ）では、
+初心者の方にこの方法を推奨しています：
+
+- ✅ **実績のある設定がそのまま使える** - 既に調整済みのoto.iniから学べる
+- ✅ **失敗しにくい** - ゼロから設定するより確実
+- ✅ **録音リストとセットで使える** - 同じリストで録音すればそのまま使える
+
+> 💡 **トロサバのチュートリアル**: [Hello, UTAU World!](https://w.atwiki.jp/vbmaker/pages/43.html)では、
+> 録音リストとoto.iniテンプレートがセットになった「テスト音源収録キット」を配布しています。
+> 初めての方はこれを使うのが最も確実です。
+
+## こんな時に使います
+
+- ✅ **録音リストとテンプレートが一緒に配布されている** - Hello, UTAU World!のキットなど
+- ✅ **参考にした音源と同じ録音リストで録音した** - 同じファイル名で録音した場合
+- ✅ **同じ録音リストで2つ目以降の音源を作る** - 「通常」「ささやき」など追加音源
+
+> ⚠️ **重要**: ファイル名（録音リスト）が**完全に一致**している必要があります。
+> 似ているだけではダメです。`a.wav`と`あ.wav`、`ka.wav`と`か.wav`は別物です。
+
+## 手順
+
+### 1. 読み込み方法を選ぶ
+
+ダイアログ上部のタブから「**テンプレート読込**」を選びます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--template-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="テンプレート読込タブ選択画面"
+  />
+</div>
+
+### 2. テンプレートになるoto.iniを選ぶ
+
+- **「テンプレートを読み込む」ボタン**をタップ
+- お手本にしたいoto.iniファイルを選びます
+
+### 3. 設定を確認する
+
+選んだoto.iniの内容がプレビューされます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--template-loaded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="テンプレート読込完了画面"
+  />
+</div>
+
+このプレビュー画面では：
+- **文字化けの確認**: エイリアスやファイル名が正しく表示されているか
+- **文字コードの選択**: 文字化けしている場合は文字コードを変更できます
+
+### 4. 「OK」で補正画面へ
+
+問題なければ「OK」をタップします。
+
+テンプレートのoto.iniの値を補正する画面が表示されます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogcorrectpanel--default&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="補正画面"
+  />
+</div>
+
+補正機能は高度な内容なので、初心者の方は**もう一度「OK」をタップ**して編集画面に進みましょう。
+
+> 💡 **補正機能について**: 補正画面ではテンプレートの設定値を一括で調整できますが、
+> 使い方を理解してから使うことをおすすめします。まずは編集画面で実際の音を聞きながら調整してみましょう。
+
+## テンプレートを選ぶときの注意点
+
+### ファイル名は完全に一致させる
+
+テンプレートのoto.iniに書かれているファイル名と、自分の音源のwavファイル名が**完全に一致**している必要があります。
+
+- ✅ **OK**: テンプレート`a.wav` → 自分の音源`a.wav`
+- ❌ **NG**: テンプレート`a.wav` → 自分の音源`あ.wav`
+- ❌ **NG**: テンプレート`ka.wav` → 自分の音源`か.wav`
+
+「似ている」ではダメです。1文字でも違ったら使えません。
+
+### どこでテンプレートを手に入れる?
+
+1. **Hello, UTAU World! テスト音源収録キット**
+   - 録音リストとoto.iniがセット
+   - 初心者向けに調整済み
+   - [トロサバのチュートリアル](https://w.atwiki.jp/vbmaker/pages/43.html)で配布
+
+2. **参考にした音源のoto.ini**
+   - 同じ録音リストで録音していればそのまま使える
+   - 発音の速さや音の長さも近いので調整しやすい
+
+3. **自分の過去の音源**
+   - 同じ録音リストで追加音源を作る時（「囁き」「強」など）
+
+## 次のステップ
+
+テンプレートから始めたら、実際の音を聞きながら微調整していきましょう。
+編集画面の使い方は、後のチュートリアルで詳しく解説します。
+
+---
+
+- 前のページ: [5.対象フォルダを選択する](/docs/tutorial-ja-05-対象フォルダを選択する--docs)
+- 次のページ: [6-2.既存のoto.iniを使う](/docs/tutorial-ja-06-2-既存のotoiniを使う--docs)

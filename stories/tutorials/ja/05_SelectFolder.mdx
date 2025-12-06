@@ -1,0 +1,64 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/ja/05.対象フォルダを選択する" />
+
+# 対象フォルダを選択する
+
+音源を読み込んだら、次は編集したいフォルダを選び、oto.iniの読み込み方法を決めます。
+
+## フォルダを選ぶ
+
+画面上部のプルダウンメニュー（セレクトボックス）から、編集したいフォルダを選びます。
+
+> 💡 **フォルダとは**: UTAU音源は、用途や音の種類で整理されていることが多いです  
+> （例：「C4」「A3」など音高別、「通常」「ささやき」など表現別）
+
+### フォルダの選び方
+
+1. **プルダウンメニューを開く**
+   - 「対象ディレクトリ」のプルダウンをタップ（クリック）します
+   - 音源に含まれるすべてのフォルダが一覧で表示されます
+
+2. **編集したいフォルダを選ぶ**
+   - リストから編集したいフォルダをタップします
+   - ルートフォルダ（最上位）は「/」と表示されます
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--opened&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="対象フォルダ選択画面"
+  />
+</div>
+
+3. **oto.iniの読み込み方法を選ぶ**
+   - フォルダを選ぶと、下部にタブが表示されます
+   - タブでoto.iniをどのように準備するかを選択します
+
+## oto.iniの読み込み方法
+
+フォルダを選んだ後、oto.iniをどのように準備するか選択します。
+状況に応じて、いくつかの方法が用意されています：
+
+### 📘 基本編（初心者向け）
+まずはこちらから始めましょう。
+
+- **[6-1. 外部からoto.iniを読み込む](/docs/tutorial-ja-6-1-外部からotoiniを読み込む--docs)** - 別のoto.iniをテンプレートとして使う（初心者推奨）
+- **[6-2. 既存のoto.iniを使う](/docs/tutorial-ja-6-2-既存のotoiniを使う--docs)** - フォルダ内にoto.iniがある場合（最も一般的）
+- **[6-3. 新規作成する](/docs/tutorial-ja-6-3-新規作成する--docs)** - oto.iniがない場合、自動設定で作成
+
+### 📗 応用編（慣れてきたら）
+より便利な使い方を知りたい方向け。
+
+- **[7-1. 履歴から続きを始める](/docs/tutorial-ja-7-1-履歴から続きを始める--docs)** - 前回の編集の続きから
+- **[7-2. 複数エイリアスを設定する](/docs/tutorial-ja-7-2-複数エイリアスを設定する--docs)** - 1つのwavに複数の音を設定（自動設定の応用）
+
+### 📕 上級編
+細かい設定を自分好みに調整したい方向け。
+
+- **[8. 自動生成の高度なカスタマイズ](/docs/tutorial-ja-8-otoiniの高度なカスタマイズ--docs)** - 自動生成時のパラメータ初期値を細かく指定
+
+---
+
+- 前のページ: [4.音源を読み込む](/docs/tutorial-ja-4-音源を読み込む--docs)
+- 次のページ: [6-1.外部からoto.iniを読み込む](/docs/tutorial-ja-6-1-外部からotoiniを読み込む--docs)

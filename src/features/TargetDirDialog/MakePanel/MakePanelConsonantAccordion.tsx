@@ -57,7 +57,7 @@ export const MakePanelConsonantAccordion: React.FC<
 
   return (
     <Accordion>
-      <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <AccordionSummary expandIcon={<ExpandMoreIcon />} data-testid="consonant-accordion-summary">
         <InputLabel>
           {t("targetDirDialog.makePanel.settings.consonant")}
         </InputLabel>

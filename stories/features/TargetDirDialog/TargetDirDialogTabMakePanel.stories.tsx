@@ -139,6 +139,85 @@ export const SingleMode: Story = {
 };
 
 /**
+ * Singleモード自動選択状態。生成方法でsingleが選択された状態です。
+ */
+export const SingleModeSelected: Story = {
+  render: () => {
+    const { setTargetDir, setReadZip, targetDir, readZip } = useOtoProjectStore();
+    const [dialogOpen, setDialogOpen] = useState(true);
+    const [isReady, setIsReady] = useState(false);
+
+    useEffect(() => {
+      const zip = new JSZip();
+      const targetDir_ = "single_samples";
+      
+      // 単独音用のファイル名（CV形式）
+      ["a.wav", "i.wav", "ka.wav", "ki.wav", "sa.wav"].forEach((filename) => {
+        zip.file(`${targetDir_}/${filename}`, new Blob(["dummy wav data"], { type: "audio/wav" }));
+      });
+
+      zip.generateAsync({ type: "blob" }).then((blob) => {
+        zip.loadAsync(blob).then((loadedZip) => {
+          const files: { [key: string]: JSZip.JSZipObject } = {};
+          loadedZip.forEach((relativePath, file) => {
+            files[relativePath] = file;
+          });
+          setTargetDir(targetDir_);
+          setReadZip(files);
+          setIsReady(true);
+        });
+      });
+
+      return () => {
+        setTargetDir(null);
+        setReadZip(null);
+        setIsReady(false);
+      };
+    }, [setTargetDir, setReadZip]);
+
+    // 自動的にsingleを選択
+    useEffect(() => {
+      if (!isReady) return;
+
+      const selectSingle = () => {
+        const modeSelect = document.querySelector('[data-testid="mode-select"]') as HTMLElement;
+        if (modeSelect) {
+          // セレクトボックスをクリック
+          modeSelect.click();
+          
+          setTimeout(() => {
+            // singleオプションを選択
+            const singleOption = document.querySelector('[data-testid="mode-single"]') as HTMLElement;
+            if (singleOption) {
+              singleOption.click();
+            } else {
+              // まだオプションが表示されていない場合は再試行
+              setTimeout(selectSingle, 200);
+            }
+          }, 100);
+        } else {
+          // セレクトボックスがまだ表示されていない場合は再試行
+          setTimeout(selectSingle, 200);
+        }
+      };
+
+      const timer = setTimeout(selectSingle, 500);
+      return () => clearTimeout(timer);
+    }, [isReady]);
+
+    if (!isReady || !targetDir || !readZip) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <TargetDirDialogTabMakePanel
+        setDialogOpen={setDialogOpen}
+      />
+    );
+  },
+};
+
+/**
  * Multiモード選択状態。詳細設定で原音設定を生成します。
  */
 export const MultiMode: Story = {

@@ -102,3 +102,40 @@ export const Opened: Story = {
     );
   },
 };
+
+/**
+ * Shift-JISファイル名の文字化け（samples/sjis_CV_jp.zip）
+ * デフォルトのUTF-8で読み込むため、ファイル名が文字化けする例
+ */
+export const CharacterCorruption: Story = {
+  render: () => {
+    const [dialogOpen, setDialogOpen] = useState(true);
+    const [zipFiles, setZipFiles] = useState<{
+      [key: string]: JSZip.JSZipObject;
+    } | null>(null);
+    const [file, setFile] = useState<File | null>(null);
+
+    useEffect(() => {
+      // 実際のサンプルZIPファイルを読み込む
+      fetch('samples/sjis_CV_jp.zip')
+        .then(res => res.blob())
+        .then(blob => {
+          const sampleFile = new File([blob], 'sjis_CV_jp.zip', { type: 'application/zip' });
+          setFile(sampleFile);
+        });
+    }, []);
+
+    if (!file) {
+      return <div>Loading...</div>;
+    }
+
+    return (
+      <LoadZipDialog
+        file={file}
+        dialogOpen={dialogOpen}
+        setDialogOpen={setDialogOpen}
+        setZipFiles={setZipFiles}
+      />
+    );
+  },
+};

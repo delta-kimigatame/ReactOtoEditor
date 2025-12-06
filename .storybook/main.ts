@@ -14,18 +14,31 @@ const config: StorybookConfig = {
   ],
   
   addons: [
-    "@storybook/addon-essentials",
+    "@storybook/addon-docs",
+    "@storybook/addon-a11y",
   ],
   
   framework: {
     name: "@storybook/react-vite",
     options: {},
   },
+  
+  features: {
+    actions: true,
+    backgrounds: true,
+    controls: true,
+    highlight: true,
+    measure: true,
+    outline: true,
+    viewport: true,
+  },
+  
   // 静的ファイルのディレクトリを指定
   staticDirs: ['./public'],
   
   async viteFinal(config) {
     return mergeConfig(config, {
+      base: process.env.NODE_ENV === 'production' ? '/laberu/storybook/' : '/',
       resolve: {
         alias: {
           "@": path.resolve(__dirname, "../src"),

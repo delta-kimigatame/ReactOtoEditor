@@ -1,0 +1,109 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/ja/07-1.履歴から続きを始める" />
+
+# 履歴から続きを始める
+
+前回編集したoto.iniの続きから作業を再開できます。
+ブラウザに保存された履歴を使うので、ファイルをダウンロードし忘れても大丈夫です。
+
+## こんな時に使います
+
+- ✅ **前回の編集の続きをしたい**
+- ✅ **別の日に編集を再開したい**
+- ✅ **うっかりダウンロードし忘れた**
+
+## 手順
+
+### 1. 読み込み方法を選ぶ
+
+ダイアログ上部のタブから「**履歴**」を選びます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--storaged-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="履歴タブ選択画面"
+  />
+</div>
+
+> 💡 **便利な機能**: 以前編集したzipファイルの同じフォルダを読み込んだ場合、
+> 自動的に前回の編集データが選択されます。続きからすぐに始められます。
+
+### 2. 履歴を選択する
+
+セレクトボックスから、続きを編集したい履歴を選びます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogtabpanelstoraged--with-many-aliases&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="履歴選択画面"
+  />
+</div>
+
+表示される情報：
+- **ファイル名**: zipファイルの名前
+- **フォルダ名**: どのフォルダのoto.iniか
+- **最終更新日時**: 最後に編集した日時
+
+### 3. 「OK」で編集再開
+
+続きをしたい履歴を選んで「OK」をタップします。
+前回の編集内容がそのまま読み込まれ、編集画面に進みます。
+
+## 履歴の保存について
+
+### 保存される場所
+
+履歴はブラウザのローカルストレージに保存されます。
+
+- ✅ 端末内に保存されるので、オフラインでも利用可能
+- ✅ 個人情報として外部に送信されることはありません
+
+### 保存期間
+
+ブラウザのデータをクリアしない限り、履歴は残り続けます。
+
+> ⚠️ **注意**: 以下の場合、履歴が削除される可能性があります
+> - ブラウザの履歴・キャッシュをクリアした時
+> - プライベートブラウジング（シークレットモード）を使用した時
+> - 端末の容量が不足した時
+
+### バックアップのすすめ
+
+大切なoto.iniは、履歴だけに頼らず定期的にダウンロードしておきましょう。
+
+## 複数の音源を管理
+
+同じ音源の異なるフォルダを編集した履歴も、それぞれ別に保存されます。
+
+例：
+- `voicebank/normal/` の履歴
+- `voicebank/whisper/` の履歴
+- `voicebank/append/` の履歴
+
+それぞれ独立して管理されるので、混ざる心配はありません。
+
+## 履歴が見つからない場合
+
+履歴が表示されない場合、以下を確認してください：
+
+1. **同じブラウザ・同じ端末で開いているか**
+   - 別の端末やブラウザでは履歴は共有されません
+   
+2. **ブラウザのデータを削除していないか**
+   - 履歴・キャッシュをクリアすると履歴も消えます
+
+3. **プライベートブラウジングを使っていないか**
+   - シークレットモードでは履歴が保存されません
+
+履歴がない場合は、他の読み込み方法を試してください：
+- **[6-1.外部からoto.iniを読み込む](/docs/tutorial-ja-06-1-外部からotoiniを読み込む--docs)**
+- **[6-2.既存のoto.iniを使う](/docs/tutorial-ja-06-2-既存のotoiniを使う--docs)**
+- **[6-3.新規作成する](/docs/tutorial-ja-06-3-新規作成する--docs)**
+
+---
+
+- 前のページ: [6-3.新規作成する](/docs/tutorial-ja-06-3-新規作成する--docs)
+- 次のページ: [7-2.複数エイリアスを設定する](/docs/tutorial-ja-07-2-複数エイリアスを設定する--docs)
