@@ -1,0 +1,99 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { TopPaper } from '../../../src/features/Top/TopPaper';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { getDesignTokens } from '../../../src/config/theme';
+
+export const ThemedTopPaper = () => {
+  const theme = createTheme(getDesignTokens('light'));
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <TopPaper />
+    </ThemeProvider>
+  );
+};
+
+<Meta title="Tutorial/en/04.Load Voicebank" />
+
+# Loading a Voicebank
+
+To edit oto configuration with LABERU, you first need to load a voicebank.
+
+## What You Need
+
+LABERU can edit voicebanks in the following format:
+
+### ZIP File
+- A ZIP file containing **wav files** (audio) and **oto.ini** (oto configuration)
+- Can be a published UTAU voicebank or your own recordings
+
+### Required Files
+- `*.wav` - Audio files (multiple files OK)
+- `oto.ini` - Oto configuration file (optional)
+
+> 💡 **If you don't have oto.ini**: LABERU will create one automatically. You can start configuring from scratch.
+
+## How to Load
+
+### 1. Open LABERU
+Access [LABERU](https://k-uta.jp/laberu/) in your browser.
+
+### 2. Select ZIP File
+Tap (or click) the "Read Zip" button at the top of the screen.
+
+<div style={{marginTop: '16px', marginBottom: '16px', pointerEvents: 'none'}}>
+  <ThemedTopPaper />
+</div>
+
+
+### 3. Choose Your File
+ 📱 On smartphones or tablets:
+- Select the voicebank ZIP from your file app
+
+ 💻 On PC:
+- Select the voicebank ZIP from your file explorer
+
+### 4. Loading Complete
+Once loaded, you'll see a list of the audio files.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-loadzipdialog-loadzipdialog--opened&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="ZIP loading complete screen"
+  />
+</div>
+
+Once loading is complete, tap the "OK" button to proceed to the editing screen.
+
+## If Loading Fails
+
+Loading may fail in the following cases:
+
+### Filename Characters are Garbled
+- The ZIP's character encoding might not match
+- Try selecting a different character encoding and reload
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-loadzipdialog-loadzipdialog--character-corruption&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Example of character corruption"
+  />
+</div>
+
+If characters don't display correctly like this, try selecting "Shift-JIS" or another encoding from the character code selector.
+
+### ZIP File is Too Large
+- Very large ZIP files may not load due to browser memory limitations
+- Try splitting your voicebank and loading it in parts
+
+### Wav Files Not Found
+- Make sure wav files are included in the ZIP
+- Files in subfolders can also be loaded
+
+---
+
+- Previous Page: [03.What is Oto.ini?](/docs/tutorial-en-03-what-is-oto--docs)
+- Next Page: [05.Selecting a Folder](/docs/tutorial-en-05-select-folder--docs)

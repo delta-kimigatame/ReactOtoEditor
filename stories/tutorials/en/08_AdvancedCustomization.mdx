@@ -1,0 +1,335 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/08.Advanced Auto-Generation Settings" />
+
+# Advanced Auto-Generation Settings
+
+You can fine-tune the initial parameter values for automatic oto.ini generation.
+This is an advanced feature for users who want more precise control over the auto-generation in [6-3.Create New](/docs/tutorial-en-06-3-create-new--docs) and [7-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs).
+
+## When to Use This
+
+- ✅ **Creating voicebanks in non-Japanese languages** - English, Chinese, or other languages without presets
+- ✅ **Using unconventional alias naming** - Custom naming conventions or special voicebank formats
+
+## Detailed Advanced Settings
+
+Let's dive into the advanced settings mentioned in [7-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs).
+
+### Checkbox Options
+
+#### Treat mid-filename underscores as one-beat rests
+
+First, let's understand the role of underscores (`_`) in UTAU.
+
+**Leading underscore in filename:**
+
+In UTAU, specifying a filename calls up the first oto setting in that file.
+However, having "a" suggest all VCV sounds like "aa ia ua ea" would be inconvenient.
+
+So, UTAU voicebanks use this naming convention:
+- **CV (single sounds)**: `a.wav` (no underscore)
+- **VCV (connected sounds)**: `_aa ia ua ea.wav` (starts with underscore)
+
+The leading `_` prevents the sound from being directly called.
+
+**Mid-filename underscores:**
+
+Underscores in the middle of filenames have two uses:
+
+1. **As separators** (checkbox off)
+   - Example: `_a_a_i_a_u_e_a.wav`
+   - For romaji recording lists to separate syllables
+   - Underscores are just separators with no musical meaning
+
+2. **As rests** (checkbox on)
+   - Example: `_a_ka_sa_ta.wav`
+   - Recording 4 sounds within 8 beats of guide BGM (1-beat rest between each sound)
+   - `_` positions indicate 1 beat of silence
+   - Beats: `_a__ka__sa__ta_` (_ is 1 beat, syllables are 2 beats)
+
+**What this checkbox does:**
+
+- **Unchecked**: `_` is just a separator (processes as continuous sounds)
+- **Checked**: `_` represents a 1-beat rest (indicates silence between sounds)
+
+Check this if you're recording with guide BGM and intentionally including rests.
+
+#### Add - to word-initial aliases
+
+Sets whether to add `-` (hyphen) to word-initial sounds (first sound in wav file).
+
+**Handling word-initial sounds in VCV:**
+
+In standard VCV, word-initial sounds use hyphen like `[- sa]`.
+This is because VCV provides all connections from previous vowels: `[a sa]`, `[i sa]`, `[u sa]`, etc.
+
+However, since UTAU's automatic VCV mode is a paid feature,
+there's merit in having `[sa]` format that works as both VCV and CV.
+
+**Two approaches:**
+
+1. **Distinguish initial from medial** (checkbox on)
+   - Initial: `[- sa]`
+   - Medial: `[a sa]`, `[i sa]`, etc.
+   - Standard VCV format
+
+2. **Don't distinguish** (checkbox off)
+   - All: unified as `[sa]`
+   - When recording CV with continuous recording
+   - CVVC designs that don't distinguish initial/medial
+
+**What this checkbox does:**
+
+Decides whether to distinguish VCV initial sound `[- sa]` from CV `[sa]`.
+
+- **Checked**: `[- sa]` (distinguished as VCV-specific initial)
+- **Unchecked**: `[sa]` (usable as CV too)
+
+Choose **checked** for standard VCV, **unchecked** for CV-compatible or special formats.
+
+#### Generate word-initial alias
+
+Sets whether to auto-generate the beginning of the wav file as a sound.
+
+**Initial vs. medial in CV/CVVC:**
+
+In CV and CVVC, there are 3 approaches to handling initial (song start/after rest) vs. medial (connecting from vowel) sounds:
+
+1. **Create both**: Provide both `[- sa]` (initial) and `[sa]` (medial)
+2. **Medial only**: Only `[sa]` (don't generate initial) ← **This checkbox**
+3. **No distinction**: `[sa]` (universal for both initial and medial)
+
+**What this checkbox does:**
+
+Use this when you want all CV or CVVC sounds recorded with continuous recording to consist only of medial sounds.
+
+**Examples:**
+
+- **Checked**: `_a ka sa ta na.wav` generates `[- a]`, `[ka]`, `[sa]`, `[ta]`, `[na]`
+  - Uses the beginning of the wav file as a sound
+  
+- **Unchecked**: `_a ka sa ta na.wav` generates only `[ka]`, `[sa]`, `[ta]`, `[na]`
+  - Doesn't generate `[- a]`
+  - Treats the beginning as lead-in, not as a sound
+
+**When to use:**
+
+- **Checked**: Utilize all sounds including initial (normal setting)
+- **Unchecked**: Discard initial, construct voicebank only from medial sounds (special design)
+
+> 💡 **Note**: This isn't about VCV. VCV always distinguishes initial from medial.
+> This setting determines how to handle initials in CV and CVVC.
+
+#### Generate VCV sounds
+
+Sets whether to auto-generate VCV (Vowel-Consonant-Vowel) sounds.
+
+**What VCV is:**
+
+Sounds connecting from a vowel to the next consonant+vowel. For singing "ka sa":
+- `[a ka]`: From "a" vowel to "ka"
+- `[a sa]`: From "a" vowel to "sa"
+
+> 💡 **Note**: Initial sounds like `[- ka]` aren't included in VCV.
+> They're treated as initial CV in oto settings.
+
+**What this checkbox does:**
+
+- **Checked**: Generate VCV sounds
+- **Unchecked**: Don't generate VCV sounds
+
+**Relationship with presets:**
+
+- **VCV presets**: Automatically checked when loaded
+- **CVVC presets**: After loading, checking this makes a voicebank usable as both VCV and CVVC
+
+**Usage notes:**
+
+1. **Alias count limit**  
+   Original UTAU has a limit on the number of aliases it can load.
+   Generating both VCV and CVVC greatly increases alias count.
+   Enabling both isn't always better.
+
+2. **Post-generation adjustment**  
+   This is just auto-generation.
+   You'll need to do detailed oto settings yourself while listening to the actual sounds.
+
+#### Generate standalone consonants
+
+Auto-generates consonant-only sounds (e.g., `k`, `s`, `t`).
+
+**Example:** For `ka.wav`
+- Checked: Generates both "ka" and "k"
+- Unchecked: Generates only "ka"
+
+Used for voicebank formats like CVVC that need standalone consonants.
+
+### Detailed Settings (in accordions)
+
+#### Vowels
+
+Set vowel aliases and their corresponding filename patterns.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '400px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-makepanel-makepanelvowelaccordion--expanded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Vowel settings"
+  />
+</div>
+
+**What the settings mean:**
+
+1. **Vowel alias**  
+   Set the character that corresponds to the V (vowel) part in VCV `[V CV]` or `[V C]`.
+   - Example: `a`, `i`, `u`, `e`, `o`
+
+2. **Types (suffix match), comma-separated**  
+   Specify using suffix matching which aliases lead to the next vowel, like `[a]` in `[a ka]`.
+   - If multiple, separate with `,` (comma)
+   - **Suffix matching** allows broad coverage with partial matches
+
+**Example:**
+
+```
+Vowel: a
+Types: a,ka,sa,ta,na
+```
+
+Setting "ka" in "Types" identifies the "ka" part in filename `_a ka sa ta na.wav` as vowel "a".  
+This auto-generates aliases like `[a sa]`.
+
+**Convenient uses of suffix matching:**
+
+- **Specify "ゃ"**: Covers "きゃ", "しゃ", "ちゃ" all at once
+- **Just "a"**: For romaji aliases, writing just `a` covers `[a]`, `[ka]`, `[sa]` all at once
+
+**Use cases:**
+
+This feature is set by default even for standard Japanese VCV. Customize the settings particularly for:
+
+- Small kana (ぁ, ぃ, etc.)
+- Non-Japanese voicebanks (alphabetic, Chinese, etc.)
+- Batch setting for palatalized sounds (きゃ, しゃ, etc.)
+
+#### Consonants
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '400px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-makepanel-makepanelconsonantaccordion--expanded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Consonant settings"
+  />
+</div>
+
+Set consonant aliases, their corresponding filename patterns, and average consonant length.
+
+:::info
+This setting is basically **for CVVC**.  
+VCV generation doesn't use consonant settings - everything is registered in exception settings (CVVC settings).
+:::
+
+**Settings:**
+
+1. **Consonant**  
+   Set the character that corresponds to the C (consonant) part in CVVC format `[VC CV]` or `[VC C]`.
+   - Example: `k`, `s`, `t`, `n`, `h`
+
+2. **Types (exact match), comma-separated**  
+   List the CV sounds that lead to the preceding VC.
+   - If multiple, separate with `,` (comma)
+   - **Exact match** only targets the specified CV sounds
+   - Normally, palatalized sounds and i-row use different consonants (`ky`, etc.) due to palatalization
+
+3. **Length (ms)**  
+   Specify the average consonant length in milliseconds.
+   - Plosives (k, t, p): about 40-60ms
+   - Fricatives (s, sh, h): about 80-100ms
+
+**Example:**
+
+```
+Consonant: k
+Types: ka,ku,ke,ko
+Length: 60ms
+```
+
+Setting "ka" in "Types" identifies the "ka" part in filename `_a ka sa ta na.wav` as consonant "k".  
+This auto-generates both `[a k]` (VC: vowel+consonant) and `[ka]` (CV: single sound) needed for CVVC format.
+
+"ki" is excluded due to palatalization, set separately as `ky` (e.g., `Consonant: ky, Types: ki`).
+
+> 💡 **What is CVVC**: A voicebank format combining two types: CV (single sounds) and VC (vowel+consonant).  
+> Example: Singing `ka` → `[a k]` (VC from vowel to consonant) + `[ka]` (CV from consonant to vowel)
+
+**Exception: When consonant field is blank**
+
+When you leave the consonant alias blank but fill in types, those sounds generate as **VCV instead of CVVC**.
+
+```
+Consonant: (blank)
+Types: a,i,u,e,o
+Length: 0ms
+```
+
+This generates VCV aliases like `[a a]` (won't generate VC like `[a a]`).
+
+**Why this setting exists:**
+
+Standard Japanese CVVC commonly uses a **mixed format** implementing some sounds (a-row, moraic nasal, etc.) as VCV.  
+This exception setting allows flexible customization of mixed VCV/CVVC formats.
+
+**About default settings:**
+
+Loading a Japanese VCV preset registers all expected sounds as exception settings.  
+The length value isn't used for exception settings, so it's `0ms`.
+
+**Use cases:**
+
+This feature is set by default even for standard Japanese CVVC (including special and palatalized consonants). Customize particularly for:
+
+- Adjusting consonant length to language or pronunciation characteristics
+- Using CVVC format for non-Japanese voicebanks
+- Customizing mixed VCV/CVVC formats
+
+#### Filename Replacement
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '400px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-makepanel-makepanelreplaceaccordion--expanded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Filename replacement settings"
+  />
+</div>
+
+Set conversion rules from filename to alias.
+
+While Japanese is the primary language in the UTAU world, English and multilingual voicebanks commonly use romaji filenames like `_a_a_i_a_u_e_a.wav` rather than Japanese characters.
+
+This feature converts romaji filenames to hiragana (Japanese),
+auto-generating aliases like `[a]` → `[あ]` or `[ka]` → `[か]`.
+You can also remove unnecessary symbols like underscores (`_`).
+
+**Example:**
+```
+Before: ka
+After: か
+Before: a
+After: あ
+Before: _
+After: (blank)
+```
+
+With these settings, filename `_a_ka.wav` converts to alias `a か`.
+
+> 💡 **Note:** Replacement rules apply top-to-bottom, and order affects results.
+> For example, if you register both `[a]→[あ]` and `[ka]→[か]`,
+> `[ka]` might become `[あ]` if you don't register `[ka]` first.
+> Always register longer strings (complex patterns) above shorter ones.
+
+---
+
+- Previous: [7-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs)
+- Next: [9.Editor Screen Basics](/docs/tutorial-en-09-editor-screen-basics--docs)
+- Tutorial Top: [1.Introduction](/docs/tutorial-en-01-introduction--docs)

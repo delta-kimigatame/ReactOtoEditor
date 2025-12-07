@@ -1,0 +1,120 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { EditorButton } from '../../../src/components/Editor/EditButton/EditorButton';
+import EditAttributesIcon from '@mui/icons-material/EditAttributes';
+
+<Meta title="Tutorial/en/10.Alias Edit Screen" />
+
+# Alias Edit Screen
+
+We explained basic editing in the editor screen in 09.
+Here we'll explain the "Alias Edit Screen" where you can do more detailed editing.
+
+## Opening the Alias Edit Screen
+
+Tap the <EditorButton size={24} icon={<EditAttributesIcon sx={{ fontSize: 16 }} />} title="Alias Edit" onClick={() => {}} /> **Alias Edit button** in the button area at the bottom of the screen.
+
+<iframe
+  src="iframe.html?id=components-aliasdialog-aliasdialog--opened&viewMode=story"
+  style={{ width: '100%', height: '500px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Alias edit screen"
+/>
+
+## Screen Layout
+
+The alias edit screen consists of these elements from top to bottom:
+
+### Alias Name Editing
+
+**Alias**
+- Shows the current alias name
+- Tap to enter a new name
+
+**Alias operations:**
+- **Change** - Change the alias name
+- **Duplicate** - Copy the current alias to create a new one
+- **Delete** - Delete the current alias
+
+### Numeric Parameter Input
+
+Edit all five parameters by entering numbers directly.
+
+- **Left blank (Offset)**
+- **Overlap**
+- **Preutterance**
+- **Fixed range (Consonant)**
+- **Right blank (Blank)**
+
+### Save Changes
+
+**Change button** - Save parameter changes and close the edit screen
+
+## How to Use
+
+### 1. Change Alias Name
+
+**Steps:**
+1. Enter new name in alias field
+2. Tap "Change" button
+
+> ⚠️ **Note**: You can't use the same alias name twice in the same audio file.
+
+### 2. Duplicate Alias
+
+**Steps:**
+1. Enter new alias name in alias field
+2. Tap "Duplicate" button
+3. A new alias is created with the same parameter values as the original
+
+**Use cases:**
+- **Add alternative readings**: Duplicate [お] to create [を]
+- **Add romaji aliases**: Duplicate [あ] to create [a]
+- **Create VC base**: Duplicate [a か] to create [a k], then adjust
+- **Create vowel connection CV**: Duplicate [あ] to create [* あ]
+
+> ⚠️ **Note**: You can't use the same alias name twice in the same audio file.
+
+> 💡 **Hint**: For duplicating multiple aliases at once, the table dialog's batch processing is convenient.
+
+### 3. Delete Alias
+
+**Steps:**
+1. Tap "Delete" button
+2. The current alias is immediately deleted
+
+> ⚠️ **Note**: Deleted aliases can't be recovered.
+
+### 4. Edit Parameters Numerically
+
+**Steps:**
+1. Enter numbers in each parameter text box (in milliseconds)
+2. After entering all values, tap "Change" button
+3. Returns to editor screen with changes applied
+
+**Benefits of numeric input:**
+- Set exact values
+- Convenient when you want the same values as other aliases
+- Directly input calculated values
+
+> 💡 **Hint**: Useful when tapping the screen to edit is difficult, or when you want precise values.
+
+## When to Use the Alias Edit Screen
+
+### Convenient when:
+
+**Want to duplicate or delete aliases:**
+- Want to create multiple aliases from one audio file (often use duplicate function)
+- Want to delete a failed duplicate and restore
+- Want to organize unnecessary aliases
+
+**Want to enter precise numbers:**
+- Want the same parameters as other aliases
+- Want to set calculated values
+
+**Can't select target parameter by screen tap:**
+- Preutterance and fixed range are too close - keep selecting preutterance when trying to touch fixed range
+- Still hard to touch even when zoomed in
+
+---
+
+- Previous: [09.Editor Screen Basics](/docs/tutorial-en-09-editor-screen-basics--docs)
+- Next: [11.Parameter Table and Batch Processing](/docs/tutorial-en-11-parameter-table-and-batch-processing--docs)

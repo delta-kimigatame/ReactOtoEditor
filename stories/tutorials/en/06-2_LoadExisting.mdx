@@ -1,0 +1,73 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/06-2.Load Existing" />
+
+# Loading an Existing Oto.ini
+
+If the folder contains an oto.ini file, you can load and edit it.
+This is the most common usage.
+
+## When to Use This Method
+
+- ✅ **Want to modify an oto.ini you already created**
+- ✅ **Want to adjust an oto.ini from a distributed voicebank**
+- ✅ **Template included in the zip with wav files**
+
+## Steps
+
+### 1. Choose Loading Method
+
+Select the "**Read Zip**" tab at the top of the dialog.
+
+This tab is automatically selected if the folder contains an oto.ini.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--zip-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Read Zip tab selection screen"
+  />
+</div>
+
+### 2. Verify Settings
+
+Aliases (sound names) and configuration values from the file are displayed in a list.
+
+In this preview screen:
+- **Check for garbled text**: Verify aliases and filenames display correctly
+- **Select character encoding**: Change encoding if text is garbled
+
+> 💡 **Hint**: Oto.ini files are usually saved in Shift-JIS (standard for Japanese Windows),
+> but if "あ" appears as "縺ゅ", try changing the encoding to "UTF-8" or another option.
+
+### 3. Click "OK" to Start Editing
+
+If everything looks good, tap "OK" to proceed to the editing screen.
+
+## If Oto.ini is Not Found
+
+If the folder doesn't contain an oto.ini, this tab cannot be used.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogtabpanelzip--nothing-oto&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Oto.ini not found screen"
+  />
+</div>
+
+Try these alternatives instead:
+
+- **[06-1.Loading from an External Template](/docs/tutorial-en-06-1-load-from-template--docs)** - Use another oto.ini as a template
+- **[06-3.Create New](/docs/tutorial-en-06-3-create-new--docs)** - Auto-generate configuration values
+
+## Next Steps
+
+After loading an existing oto.ini, make fine adjustments while listening to the actual sounds.
+The editor interface will be explained in detail in later tutorials.
+
+---
+
+- Previous Page: [06-1.Loading from an External Template](/docs/tutorial-en-06-1-load-from-template--docs)
+- Next Page: [06-3.Create New](/docs/tutorial-en-06-3-create-new--docs)
+- Editor usage: [09.Editor Basics](/docs/tutorial-en-09-editor-screen-basics--docs)

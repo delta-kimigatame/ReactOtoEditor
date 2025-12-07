@@ -1,0 +1,334 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/Appendix 03.Recording with a Smartphone" />
+
+# Appendix 03. Recording with a Smartphone
+
+This tutorial explains how to record UTAU voicebanks with a smartphone.
+We'll use the UTAU voicebank recording app **RecStar** to proceed with the Hello, UTAU World! kit.
+
+> 💡 **Note**: This appendix assumes people without computers who want to complete voicebank creation entirely on smartphones.
+
+## Preparation (Physical Environment)
+
+Before starting recording, prepare the following.
+
+### Wired Earphones or Headphones
+
+Prepare **wired** earphones or headphones that connect to your smartphone.
+
+**Why wired?**
+- Recording while playing guide BGM
+- Need to prevent guide BGM from entering phone mic
+- Sound delay makes recording difficult
+
+> ⚠️ **Note**: Wireless earphones (Bluetooth) have sound delay, unsuitable for recording.
+
+> 💡 **Hint**: If earphones have mic function, smartphones may mistakenly record with earphone mic. This can degrade sound quality or let guide BGM bleed in. If possible, recommend using music-only earphones or headphones without mic function.
+
+### Environment Where You Can Speak
+
+Recording involves energetically repeating sounds like "a— ka— ki— ku— ke— ko—", "i— sa— shi— su— se— so—".
+
+**What's needed:**
+- Explain to family and others beforehand
+- Choose times when you can speak freely
+- Have them understand you're recording if possible
+
+### (Ideally) Low-noise Environment
+
+For practice voicebanks, no need to be too careful, but these sounds interfere with recording:
+
+**Avoid:**
+- Train and car sounds
+- Insect sounds
+- Air conditioner and fan sounds
+- TV and conversation
+
+Choose quiet times and locations.
+
+### (Ideally) Low-reverb Environment
+
+In voice synthesis, reverb (echo) degrades quality.
+
+**Good environments:**
+- Record toward futons, curtains, and other fabric items
+- Spaces surrounded by cloth or blankets
+
+**Avoid:**
+- Bathrooms and toilets (strong reverb)
+- Center of large rooms
+- Recording directly toward walls
+
+## Preparation (Download Apps and Files)
+
+Download the following app and files.
+
+### RecStar App
+
+Download for your smartphone:
+
+- [RecStar (Android)](https://play.google.com/store/apps/details?id=com.sdercolin.recstar&hl=ja)
+- [RecStar (iOS)](https://apps.apple.com/jp/app/recstar/id6471727990)
+
+### Hello, UTAU World! Kit
+
+- [Hello, UTAU World!](https://bowlroll.net/file/318744)
+
+This kit includes recording list, guide BGM, and oto settings template.
+
+## Extracting Hello, UTAU World! Zip
+
+Extract the downloaded zip file.
+
+**Android:**
+
+1. Tap downloaded zip file
+2. Select "Extract" or "Unzip"
+3. Choose extraction destination folder (if unsure, "Downloads" folder is OK)
+
+**iOS:**
+
+1. Tap downloaded zip file
+2. Automatically extracts
+3. Viewable in "Files" app
+
+After extraction, these folders and files appear:
+
+```
+Hello UTAU World!_v110/
+  └ Hello UTAU World!/
+      ├ ガイドBGM/ (Guide BGM)
+      ├ 録音リスト/ (Recording Lists)
+      ├ otoiniテンプレート/ (oto.ini Templates)
+      ├ character txt テンプレート/ (character.txt Templates)
+      ├ character yaml テンプレート/ (character.yaml Templates)
+      ├ voice/
+      ├ テスト歌唱用データ/ (Test Singing Data)
+      └ readme（説明・利用規約など）.txt (readme - description and terms)
+```
+
+## Choose Guide BGM
+
+The `ガイドBGM` (Guide BGM) folder contains 5 types of BPM 120 guide BGM.
+
+**Types:**
+
+Each type has a folder with pitch-specific files inside.
+
+- **Ethnic** - C, E, G# pitches
+- **Pop** - A#, D, F# pitches
+- **Rock** - A, C#, F pitches
+- **Soft** - C, E, G# pitches
+- **Sweet** - A#, D, F# pitches
+
+**How to choose:**
+
+1. Play each guide BGM
+2. Try speaking while playing
+3. Choose the easiest to sing with (easiest to speak with)
+
+> 💡 **Hint**: Choose one matching your vocal range. No need to force high or low pitches.
+
+## Prepare Recording in RecStar
+
+### 1. Launch RecStar
+
+Open the app to see the session screen.
+
+<img src="/screenshot/01_recstar_session.png" alt="RecStar session screen" style={{ maxWidth: '400px', width: '100%', height: 'auto' }} />
+
+### 2. Create New Session
+
+Tap the **[+]** button at bottom right.
+
+### 3. Import Recording List
+
+Screen for choosing recording list appears.
+
+<img src="/screenshot/02_recstar_reclist_none.png" alt="RecStar recording list selection" style={{ maxWidth: '400px', width: '100%', height: 'auto' }} />
+
+1. Tap **[⋮]** at top right
+2. Select **[+ Import]**
+3. File selection screen appears
+
+**File location:**
+
+Open the extracted `Hello UTAU World!_v110` folder:
+
+```
+Hello UTAU World!_v110/
+  → Hello UTAU World!/
+    → 録音リスト/ (Recording Lists)
+      → まいこ製 最軽量リスト(切り出し単独音).txt
+```
+
+Select this file.
+
+> 💡 **Hint**: If lost in file selection, try looking in "Downloads" folder.
+
+### 4. Import Comment File
+
+After selecting recording list, asks "Import comment file?"
+
+1. Tap **[Yes]**
+2. Select `まいこ製 最軽量リスト(切り出し単独音)-comment.txt` in same folder
+
+> ⚠️ **Note**: If you tap [Yes] then cancel without selecting a file, the recording list itself also cancels. In that case, start over from step 3.
+
+> 💡 **Hint**: Comment files aren't distributed with all recording lists. If not available, choose [No].
+
+### 5. Select Recording List
+
+**[まいこ製 最軽量リスト(切り出し単独音)]** appears in recording list, so tap to select.
+
+<img src="/screenshot/03_recstar_reclist_loaded.png" alt="RecStar after loading recording list" style={{ maxWidth: '400px', width: '100%', height: 'auto' }} />
+
+### 6. Set Guide BGM
+
+Recording screen appears.
+
+1. Tap **[⋮]** at top right
+2. Select **[Set Guide BGM]**
+3. Select the guide BGM file you chose earlier
+
+**Guide BGM location:**
+
+```
+Hello UTAU World!_v110/
+  → Hello UTAU World!/
+    → ガイドBGM/ (Guide BGM)
+      → UTAU用ガイドBGM 120 (Type) ver - by まいこ/
+        → (Type) (Pitch).wav
+```
+
+**Examples:**
+- If chose Soft C:
+  - Folder: `UTAU用ガイドBGM 120 Soft ver - by まいこ`
+  - File: `Soft C.wav`
+- If chose Ethnic E:
+  - Folder: `UTAU用ガイドBGM 120 Ethnic ver - by まいこ`
+  - File: `Ethnic E.wav`
+
+### 7. Check Volume
+
+Confirm no sound leaking from earphones.
+
+<img src="/screenshot/04_rrecstar_recording_beforeRecording.png" alt="RecStar recording screen (before recording)" style={{ maxWidth: '400px', width: '100%', height: 'auto' }} />
+
+1. Tap **red circle button** (record button)
+2. Guide BGM plays, but **don't speak**, just listen
+3. When guide BGM ends, tap **red stop button**
+4. Recorded waveform displays at screen bottom
+5. Tap **play button** at waveform top left to hear recording
+
+**Check point:**
+
+If you hear guide BGM despite not speaking, sound is leaking from earphones.
+→ Lower smartphone volume.
+
+<img src="/screenshot/05_recstar_recording_afterRecording.png" alt="RecStar recording screen (after recording)" style={{ maxWidth: '400px', width: '100%', height: 'auto' }} />
+
+> 💡 **Hint**: During actual recording, also watch waveform size. If waveform displays at maximum, voice may be too loud. In that case, record from farther away from smartphone.
+
+## Recording
+
+Once prepared, start actual recording.
+
+### Recording Steps
+
+1. Tap **red circle button**
+2. Guide BGM plays, speak in rhythm
+3. When recording ends, tap **stop button**
+4. Confirm recording (as needed)
+5. Tap **[>]** button next to record button to advance to next line
+6. Repeat steps 1-5 until all recordings finish
+
+**For Hello, UTAU World!:**
+
+Record **23 lines** total. Recording time is **about 3-10 minutes** including retakes.
+
+> 💡 **Hint**: If you misspeak, don't advance - just **tap record button again** to redo as many times as needed.
+
+### Recording Tips
+
+- **Keep consistent mic distance**: Sound quality varies greatly with mic distance. If possible, place smartphone and maintain consistent distance
+- **Keep rhythm**: Vocalize in time with guide BGM
+- **Consistent volume**: Record at same volume for all lines
+- **Clear pronunciation**: Pronounce so differences like "a", "ka", "sa" are clear
+- **Don't rush**: If you misspeak, you can redo
+
+## Save Recorded Files as Zip
+
+After all recordings finish, save files as zip.
+
+### 1. Choose Export
+
+1. Tap **[⋮]** at top right
+2. Select **[Export]**
+
+### 2. Choose Destination Folder
+
+Choose folder to save recorded voicebank.
+
+**Recommended destinations:**
+
+- **Android**: "Downloads" folder or "Documents" folder
+- **iOS**: "On My iPhone" or "iCloud Drive" in "Files" app
+
+> 💡 **Hint**: If unsure, choosing "Downloads" folder makes it easy to find later.
+
+After choosing folder, recorded files save.
+
+### 3. Create Zip File
+
+Make the saved folder into a zip file.
+
+**Android:**
+
+1. Open file manager app ("Files", "My Files", etc.)
+2. Long-press saved folder
+3. Select "Compress" or "Zip" from menu
+4. Zip file creates
+
+**iOS:**
+
+1. Open "Files" app
+2. Long-press saved folder
+3. Select "Compress" from menu
+4. Zip file creates
+
+> 💡 **Hint**: Rename zip file to something recognizable (e.g., `MyVoicebank_20250107.zip`).
+
+## Next Step: Oto Settings in LABERU
+
+After recording, proceed with oto settings in LABERU.
+
+1. Open LABERU
+2. Load created zip file (see [04.Load Voicebank](/docs/tutorial-en-04-load-voicebank--docs))
+3. Use Hello, UTAU World! template for oto settings (see [06-1.Load External oto.ini](/docs/tutorial-en-06-1-load-from-template--docs))
+
+**Template location:**
+
+```
+Hello UTAU World!_v110/
+  → Hello UTAU World!/
+    → otoiniテンプレート/ (oto.ini Templates)
+      → BPM120用/ (For BPM120)
+        → oto.ini
+```
+
+Choose template matching RecStar guide BGM BPM.
+
+- If guide BGM was 120 (normally this): `BPM120用/oto.ini` (For BPM120)
+- If guide BGM was 100: `BPM100用/oto.ini` (For BPM100)
+
+Load this file as template.
+
+---
+
+Now you can complete voicebank recording to oto settings entirely on smartphone!
+
+---
+
+- Previous: [Appendix 02.Choosing Recording Lists and Guide BGM](/docs/tutorial-en-appendix-02-choosing-recording-lists-and-guide-bgm--docs)

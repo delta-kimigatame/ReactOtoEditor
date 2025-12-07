@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/15.Save and Download" />
+
+# Save and Download
+
+Let's learn how to save your edited oto settings and make them usable in UTAU.
+
+## Auto-save Feature
+
+This app **automatically saves** your edits.
+
+### When Saving Occurs
+
+When you change parameters, they're immediately saved in the browser.
+
+**What's saved:**
+- All alias parameters (left blank, fixed range, right blank, preutterance, overlap)
+- Alias name changes
+
+**What's not saved:**
+- Currently selected record (alias)
+
+**Notes:**
+- Clearing browser cache may erase saved content
+- We recommend regularly downloading backups
+
+## Download Function
+
+You can download your edited oto settings file.
+
+<iframe
+  src="iframe.html?id=components-header-headermenu--opened-menu-with-oto&viewMode=story"
+  style={{ width: '100%', height: '500px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Download menu"
+/>
+
+### Download Types
+
+#### 1. Download oto.ini File
+
+Downloads only the oto settings file (oto.ini).
+
+**How to use:**
+
+1. Click the **Download button** (down arrow icon) in the header
+2. Select "**Download oto.ini**"
+3. File downloads
+
+**Downloaded file:**
+- `oto.ini`: Oto settings file
+
+**Use case:**
+
+Use this to backup in-progress work.
+
+> 💡 **Hint**: Regularly download oto.ini and save to your phone or cloud storage for safety.
+
+#### 2. Download Zip File
+
+Downloads oto settings file and all audio files in a zip.
+
+**Use case:**
+
+Use this to download the final product when all oto settings are complete.
+
+**How to use:**
+
+1. Click the **Download button** in the header
+2. Select "**Download Zip**"
+3. Download settings screen appears
+
+<iframe
+  src="iframe.html?id=components-downloadzipdialog--many-directories&viewMode=story"
+  style={{ width: '100%', height: '500px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Zip download settings"
+/>
+
+**Download settings:**
+
+- **One target folder**: Click the "**Download zip**" button immediately
+- **Multiple target folders**: Confirm each folder's settings then click "**OK**"
+
+**About oto.ini settings:**
+
+Each folder automatically selects oto.ini in this priority order:
+
+1. Current oto.ini (what you were editing)
+2. Saved oto.ini (if you have edit history)
+3. Original oto.ini (if it existed in the zip)
+4. None (folder without oto.ini)
+
+Usually just clicking OK as-is works fine.
+
+**Downloaded file:**
+- Downloads with the same filename as the original zip file
+
+> 💡 **Hint**: Zip files bundle oto settings and audio files together, convenient for distributing completed voicebanks.
+
+---
+
+- Previous: [14.Sound Types (Advanced)](/docs/tutorial-en-14-sound-types-advanced--docs)
+- Next: [16.After Oto Settings](/docs/tutorial-en-16-after-oto-settings--docs)

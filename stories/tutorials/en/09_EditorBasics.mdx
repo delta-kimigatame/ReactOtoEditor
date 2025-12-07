@@ -1,0 +1,252 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { PlayButton } from '../../../src/features/Editor/EditButtn/PlayButton';
+import { PlayBeforePreutterButton } from '../../../src/features/Editor/EditButtn/PlayBeforePreutterButton';
+import { PlayAfterPreutterButton } from '../../../src/features/Editor/EditButtn/PlayAfterPreutterButton';
+import { PrevAliasButton } from '../../../src/features/Editor/EditButtn/PrevAliasButtn';
+import { NextAliasButton } from '../../../src/features/Editor/EditButtn/NextAliasButton';
+import { EditorButton } from '../../../src/components/Editor/EditButton/EditorButton';
+import LockIcon from '@mui/icons-material/Lock';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import EditAttributesIcon from '@mui/icons-material/EditAttributes';
+import TableViewIcon from '@mui/icons-material/TableView';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+
+<Meta title="Tutorial/en/09.Editor Screen Basics" />
+
+# Editor Screen Basics
+
+When you load a project, the editor screen appears.
+Here we'll explain the editor screen layout and basic controls.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', width: '100%', height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5'}}>
+  <iframe 
+    src="iframe.html?id=app--editor-view-with-data&viewMode=story" 
+    style={{width: '100%', height: '125%', border: 'none', pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'center'}}
+    title="Full editor screen"
+  />
+</div>
+
+## Editor Screen Layout
+
+The editor screen consists of three main areas.
+
+### 1. Header Area (Top of Screen)
+
+The top of the screen includes:
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '80px'}}>
+  <iframe 
+    src="iframe.html?id=components-header-header--with-record&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Header area"
+  />
+</div>
+
+- **Current alias/filename** - Shows the alias and filename you're currently editing
+- **Menu button (☰)** - Opens the settings menu
+
+#### Header Menu
+
+Tapping the menu button displays:
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-header-headermenu--opened-menu-with-oto&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Header menu"
+  />
+</div>
+
+- **Select the folder to oto** - Change the target folder
+- **Download oto.ini** - Download your edited oto settings
+- **Download Zip** - Download oto settings and audio files together
+- **Language setting** - Switch display language (Japanese/English/Chinese)
+- **Color setting** - Change theme color
+- **Mode setting** - Switch between dark/light mode
+- **Clear this app caches** - Clear browser-saved data
+- **Show Log** - Display error logs
+
+### 2. Waveform Display Area
+
+Displays the audio file waveform.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-editor-canvasbase--gray-theme&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Waveform display area"
+  />
+</div>
+
+**What's displayed:**
+- **Waveform graph** - Audio amplitude shown over time
+- **Spectrogram** - Frequency components shown in color (most important for oto settings)
+- **Oto setting regions** - Color-coded regions based on parameters
+  - Green hatching (left): Offset (left blank) - from wav start to set value
+  - Yellow hatching (right): Blank (right blank) - from wav end to set value
+  - Red vertical line: Preutterance
+  - Green vertical line: Overlap
+  - Blue vertical line: Consonant (fixed range)
+
+**Reading the waveform:**
+- **Vertical axis**: Volume (amplitude)
+- **Large waveform sections**: Loud sound
+- **Small waveform sections**: Quiet sound
+- **No waveform**: Silence
+
+**Reading the spectrogram:**
+- **Horizontal axis**: Time (progresses left to right)
+- **Vertical axis**: Frequency (higher = higher pitch)
+- **Color intensity**: Darker colors = louder
+
+> 💡 **Important**: Where the spectrogram color balance changes shows where pronunciation changes.
+> This is your biggest clue for oto settings.
+
+### 3. Parameter Area
+
+View and edit the five oto parameters numerically.
+
+**Information displayed:**
+- **Filename** - Audio file name
+- **Alias** - Alias name
+- **Offset (left blank)** - Sound start position
+- **Overlap** - Overlap position with previous sound
+- **Preutterance** - Vocalization start position
+- **Consonant (fixed range)** - Consonant length
+- **Blank (right blank)** - Sound end position
+
+<iframe
+  src="iframe.html?id=components-editor-editortable--default&viewMode=story"
+  style={{ width: '100%', height: '200px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Parameter area display"
+/>
+
+### 4. Button Area
+
+The bottom of the editor screen has various buttons for editing.
+Layout changes based on screen size, but these functions are available.
+
+#### Playback Buttons
+
+**Preutterance is extremely important** in oto settings. Your skill at oto settings largely depends on whether you can set preutterance correctly.
+
+So we provide various options to check if preutterance is at the right position.
+
+**Preutterance basics:**
+- Usually, preutterance is placed at the boundary between consonant and vowel (or vowel and vowel)
+- If this position is wrong, rhythm will be off
+
+**How to use each button:**
+
+- <PlayBeforePreutterButton size={24} iconSize={16} /> **Play left blank~preutterance** - Check the sound entrance
+  - **Check point**: The following vowel shouldn't play
+  - If you hear the vowel, preutterance is too late
+
+- <PlayAfterPreutterButton size={24} iconSize={16} /> **Play preutterance~right blank** - Check the sustain portion
+  - **Check point**: The consonant shouldn't play
+  - If you hear the consonant, preutterance is too early
+
+- <PlayButton size={24} iconSize={16} metronome={null} /> **Metronome playback** - Check rhythm while editing
+  - **Check point**: Does it sound natural overall
+  - Use this for final confirmation
+
+> 💡 **Hint**: Depending on pronunciation style, consonant to vowel may transition slowly.
+> For such sounds, checking before/after preutterance individually may not feel quite right.
+> In those cases, if the overall rhythm sounds good with metronome playback, that's OK.
+
+#### Control Buttons
+
+This editor centers on **preutterance** for editing.
+When you move preutterance, other parameters move with it.
+
+**Normal operation:**
+- Tap the screen and the nearest parameter is selected
+- Drag your finger to adjust the selected parameter
+
+**What is Tap Mode:**
+
+- <EditorButton size={24} icon={<TouchAppIcon sx={{ fontSize: 16 }} />} title="Tap Mode" onClick={() => {}} /> **Tap Mode** - Set preutterance just by tapping
+
+In VCV, you often adjust **only preutterance position** while keeping auto-generated parameters.
+With Tap Mode on, preutterance moves to where you tap, so you can adjust quickly.
+
+**What is Overlap Lock:**
+
+- <EditorButton size={24} icon={<LockIcon sx={{ fontSize: 16 }} />} title="Overlap Lock" onClick={() => {}} /> **Overlap Lock** - Auto-adjust overlap
+
+In VCV and VC, **overlap at 1/3 of preutterance** is the standard.
+With Overlap Lock on:
+- You can't touch overlap directly
+- When you move preutterance, overlap automatically adjusts to 1/3 position
+
+> 💡 **Recommendation**: For VCV, turn on both Tap Mode and Overlap Lock for efficiency.
+
+#### Advanced Editing Buttons
+
+Basically you proceed by tapping the screen to edit, but sometimes you need fine adjustments.
+
+- <EditorButton size={24} icon={<EditAttributesIcon sx={{ fontSize: 16 }} />} title="Alias Edit" onClick={() => {}} /> **Show alias edit screen** - Detailed alias name and parameter editing
+  - Change, duplicate, or delete alias names
+  - Fine-tune all five parameters with numeric input
+  - See [10.Alias Edit Screen](/docs/tutorial-en-10-alias-edit-screen--docs) for details
+
+- <EditorButton size={24} icon={<TableViewIcon sx={{ fontSize: 16 }} />} title="Parameter Table" onClick={() => {}} /> **Show parameter table** - View all parameters
+  - Check all parameters in a list
+  - Tap to jump directly to any parameter
+  - Powerful batch processing for all aliases
+  - See [11.Parameter Table and Batch Processing](/docs/tutorial-en-11-parameter-table-and-batch-processing--docs) for details
+
+#### Zoom
+
+- <EditorButton size={24} icon={<ZoomInIcon sx={{ fontSize: 16 }} />} title="Zoom In" onClick={() => {}} /> **Zoom in button** - Enlarge waveform display
+- <EditorButton size={24} icon={<ZoomOutIcon sx={{ fontSize: 16 }} />} title="Zoom Out" onClick={() => {}} /> **Zoom out button** - Reduce waveform display
+
+> ⚠️ **Note**: Pinch zoom is not supported.
+
+#### Navigation Buttons
+
+- <PrevAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **Previous** - Move to previous alias
+- <NextAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **Next** - Move to next alias
+
+## Basic Editing Flow
+
+Oto settings typically follow this flow.
+
+### Step 1: Check rough position in spectrogram
+
+First, look at the spectrogram (frequency components shown in color) and roughly position preutterance.
+Where the color balance changes is where the sound changes.
+
+> 💡 See these tutorials for tips on reading spectrograms by sound type:
+> - [13.Sound Types (Basic)](/docs/tutorial-en-13-sound-types-basic--docs)
+> - [14.Sound Types (Advanced)](/docs/tutorial-en-14-sound-types-advanced--docs)
+
+### Step 2: Fine-tune preutterance with playback buttons
+
+- Use <PlayBeforePreutterButton size={24} iconSize={16} /> and <PlayAfterPreutterButton size={24} iconSize={16} /> while fine-tuning preutterance
+- Find a position that sounds right from both before and after
+
+### Step 3: Adjust other parameters
+
+Adjust offset, overlap, consonant, and blank as needed.
+
+> 💡 See [12.Basic Oto Patterns](/docs/tutorial-en-12-basic-oto-patterns--docs) for how to set each parameter.
+
+### Step 4: Final check
+
+Use <PlayButton size={24} iconSize={16} metronome={null} /> metronome playback to confirm the overall rhythm is correct.
+
+> 💡 **Tip**: Once you get the hang of it, you can judge from the spectrogram alone.
+> If you're confident, you can skip playback and move on.
+
+### Step 5: Move to next alias
+
+Click <NextAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **Next** button to move to the next alias and repeat from Step 1.
+
+Once all aliases are done, oto settings are complete!
+
+---
+
+- Previous: [8.Advanced Auto-Generation Settings](/docs/tutorial-en-08-advanced-auto-generation-settings--docs)
+- Next: [10.Alias Edit Screen](/docs/tutorial-en-10-alias-edit-screen--docs)

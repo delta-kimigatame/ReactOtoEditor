@@ -1,0 +1,222 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/13.Sound Types (Basic)" />
+
+# Sound Types (Basic)
+
+Oto settings methods vary by consonant type.
+This tutorial explains key points for each common consonant type.
+
+> **Note:** This tutorial assumes CV settings. For VCV, only refer to the **preutterance section** of each explanation.
+
+> H-row, y-row, and w-row have many examples, so they're explained in [14.Sound Types (Advanced)](/docs/tutorial-en-14-sound-types-advanced--docs).
+
+## Fricatives
+
+Fricative consonants strongly produce high frequencies (spectrogram shows darker colors at the top).
+Consonants tend to be relatively long.
+
+**Sounds using this pattern:**
+- s-row, z-row
+- sh-row, j-row (sha, ja)
+- hy-row (hya)
+
+### S-row Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--fricative-s&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Fricative: sa"
+/>
+
+CV "sa" settings example.
+
+### Z-row Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--fricative-z&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Fricative: za"
+/>
+
+CV "za" settings example.
+
+**Key points:**
+
+- **Left blank**: Must include the entire consonant, or it sounds like a different sound. While overly long consonants sound sluggish, prioritize not cutting the consonant start.
+
+- **Overlap**: Set to about 1/3 of preutterance. For CV, overlap determines sound attack time. Making overlap too large makes the consonant head unclear, potentially sounding different, so don't raise it too much.
+
+- **Preutterance**: The vowel begins where low frequencies start (where darker colors appear at the bottom of the spectrogram), so align preutterance here.
+
+## Nasals
+
+Nasal consonants characteristically produce weak sound in low frequencies and almost none in high frequencies (spectrogram shows light colors at the bottom, nearly colorless at the top).
+
+**Sounds using this pattern:**
+- n-row, m-row
+- ny-row (nya), my-row (mya)
+
+### M-row Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--nasal-m&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Nasal: ma"
+/>
+
+CV "ma" settings example.
+
+### N-row Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--nasal-n&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Nasal: na"
+/>
+
+CV "na" settings example.
+
+**Key points:**
+
+- **Left blank**: Basically include the entire consonant, but nasals still sound the same with slightly cut consonant starts, so you can cut if the consonant is too long.
+
+- **Overlap**: Set to about 1/3~1/2 of preutterance. Setting it slightly longer sounds smoother.
+
+- **Preutterance**: As the vowel begins, darker colors also appear in the mid-range of the spectrogram, so set it here.
+
+## Voiceless Plosives
+
+Plosives consist of a section with strong sound across low to high frequencies (entire spectrogram showing dark colors), and **silent section just before**.
+It's important to properly reflect the preparatory silent section in oto settings.
+
+**Sounds using this pattern:**
+- k-row, ky-row (kya)
+- t-row, ty-row (tya)
+- p-row, py-row (pya)
+- ch-row (cha), ts-row (tsa)
+
+> **Note:** Ch-row and ts-row show fricative-like spectrogram after silence (affricates), but the concept is the same - represent the silent section in settings.
+
+### K-row Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--plosive-k&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Voiceless plosive: ka"
+/>
+
+CV "ka" settings example.
+
+**Key points:**
+
+- **Left blank**: Set at where sound begins.
+
+- **Overlap**: Set to about -20~-50. This negative overlap creates the preparatory section.
+
+- **Preutterance**: As the vowel begins, high-frequency sounds weaken in the spectrogram, so set it here.
+
+## Voiced Plosives
+
+**Sounds using this pattern:**
+- g-row, gy-row (gya)
+- d-row, dy-row (dya)
+- b-row, by-row (bya)
+- r-row, ry-row (rya)
+
+> **Note:** If g-row is nasalized, use same settings as nasals.
+
+### G-row Example (Not Nasalized)
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--plosive-g&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Voiced plosive: ga"
+/>
+
+CV "ga" settings example (not nasalized).
+
+When not nasalized, settings resemble voiceless plosives.
+This shows plosive settings without making overlap negative.
+
+**Key points:**
+
+- **Left blank**: Set before sound begins, including preparatory sound in the oto.
+
+- **Overlap**: Set to 0.
+
+- **Preutterance**: As the vowel begins, high-frequency sounds weaken in the spectrogram, so set it here.
+
+### G-row Example (Nasalized)
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--plosive-ng&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Nasalized: ga"
+/>
+
+CV "ga" settings example (nasalized). When nasalized, use same settings as nasals.
+
+## Vowels
+
+Vowels characteristically show dark colors in low-to-mid range.
+Settings methods differ between CV and VCV.
+
+**Sounds using this pattern:**
+- a-row (a, i, u, e, o)
+- n (moraic nasal)
+
+### CV Case
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--blank-range-stable&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="CV vowel: a"
+/>
+
+CV "a" settings example.
+
+**Key points:**
+
+- **Left blank**: Set where sound begins.
+
+- **Overlap**: Set to 0.
+
+- **Preutterance**: Set to 0.
+
+### VCV: Same Vowel Repeating
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vowel-a-a&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VCV vowel: a a"
+/>
+
+VCV "a a" settings example. Settings when the same vowel repeats.
+
+If recorded correctly, "aa" should be pronounced as "a—" (if pronounced with a break like "a, a", better to re-record).
+As long as all parameters fit within these 2 beats of "a", you don't need to be too particular about settings.
+
+### VCV: Different Vowels
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vowel-a-i&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VCV vowel: a i"
+/>
+
+VCV "a i" settings example. Settings when different vowels follow.
+
+**Key points:**
+
+Vowel sections all produce dark colors in low-to-mid range, plus they transition smoothly from previous to next sound, making settings somewhat difficult.
+
+First identify that the spectrogram shows **[previous vowel] - [transition section] - [next vowel]**.
+Place preutterance somewhere in this transition section, using playback buttons to find the right timing while listening.
+
+The example above sets it where the transition ends and clearly becomes the next vowel.
+
+---
+
+- Previous: [12.Basic Oto Patterns](/docs/tutorial-en-12-basic-oto-patterns--docs)
+- Next: [14.Sound Types (Advanced)](/docs/tutorial-en-14-sound-types-advanced--docs)

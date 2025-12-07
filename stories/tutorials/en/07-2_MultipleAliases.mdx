@@ -1,0 +1,120 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/07-2.Multiple Aliases" />
+
+# Multiple Aliases (Advanced Auto-Configuration)
+
+Oto configuration can be quite tedious, and automatic analysis doesn't always work perfectly.
+So the UTAU community developed a technique: record to a steady rhythm with guide BGM, making oto configuration much easier.
+
+This recording method is used for VCV and CVVC, and even for CV voicebanks - the "On-gen-toro-saba" community recommends this method even for single sounds.
+
+## Requirements for Using This Feature
+
+- ✅ **Recorded with guide BGM** - Recording synchronized to metronome or guide BGM
+- ✅ **Understanding guide BGM specs** - Know the BPM and recording start timing
+
+> 💡 **Toro-saba Tutorial**: [Hello, UTAU World!](https://w.atwiki.jp/vbmaker/pages/43.html) provides
+> recording lists with guide BGM. Recommended for beginners.
+
+## When to Use This Method
+
+- ✅ **Creating VCV voicebanks** - E.g., "a i.wav" contains both "a あ" and "- い"
+- ✅ **CV recorded with guide BGM** - When recorded to rhythm
+- ✅ **Multiple sounds in one wav** - Other voicebank formats
+
+## Steps
+
+### 1. Choose Loading Method
+
+Select the "**generate**" tab at the top of the dialog.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--make-tab-multi-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Generate tab, multiple aliases selection screen"
+  />
+</div>
+
+### 2. Choose Alias Configuration Method
+
+Select "**Multiple aliases from one wav file**" as the generation method.
+
+This method uses guide BGM rhythm information to automatically extract multiple aliases from one wav file.
+
+### 3. Select Voicebank Format
+
+Choose the format you want to create:
+
+- **JP-CV** - Basic format with one sound per file
+- **JP-VCV** - VCV format continuous sounds
+- **JP-CVVC** - Format with finer control
+
+Alias naming conventions and extraction positions are automatically set for each format.
+
+> 💡 **For Advanced Users**: Using mkototemp.ini files allows even more detailed alias configuration.
+> We recommend trying this after you're comfortable with basic usage.
+
+### 4. Guide BGM Settings
+
+Click "**detail**" to expand the guide BGM settings.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-makepanelsettingsaccordion--expanded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Settings detail expanded screen"
+  />
+</div>
+
+Here you'll enter the guide BGM settings used during recording.
+
+#### Basic Settings (3 Numbers)
+
+These are required settings:
+
+- **recording bpm**: Tempo of the guide BGM used (e.g., 120)
+- **Length from wav start to first beat (ms)**: Time from recording start to first sound (e.g., 1000ms = 1 second)
+- **Number of duplicate aliases created**: How many same-pitch sounds to create (usually 2, 0 for unlimited)
+
+> 💡 **How to Find Values**: These values are often listed where you downloaded the guide BGM.
+> They may also be in text files (readme.txt) or config files (mkototemp.ini) distributed with the guide BGM.
+
+#### Advanced Settings
+
+Adjust these as needed:
+
+**Checkboxes:**
+- **An underbar in the middle of a file name is treated as a 1-beat rest**: Treat `_` as rests
+- **Add - to the alias at the beginning of wav**: Add `-` to initial sounds (e.g., `- a`)
+- **Generate a wav head alias**: Auto-generate initial sounds
+- **Generate VCV**: Generate VCV format continuous sounds
+- **Generate only consonant**: Generate consonant-only sounds
+
+**Detailed Settings (in accordion):**
+- **vowel**: Set vowel alias and type mappings
+- **consonant**: Set consonant alias, types, and average length
+- **replace filename**: Set filename to alias conversion rules
+
+> 💡 **For Beginners**: Start by entering just the 3 basic numbers and leave other items at default.
+> Try adjusting advanced settings once you're comfortable with basic usage.
+
+> 📝 For detailed parameter meanings, see **[03.What is Oto.ini?](/docs/tutorial-en-03-what-is-oto--docs)**
+
+### 5. Click "generate" to Start Editing
+
+Once settings are decided, tap the "**generate**" button.
+LABERU will automatically create the oto.ini and proceed to the editing screen.
+
+## More Detailed Settings
+
+Once comfortable with multiple aliases, you can fine-tune initial parameter values for auto-generation:
+
+- **[08.Advanced Customization](/docs/tutorial-en-08-advanced-auto-generation-settings--docs)** - Specify each initial parameter value for auto-generation
+
+---
+
+- Previous Page: [07-1.Loading from History](/docs/tutorial-en-07-1-load-from-history--docs)
+- Next Page: [08.Advanced Customization](/docs/tutorial-en-08-advanced-auto-generation-settings--docs)
+- Editor usage: [09.Editor Basics](/docs/tutorial-en-09-editor-screen-basics--docs)

@@ -1,0 +1,224 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/Appendix 02.Choosing Recording Lists and Guide BGM" />
+
+# Appendix 02. Choosing Recording Lists and Guide BGM
+
+Before starting oto settings, you first need to record your voicebank.
+Here we'll explain recording for Japanese voicebanks.
+
+> 💡 **Note**: This appendix only covers **Japanese voicebanks**. Other languages aren't explained.
+
+## Types of Voicebank Formats
+
+Japanese UTAU voicebanks mainly have three formats.
+
+### CV (Single Sounds)
+
+Format handling one sound at a time like "a", "ka".
+
+**Advantages:**
+- Easiest to start with
+- Gets characteristic UTAU sound quality
+
+**Disadvantages:**
+- Harder to make sound natural compared to other recording methods
+
+Good starting point for first-time voicebank creation.
+
+### VCV (Connected Sounds)
+
+Format based on previous vowel + one syllable, like "a ka", "i sa".
+Used by many voicebanks.
+
+**Advantages:**
+- Most natural singing
+- Widely used
+- Superior to CV and CVVC
+
+**Disadvantages:**
+- More sounds to record
+
+Currently mainstream format. Choose this if unsure which to use.
+
+### CVVC
+
+Originally means CV-VC. Uses two sound types: CV (single sounds) and VC (previous vowel + consonant).
+In practice, many voicebanks mix VCV and CVVC portions.
+
+**Advantages:**
+- Create more natural voicebank than CV with less recording than VCV
+- Superior to CV
+
+**Disadvantages:**
+- Requires some technical skill to use well
+- More to learn for oto settings
+
+Intermediate format. Suitable when wanting to reduce recording volume.
+
+## CV Recording Styles
+
+Two styles for recording CV.
+
+### 1wav=1sound Format
+
+Extract "a" from `a.wav` format.
+
+**Suitable when:**
+- Can't use guide BGM
+- Want to record long sustained tones
+
+### Continuous Recording Format
+
+Extract "a", "ka", "ki", "ku", "ke", "ko" from `_a ka ki ku ke ko.wav` format.
+
+**Advantages:**
+- Saves time over 1wav=1sound
+- Since CVVC and VCV necessarily use this method, good practice
+
+Continuous recording format is recommended even for CV.
+
+## Mora Count for CVVC and VCV
+
+When recording VCV or CVVC, decide how many syllables (morae) per wav file.
+
+### Mora Count Options
+
+Recording lists range from **about 3 to 16 morae**.
+
+- **3 morae**: Theoretical lists, rarely actually used
+- **5-8 morae**: Practically convenient range
+- **7-8 morae**: Most mainstream (standard)
+- **12-15 morae**: Some record this many, but quite advanced
+
+### Basic Concept
+
+- **Higher mora count** = more efficient recording
+- **Choose based on lung capacity**. Consider lower mora count if lacking confidence in lung capacity
+
+**Recommendation:**
+
+Start with **7-mora or 8-mora** lists. This is current mainstream.
+
+Examples:
+- 7 morae: `- a ka sa ta na ha` (7 syllables)
+- 8 morae: `- a ka ki ku ke ko ka` (8 syllables)
+
+> 💡 **Hint**: No need to force high mora counts. 7-8 morae produce sufficient quality voicebanks.
+
+## Guide BGM BPM
+
+When recording, using guide BGM (metronome sound) lets you record at consistent rhythm.
+
+### BPM Options
+
+Guide BGM ranges from **about BPM 90 to 180**.
+
+- **BPM 90-100**: Quite slow (rarely used recently)
+- **BPM 120-130**: Standard (most common)
+- **BPM 150-160**: Fast (some record many, but advanced)
+- **BPM 180**: Very fast (special use)
+
+### BPM Characteristics
+
+- **Slower** requires more lung capacity
+- **Too fast** increases misreading risk
+- **Too fast** increases correction points in VCV oto settings (see [12.Basic Oto Patterns](/docs/tutorial-en-12-basic-oto-patterns--docs))
+
+**Recommendation:**
+
+Start with **BPM 120 or 130**. Both are standard and widely used.
+
+- **BPM 120**: Slower standard
+- **BPM 130**: Slightly faster standard
+
+> 💡 **Hint**: No need to force fast BPM. BPM 120 or 130 produce sufficient quality voicebanks.
+
+> ⚠️ **Note**: Too fast BPM requires adjusting offset (left blank) in VCV oto settings. Recommend slower BPM initially.
+
+### Guide BGM and Recording List Consistency
+
+**Important:** Guide BGM has settings for "which mora count recording".
+
+If recording list is 7 morae, must use **7-mora guide BGM**.
+Using guide BGM with mismatched mora count won't work for recording.
+
+> ⚠️ **Always confirm**: Check that recording list and guide BGM mora counts match.
+
+## Getting Recording Lists and Guide BGM
+
+Get recording lists and guide BGM from these sites.
+
+### UTAU Voicebank Creation Wiki
+
+Various format recording lists and guide BGM published.
+
+- [UTAU Voicebank Creation Wiki](https://w.atwiki.jp/vbmaker/)
+
+**Main content:**
+- CV lists
+- VCV lists (7 morae, 8 morae, etc.)
+- CVVC lists
+- Guide BGM (various BPM)
+
+> 💡 **Hint**: First check the wiki to find lists that suit you.
+
+### Consult Community
+
+If unsure about choosing recording lists or BPM, consult the community.
+
+- [UTAU Voicebank Creation Discord Server (Toro-saba)](https://discord.com/invite/wm87qFVpQB)
+
+You can hear other voicebank creators' experiences.
+
+## Summary: First Steps
+
+Recommended method for creating your first voicebank.
+
+### Hello, UTAU World! Test Voicebank Recording Kit (Most Recommended)
+
+Beginner kit provided by **"UTAU Voicebank Creation Server"** (aka Toro-saba).
+
+- [Hello, UTAU World! Tutorial](https://w.atwiki.jp/vbmaker/pages/43.html)
+
+**Kit contents:**
+- Recording list (CV with continuous recording)
+- Guide BGM
+- Oto settings template (oto.ini)
+
+Everything bundled, so using this kit ensures you can start reliably.
+
+**How to use:**
+1. Download kit
+2. Record following recording list while listening to guide BGM
+3. Load template in LABERU for oto settings (see [06-1.Load External oto.ini](/docs/tutorial-en-06-1-load-from-template--docs))
+
+> 💡 **Strongly recommended**: Beginners should first complete one with this kit. After understanding the overall flow, trying other formats will go smoothly.
+
+### Other Options
+
+Combinations when starting without the kit:
+
+**Trying VCV:**
+- Format: VCV
+- List: 7 morae
+- Guide BGM: BPM 120
+
+**Reducing recording volume:**
+- Format: CVVC
+- List: CVVC list
+- Guide BGM: BPM 120 or 130
+
+> ⚠️ **Note**: These methods require creating oto settings from scratch (see [7-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs)). Difficult for beginners, so recommend Hello, UTAU World! kit first.
+
+---
+
+This app (LABERU) is a tool for oto settings after recording.
+For recording, refer to the above wiki and community.
+
+> 💡 **Recording with smartphone**: [Appendix 03.Recording with a Smartphone](/docs/tutorial-en-appendix-03-recording-with-a-smartphone--docs) explains recording with RecStar in detail.
+
+---
+
+- Previous: [Appendix 01.Keyboard Shortcuts](/docs/tutorial-en-appendix-01-keyboard-shortcuts--docs)
+- Next: [Appendix 03.Recording with a Smartphone](/docs/tutorial-en-appendix-03-recording-with-a-smartphone--docs)

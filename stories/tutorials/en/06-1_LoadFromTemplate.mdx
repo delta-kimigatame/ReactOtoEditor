@@ -1,0 +1,121 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/06-1.Load From Template" />
+
+# Loading from an External Template
+
+This is the most recommended method for first-time UTAU voicebank creators.
+By using an already completed oto.ini as a template, you can easily configure your voicebank.
+
+## Why This Method is Recommended
+
+**"UTAU Voicebank Creation Server"** (commonly known as "On-gen-toro-saba" or "Toro-saba" in Japanese)
+recommends this method for beginners:
+
+- ✅ **Use proven configurations as-is** - Learn from already-tuned oto.ini files
+- ✅ **Less prone to mistakes** - More reliable than starting from scratch
+- ✅ **Works with recording lists** - If you record with the same list, it works directly
+
+> 💡 **Toro-saba Tutorial**: [Hello, UTAU World!](https://w.atwiki.jp/vbmaker/pages/43.html) provides
+> "Test Voicebank Recording Kits" that include both recording lists and oto.ini templates.
+> This is the most reliable method for beginners.
+
+## When to Use This Method
+
+- ✅ **Recording list and template distributed together** - Like Hello, UTAU World! kits
+- ✅ **Recorded with same list as a reference voicebank** - When filenames match exactly
+- ✅ **Creating additional voicebanks with same recording list** - Like "normal," "whisper" variations
+
+> ⚠️ **Important**: Filenames (recording list) must **match exactly**.
+> Similar isn't enough. `a.wav` and `あ.wav`, or `ka.wav` and `か.wav` are different files.
+
+## Steps
+
+### 1. Choose Loading Method
+
+Select the "**Read Template**" tab at the top of the dialog.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--template-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Template reading tab selection screen"
+  />
+</div>
+
+### 2. Select Template Oto.ini
+
+- **Tap "Read Template" button**
+- Choose the oto.ini file you want to use as a reference
+
+### 3. Verify Settings
+
+The contents of the selected oto.ini will be previewed.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--template-loaded&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Template loading complete screen"
+  />
+</div>
+
+In this preview screen:
+- **Check for garbled text**: Verify aliases and filenames display correctly
+- **Select character encoding**: Change encoding if text is garbled
+
+### 4. Click "OK" to Go to Correction Screen
+
+If everything looks good, tap "OK".
+
+A screen for correcting template oto.ini values will appear.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogcorrectpanel--default&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Correction screen"
+  />
+</div>
+
+The correction feature is advanced, so beginners should **tap "OK" again** to proceed to the editing screen.
+
+> 💡 **About Correction Features**: The correction screen lets you bulk-adjust template settings,
+> but we recommend understanding it before using it. First, try adjusting while listening to actual sounds in the editor.
+
+## Important Notes When Choosing a Template
+
+### Filenames Must Match Exactly
+
+Filenames written in the template oto.ini must **match exactly** with your voicebank's wav filenames.
+
+- ✅ **OK**: Template `a.wav` → Your voicebank `a.wav`
+- ❌ **NG**: Template `a.wav` → Your voicebank `あ.wav`
+- ❌ **NG**: Template `ka.wav` → Your voicebank `か.wav`
+
+"Similar" isn't good enough. Even one character different means it won't work.
+
+### Where to Get Templates
+
+1. **Hello, UTAU World! Test Voicebank Recording Kit**
+   - Recording list and oto.ini as a set
+   - Pre-tuned for beginners
+   - Distributed at [Toro-saba Tutorial](https://w.atwiki.jp/vbmaker/pages/43.html)
+
+2. **Oto.ini from a Reference Voicebank**
+   - Can be used directly if recorded with the same list
+   - Easy to adjust since pronunciation speed and sound length are similar
+
+3. **Your Own Past Voicebanks**
+   - When creating additional voicebanks with the same recording list (like "whisper," "strong")
+
+## Next Steps
+
+After starting from a template, make fine adjustments while listening to the actual sounds.
+The editor interface will be explained in detail in later tutorials.
+
+---
+
+- Previous Page: [05.Selecting a Folder](/docs/tutorial-en-05-select-folder--docs)
+- Next Page: [06-2.Loading an Existing Oto.ini](/docs/tutorial-en-06-2-load-existing--docs)
+- Editor usage: [09.Editor Basics](/docs/tutorial-en-09-editor-screen-basics--docs)

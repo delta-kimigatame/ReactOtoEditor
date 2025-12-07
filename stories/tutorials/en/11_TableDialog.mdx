@@ -1,0 +1,239 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { EditorButton } from '../../../src/components/Editor/EditButton/EditorButton';
+import TableViewIcon from '@mui/icons-material/TableView';
+
+<Meta title="Tutorial/en/11.Parameter Table and Batch Processing" />
+
+# Parameter Table and Batch Processing
+
+We explained basic editing in the editor screen in 09.
+Here we'll explain the "Parameter Table" where you can view all aliases, and "Batch Processing" for editing all aliases together.
+
+## Opening the Parameter Table
+
+Tap the <EditorButton size={24} icon={<TableViewIcon sx={{ fontSize: 16 }} />} title="Parameter Table" onClick={() => {}} /> **Parameter Table button** in the button area at the bottom of the screen.
+
+<iframe
+  src="iframe.html?id=components-tabledialog-tabledialog--opened&viewMode=story"
+  style={{ width: '100%', height: '500px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Parameter table"
+/>
+
+## What is the Parameter Table
+
+While the editor screen only shows one alias, the parameter table displays all aliases and their parameters in table format.
+
+## Basic Usage
+
+### Select and Navigate to Alias
+
+Tap any alias row to switch the editor screen to that alias.
+
+> 💡 **Use case**: Browse the whole table to find concerning aliases, then tap that row to check details in the editor screen.
+
+## Batch Processing Function
+
+Adjust parameters for **all aliases** at once.
+
+> ⚠️ **Important**: Batch processing targets **all files and all aliases**. You can't select specific aliases only.
+
+### Opening Batch Processing
+
+Tap the **Batch Processing button** at the top of the screen to open the batch processing screen.
+
+### Types of Batch Processing
+
+There are 11 types of batch processing:
+
+#### 1. Delete lines without wav files
+
+Deletes aliases listed in oto.ini but whose actual wav files don't exist.
+
+> 💡 **Use case**: Clean up oto.ini after loading oto.ini from another voicebank or after deleting wav files.
+
+#### 2. Add lines for wav files without data
+
+Adds new lines for wav files that exist but aren't listed in oto.ini.
+
+> 💡 **Use case**: Fill in missing lines after adding new wav files or loading oto.ini from another voicebank.
+
+#### 3. Number duplicate aliases
+
+When the same alias name appears multiple times, automatically numbers them to distinguish.
+Also deletes aliases exceeding the specified count.
+
+**Input fields:**
+- Suffix: Characters to add after the number (e.g., "強", "C4")
+- Number count: How many aliases to keep (e.g., 3)
+
+**How it works:**
+- To avoid issues with treating trailing numbers as sequence numbers, numbers are added while ignoring the specified suffix
+- With count 0, unlimited aliases are created; with 1 or more, excess are deleted
+
+**Examples:**
+
+For 3 [あ強] in a loud voicebank, with suffix "強" and count 3:
+- [あ強], [あ強], [あ強] → [あ強], [あ2強], [あ3強]
+
+For 5 [か C4] in C4 voicebank but want only 3, with suffix "C4" and count 3:
+- 5 [か C4] → [か C4], [か2C4], [か3C4] (remaining 2 deleted)
+
+For 12 [- ん] in VCV but want only 1, with blank suffix and count 1:
+- 12 [- ん] → Only [- ん] remains, [- ん2]~[- ん12] deleted
+
+> 💡 **Use case**: VCV recording generates many instances of certain aliases (like [- ん]). Since only a few are actually used in synthesis, clean up unnecessary ones with this function.
+
+#### 4. Limit numbered aliases
+
+When numbered aliases already exist, deletes those exceeding the specified count.
+
+**Input fields:**
+- Suffix: Characters after the numbers (e.g., "強", "C4")
+- Number count: How many aliases to keep (e.g., 3)
+
+**How it works:**
+- Uses the same rules as #3, judging numbers based on the specified suffix
+- Assumes numbers are already assigned like [あ強], [あ2強], [あ3強], [あ4強]... and deletes those exceeding the count
+
+**Examples:**
+
+For loud voicebank with [あ強]~[あ5強] but want to limit to 3, with suffix "強" and count 3:
+- [あ強], [あ2強], [あ3強] remain
+- [あ4強], [あ5強] are deleted
+
+> 💡 **Use case**: For adjusting numbers after using #3 "Number duplicate aliases", or organizing voicebanks that already have numbered aliases.
+
+#### 5. Convert right blank to negative numbers
+
+Converts right blank to negative number format.
+
+**Two right blank formats:**
+
+- **Positive numbers**: Length from wav file end (traditional format)
+- **Negative numbers**: Absolute value of length from preutterance with negative sign (modern format)
+
+**Benefits of negative format:**
+
+As explained in tutorial 09, oto settings center on preutterance.
+With negative format, right blank automatically follows when you move preutterance.
+With positive format, it doesn't follow preutterance, increasing editing work.
+
+**Example:**
+
+Use when loading traditionally formatted voicebanks and converting to easier-to-edit format.
+
+> 💡 **Use case**: When taking over someone else's voicebank for editing, or adapting old format voicebanks to modern editing style. Eliminates the hassle of manually adjusting right blank every time you adjust preutterance.
+
+#### 6. Set overlap to 1/3 of preutterance
+
+Sets all aliases' overlap to 1/3 of preutterance value.
+
+> 💡 **Use case**: For VCV and VC, overlap at 1/3 of preutterance is standard. Batch set with this process.
+
+#### 7. Remove suffix from alias
+
+Removes specified string from the end of alias names.
+
+**Input field:**
+- Suffix to remove: String to delete (e.g., "_強", "_C4")
+
+**Examples:**
+- [あ_強] → [あ]
+- [か_C4] → [か]
+
+> 💡 **Use case**: Convenient when reusing existing voicebank oto.ini for another. For example, when loading C4 oto.ini to create F4 voicebank, first remove "_C4" with #7, then add "_F4" with #8.
+
+#### 8. Add suffix to alias
+
+Adds specified string to the end of alias names.
+
+**Input field:**
+- Suffix to add: String to add (e.g., "_囁", "_A3")
+
+**Examples:**
+- [あ] → [あ_囁]
+- [か] → [か_A3]
+
+> 💡 **Use case**: When creating pitch or tone variations, reuse existing oto.ini and add new suffix. Combine with #7 to efficiently create alternative voicebank versions.
+
+#### 9. Increase/decrease specified parameter
+
+Adds specified value to specified parameter.
+
+**Input fields:**
+- Parameter: Target parameter (left blank/overlap/preutterance/fixed range/right blank)
+- Value: Value to add (milliseconds)
+
+**Examples:**
+- Delay all left blanks by 10 milliseconds
+- Advance all preutterances by 5 milliseconds (set value to -5)
+
+> 💡 **Use case**: When auto-generating oto.ini for voicebank recorded with guide BGM, if guide BGM offset differs from expected, all aliases shift. Batch correct with this function.
+
+#### 10. Set specified parameter
+
+Sets specified parameter to specified value.
+
+**Input fields:**
+- Parameter: Target parameter (left blank/overlap/preutterance/fixed range/right blank)
+- Value: Value to set (milliseconds)
+
+**Examples:**
+- Set all overlaps to 0
+- Set all left blanks to 100
+
+> 💡 **Use case**: Convenient when guide BGM bpm was wrong, or when reusing oto.ini from different bpm voicebank. For VCV, preutterance, overlap, fixed range, and right blank can be calculated mechanically from guide BGM bpm, so batch set with this function.
+
+#### 11. Supplement wo/di/du
+
+When [お] alias exists, automatically adds [を] alias.
+Similarly, [じ]→[ぢ], [ず]→[づ].
+(All duplicated with same parameters)
+
+Also works with VCV format, supplementing [a お]→[a を].
+
+> 💡 **Use case**: Batch add kana with same sounds that can substitute in CV and VCV voicebanks.
+
+> ⚠️ **Usage timing**: Recommended to use this function **after finishing manual oto settings, as final polish**. Using it earlier means manually setting both [お] and [を], doubling the work.
+
+## When to Use Parameter Table
+
+### Convenient when:
+
+**Want to check everything:**
+- After finishing editing, check all parameters in a list
+- Find concerning aliases and immediately jump to editor screen
+
+**Want to reuse oto.ini from another voicebank:**
+- Delete lines for non-existent wav files (#1)
+- Add missing lines (#2)
+- Change suffix for alternative voicebank version (#7, #8)
+- Adjust for different bpm oto.ini (#10)
+
+**Want to organize aliases:**
+- Number duplicate aliases (#3)
+- Limit mass-generated aliases (#3, #4)
+- Supplement wo/di/du (#11)
+
+**Want to batch adjust parameters:**
+- Correct auto-generated oto.ini misalignment (#9)
+- Set overlap to 1/3 of preutterance (#6)
+- Convert positive right blank to negative format (#5)
+
+## Notes
+
+### Undoing Batch Processing
+
+Batch processing applies immediately when executed.
+
+> ⚠️ **Note**: Currently there's no undo (revert) function.
+
+Before executing batch processing:
+1. Understand what processing will occur
+2. Confirm input values are correct
+3. If worried, download a backup beforehand
+
+---
+
+- Previous: [10.Alias Edit Screen](/docs/tutorial-en-10-alias-edit-screen--docs)
+- Next: [12.Basic Oto Patterns](/docs/tutorial-en-12-basic-oto-patterns--docs)

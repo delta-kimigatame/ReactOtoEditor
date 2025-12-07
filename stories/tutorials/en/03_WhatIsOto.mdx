@@ -1,0 +1,76 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/03.What is Oto" />
+
+# What is Oto.ini?
+
+Let's explain what oto configuration (oto.ini) is - an essential component for using UTAU voicebanks.
+
+## What is Oto Configuration?
+
+**Oto configuration** defines where each sound starts and ends within recorded audio files - it's a crucial setting for using your voicebank.
+
+A single audio file often contains multiple sounds.
+For example, an audio file named "_akasatana.wav" contains five sounds recorded in sequence: "a," "ka," "sa," "ta," and "na."
+
+In oto configuration, you specify for each sound:
+- Where does "a" start and end in the file?
+- Where does "ka" start and end?
+- How should each sound be used?
+
+## What You Configure in Oto
+
+To extract multiple sounds from a single audio file, you need to set 6 parameters for each sound:
+
+### Alias
+This is the "name" for the sound.
+You assign a name like "ka" or "a a" that UTAU will use to call this sound.
+This name is referenced from the musical score.
+
+### Offset (Left Blank)
+Specifies where in the audio file this sound begins.
+
+### Consonant Section (Fixed Range/Velocity)
+Specifies the length of the part that doesn't stretch, even when the note is extended.
+This covers from the consonant to where the vowel stabilizes - this part won't stretch or compress when changing note length.
+
+### Cutoff (Right Blank)
+Specifies where this sound ends.
+The area between the consonant section and cutoff becomes the stretchable part, so set it to include a stable vowel sound.
+
+### Preutterance
+Specifies the timing when the vowel begins.
+If this is off, the rhythm will sound wrong, so it needs to be set accurately.
+
+### Overlap
+Specifies the position where the transition from the previous sound to this sound begins.
+This setting helps create smooth connections between sounds.
+
+## Why Oto Configuration Matters
+
+Without proper oto configuration:
+- ❌ Timing sounds off
+- ❌ Sounds don't connect smoothly
+- ❌ Sustained notes wobble or have noise
+
+With proper configuration:
+- ✅ Accurate rhythm
+- ✅ Clean sound transitions
+- ✅ Stable sustained notes
+
+## What LABERU Can Do
+
+**LABERU** is a tool that lets you visually edit oto configuration.
+
+### LABERU Features
+- 📊 **Edit while viewing waveforms** - See the shape of the voice as you adjust
+- 🎨 **Spectrogram display** - Check frequency patterns too
+- 📱 **Touch-friendly** - Works great on tablets
+
+Since it runs in your browser, no installation needed - use it right away.
+A major feature of LABERU is that you can configure oto even on smartphones and tablets.
+
+---
+
+- Previous Page: [02.What is UTAU?](/docs/tutorial-en-02-what-is-utau--docs)
+- Next Page: [04.Loading a Voicebank](/docs/tutorial-en-04-load-voicebank--docs)

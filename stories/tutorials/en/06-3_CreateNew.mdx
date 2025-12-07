@@ -1,0 +1,106 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/06-3.Create New" />
+
+# Create New (Automatic Configuration)
+
+If the folder doesn't contain an oto.ini, LABERU can automatically create one.
+This is used when creating **CV (single sound)** voicebanks, where each audio file contains one sound.
+
+For example, with these files:
+- `a.wav` → Alias "a"
+- `あ.wav` → Alias "あ"
+- `ka.wav` → Alias "ka"
+
+The filename (without the .wav extension) becomes the alias.
+
+## When to Use This Method
+
+- ✅ **Creating CV oto.ini for the first time**
+- ✅ **Folder doesn't contain oto.ini**
+- ✅ **Each wav file contains one sound**
+
+## Steps
+
+### 1. Choose Loading Method
+
+Select the "**generate**" tab at the top of the dialog.
+
+### 2. Choose How to Set Aliases
+
+Decide how to name the sounds (aliases).
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--make-tab-single-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="Generation method selection screen"
+  />
+</div>
+
+#### Basic: Auto-generate from Filename
+
+The simplest method.
+
+- **a.wav** → Alias "a"
+- **あ.wav** → Alias "あ"
+- **ka.wav** → Alias "ka"
+
+The filename without the extension (.wav) becomes the alias directly.
+
+> 📝 **Recommended**: This method is ideal for beginners or when creating CV voicebanks.
+
+### 3. Choose Automatic Parameter Calculation
+
+There are two checkboxes at the bottom:
+
+#### ✅ Analyze wav
+
+When checked, the audio file's waveform is automatically analyzed to calculate parameters.
+
+**When unchecked**, all parameters are set to 0 (e.g., `a.wav=a,0,0,0,0,0`).
+Sound will play but won't sing properly - this is just "preparation to start configuring."
+
+> 💡 **Which to Choose?**
+> - **With analysis**: Easier since it auto-calculates. Accuracy is "better than nothing" level though
+> - **Without analysis**: Start from all 0s and configure manually. For complete control
+
+Either way, **you must adjust while listening in the editor**.
+
+> 📝 For detailed parameter meanings, see **[03.What is Oto.ini?](/docs/tutorial-en-03-what-is-oto--docs)**
+
+#### ⚪ Ignore Numbers at Beginning of Filename
+
+When checked, numbers at the start of filenames are ignored when setting aliases.
+
+For example:
+- `01_a.wav` → Alias "a"
+- `02_あ.wav` → Alias "あ"
+- `03_ka.wav` → Alias "ka"
+
+Useful when dealing with files that have auto-numbered prefixes from recording software.
+
+> 📝 If your filenames don't have sequential numbers, leave this unchecked.
+
+### 4. Click "generate" to Start Editing
+
+Once settings are decided, tap the "**generate**" button.
+LABERU will automatically create the oto.ini and proceed to the editing screen.
+
+## More Advanced Automatic Configuration
+
+Once comfortable with basic auto-configuration, you can explore more detailed settings:
+
+- **[07-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs)** - Set multiple sounds in one wav (advanced auto-configuration)
+- **[08.Advanced Customization](/docs/tutorial-en-08-advanced-auto-generation-settings--docs)** - Fine-tune initial parameter values for auto-generation
+
+## Next Steps
+
+After creating oto.ini with auto-configuration, make fine adjustments while listening to the actual sounds.
+The editor interface will be explained in detail in later tutorials.
+
+---
+
+- Previous Page: [06-2.Loading an Existing Oto.ini](/docs/tutorial-en-06-2-load-existing--docs)
+- Next Page: [07-1.Loading from History](/docs/tutorial-en-07-1-load-from-history--docs)
+- Editor usage: [09.Editor Basics](/docs/tutorial-en-09-editor-screen-basics--docs)

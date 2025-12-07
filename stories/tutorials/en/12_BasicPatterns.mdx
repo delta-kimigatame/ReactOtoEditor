@@ -1,0 +1,206 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/12.Basic Oto Patterns" />
+
+# Basic Oto Patterns
+
+UTAU oto settings follow set patterns depending on the sound type.
+Here we'll introduce common patterns.
+
+## CV (Single Sounds)
+
+Format recording one sound per file (e.g., a.wav).
+
+- **Left blank**: Varies by consonant type
+- **Overlap**: Adjust to consonant type
+- **Preutterance**: Moment when consonant changes to vowel
+- **Fixed range**: Where vowel volume stabilizes
+- **Right blank**: In stable vowel range, as far from fixed range as possible
+
+### Simple CV Example
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--cv-simple&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Simple CV"
+/>
+
+Most basic format with just one sound in the file.
+
+### Extracting from Continuous Recording
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--cv-from-continuous&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Extracting from continuous"
+/>
+
+Even with multiple sounds recorded in one file, you can extract them as individual CV sounds.
+
+> See [13.Sound Types (Basic)](/docs/tutorial-en-13-sound-types-basic--docs) and [14.Sound Types (Advanced)](/docs/tutorial-en-14-sound-types-advanced--docs) for details
+
+## Vowel Connection CV
+
+Special CV for smoothly connecting vowels (e.g., [* a]).
+Six types: "a i u e o n".
+
+- **Left blank**: Where vowel stabilizes (around normal CV fixed range)
+- **Overlap**: 2x preutterance
+- **Preutterance**: Around 25-50 (adjust to preference)
+- **Fixed range**: Slightly larger than overlap
+- **Right blank**: Set like normal CV
+
+### Normal Vowel
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--blank-range-stable&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Normal vowel"
+/>
+
+First, let's look at normal vowel settings.
+
+### Vowel Connection Settings
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vowel-connection&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Vowel connection CV"
+/>
+
+Vowel connection uses alias format like [* a]. Settings differ slightly from normal vowels.
+
+## VCV (Simple Settings)
+
+If your recorded guide BGM and auto-generation settings match, it's easy to set.
+
+- **Preutterance**: Only adjust the consonant-to-vowel transition moment
+- **Everything else**: Use auto-generation as-is
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vcv-middle&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VCV simple settings"
+/>
+
+Basically just adjust preutterance, other parameters can stay auto-generated.
+
+## VCV (First Sound)
+
+The very first sound in a file is set like CV.
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vcv-first&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VCV first sound"
+/>
+
+Only the first sound has no previous sound, so use same settings as CV.
+
+## VCV (Non-first Sounds)
+
+Middle and last sounds in VCV connect from the previous sound.
+
+- **Left blank**: Where previous vowel is stable
+- **Overlap**: Where previous vowel is stable (1/3 of preutterance)
+- **Preutterance**: Moment when consonant changes to vowel
+- **Fixed range**: Slightly larger than overlap
+- **Right blank**: Set like CV
+
+> In VCV, each record's preutterance and overlap have the same value.
+> So basically you don't need to change left blank and overlap.
+> 
+> However, if overlap hits the consonant instead of vowel, adjustment is needed.
+> Turn on Overlap Lock and move left blank left until overlap moves to the vowel part.
+
+### Example Needing Adjustment: Before
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vcv-needs-adjustment-bad&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Overlap on consonant"
+/>
+
+Overlap is hitting the consonant part. This won't connect sounds well.
+
+### Example Needing Adjustment: After
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vcv-needs-adjustment-good&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Fixed overlap"
+/>
+
+Using Overlap Lock, moved left blank left. Overlap is now on the vowel part.
+
+## CVVC: CV Part
+
+CVVC combines CV (single sounds) and VC (vowel+consonant).
+Set the CV part like regular CV.
+
+## CVVC: VC Part
+
+Connection from vowel to consonant.
+
+- **Left blank**: Where vowel is stable
+- **Overlap**: Where vowel is stable (1/3 of preutterance)
+- **Preutterance**: Vowel-to-consonant boundary (around CV left blank)
+- **Fixed range**: Between right blank and preutterance
+- **Right blank**: Just before consonant changes to next vowel (slightly left of CV preutterance)
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--vc-sample&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VC settings"
+/>
+
+VC sets the vowel-to-consonant transition. Note that preutterance position differs from CV.
+
+## Stretch Range Settings
+
+Stretch range is the portion from fixed range to right blank.
+Consider two points when setting this range:
+
+1. **Choose where volume is stable**
+2. **Make it as long as possible**
+
+Balancing both is ideal.
+
+### Good Example: Stable Sound
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--blank-range-stable&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Stable stretch range"
+/>
+
+Volume is stable throughout, so a long range is possible.
+
+### Tricky Example: Fluctuating Volume
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--blank-range-bad&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Fluctuating volume"
+/>
+
+When volume goes up and down, give up on long range and choose relatively stable portions.
+
+### Tricky Example: Fading Out
+
+<iframe
+  src="iframe.html?id=components-editor-canvasbase--blank-range-fade&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="Fading out"
+/>
+
+When volume gradually decreases, don't force it long - only use the stable volume range.
+
+## Learn More
+
+Tutorials 13 and 14 explain each setting in more detail.
+
+---
+
+- Previous: [11.Parameter Table and Batch Processing](/docs/tutorial-en-11-parameter-table-and-batch-processing--docs)
+- Next: [13.Sound Types (Basic)](/docs/tutorial-en-13-sound-types-basic--docs)

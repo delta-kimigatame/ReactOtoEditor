@@ -1,0 +1,110 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/en/07-1.Load From History" />
+
+# Loading from History
+
+You can resume work from your previous editing session.
+The history is saved in your browser, so don't worry if you forget to download the file.
+
+## When to Use This Method
+
+- ✅ **Continue your previous editing session**
+- ✅ **Resume editing on another day**
+- ✅ **Accidentally forgot to download**
+
+## Steps
+
+### 1. Choose Loading Method
+
+Select the "**Load History**" tab at the top of the dialog.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialog--storaged-tab-selected&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="History tab selection screen"
+  />
+</div>
+
+> 💡 **Convenient Feature**: If you load the same folder from a previously edited zip file,
+> your previous editing data is automatically selected. You can start right where you left off.
+
+### 2. Select History
+
+Choose the history you want to continue editing from the select box.
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-targetdirdialog-targetdirdialogtabpanelstoraged--with-many-aliases&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="History selection screen"
+  />
+</div>
+
+Displayed information:
+- **Filename**: Name of the zip file
+- **Folder name**: Which folder's oto.ini
+- **Last modified**: Date and time of last edit
+
+### 3. Click "OK" to Resume Editing
+
+Select the history you want to continue and tap "OK".
+Your previous edits will be loaded and you'll proceed to the editing screen.
+
+## About History Storage
+
+### Where It's Saved
+
+History is saved in your browser's local storage.
+
+- ✅ Saved on your device, so works offline too
+- ✅ Not sent externally as personal information
+
+### Storage Duration
+
+History remains as long as you don't clear your browser data.
+
+> ⚠️ **Note**: History may be deleted in these cases:
+> - When you clear browser history/cache
+> - When using private browsing (incognito mode)
+> - When device storage is insufficient
+
+### Backup Recommendation
+
+For important oto.ini files, don't rely only on history - download them regularly.
+
+## Managing Multiple Voicebanks
+
+History for different folders of the same voicebank are saved separately.
+
+Example:
+- `voicebank/normal/` history
+- `voicebank/whisper/` history
+- `voicebank/append/` history
+
+Each is managed independently, so there's no risk of mixing them up.
+
+## If History is Not Found
+
+If history doesn't appear, check the following:
+
+1. **Same browser and device?**
+   - History isn't shared across devices or browsers
+   
+2. **Cleared browser data?**
+   - Clearing history/cache also deletes editing history
+
+3. **Using private browsing?**
+   - Incognito mode doesn't save history
+
+If no history is available, try other loading methods:
+- **[06-1.Loading from an External Template](/docs/tutorial-en-06-1-load-from-template--docs)**
+- **[06-2.Loading an Existing Oto.ini](/docs/tutorial-en-06-2-load-existing--docs)**
+- **[06-3.Create New](/docs/tutorial-en-06-3-create-new--docs)**
+
+---
+
+- Previous Page: [06-3.Create New](/docs/tutorial-en-06-3-create-new--docs)
+- Next Page: [07-2.Multiple Aliases](/docs/tutorial-en-07-2-multiple-aliases--docs)
+- Editor usage: [09.Editor Basics](/docs/tutorial-en-09-editor-screen-basics--docs)
