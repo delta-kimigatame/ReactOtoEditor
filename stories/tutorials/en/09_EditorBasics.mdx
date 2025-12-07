@@ -21,7 +21,7 @@ Here we'll explain the editor screen layout and basic controls.
 
 <div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', width: '100%', height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5'}}>
   <iframe 
-    src="iframe.html?id=app--editor-view-with-data&viewMode=story" 
+    src="iframe.html?id=app--editor-view-with-data&viewMode=story&globals=locale:en" 
     style={{width: '100%', height: '125%', border: 'none', pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'center'}}
     title="Full editor screen"
   />
@@ -37,9 +37,9 @@ The top of the screen includes:
 
 <div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '80px'}}>
   <iframe 
-    src="iframe.html?id=components-header-header--with-record&viewMode=story" 
+    src="iframe.html?id=components-header-header--with-record&viewMode=story&globals=locale:en" 
     style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
-    title="Header area"
+    title="Header"
   />
 </div>
 
@@ -52,7 +52,7 @@ Tapping the menu button displays:
 
 <div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
   <iframe 
-    src="iframe.html?id=components-header-headermenu--opened-menu-with-oto&viewMode=story" 
+    src="iframe.html?id=components-header-headermenu--opened-menu-with-oto&viewMode=story&globals=locale:en" 
     style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
     title="Header menu"
   />
@@ -73,9 +73,9 @@ Displays the audio file waveform.
 
 <div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
   <iframe 
-    src="iframe.html?id=components-editor-canvasbase--gray-theme&viewMode=story" 
+    src="iframe.html?id=components-editor-canvasbase--gray-theme&viewMode=story&globals=locale:en" 
     style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
-    title="Waveform display area"
+    title="Waveform display and controls"
   />
 </div>
 
@@ -117,7 +117,7 @@ View and edit the five oto parameters numerically.
 - **Blank (right blank)** - Sound end position
 
 <iframe
-  src="iframe.html?id=components-editor-editortable--default&viewMode=story"
+  src="iframe.html?id=components-editor-editortable--default&viewMode=story&globals=locale:en"
   style={{ width: '100%', height: '200px', border: '1px solid #ccc', pointerEvents: 'none' }}
   title="Parameter area display"
 />
