@@ -156,3 +156,55 @@ export const OpenedMenu: Story = {
   },
 };
 
+/**
+ * otoデータがある状態で常時開いているメニュー
+ * チュートリアル用に、ダウンロード機能も含めたフルメニューを表示
+ */
+export const OpenedMenuWithOto: Story = {
+  render: () => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const { setOto, setTargetDir,setTargetDirs } = useOtoProjectStore();
+
+    useEffect(() => {
+      // サンプルotoデータを設定
+      const sampleOto = new Oto();
+      sampleOto.ParseOto('/samples', 'あ.wav=- あ,100,50,80,120,200');
+      setOto(sampleOto);
+      setTargetDir('/samples');
+      setTargetDirs(['/samples', '/more_samples']);
+
+      // 初期表示時にメニューを開く
+      if (buttonRef.current) {
+        setAnchorEl(buttonRef.current);
+      }
+
+      return () => {
+        setOto(null);
+        setTargetDir(null);
+      };
+    }, [setOto, setTargetDir]);
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+
+    return (
+      <div>
+        <Button
+          ref={buttonRef}
+          variant="text"
+          onClick={handleClick}
+          sx={{ minWidth: 'auto', padding: '8px' }}
+        >
+          <MenuIcon />
+        </Button>
+        <HeaderMenu
+          menuAnchor={anchorEl}
+          setMenuAnchor={setAnchorEl}
+        />
+      </div>
+    );
+  },
+};
+

@@ -1,0 +1,206 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+
+<Meta title="Tutorial/ja/12.原音設定の基本パターン" />
+
+# 原音設定の基本パターン
+
+UTAUの原音設定は、音の種類によって設定のパターンが決まっています。
+ここでは、よくあるパターンをまとめて紹介します。
+
+## 単独音
+
+1つの音を1つのファイルで録音した形式です(例: あ.wav)。
+
+- **左ブランク**: 子音の種類によって異なる
+- **オーバーラップ**: 子音の種類に合わせて調整
+- **先行発声**: 子音から母音に変わる瞬間
+- **固定範囲**: 母音の音量が安定したところ
+- **右ブランク**: 母音の安定している範囲で、できるだけ固定範囲から離す
+
+### シンプルな単独音の例
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--cv-simple&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="シンプルな単独音"
+/>
+
+1つのファイルに1つの音だけが入っている、最も基本的な形式です。
+
+### 連続発声から切り出す例
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--cv-from-continuous&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="連続発声から切り出し"
+/>
+
+1つのファイルに複数の音が録音されていても、単独音として1つずつ切り出すことができます。
+
+> 詳しくは[チュートリアル13](/docs/tutorial-ja-13-音の種類別設定-基本編--docs)と[チュートリアル14](/docs/tutorial-ja-14-音の種類別設定-応用編--docs)で解説します
+
+## 母音結合用の単独音
+
+母音同士をなめらかにつなぐための特殊な単独音です(例: [* あ])。
+「あいうえおん」の6種類があります。
+
+- **左ブランク**: 母音が安定したところ(普通の単独音の固定範囲あたり)
+- **オーバーラップ**: 先行発声の2倍
+- **先行発声**: 25〜50くらい(お好みで調整)
+- **固定範囲**: オーバーラップより少し大きいくらい
+- **右ブランク**: 普通の単独音と同じように設定
+
+### 普通の母音
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--blank-range-stable&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="普通の母音"
+/>
+
+まずは普通の母音の設定を見てみましょう。
+
+### 母音結合用の設定
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vowel-connection&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="母音結合用の単独音"
+/>
+
+母音結合用は、エイリアス名が[* あ]のような形式になっています。普通の母音とは設定が少し違います。
+
+## 連続音(簡易設定)
+
+録音したガイドBGMと自動生成の設定が一致していれば、簡単に設定できます。
+
+- **先行発声**: 子音から母音に変わる瞬間だけ調整
+- **その他**: 自動生成のままでOK
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vcv-middle&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="連続音の簡易設定"
+/>
+
+基本的には先行発声だけを調整すれば、他のパラメータは自動生成のままで使えます。
+
+## 連続音(最初の音)
+
+1つのファイルの一番最初の音は、単独音と同じように設定します。
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vcv-first&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="連続音の最初の音"
+/>
+
+ファイルの最初の音だけは、前の音がないので単独音と同じ設定方法になります。
+
+## 連続音(最初以外の音)
+
+連続音の真ん中や最後の音は、前の音とつながるように設定します。
+
+- **左ブランク**: 前の母音が安定しているところ
+- **オーバーラップ**: 前の母音が安定しているところ(先行発声の1/3)
+- **先行発声**: 子音から母音に変わる瞬間
+- **固定範囲**: オーバーラップより少し大きいくらい
+- **右ブランク**: 単独音と同じように設定
+
+> 連続音では、各レコードの先行発声とオーバーラップが同じ値になります。
+> そのため、基本的には左ブランクとオーバーラップは変更しなくて大丈夫です。
+> 
+> ただし、オーバーラップが母音ではなく子音にかかっている場合は、調整が必要です。
+> オーバーラップロック機能をオンにして、オーバーラップが母音部分に移動するまで左ブランクを左へ動かしてください。
+
+### 調整が必要な例：修正前
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vcv-needs-adjustment-bad&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="オーバーラップが子音にかかっている例"
+/>
+
+オーバーラップが子音の部分にかかってしまっています。このままだと音がうまくつながりません。
+
+### 調整が必要な例：修正後
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vcv-needs-adjustment-good&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="オーバーラップを修正した例"
+/>
+
+オーバーラップロック機能を使って、左ブランクを左に動かしました。オーバーラップが母音の部分に来ています。
+
+## CVVC: CVの部分
+
+CVVCは、CV(単独音)とVC(母音+子音)を組み合わせた方式です。
+CVの部分は、単独音と同じように設定します。
+
+## CVVC: VCの部分
+
+母音から子音へのつなぎ部分です。
+
+- **左ブランク**: 母音が安定しているところ
+- **オーバーラップ**: 母音が安定しているところ(先行発声の1/3)
+- **先行発声**: 母音から子音に変わる境目(単独音の左ブランクあたり)
+- **固定範囲**: 右ブランクと先行発声の間くらい
+- **右ブランク**: 子音から次の母音に変わる直前(単独音の先行発声より少し左)
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--vc-sample&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="VCの設定例"
+/>
+
+VCは母音から子音への切り替わりを設定します。先行発声の位置が単独音とは違うことに注意してください。
+
+## 伸縮範囲の設定
+
+伸縮範囲とは、固定範囲から右ブランクまでの部分のことです。
+この範囲を設定するときは、2つのポイントを考えます：
+
+1. **音量が安定しているところを選ぶ**
+2. **できるだけ長くとる**
+
+この2つを両立できるのが理想的です。
+
+### 良い例：安定した音
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--blank-range-stable&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="伸縮範囲が安定している例"
+/>
+
+音量が最初から最後まで安定しているので、長い範囲をとることができています。
+
+### 悩む例：音量が変動する場合
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--blank-range-bad&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="音量が変動している例"
+/>
+
+音量が上がったり下がったりしている場合は、長い範囲をとることを諦めて、比較的安定している部分を選びます。
+
+### 悩む例：フェードアウトする場合
+
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--blank-range-fade&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="フェードアウトしている例"
+/>
+
+だんだん音量が小さくなっていく場合も、無理に長くとらず、音量が安定している範囲だけを使います。
+
+## さらに詳しく学ぶ
+
+チュートリアル13と14で、それぞれの設定をもっと詳しく解説しています。
+
+---
+
+- 前のページ: [11.パラメータ一覧と一括処理](/docs/tutorial-ja-11-パラメータ一覧と一括処理--docs)
+- 次のページ: [13.音の種類別設定（基本編）](/docs/tutorial-ja-13-音の種類別設定-基本編--docs)

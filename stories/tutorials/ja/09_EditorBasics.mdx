@@ -1,0 +1,252 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import { PlayButton } from '../../../src/features/Editor/EditButtn/PlayButton';
+import { PlayBeforePreutterButton } from '../../../src/features/Editor/EditButtn/PlayBeforePreutterButton';
+import { PlayAfterPreutterButton } from '../../../src/features/Editor/EditButtn/PlayAfterPreutterButton';
+import { PrevAliasButton } from '../../../src/features/Editor/EditButtn/PrevAliasButtn';
+import { NextAliasButton } from '../../../src/features/Editor/EditButtn/NextAliasButton';
+import { EditorButton } from '../../../src/components/Editor/EditButton/EditorButton';
+import LockIcon from '@mui/icons-material/Lock';
+import TouchAppIcon from '@mui/icons-material/TouchApp';
+import EditAttributesIcon from '@mui/icons-material/EditAttributes';
+import TableViewIcon from '@mui/icons-material/TableView';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+
+<Meta title="Tutorial/ja/09.エディタ画面の基本操作" />
+
+# エディタ画面の基本操作
+
+プロジェクトを読み込むと、エディタ画面が表示されます。
+ここでは、エディタ画面の構成と基本的な操作方法を説明します。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', width: '100%', height: '80vh', display: 'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: '#f5f5f5'}}>
+  <iframe 
+    src="iframe.html?id=app--editor-view-with-data&viewMode=story" 
+    style={{width: '100%', height: '125%', border: 'none', pointerEvents: 'none', transform: 'scale(0.8)', transformOrigin: 'center'}}
+    title="エディタ画面全体像"
+  />
+</div>
+
+## エディタ画面の構成
+
+エディタ画面は、大きく3つのエリアで構成されています。
+
+### 1. ヘッダーエリア（画面上部）
+
+画面上部には、以下の機能があります：
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '80px'}}>
+  <iframe 
+    src="iframe.html?id=components-header-header--with-record&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="ヘッダーエリア"
+  />
+</div>
+
+- **編集中のエイリアス/ファイル名** - 現在編集中のエイリアスとファイル名が表示されます
+- **メニューボタン（☰）** - 各種設定メニューを開きます
+
+#### ヘッダーメニュー
+
+メニューボタンをタップすると、以下のメニューが表示されます：
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-header-headermenu--opened-menu-with-oto&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="ヘッダーメニュー"
+  />
+</div>
+
+- **フォルダ選択** - 原音設定対象を他のフォルダに変更します
+- **oto.iniをダウンロード** - 編集した原音設定をダウンロードします
+- **zipをダウンロード** - 原音設定と音声ファイルをまとめてダウンロードします
+- **言語設定** - 表示言語を切り替えます（日本語/英語/中国語）
+- **色設定** - テーマカラーを変更します
+- **モード設定** - ダークモード/ライトモードを切り替えます
+- **アプリのキャッシュをクリア** - ブラウザに保存されたデータをクリアします
+- **ログを表示** - エラーログを表示します
+
+### 2. 波形表示エリア
+
+音声ファイルの波形が表示されます。
+
+<div style={{marginTop: '16px', marginBottom: '16px', border: '1px solid #ddd', borderRadius: '8px', overflow: 'hidden', height: '600px'}}>
+  <iframe 
+    src="iframe.html?id=components-editor-canvasbase--gray-theme&viewMode=story" 
+    style={{width: '100%', height: '100%', border: 'none', pointerEvents: 'none'}}
+    title="波形表示エリア"
+  />
+</div>
+
+**表示されるもの:**
+- **波形グラフ** - 音声の振幅が時系列で表示されます
+- **スペクトログラム** - 音の周波数成分が色で表示されます（原音設定で最も重要な要素）
+- **原音設定の領域** - パラメータに応じて色分けされた領域が表示されます
+  - 緑のハッチング（左側）: オフセット（左ブランク）- wavの先頭から設定値まで
+  - 黄色のハッチング（右側）: ブランク（右ブランク）- wavの末尾から設定値まで
+  - 赤い縦線: 先行発声
+  - 緑の縦線: オーバーラップ
+  - 青い縦線: 子音部（固定範囲）
+
+**波形の見方:**
+- **縦軸**: 音の大きさ（振幅）
+- **波形が大きい部分**: 音が大きい
+- **波形が小さい部分**: 音が小さい
+- **波形がない部分**: 無音
+
+**スペクトログラムの見方:**
+- **横軸**: 時間（左から右へ進む）
+- **縦軸**: 周波数（上ほど高い音）
+- **色の濃さ**: 濃い色ほど音量が大きい
+
+> 💡 **重要**: スペクトログラムで色のバランスが変化している部分は、発音が変化している箇所です。
+> これが原音設定における最大のヒントとなります。
+
+### 3. パラメータエリア
+
+原音設定の5つのパラメータを数値で確認・編集できます。
+
+**表示される情報:**
+- **ファイル名** - 音声ファイルの名前
+- **エイリアス** - エイリアス名
+- **オフセット（左ブランク）** - 音の開始位置
+- **オーバーラップ** - 前の音との重なり位置
+- **先行発声** - 発声開始位置
+- **子音部（固定範囲）** - 子音の長さ
+- **ブランク（右ブランク）** - 音の終了位置
+
+<iframe
+  src="/iframe.html?id=components-editor-editortable--default&viewMode=story"
+  style={{ width: '100%', height: '200px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="パラメータエリアの表示例"
+/>
+
+### 4. ボタンエリア
+
+エディタ画面下部には、編集に必要な各種ボタンが配置されています。
+画面サイズによってレイアウトが変わりますが、以下の機能が利用できます。
+
+#### 再生関係のボタン
+
+原音設定において**先行発声は極めて重要**なパラメータです。先行発声を正しく設定できるかが原音設定の実力と言っても過言ではありません。
+
+そこで、様々な方法で先行発声が妥当な位置にあるかを確認するオプションを用意しています。
+
+**先行発声の基本:**
+- 通常、先行発声は子音と母音（もしくは母音と母音）の境界線に置かれます
+- この位置が正しくないと、リズムがずれてしまいます
+
+**各ボタンの使い方:**
+
+- <PlayBeforePreutterButton size={24} iconSize={16} /> **左ブランク～先行発声を再生** - 音の入り部分を確認
+  - **確認ポイント**: 後の母音が鳴らないこと
+  - 母音が聞こえる場合は、先行発声が遅すぎます
+
+- <PlayAfterPreutterButton size={24} iconSize={16} /> **先行発声～右ブランクを再生** - 音の伸ばし部分を確認
+  - **確認ポイント**: 子音が鳴らないこと
+  - 子音が聞こえる場合は、先行発声が早すぎます
+
+- <PlayButton size={24} iconSize={16} metronome={null} /> **メトロノーム再生** - リズムを確認しながら編集
+  - **確認ポイント**: 全体として自然に聞こえるか
+  - 最終確認として使用します
+
+> 💡 **ヒント**: 発音の仕方によっては、子音と母音がゆっくり遷移する場合があります。
+> このような音では、先行発声の前後を個別に確認してもどうしてもしっくりこないことがあります。
+> そういう時は、メトロノーム再生で全体のリズムが合っていればOKです。
+
+#### 操作関係のボタン
+
+このエディタでは、**先行発声を中心に**編集が行われます。
+先行発声の位置を変えると、他のパラメータも一緒に動くようになっています。
+
+**通常の操作方法:**
+- 画面をタップした位置に一番近いパラメータが選ばれます
+- そのまま指を動かすと、選ばれたパラメータを調整できます
+
+**タップモードとは:**
+
+- <EditorButton size={24} icon={<TouchAppIcon sx={{ fontSize: 16 }} />} title="タップモード" onClick={() => {}} /> **タップモード** - タップするだけで先行発声を設定
+
+連続音では、自動設定されたパラメータをそのまま使い、**先行発声の位置だけ**を調整することがよくあります。
+タップモードをオンにすると、画面をタップした位置に先行発声が移動するので、サクサク調整できます。
+
+**オーバーラップロックとは:**
+
+- <EditorButton size={24} icon={<LockIcon sx={{ fontSize: 16 }} />} title="オーバーラップロック" onClick={() => {}} /> **オーバーラップロック** - オーバーラップを自動調整
+
+連続音やVCでは、**オーバーラップは先行発声の1/3**が基本です。
+オーバーラップロックをオンにすると：
+- オーバーラップを直接触れなくなります
+- 先行発声を動かすと、オーバーラップも自動的に1/3の位置に調整されます
+
+> 💡 **おすすめ**: 連続音を作る時は、タップモードとオーバーラップロックの両方をオンにすると効率的です。
+
+#### 高度な編集用のボタン
+
+基本的には画面をタップして編集を進めていきますが、時には細かい調整が必要になることもあります。
+
+- <EditorButton size={24} icon={<EditAttributesIcon sx={{ fontSize: 16 }} />} title="エイリアス編集" onClick={() => {}} /> **エイリアス編集画面を表示** - エイリアス名やパラメータを詳細編集
+  - エイリアス名の変更・複製・削除
+  - 5つのパラメータを数値入力で細かく調整
+  - 詳しくは [10.エイリアス編集画面](/docs/tutorial-ja-10-エイリアス編集画面--docs) をご覧ください
+
+- <EditorButton size={24} icon={<TableViewIcon sx={{ fontSize: 16 }} />} title="パラメータ一覧" onClick={() => {}} /> **パラメータ一覧表示** - すべてのパラメータを一覧表示
+  - すべてのパラメータを一覧で確認
+  - タップして目的のパラメータに一気にジャンプ
+  - 全エイリアスに適用できる強力な一括処理
+  - 詳しくは [11.テーブルダイアログと一括処理](/docs/tutorial-ja-11-テーブルダイアログと一括処理--docs) をご覧ください
+
+#### 拡大縮小
+
+- <EditorButton size={24} icon={<ZoomInIcon sx={{ fontSize: 16 }} />} title="拡大" onClick={() => {}} /> **拡大ボタン** - 波形を拡大表示
+- <EditorButton size={24} icon={<ZoomOutIcon sx={{ fontSize: 16 }} />} title="縮小" onClick={() => {}} /> **縮小ボタン** - 波形を縮小表示
+
+> ⚠️ **注意**: ピンチイン・アウトによる拡大縮小には対応していません。
+
+#### 編集対象切替ボタン
+
+- <PrevAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **1つ前** - 前のエイリアスに移動
+- <NextAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **1つ次** - 次のエイリアスに移動
+
+## 基本的な編集の流れ
+
+原音設定は以下のような流れで進めていきます。
+
+### ステップ1: スペクトログラムで大まかな位置を確認
+
+まず、スペクトログラム（色で表示される周波数成分）を見ながら、先行発声を大まかな位置に合わせます。
+色のバランスが変わっている部分が、音の変化するポイントです。
+
+> 💡 音ごとのスペクトログラムの見方のコツは以下のチュートリアルをご覧ください：
+> - [13.音の種類と原音設定（基本編）](/docs/tutorial-ja-13-音の種類と原音設定基本編--docs)
+> - [14.音の種類と原音設定（応用編）](/docs/tutorial-ja-14-音の種類と原音設定応用編--docs)
+
+### ステップ2: 再生ボタンで先行発声を微調整
+
+- <PlayBeforePreutterButton size={24} iconSize={16} /> と <PlayAfterPreutterButton size={24} iconSize={16} /> を使いながら、先行発声を細かく調整します
+- 前後どちらを聞いても違和感がない位置を探します
+
+### ステップ3: 他のパラメータを調整
+
+必要に応じて、オフセット・オーバーラップ・子音部・ブランクを調整します。
+
+> 💡 各パラメータの設定方法は [12.よくある原音設定のパターン](/docs/tutorial-ja-12-よくある原音設定のパターン--docs) をご覧ください。
+
+### ステップ4: 最終確認
+
+<PlayButton size={24} iconSize={16} metronome={null} /> メトロノーム再生で、全体のリズムが合っているか確認します。
+
+> 💡 **コツ**: 慣れてきたら、スペクトログラムだけで判断できるようになります。
+> 自信があれば、再生せずに次に進んでもOKです。
+
+### ステップ5: 次のエイリアスへ
+
+<NextAliasButton size={24} iconSize={16} fileIndex={0} aliasIndex={0} maxFileIndex={0} maxAliasIndex={0} setFileIndex={() => {}} setAliasIndex={() => {}} setMaxAliasIndex={() => {}} progress={false} /> **1つ次**ボタンで次のエイリアスに移動し、ステップ1から繰り返します。
+
+すべてのエイリアスが終わったら、原音設定は完了です！
+
+---
+
+- 前のページ: [8.自動生成の高度なカスタマイズ](/docs/tutorial-ja-08-otoiniの高度なカスタマイズ--docs)
+- 次のページ: [10.エイリアス編集画面](/docs/tutorial-ja-10-エイリアス編集画面--docs)
