@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { ErrorPaper } from "../../src/features/ErrorPaper";
 
 /**

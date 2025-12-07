@@ -52,7 +52,7 @@ export const Default: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -215,7 +215,7 @@ export const SmallCanvas: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -311,7 +311,7 @@ export const LargeCanvas: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -407,7 +407,7 @@ export const TouchMode: Story = {
       setTouchMode(true);
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -504,7 +504,7 @@ export const OverlapLock: Story = {
       setOverlapLock(true);
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -600,7 +600,7 @@ export const MaxZoom: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -695,7 +695,7 @@ export const MinZoom: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);

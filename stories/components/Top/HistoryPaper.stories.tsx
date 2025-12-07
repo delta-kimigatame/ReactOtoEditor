@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { HistoryPaper } from "../../../src/components/Top/HistoryPaper";
 
 const meta = {

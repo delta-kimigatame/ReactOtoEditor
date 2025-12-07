@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+﻿import type { Meta, StoryObj } from '@storybook/react';
 import { ColorAvatar } from '../../../../src/components/Header/HeaderMenuItem/ColorAvatar';
 
 /**

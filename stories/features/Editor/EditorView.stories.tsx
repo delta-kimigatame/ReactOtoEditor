@@ -30,7 +30,7 @@ export const Default: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -121,7 +121,7 @@ export const MultipleRecords: Story = {
       setColorTheme("blue");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -184,7 +184,7 @@ export const GreenTheme: Story = {
       setColorTheme("green");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -244,7 +244,7 @@ export const RedTheme: Story = {
       setColorTheme("red");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);

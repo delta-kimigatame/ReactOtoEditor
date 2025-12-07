@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { RulePaper } from "../../../src/components/Top/RulePaper";
 
 const meta = {

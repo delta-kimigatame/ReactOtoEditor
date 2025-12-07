@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { ShortcutPaper } from "../../../src/components/Top/ShortcutPaper";
 
 const meta = {

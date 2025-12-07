@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Wave } from "utauwav";
 import { App } from "../../src/features/App";
@@ -64,7 +64,7 @@ export const EditorViewWithData: Story = {
       setLanguage("ja");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -124,7 +124,7 @@ export const EditorViewWithZipFile: Story = {
       setColorTheme("blue");
       setLanguage("ja");
 
-      fetch("/samples/sjis_CV_jp.zip")
+      fetch("samples/sjis_CV_jp.zip")
         .then((res) => res.arrayBuffer())
         .then(async (buf) => {
           const zip = await JSZip.loadAsync(buf);
@@ -259,7 +259,7 @@ export const DarkModeWithEditor: Story = {
       setLanguage("ja");
       setTargetDir("samples");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);

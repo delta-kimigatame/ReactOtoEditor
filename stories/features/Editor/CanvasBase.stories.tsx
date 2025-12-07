@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState, useRef } from "react";
 import { Wave } from "utauwav";
 import { CanvasBase } from "../../../src/features/Editor/CanvasBase";
@@ -48,7 +48,7 @@ export const Default: Story = {
       setColorTheme("blue");
 
       // 音声ファイル読込
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -177,7 +177,7 @@ export const SmallCanvas: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -253,7 +253,7 @@ export const LargeCanvas: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -330,7 +330,7 @@ export const MaxZoom: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -406,7 +406,7 @@ export const MinZoom: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -482,7 +482,7 @@ export const GreenTheme: Story = {
 
       setColorTheme("green");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -558,7 +558,7 @@ export const RedTheme: Story = {
 
       setColorTheme("red");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -635,7 +635,7 @@ export const GrayTheme: Story = {
 
       setColorTheme('gray');
 
-      fetch('/samples/01_あかきくけこ.wav')
+      fetch('samples/01_あかきくけこ.wav')
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -723,7 +723,7 @@ const createTutorialStory = (
 
       setColorTheme('gray');
 
-      fetch('/samples/tutorial_patterns.zip')
+      fetch('samples/tutorial_patterns.zip')
         .then((res) => res.arrayBuffer())
         .then((zipBuf) => JSZip.loadAsync(zipBuf))
         .then((zip) => {

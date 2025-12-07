@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Wave } from "utauwav";
 import { WavCanvas } from "../../../src/features/Editor/WavCanvas";
@@ -39,7 +39,7 @@ export const Default: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -129,7 +129,7 @@ export const SmallCanvas: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -179,7 +179,7 @@ export const LargeCanvas: Story = {
 
       setColorTheme("blue");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -229,7 +229,7 @@ export const GreenTheme: Story = {
 
       setColorTheme("green");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);
@@ -279,7 +279,7 @@ export const RedTheme: Story = {
 
       setColorTheme("red");
 
-      fetch("/samples/01_あかきくけこ.wav")
+      fetch("samples/01_あかきくけこ.wav")
         .then((res) => res.arrayBuffer())
         .then((buf) => {
           const wav = new Wave(buf);

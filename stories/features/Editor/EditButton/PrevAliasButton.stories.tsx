@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { PrevAliasButton } from "../../../../src/features/Editor/EditButtn/PrevAliasButtn";
 import { useEffect, useState } from "react";
 import { Oto } from "utauoto";

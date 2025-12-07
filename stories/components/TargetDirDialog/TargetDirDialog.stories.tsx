@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { useState, useEffect } from "react";
 import JSZip from "jszip";
 import { TargetDirDialog } from "../../../src/components/TargetDirDialog/TargetDirDialog";
@@ -72,7 +72,7 @@ export const ZipTabSelected: Story = {
 
     useEffect(() => {
       // サンプルzipを読み込む
-      fetch("/samples/sjis_CV_jp.zip")
+      fetch("samples/sjis_CV_jp.zip")
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => JSZip.loadAsync(arrayBuffer))
         .then((zip) => {
@@ -340,7 +340,7 @@ export const MakeTabSingleSelected: Story = {
 
     useEffect(() => {
       // サンプルzipを読み込む
-      fetch("/samples/sjis_CV_jp.zip")
+      fetch("samples/sjis_CV_jp.zip")
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => JSZip.loadAsync(arrayBuffer))
         .then((zip) => {
@@ -448,7 +448,7 @@ export const MakeTabMultiSelected: Story = {
 
     useEffect(() => {
       // サンプルzipを読み込む
-      fetch("/samples/sjis_CV_jp.zip")
+      fetch("samples/sjis_CV_jp.zip")
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => JSZip.loadAsync(arrayBuffer))
         .then((zip) => {
@@ -556,7 +556,7 @@ export const MakeTabMultiWithVcvSettingsExpanded: Story = {
 
     useEffect(() => {
       // サンプルzipを読み込む
-      fetch("/samples/sjis_CV_jp.zip")
+      fetch("samples/sjis_CV_jp.zip")
         .then((response) => response.arrayBuffer())
         .then((arrayBuffer) => JSZip.loadAsync(arrayBuffer))
         .then((zip) => {

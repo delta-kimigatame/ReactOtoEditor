@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react";
+﻿import type { Meta, StoryObj } from "@storybook/react";
 import { PrivacyPaper } from "../../../src/components/Top/PrivacyPaper";
 
 const meta = {
