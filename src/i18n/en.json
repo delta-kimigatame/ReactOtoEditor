@@ -25,6 +25,8 @@
   "top": {
     "description": "Laberu is otoing tool for UTAU VoiceBanks",
     "selectZipButtonText": "Agree to the terms of use and Select the UTAU VoiceBanks zip file",
+    "tutorialLink": "Tutorial (Japanese only)",
+    "tutorialUrl": "https://k-uta.jp/laberu/storybook/?path=/docs/tutorial-ja-00-%E7%9B%AE%E6%AC%A1--docs",
     "rule": "Terms of service",
     "ruleDescription": "Only voice sources with permission from the voice rights holder may be used.",
     "ruleDescription2": "If you wish to use someone else's voice, you must obtain their explicit permission.",

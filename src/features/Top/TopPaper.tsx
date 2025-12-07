@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
+import Link from "@mui/material/Link";
 
 import { LoadZipDialog } from "../LoadZipDialog/LoadZipDialog";
 import { BasePaper } from "../../components/Common/BasePaper";
@@ -79,6 +80,15 @@ export const TopPaper: React.FC<TopPaperProps> = (props) => {
       <BasePaper title={setting.productName}>
         <Box sx={{ m: 1, p: 1 }}>
           <Typography variant="body1">{t("top.description")}</Typography>
+          <Typography variant="body2" sx={{ mt: 1 }}>
+            <Link
+              href={t("top.tutorialUrl")}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t("top.tutorialLink")}
+            </Link>
+          </Typography>
           <br />
           <FullWidthButton
             disabled={processing}

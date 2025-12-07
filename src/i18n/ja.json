@@ -25,6 +25,8 @@
   "top": {
     "description": "LABERUはUTAU音源のための原音設定ツールです。",
     "selectZipButtonText": "利用規約に同意して、UTAU音源のzipファイルを選択",
+    "tutorialLink": "使い方はこちら",
+    "tutorialUrl": "https://k-uta.jp/laberu/storybook/?path=/docs/tutorial-ja-00-%E7%9B%AE%E6%AC%A1--docs",
     "rule": "利用規約",
     "ruleDescription": "声の権利者から許諾を得た音源のみご利用できます。",
     "ruleDescription2": "人力音源はNGです。UTAUのために録音した音源なら利用規約で禁止されていなければOK",

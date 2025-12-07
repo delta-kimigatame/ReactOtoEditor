@@ -25,6 +25,8 @@
   "top": {
     "description": "LABERU 是用于 UTAU 音源的 oto 设置工具。",
     "selectZipButtonText": "同意使用条款并选择 UTAU 音源的 zip 文件",
+    "tutorialLink": "教程（仅日语）",
+    "tutorialUrl": "https://k-uta.jp/laberu/storybook/?path=/docs/tutorial-ja-00-%E7%9B%AE%E6%AC%A1--docs",
     "rule": "使用条款",
     "ruleDescription": "仅可使用已获得声音权利人许可的音源。",
     "ruleDescription2": "如果您希望使用他人的声音，必须获得其明确许可。",
