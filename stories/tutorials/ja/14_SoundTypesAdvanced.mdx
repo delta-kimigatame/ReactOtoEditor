@@ -4,149 +4,195 @@ import { Meta } from '@storybook/addon-docs/blocks';
 
 # 音の種類別設定（応用編）
 
-このチュートリアルでは、特殊な音の種類（息音、語尾音など）の設定方法を概説します。
+このチュートリアルでは、は行・や行・わ行の設定方法を説明します。
+これらの音は、他の子音と少し異なる特徴を持っています。
 
-> 💡 **ヒント**: このチュートリアルでは、各音の種類の概要と参考リンクを紹介します。
-> 詳しい設定方法は、外部の資料を参照してください。
+> **注意:** このチュートリアルの説明は単独音を前提としています。連続音を設定する場合は、各説明の**先行発声の部分のみ**を参考にしてください。
 
-## 特殊な音の種類
+## は行の場合
 
-UTAUの音源では、通常の母音・子音以外にも、さまざまな特殊音があります。
+は行は摩擦音の一種ですが、少し異なる特徴があるため別だてにしました。
+子音部は、すべての周波数帯に弱い音が広がります（スペクトログラムがホワイトノイズのように見えます）。
+子音部から母音部へゆっくり遷移していくのが特徴です。
 
-### 1. 息音（ブレス）
+**このパターンで設定する音:**
+- は行（は、へ、ほ）
+- ひゃ行、ふぁ行
 
-**息を吸う音、吐く音** などです。
+> **注意:** ひ、ふについては、後で別に説明します。
 
-**特徴:**
-- 持続時間が短い
-- ノイズ成分が多い
-- 前後の音との接続が重要
+### は行の例（最初の音）
 
-**参考リソース:**
-- [特殊音素の設定 - UTAUの取説](https://w.atwiki.jp/utauunyuumon/pages/34.html)
-- [ブレス音の設定 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-first&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：- は"
+/>
 
-### 2. 語尾音（語尾息）
+連続音「- は」の設定例です。ファイルの最初の音なので、単独音と同じように設定します。
 
-**歌の最後に添える息や伸ばし音** などです。
+### は行の例（は・へ・ほ）
 
-**特徴:**
-- 音が徐々に減衰する
-- Offsetの設定が重要
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-a-ha&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：a は"
+/>
 
-**参考リソース:**
-- [語尾音の設定 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
+連続音「a は」の設定例です。
 
-### 3. 促音（っ）
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-u-he&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：u へ"
+/>
 
-**つまる音**（例: がっこう の「っ」）です。
+連続音「u へ」の設定例です。
 
-**特徴:**
-- 無音または短いノイズ
-- 持続時間が短い
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-e-ho&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：e ほ"
+/>
 
-**参考リソース:**
-- [促音の設定 - UTAUの取説](https://w.atwiki.jp/utauunyuumon/pages/34.html)
+連続音「e ほ」の設定例です。
 
-### 4. 長音（ー）
+**設定のポイント:**
 
-**伸ばし棒** です。
+- **左ブランク**: 子音の始まりに設定します。子音が長すぎる場合は切ることができます。
 
-**特徴:**
-- 前の母音を伸ばす
-- Overlapの設定が重要
+- **オーバーラップ**: 先行発声の1/3〜1/2程度に設定します。
 
-**参考リソース:**
-- [長音の設定 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
+- **先行発声**: 基本的には完全に母音に遷移した部分に設定します。ただし、すごくゆっくり遷移する癖がある場合は、遷移部の中心あたりに設定したほうが良い場合もあるので、再生しながら調整します。
 
-### 5. R音（巻き舌）
+### は行の例（ひ・ふ）
 
-**らりるれろ** の巻き舌版です。
+は行でも、ひとふは少し違います。
 
-**特徴:**
-- 子音部分が複雑
-- Consonantパラメータの調整が重要
+- **ひ**: 必ず普通の摩擦音のような形になります
+- **ふ**: 普通の摩擦音のような場合と、は行らしい場合があります
 
-**参考リソース:**
-- [R音の設定 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-a-hi&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：a ひ"
+/>
 
-## 連続音・CVVCの特殊音
+連続音「a ひ」の設定例です。ひは摩擦音のような形をしています。
 
-連続音やCVVC音源では、さらに特殊な音が必要になることがあります。
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--h-row-i-fu&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="は行：i ふ"
+/>
 
-### 1. VV（母音連結）
+連続音「i ふ」の設定例です。ふは摩擦音のような場合とは行らしい場合があります。
 
-**母音から母音への接続** です。
+## や行の場合（半母音）
 
-**参考リソース:**
-- [VV形式の設定 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
+や行の子音は、母音の「い」と似たようなスペクトルをしています。
+例えば「a や」は、**[あ] - [あ→い] - [い→あ] - [あ]** のようなスペクトルになります。
 
-### 2. 語頭音（- CV）
+**このパターンで設定する音:**
+- や行（や、ゆ、よ）
 
-**歌の開始部分の音** です。
+### や行の例（最初の音）
 
-**参考リソース:**
-- [語頭音の設定 - 連続音音源の作り方](http://utau2008.xrea.jp/production/)
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--y-row-first&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="や行：- や"
+/>
 
-### 3. 語尾音（V -）
+連続音「- や」の設定例です。ファイルの最初の音なので、単独音と同じように設定します。
 
-**歌の終わり部分の音** です。
+### や行の例
 
-**参考リソース:**
-- [語尾音の設定 - 連続音音源の作り方](http://utau2008.xrea.jp/production/)
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--y-row-a-ya&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="や行：a や"
+/>
 
-## 英語・多言語音源の特殊音
+連続音「a や」の設定例です。
 
-英語や他の言語の音源では、日本語にはない音素があります。
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--y-row-i-yu&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="や行：i ゆ"
+/>
 
-### 英語の子音
+連続音「i ゆ」の設定例です。
 
-**th、r、l、f、v** など、日本語にはない子音です。
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--y-row-e-yo&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="や行：e よ"
+/>
 
-**参考リソース:**
-- [英語音源の作り方 - UTAU音源製作講座](http://utau2008.xrea.jp/production/)
-- [多言語対応UTAU - ニコニコ大百科](https://dic.nicovideo.jp/a/utau)
+連続音「e よ」の設定例です。
 
-## 設定のコツ
+**設定のポイント:**
 
-### コツ1: 波形の特徴を理解する
+- **左ブランク**: 子音の頭に設定しますが、短く切ることができます。
 
-特殊音は、通常の音と波形の特徴が異なります。
-エディタ画面で波形を見て、音の特徴を理解しましょう。
+- **オーバーラップ**: 先行発声の1/3〜1/2程度に設定します。
 
-### コツ2: サンプルを参考にする
+- **先行発声**: 遷移の長さに合わせて、**[い→あ]** の部分か **[あ]** の部分に設定します。
 
-既存の音源の設定を参考にすると、理解が早まります。
+## わ行の場合（半母音）
 
-### コツ3: 試行錯誤する
+わ行の子音は、母音の「う」と似たようなスペクトルをしています。
+例えば「a わ」は、**[あ] - [あ→う] - [う→あ] - [あ]** のようなスペクトルになります。
 
-特殊音の設定は、試行錯誤が必要です。
-UTAUで実際に歌わせて、発音を確認しながら調整しましょう。
+**このパターンで設定する音:**
+- わ行（わ、うぃ、うぇ）
 
-## 外部リソース
+### わ行の例（最初の音）
 
-特殊音の設定について、さらに詳しく学びたい場合は、以下のリソースが役立ちます：
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--w-row-first&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="わ行：- わ"
+/>
 
-### 総合情報
+連続音「- わ」の設定例です。ファイルの最初の音なので、単独音と同じように設定します。
 
-- [UTAU公式ユーザー互助会@Wiki - 原音設定](https://w.atwiki.jp/utauunyuumon/pages/34.html)
-- [UTAU音源作成支援サイト](http://utau2008.xrea.jp/)
+### わ行の例
 
-### 特殊音素別の情報
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--w-row-a-wa&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="わ行：a わ"
+/>
 
-- [ブレス音の設定](http://utau2008.xrea.jp/production/)
-- [語尾音の設定](http://utau2008.xrea.jp/production/)
-- [促音・長音の設定](https://w.atwiki.jp/utauunyuumon/pages/34.html)
-- [英語音源の作り方](http://utau2008.xrea.jp/production/)
+連続音「a わ」の設定例です。
 
-### 動画チュートリアル
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--w-row-a-wi&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="わ行：a うぃ"
+/>
 
-- ニコニコ動画やYouTubeで「UTAU 原音設定 特殊音」と検索すると、多くのチュートリアル動画が見つかります
+連続音「a うぃ」の設定例です。
 
-## 次のステップ
+<iframe
+  src="/iframe.html?id=components-editor-canvasbase--w-row-u-we&viewMode=story"
+  style={{ width: '100%', height: '250px', border: '1px solid #ccc', pointerEvents: 'none' }}
+  title="わ行：u うぇ"
+/>
 
-特殊音の設定方法を理解できたら、次は編集したデータの保存とダウンロードを学びましょう。
+連続音「u うぇ」の設定例です。
 
-👉 [15.保存とダウンロード](/docs/tutorial-ja-15-保存とダウンロード--docs)
+**設定のポイント:**
 
-編集した原音設定を保存し、UTAUで使えるようにする方法を学べます。
+- **左ブランク**: 子音の頭に設定しますが、短く切ることができます。
+
+- **オーバーラップ**: 先行発声の1/3〜1/2程度に設定します。
+
+- **先行発声**: 遷移の長さに合わせて、**[う→あ]** の部分か **[あ]** の部分に設定します。
+
+---
+
+- 前のページ: [13.音の種類別設定（基本編）](/docs/tutorial-ja-13-音の種類別設定-基本編--docs)
+- 次のページ: [15.保存とダウンロード](/docs/tutorial-ja-15-保存とダウンロード--docs)
