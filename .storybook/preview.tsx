@@ -17,7 +17,18 @@ const preview: Preview = {
     },
     a11y: {
       test: 'todo'
-    }
+    },
+    options: {
+      storySort: {
+        order: [
+          'Tutorial', // チュートリアルを最優先
+          'Components',
+          'Features',
+          'App',
+        ],
+        method: 'alphabetical',
+      },
+    },
   },
 
   // i18n統合 + テーマ統合
