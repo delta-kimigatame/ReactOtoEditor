@@ -25,11 +25,11 @@ First, let's understand the role of underscores (`_`) in UTAU.
 **Leading underscore in filename:**
 
 In UTAU, specifying a filename calls up the first oto setting in that file.
-However, having "a" suggest all VCV sounds like "aa ia ua ea" would be inconvenient.
+However, having "あ" suggest all VCV sounds like "ああいあうえあ" would be inconvenient.
 
 So, UTAU voicebanks use this naming convention:
-- **CV (single sounds)**: `a.wav` (no underscore)
-- **VCV (connected sounds)**: `_aa ia ua ea.wav` (starts with underscore)
+- **CV (single sounds)**: `あ.wav` (no underscore)
+- **VCV (connected sounds)**: `_ああいあうえあ.wav` (starts with underscore)
 
 The leading `_` prevents the sound from being directly called.
 
@@ -43,10 +43,10 @@ Underscores in the middle of filenames have two uses:
    - Underscores are just separators with no musical meaning
 
 2. **As rests** (checkbox on)
-   - Example: `_a_ka_sa_ta.wav`
+   - Example: `_あ_か_さ_た.wav`
    - Recording 4 sounds within 8 beats of guide BGM (1-beat rest between each sound)
    - `_` positions indicate 1 beat of silence
-   - Beats: `_a__ka__sa__ta_` (_ is 1 beat, syllables are 2 beats)
+   - Beats: `_あ__か__さ__た_` (_ is 1 beat, syllables are 2 beats)
 
 **What this checkbox does:**
 
@@ -61,8 +61,8 @@ Sets whether to add `-` (hyphen) to word-initial sounds (first sound in wav file
 
 **Handling word-initial sounds in VCV:**
 
-In standard VCV, word-initial sounds use hyphen like `[- sa]`.
-This is because VCV provides all connections from previous vowels: `[a sa]`, `[i sa]`, `[u sa]`, etc.
+In standard VCV, word-initial sounds use hyphen like `[- さ]`.
+This is because VCV provides all connections from previous vowels: `[a さ]`, `[i さ]`, `[u さ]`, etc.
 
 However, since UTAU's automatic VCV mode is a paid feature,
 there's merit in having `[sa]` format that works as both VCV and CV.
@@ -70,21 +70,21 @@ there's merit in having `[sa]` format that works as both VCV and CV.
 **Two approaches:**
 
 1. **Distinguish initial from medial** (checkbox on)
-   - Initial: `[- sa]`
-   - Medial: `[a sa]`, `[i sa]`, etc.
+   - Initial: `[- さ]`
+   - Medial: `[a さ]`, `[i さ]`, etc.
    - Standard VCV format
 
 2. **Don't distinguish** (checkbox off)
-   - All: unified as `[sa]`
+   - All: unified as `[さ]`
    - When recording CV with continuous recording
    - CVVC designs that don't distinguish initial/medial
 
 **What this checkbox does:**
 
-Decides whether to distinguish VCV initial sound `[- sa]` from CV `[sa]`.
+Decides whether to distinguish VCV initial sound `[- さ]` from CV `[さ]`.
 
-- **Checked**: `[- sa]` (distinguished as VCV-specific initial)
-- **Unchecked**: `[sa]` (usable as CV too)
+- **Checked**: `[- さ]` (distinguished as VCV-specific initial)
+- **Unchecked**: `[さ]` (usable as CV too)
 
 Choose **checked** for standard VCV, **unchecked** for CV-compatible or special formats.
 
@@ -96,9 +96,9 @@ Sets whether to auto-generate the beginning of the wav file as a sound.
 
 In CV and CVVC, there are 3 approaches to handling initial (song start/after rest) vs. medial (connecting from vowel) sounds:
 
-1. **Create both**: Provide both `[- sa]` (initial) and `[sa]` (medial)
-2. **Medial only**: Only `[sa]` (don't generate initial) ← **This checkbox**
-3. **No distinction**: `[sa]` (universal for both initial and medial)
+1. **Create both**: Provide both `[- さ]` (initial) and `[さ]` (medial)
+2. **Medial only**: Only `[さ]` (don't generate initial) ← **This checkbox**
+3. **No distinction**: `[さ]` (universal for both initial and medial)
 
 **What this checkbox does:**
 
@@ -106,11 +106,11 @@ Use this when you want all CV or CVVC sounds recorded with continuous recording 
 
 **Examples:**
 
-- **Checked**: `_a ka sa ta na.wav` generates `[- a]`, `[ka]`, `[sa]`, `[ta]`, `[na]`
+- **Checked**: `_あかさたな.wav` generates `[- あ]`, `[か]`, `[さ]`, `[た]`, `[な]`
   - Uses the beginning of the wav file as a sound
   
-- **Unchecked**: `_a ka sa ta na.wav` generates only `[ka]`, `[sa]`, `[ta]`, `[na]`
-  - Doesn't generate `[- a]`
+- **Unchecked**: `_あかさたな.wav` generates only `[か]`, `[さ]`, `[た]`, `[な]`
+  - Doesn't generate `[- あ]`
   - Treats the beginning as lead-in, not as a sound
 
 **When to use:**
@@ -127,11 +127,11 @@ Sets whether to auto-generate VCV (Vowel-Consonant-Vowel) sounds.
 
 **What VCV is:**
 
-Sounds connecting from a vowel to the next consonant+vowel. For singing "ka sa":
-- `[a ka]`: From "a" vowel to "ka"
-- `[a sa]`: From "a" vowel to "sa"
+Sounds connecting from a vowel to the next consonant+vowel. For singing "か さ":
+- `[a か]`: From "a" vowel to "か"
+- `[a さ]`: From "a" vowel to "さ"
 
-> 💡 **Note**: Initial sounds like `[- ka]` aren't included in VCV.
+> 💡 **Note**: Initial sounds like `[- か]` aren't included in VCV.
 > They're treated as initial CV in oto settings.
 
 **What this checkbox does:**
@@ -159,9 +159,9 @@ Sounds connecting from a vowel to the next consonant+vowel. For singing "ka sa":
 
 Auto-generates consonant-only sounds (e.g., `k`, `s`, `t`).
 
-**Example:** For `ka.wav`
-- Checked: Generates both "ka" and "k"
-- Unchecked: Generates only "ka"
+**Example:** For `か.wav`
+- Checked: Generates both `[か]` and `[k]`
+- Unchecked: Generates only `[か]`
 
 Used for voicebank formats like CVVC that need standalone consonants.
 
@@ -194,11 +194,11 @@ Set vowel aliases and their corresponding filename patterns.
 
 ```
 Vowel: a
-Types: a,ka,sa,ta,na
+Types: あ,か,さ,た,な
 ```
 
-Setting "ka" in "Types" identifies the "ka" part in filename `_a ka sa ta na.wav` as vowel "a".  
-This auto-generates aliases like `[a sa]`.
+Setting "か" in "Types" identifies the "か" part in filename `_あかさたな.wav` as vowel "a".  
+This auto-generates aliases like `[a さ]`.
 
 **Convenient uses of suffix matching:**
 
@@ -251,17 +251,17 @@ VCV generation doesn't use consonant settings - everything is registered in exce
 
 ```
 Consonant: k
-Types: ka,ku,ke,ko
+Types: か,く,け,こ
 Length: 60ms
 ```
 
-Setting "ka" in "Types" identifies the "ka" part in filename `_a ka sa ta na.wav` as consonant "k".  
-This auto-generates both `[a k]` (VC: vowel+consonant) and `[ka]` (CV: single sound) needed for CVVC format.
+Setting "か" in "Types" identifies the "か" part in filename `_あかさたな.wav` as consonant "k".  
+This auto-generates both `[a k]` (VC: vowel+consonant) and `[か]` (CV: single sound) needed for CVVC format.
 
 "ki" is excluded due to palatalization, set separately as `ky` (e.g., `Consonant: ky, Types: ki`).
 
 > 💡 **What is CVVC**: A voicebank format combining two types: CV (single sounds) and VC (vowel+consonant).  
-> Example: Singing `ka` → `[a k]` (VC from vowel to consonant) + `[ka]` (CV from consonant to vowel)
+> Example: Singing `か` → `[a k]` (VC from vowel to consonant) + `[か]` (CV from consonant to vowel)
 
 **Exception: When consonant field is blank**
 
@@ -273,7 +273,7 @@ Types: a,i,u,e,o
 Length: 0ms
 ```
 
-This generates VCV aliases like `[a a]` (won't generate VC like `[a a]`).
+This generates VCV aliases like `[a あ]` (won't generate VC like `[a a]`).
 
 **Why this setting exists:**
 
@@ -324,8 +324,8 @@ After: (blank)
 With these settings, filename `_a_ka.wav` converts to alias `a か`.
 
 > 💡 **Note:** Replacement rules apply top-to-bottom, and order affects results.
-> For example, if you register both `[a]→[あ]` and `[ka]→[か]`,
-> `[ka]` might become `[あ]` if you don't register `[ka]` first.
+> For example, if you register both `a→あ` and `ka→か`,
+> `ka` might become `あ` if you don't register `ka` first.
 > Always register longer strings (complex patterns) above shorter ones.
 
 ---
