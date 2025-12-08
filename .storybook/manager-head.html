@@ -4,6 +4,11 @@
   src="https://www.googletagmanager.com/gtag/js?id=G-BYC81C9JMT"
 ></script>
 <script>
+  // Disable Google Analytics on localhost
+  if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+    window["ga-disable-G-BYC81C9JMT"] = true;
+  }
+  
   window.dataLayer = window.dataLayer || [];
   function gtag() {
     dataLayer.push(arguments);
