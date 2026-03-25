@@ -207,7 +207,8 @@
     "zoomin": "拡大",
     "zoomout": "縮小",
     "prev": "前のエイリアス",
-    "next": "次のエイリアス"
+    "next": "次のエイリアス",
+    "wavNotFound": "wavが見つかりません: {{filename}}"
   },
   "color": {
     "gray": "白黒",

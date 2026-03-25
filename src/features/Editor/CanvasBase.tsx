@@ -1,9 +1,10 @@
 import * as React from "react";
-import { Wave, WaveAnalyse } from "utauwav";
-import OtoRecord from "utauoto/dist/OtoRecord";
+import { WaveAnalyse } from "utauwav";
+import { useTranslation } from "react-i18next";
 
 
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import { fftSetting } from "../../config/setting";
 import { WavCanvas } from "./WavCanvas";
@@ -19,7 +20,8 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
  * @returns エディタのキャンバス
  */
 export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
-  const {wav}=useOtoProjectStore()
+  const { t } = useTranslation();
+  const { wav, record } = useOtoProjectStore();
   /** wavのスペクトル */
   const spec = React.useMemo(() => {
     if (wav === null) {
@@ -95,6 +97,18 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
 
   return (
     <>
+      {wav === null && record !== null && (
+        <Box
+          sx={{
+            px: 1,
+            py: 0.5,
+          }}
+        >
+          <Typography color="error" variant="body2">
+            {t("editor.wavNotFound", { filename: record.filename })}
+          </Typography>
+        </Box>
+      )}
       <Box
         ref={boxRef}
         sx={{

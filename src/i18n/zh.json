@@ -207,7 +207,8 @@
     "zoomin": "放大",
     "zoomout": "缩小",
     "prev": "上一个别名",
-    "next": "下一个别名"
+    "next": "下一个别名",
+    "wavNotFound": "未找到 WAV: {{filename}}"
   },
   "color": {
     "gray": "灰色",

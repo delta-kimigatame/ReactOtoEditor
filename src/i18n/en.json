@@ -207,7 +207,8 @@
     "zoomin": "Zoom In",
     "zoomout": "Zoom Out",
     "prev": "Previous Alias",
-    "next": "Next Alias"
+    "next": "Next Alias",
+    "wavNotFound": "WAV not found: {{filename}}"
   },
   "color": {
     "gray": "gray",
