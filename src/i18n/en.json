@@ -35,6 +35,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2026/03/26 Added a warning when referencing a WAV file that does not exist in oto.ini",
       "2026/02/26 Changed the app icon",
       "2026/01/03 Measures against crashes when using browser's automatic translation feature",
       "2025/12/03 Fixed various internal structures and a bug where keyboard shortcuts did not work properly.",
