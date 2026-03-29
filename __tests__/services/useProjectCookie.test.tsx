@@ -61,7 +61,7 @@ describe("useProjectCookie", () => {
     expect(screen.getByText("Mode: system")).toBeInTheDocument();
   });
   it("hasMode", () => {
-    document.cookie = "mode=dark; path=/;";
+    document.cookie = "laberuMode=dark; path=/;";
     render(
       <CookiesProvider>
         <TestProjectCookieMode />
@@ -88,7 +88,7 @@ describe("useProjectCookie", () => {
     expect(screen.getByText("Language: en")).toBeInTheDocument();
   });
   it("hasLanguage", () => {
-    document.cookie = "language=en; path=/;";
+    document.cookie = "laberuLanguage=en; path=/;";
     render(
       <CookiesProvider>
         <TestProjectCookieLanguage />
@@ -115,7 +115,7 @@ describe("useProjectCookie", () => {
     expect(screen.getByText("ColorTheme: gray")).toBeInTheDocument();
   });
   it("hasColorTheme", () => {
-    document.cookie = "colorTheme=red; path=/;";
+    document.cookie = "laberuColorTheme=red; path=/;";
     render(
       <CookiesProvider>
         <TestProjectCookieColorTheme />
@@ -142,7 +142,7 @@ describe("useProjectCookie", () => {
     expect(screen.getByText("OverlapLock: false")).toBeInTheDocument();
   });
   it("hasOverlapLock", () => {
-    document.cookie = "overlapLock=true; path=/;";
+    document.cookie = "laberuOverlapLock=true; path=/;";
     render(
       <CookiesProvider>
         <TestProjectCookieOverlapLock />
@@ -169,7 +169,7 @@ describe("useProjectCookie", () => {
     expect(screen.getByText("TouchMode: false")).toBeInTheDocument();
   });
   it("hasTouchMode", () => {
-    document.cookie = "touchMode=true; path=/;";
+    document.cookie = "laberuTouchMode=true; path=/;";
     render(
       <CookiesProvider>
         <TestProjectCookieTouchMode />
