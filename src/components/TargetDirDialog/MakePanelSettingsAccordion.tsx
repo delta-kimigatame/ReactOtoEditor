@@ -17,10 +17,6 @@ import { MakePanelReplaceAccordion } from "../../features/TargetDirDialog/MakePa
  * 複数エイリアス生成の詳細設定Accordion
  */
 export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProps> = ({
-  tempo,
-  setTempo,
-  offset,
-  setOffset,
   maxnum,
   setMaxnum,
   underbar,
@@ -50,24 +46,6 @@ export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProp
         </InputLabel>
       </AccordionSummary>
       <AccordionDetails>
-        <FullWidthTextField
-          type="number"
-          label={t("targetDirDialog.makePanel.settings.tempo")}
-          value={tempo}
-          onChange={(e) => {
-            setTempo(e.target.value);
-          }}
-          data-testid="tempo-input"
-        />
-        <FullWidthTextField
-          type="number"
-          label={t("targetDirDialog.makePanel.settings.offset")}
-          value={offset}
-          onChange={(e) => {
-            setOffset(e.target.value);
-          }}
-          data-testid="offset-input"
-        />
         <FullWidthTextField
           type="number"
           label={t("targetDirDialog.makePanel.settings.maxnum")}
@@ -127,14 +105,6 @@ export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProp
 };
 
 export interface MakePanelSettingsAccordionProps {
-  /** テンポ */
-  tempo: number;
-  /** テンポ設定関数 */
-  setTempo: (value: number) => void;
-  /** オフセット */
-  offset: number;
-  /** オフセット設定関数 */
-  setOffset: (value: number) => void;
   /** 最大エイリアス数 */
   maxnum: number;
   /** 最大エイリアス数設定関数 */

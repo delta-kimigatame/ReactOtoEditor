@@ -501,15 +501,18 @@ describe("TargetDirDialogTabMakePanel", () => {
         screen.getByTestId("skip-begining-number-checkbox")
       ).not.toHaveAttribute("aria-disabled", "true");
       expect(screen.getByTestId("make-button")).not.toBeDisabled();
+
+      // tempo/offsetとガイドBGMボタンはアコーディオン外なのでこの時点で表示される
+      expect(screen.getByTestId("tempo-input")).toBeInTheDocument();
+      expect(screen.getByTestId("offset-input")).toBeInTheDocument();
+      expect(screen.getByTestId("load-guide-bgm-button")).toBeInTheDocument();
     });
 
     // アコーディオンを展開
     fireEvent.click(screen.getByTestId("settings-accordion-summary"));
 
     await waitFor(() => {
-      // アコーディオン内の要素が表示される
-      expect(screen.getByTestId("tempo-input")).toBeInTheDocument();
-      expect(screen.getByTestId("offset-input")).toBeInTheDocument();
+      // アコーディオン内の要素が表示される（tempo/offsetはアコーディオン外に移動済み）
       expect(screen.getByTestId("maxnum-input")).toBeInTheDocument();
       expect(screen.getByTestId("underbar-checkbox")).toBeInTheDocument();
       expect(screen.getByTestId("begining-cv-checkbox")).toBeInTheDocument();
@@ -676,11 +679,11 @@ describe("TargetDirDialogTabMakePanel", () => {
         expect(screen.getByTestId("settings-accordion")).toBeInTheDocument();
       });
 
-      // アコーディオンを展開
+      // アコーディオンを展開（tempo/offsetはアコーディオン外なのでmaxnum-inputで待機）
       fireEvent.click(screen.getByTestId("settings-accordion-summary"));
 
       await waitFor(() => {
-        expect(screen.getByTestId("tempo-input")).toBeInTheDocument();
+        expect(screen.getByTestId("maxnum-input")).toBeInTheDocument();
       });
     });
 
@@ -943,10 +946,10 @@ describe("TargetDirDialogTabMakePanel", () => {
       const calledArgs = mockMakeOto.mock.calls[0];
       const [ini, fileKeys, targetDir, skipBeginingNumber] = calledArgs;
 
-      // 変更された値の確認
-      expect(ini.tempo).toBe("140");
-      expect(ini.offset).toBe("500");
-      expect(ini.max).toBe("5");
+      // 変更された値の確認（tempo/offsetはNumber()キャストされるのでnumber型）
+      expect(ini.tempo).toBe(140);
+      expect(ini.offset).toBe(500);
+      expect(ini.max).toBe("5"); // maxnumはMakePanelSettingsAccordion内でe.target.valueのままなのでstring
       expect(ini.underbar).toBe(true);
       expect(ini.beginingCv).toBe(true);
       expect(ini.noHead).toBe(false); // !requireHead (変更後true)

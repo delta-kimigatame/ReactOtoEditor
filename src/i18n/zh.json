@@ -35,6 +35,7 @@
     "privacyCookie": "我们使用 Cookie 来定制您在我们网站上的体验。",
     "history": "更新日志",
     "changelog": [
+      "2026/03/29 在自动生成连续发声 oto.ini 时，新增通过解析引导 BGM 配置文件来自动设置偏移量的功能。",
       "2026/03/26 添加了在引用 oto.ini 中不存在的 WAV 时显示警告",
       "2026/02/26 更改应用图标",
       "2026/01/03 针对使用浏览器自动翻译功能时应用程序崩溃的对策",
@@ -134,6 +135,8 @@
         "skipBeginingNumber": "忽略文件名开头的数字",
         "tempo": "引导 BGM 的 BPM",
         "offset": "从 wav 开头到第一拍的长度（毫秒）",
+        "loadGuideBgm": "读取配置文件",
+        "loadGuideBgmCaption": "请读取录音时使用的引导 BGM 中打包的同名 txt 文件，将自动设置偏移量。",
         "maxnum": "重复别名的生成数量（0 表示无限制）",
         "underbar": "将文件名中的下划线视为 1 拍的休止符",
         "beginingCv": "在 wav 开头的别名前添加 -",

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import TabPanel from "@mui/lab/TabPanel";
 import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
 import { SelectChangeEvent } from "@mui/material/Select";
 
 import { FullWidthSelect } from "../../components/Common/FullWidthSelect";
@@ -18,6 +19,7 @@ import { MakePanelSettingsAccordion } from "../../components/TargetDirDialog/Mak
 
 import { LOG } from "../../lib/Logging";
 import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
+import { parseGuideBgmOffset } from "../../utils/GuideBgm";
 import { MakeOto, MakeOtoSingle } from "../../lib/MakeOtoTemp/MakeOto";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 
@@ -60,9 +62,32 @@ export const TargetDirDialogTabMakePanel: React.FC<
   const [skipBeginingNumber, setSkipBeginingNumber] =
     React.useState<boolean>(false);
 
+  /** ガイドBGM設定ファイル読込用の隠しinputへのref */
+  const guideBgmInputRef = React.useRef<HTMLInputElement>(null);
+
   /** モード選択セレクトボックスのイベント */
   const OnModeChange = (e: SelectChangeEvent) => {
     setMode(e.target.value as "single" | "multi");
+  };
+
+  /** ガイドBGM設定ファイルが選択された際のイベント */
+  const OnGuideBgmFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    if (e.target.files.length === 0) return;
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (!event.target?.result) return;
+      try {
+        const offsetValue = parseGuideBgmOffset(event.target.result as string);
+        setOffset(offsetValue);
+        LOG.debug(`ガイドBGM設定ファイルからオフセットを設定しました: ${offsetValue}ms`, "TargetDirDialogTabMakePanel");
+      } catch (error) {
+        LOG.error(`ガイドBGM設定ファイルの読み込みに失敗しました: ${error}`, "TargetDirDialogTabMakePanel");
+      }
+    };
+    reader.readAsText(file, "Shift-JIS");
+    e.target.value = "";
   };
 
   React.useEffect(() => {
@@ -157,11 +182,41 @@ export const TargetDirDialogTabMakePanel: React.FC<
       {mode === "multi" && (
         <Box sx={{ p: 1 }}>
           <MakePanelSelectPreset setIni={setIni} />
+          <input
+            type="file"
+            accept=".txt"
+            hidden
+            ref={guideBgmInputRef}
+            onChange={OnGuideBgmFileChange}
+          />
+          <FullWidthTextField
+            type="number"
+            label={t("targetDirDialog.makePanel.settings.tempo")}
+            value={tempo}
+            onChange={(e) => {
+              setTempo(Number(e.target.value));
+            }}
+            data-testid="tempo-input"
+          />
+          <FullWidthTextField
+            type="number"
+            label={t("targetDirDialog.makePanel.settings.offset")}
+            value={offset}
+            onChange={(e) => {
+              setOffset(Number(e.target.value));
+            }}
+            data-testid="offset-input"
+          />
+          <FullWidthButton
+            onClick={() => guideBgmInputRef.current?.click()}
+            data-testid="load-guide-bgm-button"
+          >
+            {t("targetDirDialog.makePanel.settings.loadGuideBgm")}
+          </FullWidthButton>
+          <Typography variant="caption" color="text.secondary" sx={{ mx: 1 }}>
+            {t("targetDirDialog.makePanel.settings.loadGuideBgmCaption")}
+          </Typography>
           <MakePanelSettingsAccordion
-            tempo={tempo}
-            setTempo={setTempo}
-            offset={offset}
-            setOffset={setOffset}
             maxnum={maxnum}
             setMaxnum={setMaxnum}
             underbar={underbar}
