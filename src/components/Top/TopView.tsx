@@ -11,6 +11,7 @@ import { TargetDirDialog } from "../TargetDirDialog/TargetDirDialog";
 import { LOG } from "../../lib/Logging";
 import { ShortcutPaper } from "./ShortcutPaper";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { LinkPaper } from "./LinkPaper";
 
 /**
  * zipデータを読み込む前の画面
@@ -65,6 +66,7 @@ export const TopView: React.FC<TopViewProps> = (props) => {
       <RulePaper />
       <PrivacyPaper />
       <ShortcutPaper />
+      <LinkPaper />
       <HistoryPaper />
       <TargetDirDialog
         dialogOpen={targetDirDialogOpen}
