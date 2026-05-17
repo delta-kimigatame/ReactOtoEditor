@@ -18,6 +18,7 @@ import { LOG } from "../../lib/Logging";
 import { FullWidthButton } from "../../components/Common/FullWidthButton";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 import { ChangeAlias, DuplicateOtoRecord } from "../../utils/otoRecordUtils";
+import { coerceNumberInput, normalizeNumberInput } from "../../utils/numberInput";
 
 export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   const { t } = useTranslation();
@@ -34,11 +35,11 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
           record.velocity,
           record.blank,
         ];
-  const [offset, setOffset] = React.useState<number>(offset_);
-  const [overlap, setOverlap] = React.useState<number>(overlap_);
-  const [preutter, setPreutter] = React.useState<number>(pre_);
-  const [velocity, setVelocity] = React.useState<number>(velocity_);
-  const [blank, setBlank] = React.useState<number>(blank_);
+  const [offset, setOffset] = React.useState<string>(String(offset_));
+  const [overlap, setOverlap] = React.useState<string>(String(overlap_));
+  const [preutter, setPreutter] = React.useState<string>(String(pre_));
+  const [velocity, setVelocity] = React.useState<string>(String(velocity_));
+  const [blank, setBlank] = React.useState<string>(String(blank_));
   /** テキストフィールドで編集できるalias */
   const [alias, setAlias] = React.useState<string>(alias_);
   /** スナックバーの表示 */
@@ -50,11 +51,11 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
   React.useEffect(() => {
     if (record !== null) {
       setAlias(record.alias);
-      setOffset(record.offset);
-      setOverlap(record.overlap);
-      setPreutter(record.pre);
-      setVelocity(record.velocity);
-      setBlank(record.blank);
+      setOffset(String(record.offset));
+      setOverlap(String(record.overlap));
+      setPreutter(String(record.pre));
+      setVelocity(String(record.velocity));
+      setBlank(String(record.blank));
     }
   }, [record]);
 
@@ -135,28 +136,33 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
 
   const OnParameterChangeClick = () => {
     let update = false;
-    if (offset !== record.offset) {
-      record.offset = offset;
+    const nextOffset = coerceNumberInput(offset, record.offset);
+    const nextOverlap = coerceNumberInput(overlap, record.overlap);
+    const nextPreutter = coerceNumberInput(preutter, record.pre);
+    const nextVelocity = coerceNumberInput(velocity, record.velocity);
+    const nextBlank = coerceNumberInput(blank, record.blank);
+    if (nextOffset !== record.offset) {
+      record.offset = nextOffset;
       update = true;
       LOG.debug(`オフセット変更。${record.offset}`, "AliasDialog");
     }
-    if (overlap !== record.overlap) {
-      record.overlap = overlap;
+    if (nextOverlap !== record.overlap) {
+      record.overlap = nextOverlap;
       update = true;
       LOG.debug(`オーバーラップ変更。${record.overlap}`, "AliasDialog");
     }
-    if (preutter !== record.pre) {
-      record.pre = preutter;
+    if (nextPreutter !== record.pre) {
+      record.pre = nextPreutter;
       update = true;
       LOG.debug(`先行発声変更。${record.pre}`, "AliasDialog");
     }
-    if (velocity !== record.velocity) {
-      record.velocity = velocity;
+    if (nextVelocity !== record.velocity) {
+      record.velocity = nextVelocity;
       update = true;
       LOG.debug(`子音部変更。${record.velocity}`, "AliasDialog");
     }
-    if (blank !== record.blank) {
-      record.blank = blank;
+    if (nextBlank !== record.blank) {
+      record.blank = nextBlank;
       update = true;
       LOG.debug(`右ブランク変更。${record.blank}`, "AliasDialog");
     }
@@ -237,6 +243,9 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             onChange={(e) => {
               setOffset(e.target.value);
             }}
+            onBlur={() => {
+              setOffset(normalizeNumberInput(offset, 0));
+            }}
           />
           <FullWidthTextField
             data-testid="AliasDialog-overlap"
@@ -245,6 +254,9 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             label={t("oto.overlap")}
             onChange={(e) => {
               setOverlap(e.target.value);
+            }}
+            onBlur={() => {
+              setOverlap(normalizeNumberInput(overlap, 0));
             }}
           />
           <FullWidthTextField
@@ -255,6 +267,9 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             onChange={(e) => {
               setPreutter(e.target.value);
             }}
+            onBlur={() => {
+              setPreutter(normalizeNumberInput(preutter, 0));
+            }}
           />
           <FullWidthTextField
             data-testid="AliasDialog-velocity"
@@ -264,6 +279,9 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             onChange={(e) => {
               setVelocity(e.target.value);
             }}
+            onBlur={() => {
+              setVelocity(normalizeNumberInput(velocity, 0));
+            }}
           />
           <FullWidthTextField
             data-testid="AliasDialog-blank"
@@ -272,6 +290,9 @@ export const AliasDialog: React.FC<TableDialogProps> = (props) => {
             label={t("oto.blank")}
             onChange={(e) => {
               setBlank(e.target.value);
+            }}
+            onBlur={() => {
+              setBlank(normalizeNumberInput(blank, 0));
             }}
           />
           <FullWidthButton

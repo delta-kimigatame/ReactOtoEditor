@@ -12,6 +12,7 @@ import { CommonCheckBox } from "../Common/CommonCheckBox";
 import { MakePanelVowelAccordion } from "../../features/TargetDirDialog/MakePanel/MakePanelVowelAccordion";
 import { MakePanelConsonantAccordion } from "../../features/TargetDirDialog/MakePanel/MakePanelConsonantAccordion";
 import { MakePanelReplaceAccordion } from "../../features/TargetDirDialog/MakePanel/MakePanelReplaceAccordion";
+import { coerceNumberInput, normalizeNumberInput } from "../../utils/numberInput";
 
 /**
  * 複数エイリアス生成の詳細設定Accordion
@@ -37,6 +38,11 @@ export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProp
   setReplace,
 }) => {
   const { t } = useTranslation();
+  const commitMaxnum = () => {
+    const nextMaxnum = normalizeNumberInput(maxnum, 0);
+    setMaxnum(nextMaxnum);
+    return coerceNumberInput(nextMaxnum, 0);
+  };
 
   return (
     <Accordion sx={{ m: 1 }} data-testid="settings-accordion">
@@ -53,6 +59,7 @@ export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProp
           onChange={(e) => {
             setMaxnum(e.target.value);
           }}
+          onBlur={commitMaxnum}
           data-testid="maxnum-input"
         />
         <CommonCheckBox
@@ -106,9 +113,9 @@ export const MakePanelSettingsAccordion: React.FC<MakePanelSettingsAccordionProp
 
 export interface MakePanelSettingsAccordionProps {
   /** 最大エイリアス数 */
-  maxnum: number;
+  maxnum: string | number;
   /** 最大エイリアス数設定関数 */
-  setMaxnum: (value: number) => void;
+  setMaxnum: (value: string) => void;
   /** アンダーバー使用 */
   underbar: boolean;
   /** アンダーバー使用設定関数 */
@@ -134,9 +141,9 @@ export interface MakePanelSettingsAccordionProps {
   /** 母音設定関数 */
   setVowel: (value: Array<{ vowel: string; variant: string }>) => void;
   /** 子音設定 */
-  consonant: Array<{ consonant: string; variant: string; length: number }>;
+  consonant: Array<{ consonant: string; variant: string; length: string | number }>;
   /** 子音設定関数 */
-  setConsonant: (value: Array<{ consonant: string; variant: string; length: number }>) => void;
+  setConsonant: (value: Array<{ consonant: string; variant: string; length: string | number }>) => void;
   /** 置換設定 */
   replace: Array<[before: string, after: string]>;
   /** 置換設定関数 */

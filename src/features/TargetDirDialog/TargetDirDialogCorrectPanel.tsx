@@ -15,6 +15,7 @@ import { CorrectTempo } from "../../utils/CorrectOto";
 
 import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { coerceNumberInput, normalizeNumberInput } from "../../utils/numberInput";
 
 /**
  * oto.iniテンプレートを読み込む場合のパネル、文字コード指定後の補正画面
@@ -31,13 +32,13 @@ export const TargetDirDialogCorrectPanel: React.FC<
   /** テンポ補正の有無 */
   const [isCorrectTempo, setIsCorrectTempo] = React.useState<boolean>(false);
   /** テンプレートのオフセット */
-  const [beforeOffset, setBeforeOffset] = React.useState<number>(0);
+  const [beforeOffset, setBeforeOffset] = React.useState<string>("0");
   /** 変更後のオフセット */
-  const [afterOffset, setAfterOffset] = React.useState<number>(0);
+  const [afterOffset, setAfterOffset] = React.useState<string>("0");
   /** テンポのオフセット */
-  const [beforeTempo, setBeforeTempo] = React.useState<number>(0);
+  const [beforeTempo, setBeforeTempo] = React.useState<string>("0");
   /** 変更後のテンポ */
-  const [afterTempo, setAfterTempo] = React.useState<number>(0);
+  const [afterTempo, setAfterTempo] = React.useState<string>("0");
   /** エイリアスの種類 */
   const [aliasVariant, setAliasVariant] = React.useState<Array<
     "CV" | "VCV" | "VC"
@@ -53,28 +54,32 @@ export const TargetDirDialogCorrectPanel: React.FC<
   }, [oto, targetDir]);
 
   const OnCorrectClick = () => {
+    const beforeOffsetValue = coerceNumberInput(beforeOffset, 0);
+    const afterOffsetValue = coerceNumberInput(afterOffset, 0);
+    const beforeTempoValue = coerceNumberInput(beforeTempo, 0);
+    const afterTempoValue = coerceNumberInput(afterTempo, 0);
     if (!isCorrectOffset) {
       LOG.debug(`補正無し`, "TargetDirDialogCorrectPanel");
     } else if (!isCorrectTempo) {
       LOG.debug(
-        `offsetのみ補正。テンプレート:${beforeOffset}、変更後:${afterOffset}`,
+        `offsetのみ補正。テンプレート:${beforeOffsetValue}、変更後:${afterOffsetValue}`,
         "TargetDirDialogCorrectPanel"
       );
-      const offsetDif = afterOffset - beforeOffset;
+      const offsetDif = afterOffsetValue - beforeOffsetValue;
       AddParams(oto, targetDir, "offset", offsetDif);
     } else if (!hasPositiveBlank) {
       LOG.debug(
-        `tempoの補正。テンプレートのオフセット:${beforeOffset}、変更後のオフセット:${afterOffset}。テンプレートのテンポ:${beforeTempo}、変更後のテンポ:${afterTempo}`,
+        `tempoの補正。テンプレートのオフセット:${beforeOffsetValue}、変更後のオフセット:${afterOffsetValue}。テンプレートのテンポ:${beforeTempoValue}、変更後のテンポ:${afterTempoValue}`,
         "TargetDirDialogCorrectPanel"
       );
       CorrectTempo(
         oto,
         targetDir,
         aliasVariant,
-        beforeOffset,
-        afterOffset,
-        beforeTempo,
-        afterTempo
+        beforeOffsetValue,
+        afterOffsetValue,
+        beforeTempoValue,
+        afterTempoValue
       );
     }
     LOG.debug(`oto.iniの確定`, "TargetDirDialogCorrectPanel");
@@ -107,7 +112,10 @@ export const TargetDirDialogCorrectPanel: React.FC<
             label={t("targetDirDialog.beforeOffset")}
             value={beforeOffset}
             onChange={(e) => {
-              setBeforeOffset(parseFloat(e.target.value));
+              setBeforeOffset(e.target.value);
+            }}
+            onBlur={() => {
+              setBeforeOffset(normalizeNumberInput(beforeOffset, 0));
             }}
           />
           <FullWidthTextField
@@ -116,7 +124,10 @@ export const TargetDirDialogCorrectPanel: React.FC<
             label={t("targetDirDialog.afterOffset")}
             value={afterOffset}
             onChange={(e) => {
-              setAfterOffset(parseFloat(e.target.value));
+              setAfterOffset(e.target.value);
+            }}
+            onBlur={() => {
+              setAfterOffset(normalizeNumberInput(afterOffset, 0));
             }}
           />
           <Divider />
@@ -147,7 +158,10 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     label={t("targetDirDialog.beforeTempo")}
                     value={beforeTempo}
                     onChange={(e) => {
-                      setBeforeTempo(parseFloat(e.target.value));
+                      setBeforeTempo(e.target.value);
+                    }}
+                    onBlur={() => {
+                      setBeforeTempo(normalizeNumberInput(beforeTempo, 0));
                     }}
                   />
                   <FullWidthTextField
@@ -156,7 +170,10 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     label={t("targetDirDialog.afterTempo")}
                     value={afterTempo}
                     onChange={(e) => {
-                      setAfterTempo(parseFloat(e.target.value));
+                      setAfterTempo(e.target.value);
+                    }}
+                    onBlur={() => {
+                      setAfterTempo(normalizeNumberInput(afterTempo, 0));
                     }}
                   />
                   <TargetDirDialogAliasVariant

@@ -22,6 +22,7 @@ import { MakeOtoTempIni } from "../../lib/MakeOtoTemp/Interface";
 import { parseGuideBgmOffset } from "../../utils/GuideBgm";
 import { MakeOto, MakeOtoSingle } from "../../lib/MakeOtoTemp/MakeOto";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { coerceNumberInput, normalizeNumberInput } from "../../utils/numberInput";
 
 /**
  * oto.iniを生成する場合のパネル
@@ -37,9 +38,9 @@ export const TargetDirDialogTabMakePanel: React.FC<
   const [mode, setMode] = React.useState<"single" | "multi">(null);
   const [ini, setIni] = React.useState<MakeOtoTempIni>(null);
   /** iniの各パラメータ */
-  const [offset, setOffset] = React.useState<number>(1000);
-  const [tempo, setTempo] = React.useState<number>(120);
-  const [maxnum, setMaxnum] = React.useState<number>(2);
+  const [offset, setOffset] = React.useState<string>("1000");
+  const [tempo, setTempo] = React.useState<string>("120");
+  const [maxnum, setMaxnum] = React.useState<string>("2");
   const [underbar, setUnderbar] = React.useState<boolean>(false);
   const [beginingCv, setBeginingCv] = React.useState<boolean>(false);
   const [requireHead, setRequireHead] = React.useState<boolean>(false);
@@ -50,7 +51,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
     Array<{ vowel: string; variant: string }>
   >([]);
   const [consonant, setConsonant] = React.useState<
-    Array<{ consonant: string; variant: string; length: number }>
+    Array<{ consonant: string; variant: string; length: string | number }>
   >([]);
   const [replace, setReplace] = React.useState<
     Array<[before: string, after: string]>
@@ -80,7 +81,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       if (!event.target?.result) return;
       try {
         const offsetValue = parseGuideBgmOffset(event.target.result as string);
-        setOffset(offsetValue);
+        setOffset(String(offsetValue));
         LOG.debug(`ガイドBGM設定ファイルからオフセットを設定しました: ${offsetValue}ms`, "TargetDirDialogTabMakePanel");
       } catch (error) {
         LOG.error(`ガイドBGM設定ファイルの読み込みに失敗しました: ${error}`, "TargetDirDialogTabMakePanel");
@@ -92,20 +93,42 @@ export const TargetDirDialogTabMakePanel: React.FC<
 
   React.useEffect(() => {
     if (ini === null) return;
-    updateStateFromIni(ini, {
-      setOffset,
-      setTempo,
-      setMaxnum,
-      setUnderbar,
-      setBeginingCv,
-      setRequireHead,
-      setRequireVCV,
-      setRequireOnlyConsonant,
-      setVowel,
-      setConsonant,
-      setReplace,
-    });
+    setOffset(String(ini.offset));
+    setTempo(String(ini.tempo));
+    setMaxnum(String(ini.max));
+    setUnderbar(ini.underbar);
+    setBeginingCv(ini.beginingCv);
+    setRequireHead(!ini.noHead);
+    setRequireVCV(!ini.noVCV);
+    setRequireOnlyConsonant(ini.onlyConsonant);
+    setVowel(convertVowelsFromIni(ini.vowel));
+    setConsonant(
+      convertConsonantsFromIni(ini.consonant).map((item) => ({
+        consonant: item.consonant,
+        variant: item.variant,
+        length: String(item.length),
+      }))
+    );
+    setReplace(ini.replace);
   }, [ini]);
+
+  const commitTempo = () => {
+    const nextTempo = normalizeNumberInput(tempo, 0);
+    setTempo(nextTempo);
+    return coerceNumberInput(nextTempo, 0);
+  };
+
+  const commitOffset = () => {
+    const nextOffset = normalizeNumberInput(offset, 0);
+    setOffset(nextOffset);
+    return coerceNumberInput(nextOffset, 0);
+  };
+
+  const commitMaxnum = () => {
+    const nextMaxnum = normalizeNumberInput(maxnum, 0);
+    setMaxnum(nextMaxnum);
+    return coerceNumberInput(nextMaxnum, 0);
+  };
 
   const OnMakeClick = () => {
     LOG.debug(`oto.iniを生成します。mode:${mode}`, "TargetDirDialogTabMakePanel");
@@ -120,6 +143,9 @@ export const TargetDirDialogTabMakePanel: React.FC<
       LOG.debug(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       setOto(oto);
     } else {
+      const nextTempo = commitTempo();
+      const nextOffset = commitOffset();
+      const nextMaxnum = commitMaxnum();
       // iniがnullの場合はデフォルト値を使用
       const baseIni = ini || {
         offset: 1000,
@@ -136,9 +162,9 @@ export const TargetDirDialogTabMakePanel: React.FC<
       };
       
       const updatedIni = buildIniFromState(baseIni, {
-        tempo,
-        offset,
-        maxnum,
+        tempo: nextTempo,
+        offset: nextOffset,
+        maxnum: nextMaxnum,
         underbar,
         beginingCv,
         requireHead,
@@ -194,8 +220,9 @@ export const TargetDirDialogTabMakePanel: React.FC<
             label={t("targetDirDialog.makePanel.settings.tempo")}
             value={tempo}
             onChange={(e) => {
-              setTempo(Number(e.target.value));
+              setTempo(e.target.value);
             }}
+            onBlur={commitTempo}
             data-testid="tempo-input"
           />
           <FullWidthTextField
@@ -203,8 +230,9 @@ export const TargetDirDialogTabMakePanel: React.FC<
             label={t("targetDirDialog.makePanel.settings.offset")}
             value={offset}
             onChange={(e) => {
-              setOffset(Number(e.target.value));
+              setOffset(e.target.value);
             }}
+            onBlur={commitOffset}
             data-testid="offset-input"
           />
           <FullWidthButton
@@ -308,23 +336,23 @@ export const updateStateFromIni = (
 export const buildIniFromState = (
   baseIni: MakeOtoTempIni,
   state: {
-    tempo: number;
-    offset: number;
-    maxnum: number;
+    tempo: number | string;
+    offset: number | string;
+    maxnum: number | string;
     underbar: boolean;
     beginingCv: boolean;
     requireHead: boolean;
     requireVCV: boolean;
     requireOnlyConsonant: boolean;
     vowel: Array<{ vowel: string; variant: string }>;
-    consonant: Array<{ consonant: string; variant: string; length: number }>;
+    consonant: Array<{ consonant: string; variant: string; length: number | string }>;
     replace: Array<[before: string, after: string]>;
   }
 ): MakeOtoTempIni => {
   // 基本プロパティの更新
-  baseIni.tempo = state.tempo;
-  baseIni.offset = state.offset;
-  baseIni.max = state.maxnum;
+  baseIni.tempo = coerceNumberInput(state.tempo, 0);
+  baseIni.offset = coerceNumberInput(state.offset, 0);
+  baseIni.max = coerceNumberInput(state.maxnum, 0);
   baseIni.underbar = state.underbar;
   baseIni.beginingCv = state.beginingCv;
   baseIni.noHead = !state.requireHead;
@@ -349,7 +377,7 @@ export const buildIniFromState = (
   } = {};
   state.consonant.forEach((c) => {
     c.variant.split(",").forEach((cv) => {
-      consonant_[cv] = { consonant: c.consonant, length: c.length };
+      consonant_[cv] = { consonant: c.consonant, length: coerceNumberInput(c.length, 0) };
     });
   });
   baseIni.consonant = consonant_;

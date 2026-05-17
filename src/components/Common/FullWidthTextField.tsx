@@ -2,13 +2,16 @@ import * as React from "react";
 
 import TextField from "@mui/material/TextField";
 
-export const FullWidthTextField: React.FC<{
-  onChange;
-  value;
-  label;
+export interface FullWidthTextFieldProps {
+  onChange?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  value: string | number;
+  label: React.ReactNode;
   type: React.HTMLInputTypeAttribute;
   "data-testid"?: string;
-}> = (props) => {
+}
+
+export const FullWidthTextField: React.FC<FullWidthTextFieldProps> = (props) => {
   return (
     <TextField
       fullWidth
@@ -20,6 +23,7 @@ export const FullWidthTextField: React.FC<{
       label={props.label}
       value={props.value}
       onChange={props.onChange}
+      onBlur={props.onBlur}
       data-testid={props["data-testid"]}
     />
   );

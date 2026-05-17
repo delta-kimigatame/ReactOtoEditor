@@ -22,6 +22,7 @@ import { TargetParamSelect } from "../../components/TableDialog/TargetParamSelec
 import { BatchProcess } from "../../types/batchProcess";
 import { getBatchList } from "../../config/batchList";
 import { Oto } from "utauoto";
+import { coerceNumberInput, normalizeNumberInput } from "../../utils/numberInput";
 
 export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   props
@@ -31,7 +32,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   const [batchIndex, setBatchIndex] = React.useState<number>(0);
   const [targetParam, setTargetParam] = React.useState<string>("offset");
   const [surfix, setSurfix] = React.useState<string>("");
-  const [value, setValue] = React.useState<number>(0);
+  const [value, setValue] = React.useState<string>("0");
   const [barOpen, setBarOpen] = React.useState<boolean>(false);
   const batchList: Array<BatchProcess> = React.useMemo(
     () => getBatchList(t),
@@ -47,6 +48,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
   };
 
   const OnSubmitClick = () => {
+    const nextValue = coerceNumberInput(value, 0);
     LOG.debug(
       `一括処理:${batchList[batchIndex].description}`,
       "TableDialogButtonArea"
@@ -67,7 +69,7 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
       targetDir,
       batchList,
       batchIndex,
-      value,
+      nextValue,
       zipFileName,
       props.setUpdateSignal,
       setBarOpen
@@ -107,7 +109,10 @@ export const TableDialogButtonArea: React.FC<TableDialogButtonAreaProps> = (
                 label={t("tableDialog.numberTitle")}
                 value={value}
                 onChange={(e) => {
-                  setValue(parseFloat(e.target.value));
+                  setValue(e.target.value);
+                }}
+                onBlur={() => {
+                  setValue(normalizeNumberInput(value, 0));
                 }}
                 data-testid="table-dialog-number-input"
               />

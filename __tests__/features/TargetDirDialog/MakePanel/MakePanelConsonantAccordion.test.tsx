@@ -198,7 +198,7 @@ describe("MakePanelConsonantAccordion", () => {
     expect(mockSetConsonant).toHaveBeenCalledWith([
       { consonant: "k", variant: "か,き,く", length: 100 },   // 既存の1番目の要素
       { consonant: "s", variant: "さ,し,す", length: 150 },   // 既存の2番目の要素
-      { consonant: "", variant: "", length: 0 }              // 新しく追加された空の要素
+      { consonant: "", variant: "", length: "0" }              // 新しく追加された空の要素
     ]);
   });
 });

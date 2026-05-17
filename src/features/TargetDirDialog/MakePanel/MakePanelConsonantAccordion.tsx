@@ -11,6 +11,7 @@ import TextField from "@mui/material/TextField";
 
 import { LOG } from "../../../lib/Logging";
 import { FullWidthButton } from "../../../components/Common/FullWidthButton";
+import { normalizeNumberInput } from "../../../utils/numberInput";
 
 /**
  * oto.iniを生成する場合のパネル。子音設定アコーディオン
@@ -48,9 +49,18 @@ export const MakePanelConsonantAccordion: React.FC<
     }
     props.setConsonant(consonant_);
   };
+  const OnConsonantLengthBlur = (index: number) => {
+    const consonant_ = props.consonant.slice();
+    consonant_[index] = {
+      consonant: props.consonant[index].consonant,
+      variant: props.consonant[index].variant,
+      length: normalizeNumberInput(props.consonant[index].length, 0),
+    };
+    props.setConsonant(consonant_);
+  };
   const OnConsonantAdd = () => {
     const consonant_ = props.consonant.slice();
-    consonant_.push({ consonant: "", variant: "", length: 0 });
+    consonant_.push({ consonant: "", variant: "", length: "0" });
     props.setConsonant(consonant_);
     LOG.debug("consonantを追加しました","MakePanelConsonantAccordion")
   };
@@ -104,6 +114,9 @@ export const MakePanelConsonantAccordion: React.FC<
               onChange={(e) => {
                 OnConsonantChange(e, i, "length");
               }}
+              onBlur={() => {
+                OnConsonantLengthBlur(i);
+              }}
             />
           </Box>
         ))}
@@ -117,7 +130,7 @@ export const MakePanelConsonantAccordion: React.FC<
 
 export interface MakePanelConsonantAccordionProps {
   /** 子音の設定値の更新 */
-  setConsonant: (consonants: Array<{ consonant: string; variant: string; length: number }>) => void;
+  setConsonant: (consonants: Array<{ consonant: string; variant: string; length: string | number }>) => void;
   /** 子音の設定値 */
-  consonant: Array<{ consonant: string; variant: string; length: number }>;
+  consonant: Array<{ consonant: string; variant: string; length: string | number }>;
 }

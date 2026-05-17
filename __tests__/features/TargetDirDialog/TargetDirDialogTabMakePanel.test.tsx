@@ -949,7 +949,7 @@ describe("TargetDirDialogTabMakePanel", () => {
       // 変更された値の確認（tempo/offsetはNumber()キャストされるのでnumber型）
       expect(ini.tempo).toBe(140);
       expect(ini.offset).toBe(500);
-      expect(ini.max).toBe("5"); // maxnumはMakePanelSettingsAccordion内でe.target.valueのままなのでstring
+      expect(ini.max).toBe(5);
       expect(ini.underbar).toBe(true);
       expect(ini.beginingCv).toBe(true);
       expect(ini.noHead).toBe(false); // !requireHead (変更後true)
