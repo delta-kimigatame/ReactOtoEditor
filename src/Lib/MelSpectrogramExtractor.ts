@@ -12,6 +12,8 @@ export class MelSpectrogramExtractor {
   private fMax: number | null = null;
   private decoderContext: BaseAudioContext | null = null;
   private waveAnalyse: WaveAnalyse;
+  // モデル入力仕様: データセット生成時の最大フレーム数
+  private readonly MODEL_EXPECTED_FRAMES: number = 600;
 
   constructor(sampleRate: number = 44100) {
     this.sampleRate = sampleRate;
@@ -162,14 +164,14 @@ export class MelSpectrogramExtractor {
       this.fMin,
       this.fMax ?? this.sampleRate / 2,
       "hamming",
-      this.hopLength,
+      this.nFft,
       0.97,
       true,
       1e-10
     );
 
-    // 4. [128, 980] にリサイズ
-    return this.resizeFlatMelToTargetShape(mel, frames, this.nMels, [128, 980]);
+    // 4. モデル期待フレーム数にリサイズ
+    return this.resizeFlatMelToTargetShape(mel, frames, this.nMels, [this.nMels, this.MODEL_EXPECTED_FRAMES]);
   }
 
   /**
@@ -199,16 +201,16 @@ export class MelSpectrogramExtractor {
       this.fMin,
       this.fMax ?? this.sampleRate / 2,
       "hamming",
-      this.hopLength,
+      this.nFft,
       0.97,
       true,
       1e-10
     );
     const melTime = performance.now() - t2;
 
-    // 3. [128, 980] にリサイズ
+    // 3. モデル期待フレーム数にリサイズ
     const t3 = performance.now();
-    const resized = this.resizeFlatMelToTargetShape(mel, frames, this.nMels, [128, 980]);
+    const resized = this.resizeFlatMelToTargetShape(mel, frames, this.nMels, [this.nMels, this.MODEL_EXPECTED_FRAMES]);
     const resizeTime = performance.now() - t3;
 
     console.debug(`[MelSpectrogram Breakdown]`, {

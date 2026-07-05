@@ -9,3 +9,4 @@ deploy.yml
 
 *storybook.log
 storybook-static
+public/static/autooto_model_fp16.onnx

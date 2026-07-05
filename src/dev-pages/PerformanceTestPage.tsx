@@ -200,6 +200,7 @@ export const PerformanceTestPage: React.FC = () => {
     setTotalRecords(recordsToProcess.length);
     setProgress(0);
     const tracker = new PerformanceTracker();
+    let suppressMidLogs = false;
 
     // コンソール出力をキャプチャしてログに追加
     const originalDebug = console.debug;
@@ -207,7 +208,9 @@ export const PerformanceTestPage: React.FC = () => {
       const message = args.map((a) => 
         typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)
       ).join(' ');
-      addLog(`[DEBUG] ${message}`);
+      if (!suppressMidLogs) {
+        addLog(`[DEBUG] ${message}`);
+      }
       originalDebug(...args);
     };
 
@@ -230,6 +233,12 @@ export const PerformanceTestPage: React.FC = () => {
         const wasmUrl = `${wasmBase}ort-wasm-simd-threaded.wasm?${bust}`;
         const wasmJsepUrl = `${wasmBase}ort-wasm-simd-threaded.jsep.wasm?${bust}`;
         const modelUrl = `/static/autooto_model_fp16.onnx?${bust}`;
+
+        // 🌟 ONNXモデルサイズを取得・ログ出力
+        const modelHeadResponse = await fetch(modelUrl, { method: "HEAD", cache: "no-store" });
+        const modelSizeBytes = parseInt(modelHeadResponse.headers.get("content-length") || "0", 10);
+        const modelSizeMB = (modelSizeBytes / (1024 * 1024)).toFixed(2);
+        addLog(`📦 ONNXモデルサイズ: ${modelSizeMB} MB (${modelSizeBytes} bytes)`);
 
         // onnxruntime-web v1.27 の仕様: wasmPaths は {wasm, mjs} を指定する
         // mjs を public 配下で上書きすると Vite dev の ?import 経路で 500 になるため、wasm のみ外部指定する
@@ -305,6 +314,7 @@ export const PerformanceTestPage: React.FC = () => {
         // 3. 各 oto レコードを処理
         addLog("\n--- 音素推論テスト開始 ---");
         const testResults: TestResult[] = [];
+        suppressMidLogs = true;
 
         // WAV単位でレコードをグループ化
         const recordsByWav = new Map<string, Array<{record: typeof recordsToProcess[0], originalIndex: number}>>();
@@ -355,10 +365,7 @@ export const PerformanceTestPage: React.FC = () => {
           }
 
           // グループ内の全レコードを処理（デコード済みのaudioDataを再利用）
-          for (const {record, originalIndex} of recordsForThis) {
-            if (originalIndex < 3) {
-              addLog(`レコード開始[${originalIndex + 1}/${recordsToProcess.length}]: alias=${record.alias}, wav=${record.filename}`);
-            }
+          for (const {record} of recordsForThis) {
             const testResult: TestResult = {
               alias: record.alias,
               wav: record.filename,
@@ -397,7 +404,9 @@ export const PerformanceTestPage: React.FC = () => {
               // ONNX 推論
               const stop4 = tracker.mark("inference");
               try {
-                const specTensor = new ort.Tensor("float16", float32ArrayToFloat16(melSpec), [1, 128, 980]);
+                // 🌟 フレーム数を動的に計算（melSpec は [128 × frames] の平坦配列）
+                const frameCount = melSpec.length / 128;
+                const specTensor = new ort.Tensor("float16", float32ArrayToFloat16(melSpec), [1, 128, frameCount]);
                 const condTensor = new ort.Tensor("float16", float32ArrayToFloat16(cond), [1, TOTAL_COND_DIM]);
 
                 const result = await sess.run({
@@ -433,15 +442,14 @@ export const PerformanceTestPage: React.FC = () => {
 
             // 進度更新
             setProgress(processedCount / recordsToProcess.length);
-            if (processedCount % 10 === 0) {
-              addLog(`処理済み: ${processedCount}/${recordsToProcess.length}`);
-            }
 
             if (processedCount % 5 === 0) {
               await yieldToUi();
             }
           }
         }
+
+        suppressMidLogs = false;
 
         setResults(testResults);
 
