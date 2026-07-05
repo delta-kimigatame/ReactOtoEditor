@@ -51,7 +51,7 @@ export default defineConfig({
         ],
       },
       workbox: {
-        maximumFileSizeToCacheInBytes: 4.5 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 30 * 1024 * 1024, // ONNX Runtime Wasm (26.8MB) を含める
         navigateFallbackDenylist: [/^\/laberu\/storybook/],
         runtimeCaching: [
           {

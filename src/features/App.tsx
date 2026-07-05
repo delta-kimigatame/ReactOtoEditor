@@ -14,6 +14,7 @@ import { EditorView } from "./Editor/EditorView";
 import { useInitializeApp } from "../hooks/useInitializeApp";
 import { useThemeMode } from "../hooks/useThemeMode";
 import { useOtoProjectStore } from "../store/otoProjectStore";
+import { PerformanceTestPage } from "../dev-pages/PerformanceTestPage";
 
 /**
  * Reactのエンドポイント
@@ -24,6 +25,7 @@ export const App: React.FC = () => {
   const mode_ = useThemeMode();
   const { language } = useCookieStore();
   const { oto } = useOtoProjectStore();
+    const isDev = window.location.hash.includes("devmode");
   const theme = React.useMemo(
     () => createTheme(getDesignTokens(mode_)),
     [mode_]
@@ -36,10 +38,11 @@ export const App: React.FC = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Header />
-      {oto !== null && <EditorView />}
-      {oto === null && <TopView />}
-      {oto === null && <Footer />}
+      {!isDev && <Header />}
+      {isDev && <PerformanceTestPage />}
+      {!isDev && oto !== null && <EditorView />}
+      {!isDev && oto === null && <TopView />}
+      {!isDev && oto === null && <Footer />}
     </ThemeProvider>
   );
 };
