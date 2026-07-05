@@ -187,8 +187,7 @@ export const PerformanceTestPage: React.FC = () => {
           oto.GetRecord(targetDir, filename, alias)
         )
       );
-    const MAX_RECORDS = 10;
-    const recordsToProcess = records.slice(0, MAX_RECORDS);
+    const recordsToProcess = records;
 
     if (records.length === 0) {
       addLog("❌ 対象ディレクトリに原音設定レコードが見つかりません");
@@ -216,9 +215,7 @@ export const PerformanceTestPage: React.FC = () => {
       addLog("========== パフォーマンステスト開始 ==========");
       addLog(`対象ディレクトリ: ${targetDir}`);
       addLog(`総レコード数: ${records.length}`);
-      if (records.length > recordsToProcess.length) {
-        addLog(`検証モード: 先頭 ${recordsToProcess.length} レコードのみ実行`);
-      }
+      addLog(`全件モード: ${recordsToProcess.length} レコードを実行`);
       addLog(`デバイスメモリ: ${(navigator as any).deviceMemory}GB`);
 
       // 1. ONNX モデル初期化
