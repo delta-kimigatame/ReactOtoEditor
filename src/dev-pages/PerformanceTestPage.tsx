@@ -45,6 +45,46 @@ export const PerformanceTestPage: React.FC = () => {
     console.log(message);
   };
 
+  const float32ToFloat16Bits = (value: number): number => {
+    if (Number.isNaN(value)) return 0x7e00;
+    if (value === Infinity) return 0x7c00;
+    if (value === -Infinity) return 0xfc00;
+
+    const sign = value < 0 || Object.is(value, -0) ? 0x8000 : 0;
+    let abs = Math.abs(value);
+
+    if (abs === 0) return sign;
+    if (abs >= 65504) return sign | 0x7bff;
+    if (abs < 2 ** -24) return sign;
+
+    if (abs < 2 ** -14) {
+      const mantissa = Math.round(abs / 2 ** -24);
+      return sign | mantissa;
+    }
+
+    const exponent = Math.floor(Math.log2(abs));
+    const exponentBits = exponent + 15;
+    const mantissaNorm = abs / 2 ** exponent - 1;
+    const mantissaBits = Math.round(mantissaNorm * 1024);
+
+    if (mantissaBits === 1024) {
+      if (exponentBits + 1 >= 31) {
+        return sign | 0x7c00;
+      }
+      return sign | ((exponentBits + 1) << 10);
+    }
+
+    return sign | (exponentBits << 10) | mantissaBits;
+  };
+
+  const float32ArrayToFloat16 = (src: Float32Array): Uint16Array => {
+    const dst = new Uint16Array(src.length);
+    for (let i = 0; i < src.length; i++) {
+      dst[i] = float32ToFloat16Bits(src[i]);
+    }
+    return dst;
+  };
+
   const yieldToUi = async () => {
     await new Promise<void>((resolve) => {
       window.setTimeout(resolve, 0);
@@ -147,6 +187,8 @@ export const PerformanceTestPage: React.FC = () => {
           oto.GetRecord(targetDir, filename, alias)
         )
       );
+    const MAX_RECORDS = 10;
+    const recordsToProcess = records.slice(0, MAX_RECORDS);
 
     if (records.length === 0) {
       addLog("❌ 対象ディレクトリに原音設定レコードが見つかりません");
@@ -156,14 +198,27 @@ export const PerformanceTestPage: React.FC = () => {
     setIsRunning(true);
     setResults([]);
     setLogs([]);
-    setTotalRecords(records.length);
+    setTotalRecords(recordsToProcess.length);
     setProgress(0);
     const tracker = new PerformanceTracker();
+
+    // コンソール出力をキャプチャしてログに追加
+    const originalDebug = console.debug;
+    console.debug = (...args: any[]) => {
+      const message = args.map((a) => 
+        typeof a === 'object' ? JSON.stringify(a, null, 2) : String(a)
+      ).join(' ');
+      addLog(`[DEBUG] ${message}`);
+      originalDebug(...args);
+    };
 
     try {
       addLog("========== パフォーマンステスト開始 ==========");
       addLog(`対象ディレクトリ: ${targetDir}`);
       addLog(`総レコード数: ${records.length}`);
+      if (records.length > recordsToProcess.length) {
+        addLog(`検証モード: 先頭 ${recordsToProcess.length} レコードのみ実行`);
+      }
       addLog(`デバイスメモリ: ${(navigator as any).deviceMemory}GB`);
 
       // 1. ONNX モデル初期化
@@ -254,104 +309,140 @@ export const PerformanceTestPage: React.FC = () => {
         addLog("\n--- 音素推論テスト開始 ---");
         const testResults: TestResult[] = [];
 
-        for (let i = 0; i < records.length; i++) {
-          const record = records[i];
-          if (i < 3) {
-            addLog(`レコード開始[${i + 1}/${records.length}]: alias=${record.alias}, wav=${record.filename}`);
+        // WAV単位でレコードをグループ化
+        const recordsByWav = new Map<string, Array<{record: typeof recordsToProcess[0], originalIndex: number}>>();
+        recordsToProcess.forEach((record, idx) => {
+          const wavPath = targetDir === "" ? record.filename : `${targetDir}/${record.filename}`;
+          if (!recordsByWav.has(wavPath)) {
+            recordsByWav.set(wavPath, []);
           }
-          const testResult: TestResult = {
-            alias: record.alias,
-            wav: record.filename,
-            status: "success",
-          };
+          recordsByWav.get(wavPath)!.push({record, originalIndex: idx});
+        });
 
-          try {
-            // WAV データを取得
-            const wPath =
-              targetDir === "" ? record.filename : `${targetDir}/${record.filename}`;
-            const wavFile = readZip[wPath];
-            if (!wavFile) {
-              testResult.status = "skipped";
-              testResult.error = `WAV データが見つかりません: ${wPath}`;
-              testResults.push(testResult);
-              continue;
-            }
-            const wavArrayBuffer = await wavFile.async("arraybuffer");
-
-            // メルスペクトログラム計算
-            const centerMs = record.offset + record.pre;
-            const stop2 = tracker.mark("mel_spectrogram");
-            let melSpec: Float32Array;
-            try {
-              melSpec = await extractor.waveToMelSpectrogram(
-                wavArrayBuffer,
-                centerMs
-              );
-              stop2();
-              testResult.melSpectrogramTimeMs = tracker.getStats("mel_spectrogram")?.avgDuration;
-            } catch (err) {
-              testResult.status = "error";
-              testResult.error = `メルスペクトログラム計算失敗: ${err}`;
-              testResults.push(testResult);
-              continue;
-            }
-
-            // 音素条件ベクトル生成
-            const stop3 = tracker.mark("condition_vector");
-            const phonemes = parseAliasToPhonemes(record.alias);
-            let cond: Float32Array;
-            if (!phonemes) {
-              cond = new Float32Array(TOTAL_COND_DIM); // ダミー
-            } else {
-              cond = phonemesToConditionVector(phonemes[0], phonemes[1], phonemes[2]);
-            }
-            stop3();
-            testResult.conditionTimeMs = tracker.getStats("condition_vector")?.avgDuration;
-
-            // ONNX 推論
-            const stop4 = tracker.mark("inference");
-            try {
-              const specTensor = new ort.Tensor("float32", melSpec, [1, 128, 980]);
-              const condTensor = new ort.Tensor("float32", cond, [1, TOTAL_COND_DIM]);
-
-              const result = await sess.run({
-                spectrogram: specTensor,
-                condition: condTensor,
+        // WAV単位でループ
+        let processedCount = 0;
+        for (const [wavPath, recordsForThis] of recordsByWav) {
+          const wavFile = readZip[wavPath];
+          if (!wavFile) {
+            // このWAVのすべてのレコードを fail にマーク
+            recordsForThis.forEach(({record}) => {
+              testResults.push({
+                alias: record.alias,
+                wav: record.filename,
+                status: "skipped",
+                error: `WAV データが見つかりません: ${wavPath}`,
               });
+            });
+            processedCount += recordsForThis.length;
+            setProgress(processedCount / recordsToProcess.length);
+            continue;
+          }
 
-              stop4();
-              testResult.inferenceTimeMs = tracker.getStats("inference")?.avgDuration;
+          // WAVを一度だけ読み込み＆デコード
+          let audioData: Float32Array;
+          try {
+            const wavArrayBuffer = await wavFile.async("arraybuffer");
+            audioData = await extractor.decodeWav(wavArrayBuffer);
+          } catch (err) {
+            recordsForThis.forEach(({record}) => {
+              testResults.push({
+                alias: record.alias,
+                wav: record.filename,
+                status: "error",
+                error: `WAV デコード失敗: ${err}`,
+              });
+            });
+            processedCount += recordsForThis.length;
+            setProgress(processedCount / recordsToProcess.length);
+            continue;
+          }
 
-              const output = result[sess.outputNames[0]] as ort.Tensor;
-              const outputData = "getData" in output
-                ? await (output as any).getData()
-                : (output as any).data;
-              void outputData;
-              testResult.status = "success";
+          // グループ内の全レコードを処理（デコード済みのaudioDataを再利用）
+          for (const {record, originalIndex} of recordsForThis) {
+            if (originalIndex < 3) {
+              addLog(`レコード開始[${originalIndex + 1}/${recordsToProcess.length}]: alias=${record.alias}, wav=${record.filename}`);
+            }
+            const testResult: TestResult = {
+              alias: record.alias,
+              wav: record.filename,
+              status: "success",
+            };
+
+            try {
+              // メルスペクトログラム計算（デコード済みaudioDataを使用）
+              const centerMs = record.offset + record.pre;
+              const stop2 = tracker.mark("mel_spectrogram");
+              let melSpec: Float32Array;
+              try {
+                melSpec = await extractor.waveToMelSpectrogramFromAudio(audioData, centerMs);
+                stop2();
+                testResult.melSpectrogramTimeMs = tracker.getStats("mel_spectrogram")?.avgDuration;
+              } catch (err) {
+                testResult.status = "error";
+                testResult.error = `メルスペクトログラム計算失敗: ${err}`;
+                testResults.push(testResult);
+                processedCount++;
+                continue;
+              }
+
+              // 音素条件ベクトル生成
+              const stop3 = tracker.mark("condition_vector");
+              const phonemes = parseAliasToPhonemes(record.alias);
+              let cond: Float32Array;
+              if (!phonemes) {
+                cond = new Float32Array(TOTAL_COND_DIM); // ダミー
+              } else {
+                cond = phonemesToConditionVector(phonemes[0], phonemes[1], phonemes[2]);
+              }
+              stop3();
+              testResult.conditionTimeMs = tracker.getStats("condition_vector")?.avgDuration;
+
+              // ONNX 推論
+              const stop4 = tracker.mark("inference");
+              try {
+                const specTensor = new ort.Tensor("float16", float32ArrayToFloat16(melSpec), [1, 128, 980]);
+                const condTensor = new ort.Tensor("float16", float32ArrayToFloat16(cond), [1, TOTAL_COND_DIM]);
+
+                const result = await sess.run({
+                  spectrogram: specTensor,
+                  condition: condTensor,
+                });
+
+                stop4();
+                testResult.inferenceTimeMs = tracker.getStats("inference")?.avgDuration;
+
+                const output = result[sess.outputNames[0]] as ort.Tensor;
+                const outputData = "getData" in output
+                  ? await (output as any).getData()
+                  : (output as any).data;
+                void outputData;
+                testResult.status = "success";
+              } catch (err) {
+                testResult.status = "error";
+                testResult.error = `推論失敗: ${err}`;
+              }
             } catch (err) {
               testResult.status = "error";
-              testResult.error = `推論失敗: ${err}`;
+              testResult.error = `予期しないエラー: ${err}`;
             }
-          } catch (err) {
-            testResult.status = "error";
-            testResult.error = `予期しないエラー: ${err}`;
-          }
 
-          testResults.push(testResult);
+            testResults.push(testResult);
+            processedCount++;
 
-          // メモリスナップショット記録
-          if (i % 5 === 0) {
-            tracker.recordMemory();
-          }
+            // メモリスナップショット記録
+            if (processedCount % 5 === 0) {
+              tracker.recordMemory();
+            }
 
-          // 進度更新
-          setProgress((i + 1) / records.length);
-          if ((i + 1) % 10 === 0) {
-            addLog(`処理済み: ${i + 1}/${records.length}`);
-          }
+            // 進度更新
+            setProgress(processedCount / recordsToProcess.length);
+            if (processedCount % 10 === 0) {
+              addLog(`処理済み: ${processedCount}/${recordsToProcess.length}`);
+            }
 
-          if ((i + 1) % 5 === 0) {
-            await yieldToUi();
+            if (processedCount % 5 === 0) {
+              await yieldToUi();
+            }
           }
         }
 
@@ -415,6 +506,8 @@ export const PerformanceTestPage: React.FC = () => {
       addLog(`❌ テスト実行エラー: ${error}`);
       LOG.error(`パフォーマンステスト失敗: ${error}`, "PerformanceTestPage");
     } finally {
+      // コンソール出力を復元
+      console.debug = originalDebug;
       setIsRunning(false);
     }
   };

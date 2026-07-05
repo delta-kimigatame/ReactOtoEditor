@@ -1,10 +1,9 @@
 /**
  * ブラウザでメルスペクトログラムを計算するユーティリティ
  */
-import * as tf from '@tensorflow/tfjs';
+import { WaveAnalyse } from "utauwav";
 
 export class MelSpectrogramExtractor {
-  private static tfBackendInitPromise: Promise<void> | null = null;
   private sampleRate: number = 44100;
   private nFft: number = 1024;
   private hopLength: number; // 1ms
@@ -12,28 +11,21 @@ export class MelSpectrogramExtractor {
   private fMin: number = 0;
   private fMax: number | null = null;
   private decoderContext: BaseAudioContext | null = null;
+  private waveAnalyse: WaveAnalyse;
 
   constructor(sampleRate: number = 44100) {
     this.sampleRate = sampleRate;
     this.hopLength = Math.floor(sampleRate * 0.001); // 1ms
     this.fMax = sampleRate / 2; // Nyquist
+    this.waveAnalyse = new WaveAnalyse();
   }
 
   /**
-   * 長時間バッチでのWebGLコンテキストロストを避けるためCPUバックエンドを強制する
+   * 互換維持のためのプレースホルダ。
+   * TFJS依存をなくしたため、現在は何もしない。
    */
   private async ensureTfBackend(): Promise<void> {
-    if (!MelSpectrogramExtractor.tfBackendInitPromise) {
-      MelSpectrogramExtractor.tfBackendInitPromise = (async () => {
-        await tf.ready();
-        if (tf.getBackend() !== "cpu") {
-          await tf.setBackend("cpu");
-          await tf.ready();
-        }
-      })();
-    }
-
-    await MelSpectrogramExtractor.tfBackendInitPromise;
+    return Promise.resolve();
   }
 
   /**
@@ -160,19 +152,60 @@ export class MelSpectrogramExtractor {
   }
 
   /**
-   * STFT を計算（TensorFlow.js 使用）
+   * STFT を計算（utauwav の Rust/WASM FFT 実装を優先）
    */
   private async computeStft(audio: Float32Array): Promise<number[][]> {
-    const stftTensor = tf.tidy(() => {
-      const signal = tf.tensor1d(audio);
-      const stftResult = tf.signal.stft(signal, this.nFft, this.hopLength, this.nFft);
-      const magnitude = tf.abs(stftResult);
-      return tf.square(magnitude);
-    });
+    const analyserAny = this.waveAnalyse as unknown as {
+      spectrogramLinearFlat?: (
+        data: Array<number>,
+        fftSize?: number,
+        windowType?: string,
+        windowSize?: number,
+        preEmphasis?: number
+      ) => { power: Float32Array; frames: number; freqBins: number };
+      Spectrogram?: (
+        data: Array<number>,
+        fftSize?: number,
+        windowType?: string,
+        windowSize?: number,
+        preEmphasis?: number
+      ) => number[][];
+    };
 
-    const power2d = await stftTensor.array() as number[][];
-    stftTensor.dispose();
-    return power2d;
+    if (typeof analyserAny.spectrogramLinearFlat === "function") {
+      // Array<number> シグネチャだが TypedArray でもインデックスアクセス可能なためコピーを避ける
+      const { power, frames, freqBins } = analyserAny.spectrogramLinearFlat(
+        audio as unknown as Array<number>,
+        this.nFft,
+        "hamming",
+        this.hopLength,
+        0.97
+      );
+
+      const power2d: number[][] = new Array(frames);
+      for (let f = 0; f < frames; f++) {
+        const row = new Array<number>(freqBins);
+        const base = f * freqBins;
+        for (let k = 0; k < freqBins; k++) {
+          row[k] = power[base + k] ?? 0;
+        }
+        power2d[f] = row;
+      }
+      return power2d;
+    }
+
+    if (typeof analyserAny.Spectrogram === "function") {
+      // 旧版への互換フォールバック（log スケール値）
+      return analyserAny.Spectrogram(
+        audio as unknown as Array<number>,
+        this.nFft,
+        "hamming",
+        this.hopLength,
+        0.97
+      );
+    }
+
+    throw new Error("utauwav: spectrogramLinearFlat / Spectrogram が利用できません");
   }
 
   /**
@@ -287,6 +320,66 @@ export class MelSpectrogramExtractor {
 
     // 7. [128, 980] にリサイズ
     const resized = await this.resizeToTargetShape(melDb, [128, 980]);
+
+    return resized;
+  }
+
+  /**
+   * デコード済みオーディオデータからメルスペクトログラムを計算
+   * 複数レコードで同じWAVを処理する場合、この方法で decodeの再実行を避けられる
+   * @param audioData デコード済みオーディオデータ
+   * @param centerMs 中心時刻（ミリ秒）
+   * @returns [128, 980] の Float32Array（デシベルスケール）
+   */
+  async waveToMelSpectrogramFromAudio(
+    audioData: Float32Array,
+    centerMs: number
+  ): Promise<Float32Array> {
+    await this.ensureTfBackend();
+
+    // 1. ウィンドウ切り出し
+    const t1 = performance.now();
+    const window = this.extractWindow(audioData, centerMs, 600);
+    const windowTime = performance.now() - t1;
+
+    // 2. STFT → パワースペクトログラム
+    const t2 = performance.now();
+    const stft = await this.computeStft(window);
+    const stftTime = performance.now() - t2;
+
+    // 3. メル・フィルタバンク作成
+    const t3 = performance.now();
+    const filterbank = this.createMelFilterbank();
+    const filterTime = performance.now() - t3;
+
+    // 4. メル・スケーリング
+    const t4 = performance.now();
+    const melSpec = this.melScale(stft, filterbank);
+    const melScaleTime = performance.now() - t4;
+
+    // 5. デシベル変換
+    const t5 = performance.now();
+    const melDb = melSpec.map((frame) =>
+      frame.map((power) => 10 * Math.log10(power))
+    );
+    const dbTime = performance.now() - t5;
+
+    // 6. [128, 980] にリサイズ
+    const t6 = performance.now();
+    const resized = await this.resizeToTargetShape(melDb, [128, 980]);
+    const resizeTime = performance.now() - t6;
+
+    // デバッグ出力
+    const totalMelTime = windowTime + stftTime + filterTime + melScaleTime + dbTime + resizeTime;
+    console.debug(`[MelSpectrogram Breakdown]`, {
+      window: windowTime.toFixed(2),
+      stft: stftTime.toFixed(2),
+      filterbank: filterTime.toFixed(2),
+      melScale: melScaleTime.toFixed(2),
+      dB: dbTime.toFixed(2),
+      resize: resizeTime.toFixed(2),
+      total: totalMelTime.toFixed(2),
+    });
 
     return resized;
   }
