@@ -35,15 +35,12 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
         fftSetting.sampleRate,
         fftSetting.spectrogramSampleRate
       );
-      const analysisWindowSize = Math.round(
-        (fftSetting.windowSize * fftSetting.spectrogramSampleRate) /
-          fftSetting.sampleRate
-      );
       const s = wa.Spectrogram(
         analysisData,
         fftSetting.fftsize,
         "hamming",
-        analysisWindowSize
+        fftSetting.windowSize,
+        fftSetting.hopSize
       );
       LOG.debug(`fftend`, "CanvasBase");
       return s;
@@ -146,10 +143,7 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           specMax={specMax}
           frameWidth={frameWidth}
           spectrogramSampleRate={fftSetting.spectrogramSampleRate}
-          spectrogramWindowSize={Math.round(
-            (fftSetting.windowSize * fftSetting.spectrogramSampleRate) /
-              fftSetting.sampleRate
-          )}
+          spectrogramHopSize={fftSetting.hopSize}
           specProgress={props.specProgress}
           setSpecProgress={props.setSpecProgress}
         />

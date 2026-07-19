@@ -47,12 +47,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     return (props.canvasWidth / wav.data.length) * props.frameWidth;
   }, [props.canvasWidth, wav, props.frameWidth]);
 
-  const xOffset = React.useMemo(
-    () =>
-      (fftSetting.fftsize * fftSetting.sampleRate) /
-      (props.spectrogramSampleRate * props.frameWidth),
-    [props.frameWidth, props.spectrogramSampleRate]
-  );
+  const xOffset = 0;
 
   /**
    * スペクトラムの描画処理
@@ -66,7 +61,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     spec: Array<Array<number>>
   ): Promise<void> => {
     LOG.debug(`canvas初期化`, "SpecCanvas");
-    const windowSize = props.spectrogramWindowSize;
+    const hopSize = props.spectrogramHopSize;
     const canvasWidth = props.canvasWidth;
     const canvasHeight = props.canvasHeight;
     const specMax = props.specMax;
@@ -93,22 +88,22 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
         (i * frameWidth * props.spectrogramSampleRate) /
         fftSetting.sampleRate;
       const timeIndex1 = Math.min(
-        Math.floor(analysisPosition / windowSize),
+        Math.floor(analysisPosition / hopSize),
         spec.length - 1
       );
       const timeIndex2 = Math.min(
-        Math.ceil(analysisPosition / windowSize),
+        Math.ceil(analysisPosition / hopSize),
         spec.length - 1
       );
       // 現在のブロック開始位置からの余剰フレーム数
-      const steps = analysisPosition % windowSize;
+      const steps = analysisPosition % hopSize;
       // 周波数方向のループ
       for (let j = 0; j < rh; j++) {
         // 線形補間による振幅の計算（各ブロックの強度）
         const amp =
-          (Math.max(spec[timeIndex1][j], 0) ** 2 * (windowSize - steps)) /
-            windowSize +
-          (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) / windowSize;
+          (Math.max(spec[timeIndex1][j], 0) ** 2 * (hopSize - steps)) /
+            hopSize +
+          (Math.max(spec[timeIndex2][j], 0) ** 2 * steps) / hopSize;
         // 正規化された強度
         const colorRatio = amp / specMax;
         // 各セルの描画色を導出
@@ -189,7 +184,7 @@ export interface SpecCanvasProps {
   /** スペクトログラム解析時のサンプリング周波数 */
   spectrogramSampleRate: number;
   /** スペクトログラム解析時のフレームシフト幅 */
-  spectrogramWindowSize: number;
+  spectrogramHopSize: number;
   /** スペクトログラムの読込状態 */
   specProgress: boolean;
   /** スペクトログラムの読込状態の更新 */

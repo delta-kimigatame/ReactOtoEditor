@@ -23,6 +23,8 @@ export const fftSetting: { [key: string]: number } = {
   fftsize: 512,
   /** 窓関数の大きさ */
   windowSize: 128,
+  /** スペクトログラムのフレームシフト幅 */
+  hopSize: 64,
   /** サンプリング周波数 */
   sampleRate: 44100,
   /** スペクトログラム解析用のサンプリング周波数（8kHzまでを表示） */
