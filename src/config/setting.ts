@@ -25,6 +25,8 @@ export const fftSetting: { [key: string]: number } = {
   windowSize: 128,
   /** サンプリング周波数 */
   sampleRate: 44100,
+  /** スペクトログラム解析用のサンプリング周波数（8kHzまでを表示） */
+  spectrogramSampleRate: 16000,
   /** ビット深度 */
   bitDepth: 16,
   /** モノラルなら1、ステレオなら2 */

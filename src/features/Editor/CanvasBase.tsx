@@ -13,6 +13,7 @@ import { OtoCanvas } from "./OtoCanvas";
 
 import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { resample } from "../../utils/Resample";
 
 /**
  * エディタのキャンバス
@@ -29,7 +30,21 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
     } else {
       LOG.debug(`fft`, "CanvasBase");
       const wa = new WaveAnalyse();
-      const s = wa.Spectrogram(wav.data);
+      const analysisData = resample(
+        wav.data,
+        fftSetting.sampleRate,
+        fftSetting.spectrogramSampleRate
+      );
+      const analysisWindowSize = Math.round(
+        (fftSetting.windowSize * fftSetting.spectrogramSampleRate) /
+          fftSetting.sampleRate
+      );
+      const s = wa.Spectrogram(
+        analysisData,
+        fftSetting.fftsize,
+        "hamming",
+        analysisWindowSize
+      );
       LOG.debug(`fftend`, "CanvasBase");
       return s;
     }
@@ -130,6 +145,11 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           spec={spec}
           specMax={specMax}
           frameWidth={frameWidth}
+          spectrogramSampleRate={fftSetting.spectrogramSampleRate}
+          spectrogramWindowSize={Math.round(
+            (fftSetting.windowSize * fftSetting.spectrogramSampleRate) /
+              fftSetting.sampleRate
+          )}
           specProgress={props.specProgress}
           setSpecProgress={props.setSpecProgress}
         />

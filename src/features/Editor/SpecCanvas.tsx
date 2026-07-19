@@ -12,7 +12,8 @@ import { useOtoProjectStore } from "../../store/otoProjectStore";
 
 /** キャンバスの周波数方向の分解能 */
 const rh = Math.ceil(
-  fftSetting.maxFrq / (fftSetting.sampleRate / fftSetting.fftsize)
+  fftSetting.maxFrq /
+    (fftSetting.spectrogramSampleRate / fftSetting.fftsize)
 );
 
 /**
@@ -47,8 +48,10 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
   }, [props.canvasWidth, wav, props.frameWidth]);
 
   const xOffset = React.useMemo(
-    () => fftSetting.fftsize / props.frameWidth,
-    [props.frameWidth]
+    () =>
+      (fftSetting.fftsize * fftSetting.sampleRate) /
+      (props.spectrogramSampleRate * props.frameWidth),
+    [props.frameWidth, props.spectrogramSampleRate]
   );
 
   /**
@@ -63,7 +66,7 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     spec: Array<Array<number>>
   ): Promise<void> => {
     LOG.debug(`canvas初期化`, "SpecCanvas");
-    const windowSize = fftSetting.windowSize;
+    const windowSize = props.spectrogramWindowSize;
     const canvasWidth = props.canvasWidth;
     const canvasHeight = props.canvasHeight;
     const specMax = props.specMax;
@@ -86,16 +89,19 @@ export const SpecCanvas: React.FC<SpecCanvasProps> = (props) => {
     const numBlocks = Math.floor(wav.data.length / frameWidth);
     for (let i = 0; i < numBlocks; i++) {
       // timeIndex の計算
+      const analysisPosition =
+        (i * frameWidth * props.spectrogramSampleRate) /
+        fftSetting.sampleRate;
       const timeIndex1 = Math.min(
-        Math.floor((i * frameWidth) / windowSize),
+        Math.floor(analysisPosition / windowSize),
         spec.length - 1
       );
       const timeIndex2 = Math.min(
-        Math.ceil((i * frameWidth) / windowSize),
+        Math.ceil(analysisPosition / windowSize),
         spec.length - 1
       );
       // 現在のブロック開始位置からの余剰フレーム数
-      const steps = (i * frameWidth) % windowSize;
+      const steps = analysisPosition % windowSize;
       // 周波数方向のループ
       for (let j = 0; j < rh; j++) {
         // 線形補間による振幅の計算（各ブロックの強度）
@@ -180,6 +186,10 @@ export interface SpecCanvasProps {
   specMax: number;
   /** wav1フレームあたりを何pixelに描画するか */
   frameWidth: number;
+  /** スペクトログラム解析時のサンプリング周波数 */
+  spectrogramSampleRate: number;
+  /** スペクトログラム解析時のフレームシフト幅 */
+  spectrogramWindowSize: number;
   /** スペクトログラムの読込状態 */
   specProgress: boolean;
   /** スペクトログラムの読込状態の更新 */
