@@ -3,6 +3,7 @@ import { LOG } from "../lib/Logging";
 import { ColorTheme } from "../types/colorTheme";
 import { Language } from "../types/language";
 import { Mode } from "../types/mode";
+import { SpectrogramDisplayType } from "../types/spectrogramDisplayType";
 import { useCookie } from "./useCookie";
 
 /**
@@ -49,6 +50,10 @@ export const useProjectCookie = () => {
     COOKIE_KEYS.touchMode,
     cookieDefaults.touchMode.toString()
   ) as unknown as boolean;
+  const spectrogramDisplayType = getStringCookie(
+    COOKIE_KEYS.spectrogramDisplayType,
+    cookieDefaults.spectrogramDisplayType
+  ) as SpectrogramDisplayType;
   /**
    * モードをクッキーに保存します。
    * @param newMode 更新するモード（`light`, `dark`, `system`）
@@ -72,9 +77,16 @@ export const useProjectCookie = () => {
 
   const setTouchMode = (touchMode: boolean) =>
     setStringCookie(COOKIE_KEYS.touchMode, touchMode.toString());
+  const setSpectrogramDisplayType = (
+    spectrogramDisplayType: SpectrogramDisplayType
+  ) =>
+    setStringCookie(
+      COOKIE_KEYS.spectrogramDisplayType,
+      spectrogramDisplayType
+    );
 
   LOG.debug(
-    `mode:${mode},language:${language},colorTheme:${colorTheme},overlapLock:${overlapLock},touchMode:${touchMode}`,
+    `mode:${mode},language:${language},colorTheme:${colorTheme},overlapLock:${overlapLock},touchMode:${touchMode},spectrogramDisplayType:${spectrogramDisplayType}`,
     "useProjectCookie"
   );
   return {
@@ -88,5 +100,7 @@ export const useProjectCookie = () => {
     setColorTheme,
     setOverlapLock,
     setTouchMode,
+    spectrogramDisplayType,
+    setSpectrogramDisplayType,
   };
 };

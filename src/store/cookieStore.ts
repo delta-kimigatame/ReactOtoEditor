@@ -5,6 +5,7 @@ import { useProjectCookie } from "../services/useProjectCookie";
 import { ColorTheme } from "../types/colorTheme";
 import { Language } from "../types/language";
 import { Mode } from "../types/mode";
+import { SpectrogramDisplayType } from "../types/spectrogramDisplayType";
 
 /**
  * CookieStore
@@ -33,6 +34,8 @@ interface CookieStore {
 
   touchMode: boolean;
 
+  spectrogramDisplayType: SpectrogramDisplayType;
+
   /**
    * 表示モードを更新する関数。モードを変更するために使用されます。
    *
@@ -57,6 +60,10 @@ interface CookieStore {
   setOverlapLock: (overlapLock: boolean) => void;
 
   setTouchMode: (touchMode: boolean) => void;
+
+  setSpectrogramDisplayType: (
+    spectrogramDisplayType: SpectrogramDisplayType
+  ) => void;
 
   /**
    * cookieに表示モードを保存する関数。
@@ -83,6 +90,10 @@ interface CookieStore {
 
   setTouchModeInCookie: (touchMode: boolean) => void;
 
+  setSpectrogramDisplayTypeInCookie: (
+    spectrogramDisplayType: SpectrogramDisplayType
+  ) => void;
+
   /**
    * 初期化フラグ。状態が初期化されているかどうかを示します。
    */
@@ -103,6 +114,7 @@ export const useCookieStore = create<CookieStore>((set) => {
     colorTheme: cookieDefaults.colorTheme,
     overlapLock: cookieDefaults.overlapLock,
     touchMode: cookieDefaults.touchMode,
+    spectrogramDisplayType: cookieDefaults.spectrogramDisplayType,
     // 状態更新関数
     setMode: (newMode) =>
       set((state) => {
@@ -132,6 +144,11 @@ export const useCookieStore = create<CookieStore>((set) => {
         state.setTouchModeInCookie(touchMode);
         return { touchMode };
       }),
+    setSpectrogramDisplayType: (spectrogramDisplayType) =>
+      set((state) => {
+        state.setSpectrogramDisplayTypeInCookie(spectrogramDisplayType);
+        return { spectrogramDisplayType };
+      }),
 
     // 初期状態ではダミー関数を設定
     setModeInCookie: () => {},
@@ -139,6 +156,7 @@ export const useCookieStore = create<CookieStore>((set) => {
     setColorThemeInCookie: () => {},
     setOverlapLockInCookie: () => {},
     setTouchModeInCookie: () => {},
+    setSpectrogramDisplayTypeInCookie: () => {},
     isInitialized: false,
   };
 });
@@ -154,11 +172,14 @@ export const useInitializeCookieStore = () => {
       colorTheme: projectCookie.colorTheme,
       overlapLock: projectCookie.overlapLock,
       touchMode: projectCookie.touchMode,
+      spectrogramDisplayType: projectCookie.spectrogramDisplayType,
       setModeInCookie: projectCookie.setMode,
       setLanguageInCookie: projectCookie.setLanguage,
       setColorThemeInCookie: projectCookie.setColorTheme,
       setOverlapLockInCookie: projectCookie.setOverlapLock,
       setTouchModeInCookie: projectCookie.setTouchMode,
+      setSpectrogramDisplayTypeInCookie:
+        projectCookie.setSpectrogramDisplayType,
       isInitialized: true,
     });
   }, [projectCookie]);

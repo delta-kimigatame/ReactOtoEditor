@@ -11,6 +11,8 @@
     "toDarkMode": "ダークモードにする",
     "toLightMode": "ライトモードにする",
     "changeColor": "色設定",
+    "toLinearSpectrogram": "線形スペクトログラムにする",
+    "toMelSpectrogram": "メルスペクトログラムにする",
     "changeLanguage": "言語設定",
     "showLog": "操作ログ表示",
     "clearAppCache": "アプリのキャッシュクリア",

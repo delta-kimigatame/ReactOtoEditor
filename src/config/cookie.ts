@@ -1,6 +1,7 @@
 import { ColorTheme } from "../types/colorTheme";
 import { Language, languages } from "../types/language";
 import { Mode } from "../types/mode";
+import { SpectrogramDisplayType } from "../types/spectrogramDisplayType";
 
 export const COOKIE_KEYS = {
   mode: "laberuMode",
@@ -8,6 +9,7 @@ export const COOKIE_KEYS = {
   colorTheme: "laberuColorTheme",
   overlapLock: "laberuOverlapLock",
   touchMode: "laberuTouchMode",
+  spectrogramDisplayType: "laberuSpectrogramDisplayType",
 } as const;
 
 const determineDefaultLocale = (): Language => {
@@ -50,10 +52,12 @@ export const cookieDefaults: {
 
   overlapLock: boolean;
   touchMode: boolean;
+  spectrogramDisplayType: SpectrogramDisplayType;
 } = {
   mode: "system",
   language: determineDefaultLocale(),
   colorTheme: "gray",
   overlapLock: false,
   touchMode: false,
+  spectrogramDisplayType: "linear",
 };

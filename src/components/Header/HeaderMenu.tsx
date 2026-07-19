@@ -17,6 +17,7 @@ import { DownloadZipMenu } from "../../features/Header/HeaderMenuItem/DownloadZi
 import { ShowLogMenu } from "../../features/Header/HeaderMenuItem/ShowLogMenu";
 import { HeaderMenuClearCache } from "../../features/Header/HeaderMenuItem/HeaderMenuClearCache";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
+import { SpectrogramDisplayMenu } from "./HeaderMenuItem/SpectrogramDisplayMenu";
 
 /**
  * ヘッダメニュー
@@ -44,6 +45,7 @@ export const HeaderMenu: React.FC<HeaderMenuProps> = (props) => {
         )}
         <LanguageMenu setMenuAnchor={props.setMenuAnchor} />
         <ColorMenu setMenuAnchor={props.setMenuAnchor} />
+        <SpectrogramDisplayMenu setMenuAnchor={props.setMenuAnchor} />
         <DarkModeMenu setMenuAnchor={props.setMenuAnchor} />
         <Divider />
         <HeaderMenuClearCache setMenuAnchor={props.setMenuAnchor} />

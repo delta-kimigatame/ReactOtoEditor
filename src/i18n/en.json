@@ -11,6 +11,8 @@
     "toDarkMode": "to Dark Mode",
     "toLightMode": "to Light Mode",
     "changeColor": "Color setting",
+    "toLinearSpectrogram": "Use linear spectrogram",
+    "toMelSpectrogram": "Use mel spectrogram",
     "changeLanguage": "Language setting",
     "showLog": "Show Log",
     "clearAppCache": "Clear this app caches",

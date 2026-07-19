@@ -35,6 +35,10 @@ export const fftSetting: { [key: string]: number } = {
   channels: 1,
   /** キャンバスに表示する最大周波数 */
   maxFrq: 8000,
+  /** メルスペクトログラムのビン数 */
+  melBins: 80,
+  /** メルスペクトログラムを色付けする相対dB範囲 */
+  melDynamicRangeDb: 80,
 };
 
 /** 原音設定に関する定数 */

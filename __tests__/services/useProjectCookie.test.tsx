@@ -50,6 +50,15 @@ const TestProjectCookieTouchMode: React.FC = () => {
     </div>
   );
 };
+const TestProjectCookieSpectrogramDisplay: React.FC = () => {
+  const { spectrogramDisplayType, setSpectrogramDisplayType } = useProjectCookie();
+  return (
+    <div>
+      <p>Spectrogram: {spectrogramDisplayType}</p>
+      <button onClick={() => setSpectrogramDisplayType("mel")}>Set Mel</button>
+    </div>
+  );
+};
 
 describe("useProjectCookie", () => {
   it("defaultMode", () => {
@@ -186,5 +195,31 @@ describe("useProjectCookie", () => {
     const button = screen.getByRole("button");
     await fireEvent.click(button);
     expect(screen.getByText("TouchMode: true")).toBeInTheDocument();
+  });
+  it("defaultSpectrogramDisplay", () => {
+    render(
+      <CookiesProvider>
+        <TestProjectCookieSpectrogramDisplay />
+      </CookiesProvider>
+    );
+    expect(screen.getByText("Spectrogram: linear")).toBeInTheDocument();
+  });
+  it("hasSpectrogramDisplay", () => {
+    document.cookie = "laberuSpectrogramDisplayType=mel; path=/;";
+    render(
+      <CookiesProvider>
+        <TestProjectCookieSpectrogramDisplay />
+      </CookiesProvider>
+    );
+    expect(screen.getByText("Spectrogram: mel")).toBeInTheDocument();
+  });
+  it("changeSpectrogramDisplay", async () => {
+    render(
+      <CookiesProvider>
+        <TestProjectCookieSpectrogramDisplay />
+      </CookiesProvider>
+    );
+    await fireEvent.click(screen.getByRole("button"));
+    expect(screen.getByText("Spectrogram: mel")).toBeInTheDocument();
   });
 });

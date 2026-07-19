@@ -19,11 +19,13 @@ const TestComponent = () => {
     colorTheme,
     overlapLock,
     touchMode,
+    spectrogramDisplayType,
     setMode,
     setLanguage,
     setColorTheme,
     setOverlapLock,
     setTouchMode,
+    setSpectrogramDisplayType,
   } = useCookieStore();
   const [cookies] = useCookies();
 
@@ -34,11 +36,13 @@ const TestComponent = () => {
       <p data-testid="colorTheme">{colorTheme}</p>
       <p data-testid="touchMode">{touchMode.toString()}</p>
       <p data-testid="overlapLock">{overlapLock.toString()}</p>
+      <p data-testid="spectrogramDisplayType">{spectrogramDisplayType}</p>
       <button onClick={() => setMode("dark")}>Set Mode Dark</button>
       <button onClick={() => setLanguage("en")}>Set Language EN</button>
       <button onClick={() => setColorTheme("red")}>Set Color Theme Red</button>
       <button onClick={() => setOverlapLock(true)}>Set OverlapLock true</button>
       <button onClick={() => setTouchMode(false)}>Set TouchMode false</button>
+      <button onClick={() => setSpectrogramDisplayType("mel")}>Set Mel</button>
     </div>
   );
 };
@@ -53,11 +57,13 @@ describe("cookieStore", () => {
       colorTheme: cookieDefaults.colorTheme,
       overlapLock: cookieDefaults.overlapLock,
       touchMode: cookieDefaults.touchMode,
+      spectrogramDisplayType: cookieDefaults.spectrogramDisplayType,
       setModeInCookie: () => {},
       setLanguageInCookie: () => {},
       setColorThemeInCookie: () => {},
       setOverlapLockInCookie: () => {},
       setTouchModeInCookie: () => {},
+      setSpectrogramDisplayTypeInCookie: () => {},
       isInitialized: false,
     });
   });
@@ -91,6 +97,9 @@ describe("cookieStore", () => {
     expect(screen.getByTestId("touchMode")).toHaveTextContent(
       cookieDefaults.touchMode.toString()
     );
+    expect(screen.getByTestId("spectrogramDisplayType")).toHaveTextContent(
+      cookieDefaults.spectrogramDisplayType
+    );
   });
 
   it("zustandLoadCookie", async () => {
@@ -100,6 +109,7 @@ describe("cookieStore", () => {
     document.cookie = `${COOKIE_KEYS.colorTheme}=red`;
     document.cookie = `${COOKIE_KEYS.overlapLock}=true`;
     document.cookie = `${COOKIE_KEYS.touchMode}=false`;
+    document.cookie = `${COOKIE_KEYS.spectrogramDisplayType}=mel`;
 
     render(
       <CookiesProvider>
@@ -113,6 +123,9 @@ describe("cookieStore", () => {
       expect(screen.getByTestId("colorTheme")).toHaveTextContent("red");
       expect(screen.getByTestId("overlapLock")).toHaveTextContent("true");
       expect(screen.getByTestId("touchMode")).toHaveTextContent("false");
+      expect(screen.getByTestId("spectrogramDisplayType")).toHaveTextContent(
+        "mel"
+      );
     });
   });
 
@@ -128,12 +141,16 @@ describe("cookieStore", () => {
     fireEvent.click(screen.getByText("Set Color Theme Red"));
     fireEvent.click(screen.getByText("Set OverlapLock true"));
     fireEvent.click(screen.getByText("Set TouchMode false"));
+    fireEvent.click(screen.getByText("Set Mel"));
 
     expect(screen.getByTestId("mode")).toHaveTextContent("dark");
     expect(screen.getByTestId("language")).toHaveTextContent("en");
     expect(screen.getByTestId("colorTheme")).toHaveTextContent("red");
     expect(screen.getByTestId("overlapLock")).toHaveTextContent("true");
     expect(screen.getByTestId("touchMode")).toHaveTextContent("false");
+    expect(screen.getByTestId("spectrogramDisplayType")).toHaveTextContent(
+      "mel"
+    );
   });
 
   it("changeCookieWhenChangeValue", async () => {
@@ -148,6 +165,7 @@ describe("cookieStore", () => {
     fireEvent.click(screen.getByText("Set Color Theme Red"));
     fireEvent.click(screen.getByText("Set OverlapLock true"));
     fireEvent.click(screen.getByText("Set TouchMode false"));
+    fireEvent.click(screen.getByText("Set Mel"));
 
     await waitFor(() => {
       expect(document.cookie).toContain(`${COOKIE_KEYS.mode}=dark`);
@@ -155,6 +173,9 @@ describe("cookieStore", () => {
       expect(document.cookie).toContain(`${COOKIE_KEYS.colorTheme}=red`);
       expect(document.cookie).toContain(`${COOKIE_KEYS.overlapLock}=true`);
       expect(document.cookie).toContain(`${COOKIE_KEYS.touchMode}=false`);
+      expect(document.cookie).toContain(
+        `${COOKIE_KEYS.spectrogramDisplayType}=mel`
+      );
     });
   });
 });

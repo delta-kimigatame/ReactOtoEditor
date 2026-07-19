@@ -9,11 +9,13 @@ import Typography from "@mui/material/Typography";
 import { fftSetting } from "../../config/setting";
 import { WavCanvas } from "./WavCanvas";
 import { SpecCanvas } from "./SpecCanvas";
+import { MelSpecCanvas } from "./MelSpecCanvas";
 import { OtoCanvas } from "./OtoCanvas";
 
 import { LOG } from "../../lib/Logging";
 import { useOtoProjectStore } from "../../store/otoProjectStore";
 import { resample } from "../../utils/Resample";
+import { useCookieStore } from "../../store/cookieStore";
 
 /**
  * エディタのキャンバス
@@ -23,9 +25,10 @@ import { resample } from "../../utils/Resample";
 export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
   const { t } = useTranslation();
   const { wav, record } = useOtoProjectStore();
+  const { spectrogramDisplayType } = useCookieStore();
   /** wavのスペクトル */
   const spec = React.useMemo(() => {
-    if (wav === null) {
+    if (wav === null || spectrogramDisplayType !== "linear") {
       return null;
     } else {
       LOG.debug(`fft`, "CanvasBase");
@@ -45,7 +48,45 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
       LOG.debug(`fftend`, "CanvasBase");
       return s;
     }
-  }, [wav]);
+  }, [wav, spectrogramDisplayType]);
+  /** wavのパワーメルスペクトル */
+  const melSpec = React.useMemo(() => {
+    if (wav === null || spectrogramDisplayType !== "mel") return null;
+
+    LOG.debug(`power mel fft`, "CanvasBase");
+    const wa = new WaveAnalyse();
+    const analysisData = resample(
+      wav.data,
+      fftSetting.sampleRate,
+      fftSetting.spectrogramSampleRate
+    );
+    const mel = wa.melSpectrogramLinearFlat(
+      analysisData,
+      fftSetting.spectrogramSampleRate,
+      fftSetting.fftsize,
+      fftSetting.hopSize,
+      fftSetting.melBins,
+      0,
+      fftSetting.maxFrq,
+      "hamming",
+      fftSetting.windowSize,
+      0,
+      true
+    );
+    let max = -Infinity;
+    for (const value of mel.mel) {
+      if (Number.isFinite(value)) {
+        max = Math.max(max, value);
+      }
+    }
+    LOG.debug(`power mel fft end`, "CanvasBase");
+    return {
+      values: mel.mel,
+      frames: mel.frames,
+      bins: mel.melBins,
+      max: Number.isFinite(max) ? max : 0,
+    };
+  }, [wav, spectrogramDisplayType]);
   /** 縦幅 */
   const [height, setHeight] = React.useState<number>(props.canvasHeight);
   /** スペクトルの最大値 */
@@ -136,17 +177,32 @@ export const CanvasBase: React.FC<CanvasBaseProps> = (props) => {
           setWavProgress={props.setWavProgress}
         />
         <br />
-        <SpecCanvas
-          canvasWidth={width}
-          canvasHeight={height / 2}
-          spec={spec}
-          specMax={specMax}
-          frameWidth={frameWidth}
-          spectrogramSampleRate={fftSetting.spectrogramSampleRate}
-          spectrogramHopSize={fftSetting.hopSize}
-          specProgress={props.specProgress}
-          setSpecProgress={props.setSpecProgress}
-        />
+        {spectrogramDisplayType === "linear" ? (
+          <SpecCanvas
+            canvasWidth={width}
+            canvasHeight={height / 2}
+            spec={spec}
+            specMax={specMax}
+            frameWidth={frameWidth}
+            spectrogramSampleRate={fftSetting.spectrogramSampleRate}
+            spectrogramHopSize={fftSetting.hopSize}
+            specProgress={props.specProgress}
+            setSpecProgress={props.setSpecProgress}
+          />
+        ) : (
+          <MelSpecCanvas
+            canvasWidth={width}
+            canvasHeight={height / 2}
+            melSpec={melSpec?.values ?? null}
+            melFrames={melSpec?.frames ?? 0}
+            melBins={melSpec?.bins ?? fftSetting.melBins}
+            melSpecMax={melSpec?.max ?? 0}
+            frameWidth={frameWidth}
+            spectrogramSampleRate={fftSetting.spectrogramSampleRate}
+            spectrogramHopSize={fftSetting.hopSize}
+            setSpecProgress={props.setSpecProgress}
+          />
+        )}
         <br />
         <OtoCanvas
           canvasWidth={width}

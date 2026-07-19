@@ -11,6 +11,8 @@
     "toDarkMode": "切换到深色模式",
     "toLightMode": "切换到浅色模式",
     "changeColor": "颜色设置",
+    "toLinearSpectrogram": "使用线性频谱图",
+    "toMelSpectrogram": "使用梅尔频谱图",
     "changeLanguage": "语言设置",
     "showLog": "显示日志",
     "clearAppCache": "清除应用缓存",
