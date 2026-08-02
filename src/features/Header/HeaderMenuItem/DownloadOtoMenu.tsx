@@ -8,6 +8,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { LOG } from "../../../lib/Logging";
 import { useOtoProjectStore } from "../../../store/otoProjectStore";
+import iconv from "iconv-lite";
 
 /**
  * oto.iniをダウンロードするメニュー
@@ -20,7 +21,7 @@ export const DownloadOtoMenu: React.FC<DownloadOtoMenuProps> = (props) => {
   const OnClick = () => {
     LOG.debug(`oto.iniのダウンロード`, "DownloadOtoMenu");
     LOG.gtag("downloadOto");
-    const f = oto.OutputOto();
+    const f = oto.OutputOto();//`Uncaught Error: Encoding not recognized: 'Windows-31j' (searched as: 'windows31j')`
     let url = "";
     f.forEach((file) => {
       if (file.name === targetDir) {

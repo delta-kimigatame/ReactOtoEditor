@@ -37,7 +37,7 @@
     "react-error-boundary": "^4.0.13",
     "react-i18next": "^14.1.2",
     "styled-components": "^6.1.11",
-    "utauoto": "^0.6.7",
+    "utauoto": "^0.6.8",
     "utauwav": "^0.7.3",
     "zustand": "^5.0.6"
   },
