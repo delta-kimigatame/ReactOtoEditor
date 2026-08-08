@@ -14,14 +14,14 @@ vi.mock("../../../src/store/otoProjectStore", () => ({
 }));
 
 describe("TargetDirDialogButtonArea", () => {
-  const mockSetDialogOpen = vi.fn();
+  const mockOnSubmit = vi.fn();
   const mockSetOtoTemp = vi.fn();
   const mockLoadOto = vi.fn();
   const mockSetEncoding = vi.fn();
   const mockOto = new Oto();
 
   const defaultProps = {
-    setDialogOpen: mockSetDialogOpen,
+    onSubmit: mockOnSubmit,
     oto: mockOto,
     setOtoTemp: mockSetOtoTemp,
     LoadOto: mockLoadOto,
@@ -63,7 +63,7 @@ describe("TargetDirDialogButtonArea", () => {
   });
 
   describe("OnSubmitClick", () => {
-    it("submitボタンクリック時にsetOtoが正しいOtoで呼ばれ、setDialogOpenがfalseで呼ばれる", () => {
+    it("submitボタンクリック時にsetOtoが正しいOtoで呼ばれ、完了処理が呼ばれる", () => {
       render(<TargetDirDialogButtonArea {...defaultProps} />);
 
       const submitButton = screen.getByTestId("submit-button");
@@ -73,9 +73,8 @@ describe("TargetDirDialogButtonArea", () => {
       expect(mockSetOto).toHaveBeenCalledWith(mockOto);
       expect(mockSetOto).toHaveBeenCalledTimes(1);
 
-      // setDialogOpenがfalseで呼ばれることを確認
-      expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
-      expect(mockSetDialogOpen).toHaveBeenCalledTimes(1);
+      // 呼び出し元に応じた完了処理が呼ばれることを確認
+      expect(mockOnSubmit).toHaveBeenCalledTimes(1);
     });
   });
 });

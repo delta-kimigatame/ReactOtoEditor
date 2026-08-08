@@ -37,6 +37,7 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2026/08/08 Fixed an issue where offset/BPM correction was unintentionally disabled when loading an oto.ini template.",
       "2026/08/02 Fixed an issue that prevented downloading oto.ini files individually.",
       "2026/07/20 Improved spectrogram rendering and added mel spectrogram display.",
       "2026/05/17 Number input fields now allow temporary blanks while editing, and values are applied when you confirm them.",

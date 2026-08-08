@@ -66,7 +66,7 @@ sample3.wav=か,0,80,50,100,-40`;
 
     return (
       <TargetDirDialogButtonArea
-        setDialogOpen={setDialogOpen}
+        onSubmit={() => setDialogOpen(false)}
         oto={oto}
         setOtoTemp={setOtoTemp}
         LoadOto={LoadOto}
@@ -122,7 +122,7 @@ utf8_sample4.wav=さ,0,80,50,100,-40`;
 
     return (
       <TargetDirDialogButtonArea
-        setDialogOpen={setDialogOpen}
+        onSubmit={() => setDialogOpen(false)}
         oto={oto}
         setOtoTemp={setOtoTemp}
         LoadOto={LoadOto}
@@ -183,7 +183,7 @@ export const WithManyAliases: Story = {
 
     return (
       <TargetDirDialogButtonArea
-        setDialogOpen={setDialogOpen}
+        onSubmit={() => setDialogOpen(false)}
         oto={oto}
         setOtoTemp={setOtoTemp}
         LoadOto={LoadOto}

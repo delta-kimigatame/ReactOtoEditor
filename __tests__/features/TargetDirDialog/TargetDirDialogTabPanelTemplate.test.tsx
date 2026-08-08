@@ -139,7 +139,7 @@ describe("TargetDirDialogTabPanelTemplate", () => {
     //otoが非nullになったため、子コンポーネントが表示されることを確認する。encodeOkはfalseのはず
     expect(screen.getByTestId("submit-button")).toBeInTheDocument();
   });
-  it("SetEncodeOk_：oto読込後、submitボタンをクリックした場合、encodeOkがtrueになり、correct-offset-checkboxが表示される", async() => {
+  it("文字コード確認後、ダイアログを閉じずに補正画面へ遷移する", async() => {
     useOtoProjectStore.getState().setTargetDir("A3");
 
     renderWithTabContext(
@@ -172,6 +172,8 @@ describe("TargetDirDialogTabPanelTemplate", () => {
 
     // correct-offset-checkboxが表示されることを確認
     expect(screen.getByTestId("correct-offset-checkbox")).toBeInTheDocument();
+    // 最初のOKでは親ダイアログを閉じないことを確認
+    expect(mockSetDialogOpen).not.toHaveBeenCalled();
   });
 
 //   it("UI描画確認：otoが存在し、encodeOkがfalseの場合TargetDirDialogCorrectPanelが表示される", () => {

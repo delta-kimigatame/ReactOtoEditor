@@ -216,7 +216,8 @@ export const StoragedTabSelected: Story = {
 };
 
 /**
- * テンプレートoto.iniが読み込まれた状態
+ * テンプレートoto.iniが読み込まれ、文字コードを確認する状態。
+ * OKを押すとダイアログを維持したまま補正画面へ進みます。
  */
 export const TemplateLoaded: Story = {
   render: () => {

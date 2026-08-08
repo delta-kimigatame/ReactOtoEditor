@@ -36,7 +36,7 @@ export const TargetDirDialogTabPanelZip: React.FC<
           <TargetDirDialogButtonArea
             oto={props.oto}
             setOtoTemp={props.setOtoTemp}
-            setDialogOpen={props.setDialogOpen}
+            onSubmit={() => props.setDialogOpen(false)}
             LoadOto={props.LoadOto}
             encoding={encoding}
             setEncoding={setEncoding}

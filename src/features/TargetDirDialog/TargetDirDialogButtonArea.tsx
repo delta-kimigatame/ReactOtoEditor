@@ -41,7 +41,7 @@ export const TargetDirDialogButtonArea: React.FC<
     LOG.debug(`oto.ini確定`, "TargetDirDialogButtonArea");
     LOG.gtag("loadoto");
     setOto(props.oto);
-    props.setDialogOpen(false);
+    props.onSubmit();
   };
 
   return (
@@ -64,8 +64,8 @@ export const TargetDirDialogButtonArea: React.FC<
 };
 
 export interface TargetDirDialogButtonAreaProps {
-  /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
-  setDialogOpen: (open: boolean) => void;
+  /** oto.iniを確定した後の処理 */
+  onSubmit: () => void;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */

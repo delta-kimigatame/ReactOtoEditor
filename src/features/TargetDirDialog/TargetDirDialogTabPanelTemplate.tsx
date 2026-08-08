@@ -33,7 +33,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
   const [processing, setProcessing] = React.useState<boolean>(false);
   /** 読み込んだファイル */
   const [readFile, setReadFile] = React.useState<File | null>(null);
-  /** エンコード確認OK */
+  /** 文字コード確認後に補正画面を表示するか */
   const [encodeOk, setEncodeOk] = React.useState<boolean>(false);
 
   const OnReadClick = () => {
@@ -71,9 +71,13 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
     });
   };
 
-  const SetEncodeOk_ = (value: boolean) => {
-    LOG.debug(`oto.ini読込文字コード確定`, "TargetDirDialogTabPanelTemplate");
-    setEncodeOk(!value);
+  /**
+   * 文字コード確認を完了し、ダイアログを閉じずに補正画面へ進む。
+   * `TargetDirDialogButtonArea`でテンプレートはプロジェクトへ確定済み。
+   */
+  const OnEncodingConfirm = () => {
+    LOG.debug(`oto.ini読込文字コード確定。補正画面へ遷移`, "TargetDirDialogTabPanelTemplate");
+    setEncodeOk(true);
   };
 
   React.useEffect(() => {
@@ -108,7 +112,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
             <TargetDirDialogButtonArea
               oto={oto}
               setOtoTemp={setOtoTemp}
-              setDialogOpen={SetEncodeOk_}
+              onSubmit={OnEncodingConfirm}
               LoadOto={LoadOto}
               encoding={encoding}
               setEncoding={setEncoding}
