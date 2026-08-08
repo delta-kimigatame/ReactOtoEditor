@@ -101,6 +101,10 @@ export default defineConfig({
   build: {
     target: "esnext",
     rollupOptions: {
+      input: {
+        main: path.resolve(dirname, "index.html"),
+        ste: path.resolve(dirname, "ste.html"),
+      },
       output: {
         entryFileNames: `assets/[name].js`,
         chunkFileNames: `assets/[name].js`,
