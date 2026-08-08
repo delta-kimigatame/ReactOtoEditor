@@ -23,6 +23,7 @@ describe("TargetDirDialogAliasVariant", () => {
 
     render(
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={null}
         setAliasVariant={mockSetAliasVariant}
       />
@@ -40,9 +41,12 @@ describe("TargetDirDialogAliasVariant", () => {
     );
     useOtoProjectStore.getState().setOto(oto);
     useOtoProjectStore.getState().setTargetDir("A3");
+    // テンプレート補正時と同様に、プロジェクトストアには未確定のOtoを保持しない。
+    useOtoProjectStore.getState().setOto(null);
 
     render(
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={["CV", "CV", "VCV"]}
         setAliasVariant={mockSetAliasVariant}
       />
@@ -50,6 +54,7 @@ describe("TargetDirDialogAliasVariant", () => {
 
     // アコーディオンが表示されることを確認
     expect(screen.getByText(/correctType/)).toBeInTheDocument();
+    expect(screen.getAllByDisplayValue("CV")).toHaveLength(2);
   });
 
   it("aliasVariant変更確認：1番目の要素をVCVに変更", () => {
@@ -63,6 +68,7 @@ describe("TargetDirDialogAliasVariant", () => {
 
     render(
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={["CV", "CV", "VCV"]}
         setAliasVariant={mockSetAliasVariant}
       />
@@ -91,6 +97,7 @@ describe("TargetDirDialogAliasVariant", () => {
 
     render(
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={["CV", "CV", "VCV"]}
         setAliasVariant={mockSetAliasVariant}
       />

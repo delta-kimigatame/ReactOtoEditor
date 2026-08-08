@@ -40,7 +40,9 @@ export const TargetDirDialogButtonArea: React.FC<
   const OnSubmitClick = () => {
     LOG.debug(`oto.ini確定`, "TargetDirDialogButtonArea");
     LOG.gtag("loadoto");
-    setOto(props.oto);
+    if (props.commitOto !== false) {
+      setOto(props.oto);
+    }
     props.onSubmit();
   };
 
@@ -66,6 +68,8 @@ export const TargetDirDialogButtonArea: React.FC<
 export interface TargetDirDialogButtonAreaProps {
   /** oto.iniを確定した後の処理 */
   onSubmit: () => void;
+  /** プロジェクトのoto.iniとして確定するか。テンプレート補正前はfalseを指定する。 */
+  commitOto?: boolean;
   /** 読み込んだoto.iniのデータ */
   oto: Oto;
   /** 読み込んだoto.iniのデータを変更する処理。文字化け確認用 */

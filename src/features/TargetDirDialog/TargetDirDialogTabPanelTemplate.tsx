@@ -73,7 +73,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
 
   /**
    * 文字コード確認を完了し、ダイアログを閉じずに補正画面へ進む。
-   * `TargetDirDialogButtonArea`でテンプレートはプロジェクトへ確定済み。
+    * テンプレートは補正画面の最終OKまでプロジェクトへ確定しない。
    */
   const OnEncodingConfirm = () => {
     LOG.debug(`oto.ini読込文字コード確定。補正画面へ遷移`, "TargetDirDialogTabPanelTemplate");
@@ -104,6 +104,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
           <>
             <TargetDirDialogCorrectPanel
               setDialogOpen={props.setDialogOpen}
+              oto={oto}
             />
           </>
         ) : (
@@ -113,6 +114,7 @@ export const TargetDirDialogTabPanelTemplate: React.FC<
               oto={oto}
               setOtoTemp={setOtoTemp}
               onSubmit={OnEncodingConfirm}
+              commitOto={false}
               LoadOto={LoadOto}
               encoding={encoding}
               setEncoding={setEncoding}

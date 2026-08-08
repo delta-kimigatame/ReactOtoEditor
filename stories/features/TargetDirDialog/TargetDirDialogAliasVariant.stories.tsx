@@ -66,6 +66,7 @@ sample6.wav=a く,0,80,50,100,-40`;
 
     return (
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={aliasVariant}
         setAliasVariant={setAliasVariant}
       />
@@ -115,6 +116,7 @@ cv_ki.wav=き,0,80,50,100,-40`;
 
     return (
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={aliasVariant}
         setAliasVariant={setAliasVariant}
       />
@@ -164,6 +166,7 @@ vcv_05.wav=i き,0,80,50,100,-40`;
 
     return (
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={aliasVariant}
         setAliasVariant={setAliasVariant}
       />
@@ -223,6 +226,7 @@ export const ManyAliases: Story = {
 
     return (
       <TargetDirDialogAliasVariant
+        oto={oto}
         aliasVariant={aliasVariant}
         setAliasVariant={setAliasVariant}
       />

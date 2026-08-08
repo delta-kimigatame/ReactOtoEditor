@@ -26,7 +26,9 @@ export const TargetDirDialogCorrectPanel: React.FC<
   TargetDirDialogCorrectPanelProps
 > = (props) => {
   const { t } = useTranslation();
-  const { targetDir,setOto,oto } = useOtoProjectStore();
+  const { targetDir, setOto, oto: storedOto } = useOtoProjectStore();
+  /** テンプレート読込中はストアに未確定のoto.iniを優先して使用する。 */
+  const oto = props.oto ?? storedOto;
   /** オフセット補正の有無 */
   const [isCorrectOffset, setIsCorrectOffset] = React.useState<boolean>(false);
   /** テンポ補正の有無 */
@@ -177,6 +179,7 @@ export const TargetDirDialogCorrectPanel: React.FC<
                     }}
                   />
                   <TargetDirDialogAliasVariant
+                    oto={oto}
                     aliasVariant={aliasVariant}
                     setAliasVariant={setAliasVariant}
                   />
@@ -193,6 +196,8 @@ export const TargetDirDialogCorrectPanel: React.FC<
 export interface TargetDirDialogCorrectPanelProps {
   /** ダイアログを表示するか否かを設定する。閉じる際に使用 */
   setDialogOpen: (open: boolean) => void;
+  /** 補正対象のoto.ini。未指定時はプロジェクトストアのoto.iniを使用する。 */
+  oto?: Oto;
 }
 
 /**

@@ -174,6 +174,13 @@ describe("TargetDirDialogTabPanelTemplate", () => {
     expect(screen.getByTestId("correct-offset-checkbox")).toBeInTheDocument();
     // 最初のOKでは親ダイアログを閉じないことを確認
     expect(mockSetDialogOpen).not.toHaveBeenCalled();
+    // 補正が完了するまでプロジェクトのoto.iniを確定しないことを確認
+    expect(useOtoProjectStore.getState().oto).toBeNull();
+
+    // 補正画面の最終OKでテンプレートを確定してダイアログを閉じることを確認
+    fireEvent.click(screen.getByTestId("submit-button"));
+    expect(useOtoProjectStore.getState().oto).not.toBeNull();
+    expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
   });
 
 //   it("UI描画確認：otoが存在し、encodeOkがfalseの場合TargetDirDialogCorrectPanelが表示される", () => {

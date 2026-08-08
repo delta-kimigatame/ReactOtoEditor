@@ -22,7 +22,7 @@ export const TargetDirDialogAliasVariant: React.FC<
   TargetDirDialogAliasVariantProps
 > = (props) => {
   const { t } = useTranslation();
-  const { targetDir, oto } = useOtoProjectStore();
+  const { targetDir } = useOtoProjectStore();
   const OnAliasVariantChange = (e: SelectChangeEvent, i: number) => {
     if (props.aliasVariant === null) return;
     const av = props.aliasVariant.slice();
@@ -40,8 +40,8 @@ export const TargetDirDialogAliasVariant: React.FC<
           {props.aliasVariant === null ? (
             <div>Unexpected error</div>
           ) : (
-            oto.GetLines()[targetDir].map((l, i) => (
-              <>
+            props.oto.GetLines()[targetDir].map((l, i) => (
+              <React.Fragment key={`${i}-${l}`}>
                 <FullWidthSelect
                   label={l.split("=")[1].split(",")[0]}
                   value={props.aliasVariant[i]}
@@ -53,7 +53,7 @@ export const TargetDirDialogAliasVariant: React.FC<
                   <MenuItem value="VCV">{t("targetDirDialog.VCV")}</MenuItem>
                   <MenuItem value="VC">{t("targetDirDialog.VC")}</MenuItem>
                 </FullWidthSelect>
-              </>
+              </React.Fragment>
             ))
           )}
         </AccordionDetails>
@@ -63,6 +63,8 @@ export const TargetDirDialogAliasVariant: React.FC<
 };
 
 export interface TargetDirDialogAliasVariantProps {
+  /** 現在補正しているoto.ini */
+  oto: Oto;
   /** エイリアスの種類 */
   aliasVariant: Array<"CV" | "VCV" | "VC"> | null;
   /** エイリアスの種類を設定する。 */
