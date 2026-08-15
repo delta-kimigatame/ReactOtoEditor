@@ -185,6 +185,7 @@ export const TargetDirDialogTabMakePanel: React.FC<
       LOG.debug(`oto.iniを生成しました。`, "TargetDirDialogTabMakePanel");
       setOto(oto);
     }
+    props.setDialogOpen(false);
   };
 
   return (

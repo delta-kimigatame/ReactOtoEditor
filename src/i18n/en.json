@@ -37,6 +37,8 @@
     "privacyCookie": "We use cookies on our site to customize how you experience our site.",
     "history": "Release Note",
     "changelog": [
+      "2026/08/15 Fixed an issue where the dialog did not close after generating oto.ini when switching the folder being otoed.",
+      "2026/08/09 Added the kwa and gwa rows to the oto.ini generation presets.",
       "2026/08/08 Fixed an issue where offset/BPM correction was unintentionally disabled when loading an oto.ini template.",
       "2026/08/02 Fixed an issue that prevented downloading oto.ini files individually.",
       "2026/07/20 Improved spectrogram rendering and added mel spectrogram display.",

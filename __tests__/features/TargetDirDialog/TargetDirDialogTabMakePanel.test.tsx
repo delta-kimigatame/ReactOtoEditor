@@ -645,6 +645,7 @@ describe("TargetDirDialogTabMakePanel", () => {
         true, // skipBeginingNumber
         true // analyze
       );
+      expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
     });
     it("チェックボックスが未チェックの場合、makeボタンでfalseが渡される", async () => {
       const { Oto } = await import("utauoto");
@@ -662,6 +663,7 @@ describe("TargetDirDialogTabMakePanel", () => {
         false, // skipBeginingNumber (未チェック)
         false // analyze (未チェック)
       );
+      expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
     });
   });
 
@@ -894,6 +896,7 @@ describe("TargetDirDialogTabMakePanel", () => {
       expect(fileKeys).toEqual(["test.wav"]);
       expect(targetDir).toBe("test-dir");
       expect(skipBeginingNumber).toBe(false); // 初期値
+      expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
     });
 
     it("makeボタンクリック時に変更された値でMakeOtoが正しいパラメータで呼ばれる", async () => {
@@ -963,6 +966,7 @@ describe("TargetDirDialogTabMakePanel", () => {
       expect(fileKeys).toEqual(["test.wav"]);
       expect(targetDir).toBe("test-dir");
       expect(skipBeginingNumber).toBe(true); // 変更後
+      expect(mockSetDialogOpen).toHaveBeenCalledWith(false);
     });
   });
 });
